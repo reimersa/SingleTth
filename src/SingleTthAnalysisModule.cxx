@@ -114,6 +114,11 @@ namespace uhh2examples {
     bool is_mc, do_scale_variation, is_much;
     TString dataset_version, scalevariation_process, region;
 
+
+    uhh2::Event::Handle<float> h_muon_triggerweight;
+    uhh2::Event::Handle<float> h_muon_triggerweight_up;
+    uhh2::Event::Handle<float> h_muon_triggerweight_down;
+
     uhh2::Event::Handle<bool> h_is_tprime_reco;
     uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;
   };
@@ -148,17 +153,19 @@ namespace uhh2examples {
     common->disable_jec();
     common->init(ctx);
 
-    SF_muonID.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_8_0_24_patch1/src/UHH2/common/data/MuonID_EfficienciesAndSF_average_RunBtoH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta", 1., "tightID", true, "nominal"));
-    SF_muonTrigger.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_8_0_24_patch1/src/UHH2/common/data/MuonTrigger_EfficienciesAndSF_average_RunBtoH.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins", 0.5, "trigger", true, "nominal"));
-    SF_muonIso.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_8_0_24_patch1/src/UHH2/common/data/MuonIso_EfficienciesAndSF_average_RunBtoH.root", "TightISO_TightID_pt_eta", 1., "iso", true, "nominal"));
+    SF_muonID.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta", 1., "tightID", true, "nominal"));
+    SF_muonTrigger.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonTrigger_EfficienciesAndSF_average_RunBtoH.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins", 0.5, "trigger", true, "nominal"));
+    SF_muonIso.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonIso_EfficienciesAndSF_average_RunBtoH.root", "TightISO_TightID_pt_eta", 1., "iso", true, "nominal"));
 
-    SF_eleReco.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_8_0_24_patch1/src/UHH2/common/data/egammaEffi.txt_EGM2D_RecEff_Moriond17.root", 1, "", "nominal"));
-    SF_eleID.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_8_0_24_patch1/src/UHH2/common/data/egammaEffi.txt_EGM2D_CutBased_Tight_ID.root", 1, "", "nominal"));
-    SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/SingleTth/Run2_80X_v3/TagProbe/Optimization/35867fb_Iso27_NonIso115/ElectronEfficiencies.root", "nominal"));
+    SF_eleReco.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/egammaEffi.txt_EGM2D_RecEff_Moriond17.root", 1, "", "nominal"));
+    SF_eleID.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/egammaEffi.txt_EGM2D_CutBased_Tight_ID.root", 1, "", "nominal"));
+    SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/LQToTopMu/Run2_80X_v3/TagProbe/Optimization/35867fb_Iso27_NonIso115/ElectronEfficiencies.root", "nominal"));
 
-    SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight));
+    // SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight));
 
-
+    h_muon_triggerweight = ctx.declare_event_output<float>("weight_sfmu_trigger");
+    h_muon_triggerweight_up = ctx.declare_event_output<float>("weight_sfmu_trigger_up");
+    h_muon_triggerweight_down = ctx.declare_event_output<float>("weight_sfmu_trigger_down");
 
     h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
     h_hyps = ctx.get_handle<vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
@@ -588,8 +595,11 @@ namespace uhh2examples {
     else{
       if(!(trigger1_ech_sel->passes(event) || trigger2_ech_sel->passes(event)) ) return false;
       SF_eleTrigger->process(event);
+      event.set(h_muon_triggerweight, 1.);
+      event.set(h_muon_triggerweight_up, 1.);
+      event.set(h_muon_triggerweight_down, 1.);
     }
-    SF_btag->process(event);
+    // SF_btag->process(event);
 
     if(is_much){
       h_trigger->fill(event);
