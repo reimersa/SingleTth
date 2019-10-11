@@ -5,27 +5,45 @@
 #include "../bkgfits/helpers.C"
 
 using namespace std;
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err);
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err);
 
 void sig_fit()
 {
   // decide which channel to do (eEle, eMuon, eComb)
-  Echannel ch = eEle;
+  Echannel ch = eComb;
 
   std::vector<double> MTs = {600, 650, 700};
   std::vector<double> means;
   std::vector<double> means_err;
   std::vector<double> widths;  
   std::vector<double> widths_err;  
+  std::vector<double> effs;  
+  std::vector<double> effs_err;  
   std::vector<double> zeros;
 
   // do the fits, fill results into graph
   for (int i=0; i<MTs.size(); ++i){
-    fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err);
+    fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err, effs, effs_err);
     zeros.push_back(0);
   }
   TGraphErrors* gmean  = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
   TGraphErrors* gsigma = new TGraphErrors(MTs.size(), MTs.data(), widths.data(), zeros.data(), widths_err.data());    
+  TGraphErrors* geff   = new TGraphErrors(MTs.size(), MTs.data(), effs.data(), zeros.data(), effs_err.data());      
+
+  // some information text
+  TString info, info2;
+  if (ch==eMuon){
+    info2 = "#mu+jets";
+  } else if (ch==eEle) {
+    info2 = "e+jets";
+  } else if (ch==eComb) {
+    info2 = "l+jets";
+  }
+  TLatex* text = new TLatex();
+  text->SetTextFont(42);
+  text->SetNDC();
+  text->SetTextColor(kBlack);
+  text->SetTextSize(0.040);  
 
   //-------------------------------------------------
   // Mean values with fit
@@ -87,6 +105,11 @@ void sig_fit()
   }
   TString fname = "results/signal_mean_values_" + channel_name + ".pdf"; 
 
+  // draw some info
+  info = TString::Format("Signal mean values, ");
+  info.Append(info2);
+  text->DrawLatex(0.16, 0.92, info.Data());
+
   can->RedrawAxis();
   can->SaveAs(fname);
 
@@ -143,18 +166,85 @@ void sig_fit()
 
   TString fname2 = "results/signal_sigma_values_" + channel_name + ".pdf"; 
 
+  // draw some info
+  info = TString::Format("Signal widths, ");
+  info.Append(info2);
+  text->DrawLatex(0.16, 0.92, info.Data());
+
   can2->RedrawAxis();
   can2->SaveAs(fname2);
 
 
+  //-------------------------------------------------
+  // Efficiencies with fit
+  //-------------------------------------------------
+  TCanvas *can3 = new TCanvas("eff_can","",10,10,700,700);
+  gPad->SetTickx();
+  gPad->SetTicky();
+  can3->SetLeftMargin(0.15);
+  can3->SetRightMargin(0.05);
+  can3->SetTopMargin(0.10);
+  can3->SetBottomMargin(0.12);
+
+  // cosmetics
+  TH1* painter3 = new TH1F("painter", "", 1, 550, 750);
+  painter3->SetXTitle("Generated M_{T} [GeV]");
+  painter3->SetYTitle("#varepsilon");
+  painter3->SetTitleSize(0.045);
+  painter3->GetYaxis()->SetTitleSize(0.045);
+  painter3->GetYaxis()->SetTitleOffset(1.4);
+  painter3->GetXaxis()->SetTitleOffset(1.2);
+  painter3->SetTitle("");
+  painter3->GetYaxis()->SetRangeUser(0, 0.05);
+  painter3->Draw();
+  geff->SetMarkerStyle(20);
+  geff->SetLineWidth(2);
+
+  gStyle->SetStatX(0.63);
+  gStyle->SetStatW(0.24);
+  gStyle->SetStatY(0.85);  
+  TF1* lin3 = new TF1("efffit", "[0]+[1]*(x-600)", 550, 750);
+  lin3->SetParameter(0, effs[0]);
+  lin3->SetParameter(1, 0);  
+  lin3->SetParName(0, "#varepsilon at 600 GeV");
+  lin3->SetParName(1, "Slope");
+  TFitResultPtr r3 = geff->Fit(lin3, "0");
+
+  MTs[0] = 550;
+  MTs[2] = 750;
+  TGraphErrors* fit3_err_95 = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
+  fitter = (TFitter*) TVirtualFitter::GetFitter();
+  fitter->GetConfidenceIntervals(fit3_err_95, 0.95);
+  fit3_err_95->SetFillColor(kOrange-4);
+  fit3_err_95->Draw("L3 same");
+
+  TGraphErrors* fit3_err_68 = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
+  fitter->GetConfidenceIntervals(fit3_err_68, 0.68);
+  fit3_err_68->SetFillColor(kOrange+1);
+  fit3_err_68->Draw("L3 same");
+
+  lin3->SetLineColor(kRed+1);
+  lin3->Draw("same");
+  geff->Draw("P same");
+
+  // draw some info
+  info = TString::Format("Signal efficiencies, ");
+  info.Append(info2);
+  text->DrawLatex(0.16, 0.92, info.Data());
+
+  fname = "results/signal_eff_values_" + channel_name + ".pdf"; 
+
+  can3->RedrawAxis();
+  can3->SaveAs(fname);
+
 }
 
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err)
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err)
 {
   
   // set fit regions
-  double fit_xmin = MT-20-100.;
-  double fit_xmax = MT-20+100.;  
+  double fit_xmin = MT-20-120.;
+  double fit_xmax = MT-20+120.;  
 
   gROOT->SetBatch(kTRUE);
 
@@ -232,11 +322,20 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   covmatr.Print();
   rho.Print();
 
+  // efficiency calculation
+  double Nevents_err; 
+  double Nevents = sigh->IntegralAndError(sigh->GetXaxis()->FindBin(xmin), sigh->GetXaxis()->FindBin(xmax), Nevents_err);
+  double Ntot = sigh->Integral(sigh->GetXaxis()->GetXmin(), sigh->GetXaxis()->GetXmax());
+  double efferr;
+  double eff = CalcEff(fitmodel, Nevents, Nevents_err, Ntot, MT, efferr);
+
   // store the results
   means.push_back(fitmodel->GetParameter(0));
   means_err.push_back(fitmodel->GetParError(0));
   widths.push_back(fitmodel->GetParameter(1));
   widths_err.push_back(fitmodel->GetParError(1));
+  effs.push_back(eff);
+  effs_err.push_back(efferr);
 
   // draw the result
   sigh->Draw("PZ");
@@ -262,8 +361,6 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   //fitmodel->DrawClone("same");
   sigh->DrawClone("PZ same");
   fitmodel->DrawClone("same");
-
-  can->Print("test.pdf");
 
 
   // some information
@@ -294,6 +391,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   text->DrawLatex(0.17, 0.72, info5.Data());
   info5 = TString::Format("x_{max} = %3.0f GeV", xmax);
   text->DrawLatex(0.17, 0.67, info5.Data());
+
+  TString info6 = TString::Format("#varepsilon_{sig} = %4.2f #pm %4.2f", eff*100, efferr*100);
+  info6.Append("%");
+  text->DrawLatex(0.17, 0.60, info6.Data());  
 
   can->RedrawAxis();
 
