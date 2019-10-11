@@ -161,7 +161,7 @@ namespace uhh2examples {
     SF_eleID.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/egammaEffi.txt_EGM2D_CutBased_Tight_ID.root", 1, "", "nominal"));
     SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/LQToTopMu/Run2_80X_v3/TagProbe/Optimization/35867fb_Iso27_NonIso115/ElectronEfficiencies.root", "nominal"));
 
-    // SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight));
+    SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight));
 
     h_muon_triggerweight = ctx.declare_event_output<float>("weight_sfmu_trigger");
     h_muon_triggerweight_up = ctx.declare_event_output<float>("weight_sfmu_trigger_up");
@@ -599,7 +599,7 @@ namespace uhh2examples {
       event.set(h_muon_triggerweight_up, 1.);
       event.set(h_muon_triggerweight_down, 1.);
     }
-    // SF_btag->process(event);
+    SF_btag->process(event);
 
     if(is_much){
       h_trigger->fill(event);
