@@ -66,7 +66,9 @@ namespace uhh2examples {
 
     JetId jet_pfid = JetPFID(JetPFID::WP_TIGHT_CHS);
     EleId = AndId<Electron>(ElectronID_Fall17_tight, PtEtaCut(30.0, 2.4));
-    MuId = AndId<Muon>(MuonID(Muon::CutBasedIdTight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
+    Year year = extract_year(ctx);
+    if (year == Year::is2016v2) MuId = AndId<Muon>(MuonID(Muon::Tight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
+    else                        MuId = AndId<Muon>(MuonID(Muon::CutBasedIdTight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
     Jet_ID = AndId<Jet>(jet_pfid, PtEtaCut(30.0, 2.4));
 
     is_mc = ctx.get("dataset_type") == "MC";
@@ -181,6 +183,7 @@ namespace uhh2examples {
     h_mu_met->fill(event);
     h_event_met->fill(event);
     h_lumi_met->fill(event);
+
     return true;
   }
 
