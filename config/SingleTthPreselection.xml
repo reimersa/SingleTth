@@ -16,7 +16,7 @@
 
 <!ENTITY VLQ_RH_600 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v2/TprimeBToTH_M-600_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_RH_650 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v2/TprimeBToTH_M-650_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
-<!ENTITY VLQ_RH_700 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-700_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-700_LH_TuneCUETP8M1_13TeV-madgraph-pythia8_crab_TprimeTToTH_M-700_LH_TuneCUETP8M1_13TeV-madgraph-pythia8_Summer16_v2.xml">
 <!ENTITY VLQ_RH_800 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-800_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_RH_900 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-900_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_RH_1000 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-1000_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
@@ -153,11 +153,12 @@
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		<!-- <InputData Lumi="293981.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_700_2016v3" Cacheable="&b_Cacheable;">
-			&VLQ_RH_700;
+
+		 <InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_700;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
-		</InputData> -->
+		</InputData>
 
 		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_800_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_RH_800;
