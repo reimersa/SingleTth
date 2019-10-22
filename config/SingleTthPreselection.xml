@@ -16,7 +16,6 @@
 
 <!ENTITY VLQ_RH_600 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v2/TprimeBToTH_M-600_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_RH_650 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v2/TprimeBToTH_M-650_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
-<!ENTITY VLQ_LH_700 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-700_LH_TuneCUETP8M1_13TeV-madgraph-pythia8_crab_TprimeTToTH_M-700_LH_TuneCUETP8M1_13TeV-madgraph-pythia8_Summer16_v2.xml">
 <!ENTITY VLQ_RH_800 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-800_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_RH_900 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-900_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_RH_1000 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-1000_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
@@ -28,6 +27,15 @@
 <!ENTITY VLQ_RH_1600 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-1600_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_RH_1700 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-1700_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_RH_1800 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2016v3/TprimeBToTH_M-1800_RH_TuneCUETP8M1_13TeV-madgraph-pythia8.xml">
+
+
+<!ENTITY VLQ_LH_700 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-700_LH_16_v2.xml">
+<!ENTITY VLQ_LH_900 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-900_LH_16_v2.xml">
+<!ENTITY VLQ_LH_1000 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-1000_LH_16_v2.xml">
+<!ENTITY VLQ_LH_1100 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-1100_LH_16_v2.xml">
+<!ENTITY VLQ_LH_1200 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-1200_LH_16_v2.xml">
+<!ENTITY VLQ_LH_1300 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-1300_LH_16_v2.xml">
+<!ENTITY VLQ_LH_1600 SYSTEM      "/nfs/dust/cms/user/wilhelml/samplexmls/TprimeTToTH_M-1600_LH_16_v2.xml">
 
 
 
@@ -153,13 +161,6 @@
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-
-		 <InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_2016v3" Cacheable="&b_Cacheable;">
-			&VLQ_LH_700;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
 		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_800_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_RH_800;
 			<InputTree Name="AnalysisTree" />
@@ -222,6 +223,49 @@
 
 		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1800_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_RH_1800;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+
+		 <InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_700;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		 <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_900;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		 <InputData Lumi="99600" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_1000;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		 <InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_1100;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		 <InputData Lumi="99800" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_1200;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		 <InputData Lumi="76000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1300_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_1300;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		 <InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1600_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_1600;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
@@ -742,7 +786,7 @@
 			<Item Name="GenParticleCollection" Value="GenParticles" />
 			<Item Name="GenInfoName" Value="genInfo" />
 
-			<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_Collisions16_JSON.root" />
+			<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.root" />
 			<Item Name="lumihists_lumi_per_bin" Value="1000."/>
 
 
