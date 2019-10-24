@@ -3,7 +3,7 @@
 
 
 <!ENTITY TargetLumi      "36773">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Preselection/JEC_DOWN">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Preselection/JEC_down">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -121,7 +121,7 @@
 
 
 <!--
-<ConfigParse NEventsBreak="0" FileSplit="7" AutoResubmit="5"/>
+<ConfigParse NEventsBreak="0" FileSplit="5" AutoResubmit="5"/>
 <ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Pre_JEC_DOWN"/>
 -->
 

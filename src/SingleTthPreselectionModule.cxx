@@ -39,7 +39,7 @@ namespace uhh2examples {
     unique_ptr<CommonModules> common;
 
     // declare the Selections to use.
-    unique_ptr<Selection> jet_sel, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech;
+    unique_ptr<Selection> jet_sel, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech, lumi_sel;
 
     // store the Hists collection as member variables.
     unique_ptr<Hists> h_nocuts, h_jets_nocuts, h_ele_nocuts, h_mu_nocuts, h_event_nocuts, h_topjets_nocuts, h_lumi_nocuts;
@@ -90,6 +90,7 @@ namespace uhh2examples {
     muon_sel_ech.reset(new NMuonSelection(0, 0));
     ele_sel_ech.reset(new NElectronSelection(1, 1));
     jet_sel.reset(new NJetSelection(3, -1));
+    lumi_sel.reset(new LumiSelection(ctx));
 
     // 3. Set up Hists classes:
     h_nocuts.reset(new SingleTthPreselectionHists(ctx, "nocuts"));
@@ -147,7 +148,7 @@ namespace uhh2examples {
     h_event_nocuts->fill(event);
     h_lumi_nocuts->fill(event);
 
-
+    if(!lumi_sel->passes(event)) return false;
     bool pass_common = common->process(event);
     if(!pass_common) return false;
 

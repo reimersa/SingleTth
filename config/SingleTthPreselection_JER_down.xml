@@ -3,7 +3,7 @@
 
 
 <!ENTITY TargetLumi      "36773">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Preselection/JEC_UP">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Preselection/JER_down">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -121,8 +121,8 @@
 
 
 <!--
-<ConfigParse NEventsBreak="0" FileSplit="7" AutoResubmit="5"/>
-<ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Pre_JEC_UP"/>
+<ConfigParse NEventsBreak="0" FileSplit="5" AutoResubmit="5"/>
+<ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Pre_JER_DOWN"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -728,8 +728,8 @@
 		<Item Name="pileup_directory_data" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MyDataPileupHistogram.root" />
 
 
-		<Item Name="jecsmear_direction" Value="up" />
-		<Item Name="jersmear_direction" Value="nominal" />
+		<Item Name="jecsmear_direction" Value="nominal" />
+		<Item Name="jersmear_direction" Value="down" />
 
 		<!-- Some test configuration; see LQToTopMuModule.cxx for how to access it: -->
 		<Item Name="TestKey" Value="TestKeyValue" />
