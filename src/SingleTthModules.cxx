@@ -15,7 +15,7 @@ PDFWeightHandleProducer::PDFWeightHandleProducer(Context & ctx){
   m_oname = ctx.get("dataset_version");
   TString m_pdfname = "NNPDF30_lo_as_0130";
 
-  take_ntupleweights = !(m_oname.Contains("VLQ") || m_oname.Contains("Diboson") || m_oname.Contains("WJets") || m_oname.Contains("QCD"));
+  take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW"));
 
   if(is_mc && !take_ntupleweights) m_pdfweights.reset(new PDFWeights(m_pdfname));
 
@@ -37,8 +37,8 @@ bool PDFWeightHandleProducer::process(Event & event){
     return false;
   }
 
-  if(event.genInfo->systweights().size() == 0 && take_ntupleweights) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is empty but ntupleweights shall be taken. Is this correct? In this case add exception to take_ntupleweights.");
-  if(event.genInfo->systweights().size() != 0 && (!take_ntupleweights)) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is NOT empty but take_ntupleweights is set to 'false'. Is this correct? In this case Thomas says the genInfo weight should be used. Add this sample to take_ntupleweights");
+  if(event.genInfo->systweights().size() < 100 && take_ntupleweights) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is too small but ntupleweights shall be taken. Is this correct? In this case add exception to take_ntupleweights.");
+  if(event.genInfo->systweights().size() >110 && (!take_ntupleweights)) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is NOT empty but take_ntupleweights is set to 'false'. Is this correct? In this case Thomas says the genInfo weight should be used. Add this sample to take_ntupleweights");
 
   if(take_ntupleweights){
     for(int i=0; i<100; i++){
