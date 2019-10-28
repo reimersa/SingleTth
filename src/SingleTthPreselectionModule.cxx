@@ -39,7 +39,7 @@ namespace uhh2examples {
     unique_ptr<CommonModules> common;
 
     // declare the Selections to use.
-    unique_ptr<Selection> jet_sel, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech;
+    unique_ptr<Selection> jet_sel, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech, lumi_sel;
 
     // store the Hists collection as member variables.
     unique_ptr<Hists> h_nocuts, h_jets_nocuts, h_ele_nocuts, h_mu_nocuts, h_event_nocuts, h_topjets_nocuts, h_lumi_nocuts;
@@ -66,7 +66,9 @@ namespace uhh2examples {
 
     JetId jet_pfid = JetPFID(JetPFID::WP_TIGHT_CHS);
     EleId = AndId<Electron>(ElectronID_Fall17_tight, PtEtaCut(30.0, 2.4));
-    MuId = AndId<Muon>(MuonID(Muon::CutBasedIdTight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
+    Year year = extract_year(ctx);
+    if (year == Year::is2016v2) MuId = AndId<Muon>(MuonID(Muon::Tight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
+    else                        MuId = AndId<Muon>(MuonID(Muon::CutBasedIdTight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
     Jet_ID = AndId<Jet>(jet_pfid, PtEtaCut(30.0, 2.4));
 
     is_mc = ctx.get("dataset_type") == "MC";
@@ -88,6 +90,7 @@ namespace uhh2examples {
     muon_sel_ech.reset(new NMuonSelection(0, 0));
     ele_sel_ech.reset(new NElectronSelection(1, 1));
     jet_sel.reset(new NJetSelection(3, -1));
+    lumi_sel.reset(new LumiSelection(ctx));
 
     // 3. Set up Hists classes:
     h_nocuts.reset(new SingleTthPreselectionHists(ctx, "nocuts"));
@@ -145,7 +148,7 @@ namespace uhh2examples {
     h_event_nocuts->fill(event);
     h_lumi_nocuts->fill(event);
 
-
+    if(!lumi_sel->passes(event)) return false;
     bool pass_common = common->process(event);
     if(!pass_common) return false;
 
@@ -181,6 +184,7 @@ namespace uhh2examples {
     h_mu_met->fill(event);
     h_event_met->fill(event);
     h_lumi_met->fill(event);
+
     return true;
   }
 

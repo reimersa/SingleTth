@@ -3,7 +3,7 @@
 
 
 <!ENTITY TargetLumi      "36773">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Preselection/NOMINAL">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Preselection/JER_up">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -39,21 +39,6 @@
 
 
 
-<!ENTITY DATA_Muon_B SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleMuon2016_RunB.xml">
-<!ENTITY DATA_Muon_C SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleMuon2016_RunC.xml">
-<!ENTITY DATA_Muon_D SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleMuon2016_RunD.xml">
-<!ENTITY DATA_Muon_E SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleMuon2016_RunE.xml">
-<!ENTITY DATA_Muon_F SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleMuon2016_RunF.xml">
-<!ENTITY DATA_Muon_G SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleMuon2016_RunG.xml">
-<!ENTITY DATA_Muon_H SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleMuon2016_RunH.xml">
-
-<!ENTITY DATA_Electron_B SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleElectron2016_RunB.xml">
-<!ENTITY DATA_Electron_C SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleElectron2016_RunC.xml">
-<!ENTITY DATA_Electron_D SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleElectron2016_RunD.xml">
-<!ENTITY DATA_Electron_E SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleElectron2016_RunE.xml">
-<!ENTITY DATA_Electron_F SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleElectron2016_RunF.xml">
-<!ENTITY DATA_Electron_G SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleElectron2016_RunG.xml">
-<!ENTITY DATA_Electron_H SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/DATA_SingleElectron2016_RunH.xml">
 
 
 <!ENTITY TTbar SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2016v3/MC_TT_TuneCUETP8M2T4.xml">
@@ -136,8 +121,8 @@
 
 
 <!--
-<ConfigParse NEventsBreak="0" FileSplit="25" AutoResubmit="5"/>
-<ConfigSGE RAM="4" DISK="3" Mail="arne.reimers@desy.de" Notification="as" Workdir="workdir_SingleTth_Pre"/>
+<ConfigParse NEventsBreak="0" FileSplit="5" AutoResubmit="5"/>
+<ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Pre_JER_UP"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -227,134 +212,48 @@
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-
-		 <InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_700;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		 <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_900;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		 <InputData Lumi="99600" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="99600" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_1000;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		 <InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_1100;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		 <InputData Lumi="99800" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="99800" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_1200;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		 <InputData Lumi="76000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1300_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="76000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1300_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_1300;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		 <InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1600_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1600_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_1600;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Muon_B_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Muon_B;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Muon_C_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Muon_C;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Muon_D_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Muon_D;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Muon_E_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Muon_E;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Muon_F_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Muon_F;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Muon_G_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Muon_G;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Muon_H_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Muon_H;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Electron_B_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Electron_B;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Electron_C_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Electron_C;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Electron_D_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Electron_D;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Electron_E_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Electron_E;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Electron_F_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Electron_F;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Electron_G_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Electron_G;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
-
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Electron_H_2016v3" Cacheable="&b_Cacheable;">
-			&DATA_Electron_H;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
 
 
 
@@ -830,7 +729,7 @@
 
 
 		<Item Name="jecsmear_direction" Value="nominal" />
-		<Item Name="jersmear_direction" Value="nominal" />
+		<Item Name="jersmear_direction" Value="up" />
 
 		<!-- Some test configuration; see LQToTopMuModule.cxx for how to access it: -->
 		<Item Name="TestKey" Value="TestKeyValue" />
