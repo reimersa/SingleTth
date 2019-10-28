@@ -8,7 +8,7 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds);
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p};
 
-EFitFunction FitFunc = eFunc3p;
+EFitFunction FitFunc = eFunc4p;
 
 void bkg_fit()
 {
@@ -35,10 +35,10 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
   double fit_xmin = 0;
   double fit_xmax = 0;  
   if (region==eSR){
-    fit_xmin = 360;
+    fit_xmin = 380;
     fit_xmax = 2000;    
   } else {
-    fit_xmin = 450;
+    fit_xmin = 500;
     fit_xmax = 2000;       
   }
 
@@ -90,7 +90,6 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
   //-----------------------------------
   // set up function for fit
   //-----------------------------------
-  dijetfunction* fitfuncobj = NULL;
   TF1* fitmodel = NULL;
   Int_t linecol = 0;
   Int_t col68 = 0; 
@@ -136,15 +135,15 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
     dijetfunction_p4 fitfuncobj(xmin, xmax);
     fitfuncobj.SetNorm(norm);    
     fitmodel = new TF1("fitmodel", fitfuncobj, xmin, xmax, 4);
-    fitmodel->SetParameter(0, 69);  
-    fitmodel->SetParameter(1, -4);
-    fitmodel->SetParameter(2, 0.21);
-    fitmodel->SetParameter(3, 0);
+    fitmodel->SetParameter(0, 66.45);  
+    fitmodel->SetParameter(1, -12.6);
+    fitmodel->SetParameter(2, -9.6);
+    fitmodel->SetParameter(3, -5.3);
     linecol = kGreen+2; 
     col68 = kSpring-1; 
     col95 = kSpring-4;
     fdesc = "Dijet function, 4 pars";
-    ffile = "dijet_4p";
+    ffile = "dijet4p";
   } else if (FitFunc==eFuncAlt4p){ 
     dijetfunction_altp4 fitfuncobj(xmin, xmax);
     fitfuncobj.SetNorm(norm);    
@@ -229,6 +228,19 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
   text->SetTextFont(62);
   text->DrawLatex(0.17, 0.83, info4.Data());
   //text2->DrawLatex(0.15, 0.67, info5.Data());
+  
+  if (FitFunc==eFunc3p){
+    dijetfunction_p3 fitfuncobj(xmin, xmax);
+    fitfuncobj.SetNorm(norm);    
+    TF1* df = new TF1("df", fitfuncobj, xmin, xmax, 3);
+    df->SetParameter(0, fitmodel->GetParameter(0));  
+    df->SetParameter(1, fitmodel->GetParameter(1));  
+    df->SetParameter(2, fitmodel->GetParameter(2));  
+    df->Eval(600);
+    TString info7 = TString::Format("f_{norm} = %.4e", fitfuncobj.GetFunc()->GetParameter(3) );
+    text->SetTextFont(42);
+    text->DrawLatex(0.64, 0.65, info7.Data());    
+  }
 
   background_c->RedrawAxis();
 
