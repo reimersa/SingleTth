@@ -27,8 +27,9 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
 	using namespace defs;
 
 	// folder where the analysis output files are 
-	TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
-	TString year = "2016";
+	//	TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
+	TString anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
+	TString year = "2016v3";
 	
   	//All files are read in
   	bool b_error=true;
