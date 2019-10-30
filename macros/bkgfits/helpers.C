@@ -8,8 +8,11 @@
 // some definitions
 
 enum Eregion {eCR, eSR};
-enum Echannel {eMuon, eEle};
+enum Echannel {eMuon, eEle, eComb};
 
+// folder where the analysis output files are 
+TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
+TString year = "2016";
 
 TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds)
 {
@@ -19,19 +22,18 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
   TString unc_name = ""; // "jersmear_up" , "jersmear_down" ,"jecsmear_up" , "jecsmear_down" , "none"
   // TString folder ="~/ownCloud/masterarbeit/tex/plots/efficiency/master_";
   // TString unc_folder = "hists";
-  TString bkgfolder = "../../../"; // /nfs/dust/cms/user/reimersa/SingleVLQStephanie/Fullselection/emuChannels/NOMINAL/";
   TFile * data_f = NULL;
   if (ch == eMuon){
-    data_f = new TFile(bkgfolder+"uhh2.AnalysisModuleRunner.DATA.DATA_Muon.root", "READ");
+    data_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.DATA.DATA_Muon_" + year + ".root", "READ");
   } else {
-    data_f = new TFile(bkgfolder+"uhh2.AnalysisModuleRunner.DATA.DATA_Electron.root", "READ");
+    data_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.DATA.DATA_Electron_" + year + ".root", "READ");
   }
-  TFile * ttbar_f = new TFile(bkgfolder+"uhh2.AnalysisModuleRunner.MC.TTbar.root", "READ");
-  TFile * singlet_f = new TFile(bkgfolder+"uhh2.AnalysisModuleRunner.MC.SingleTop.root", "READ");
-  //TFile * WJets_f = new TFile("uhh2.AnalysisModuleRunner.MC.WJets.root", "READ");
-  TFile * DYJets_f = new TFile(bkgfolder+"uhh2.AnalysisModuleRunner.MC.DYJets.root", "READ");
-  TFile * DIB_f = new TFile(bkgfolder+"uhh2.AnalysisModuleRunner.MC.Diboson.root", "READ");
-  TFile * ttV_f = new TFile(bkgfolder+"uhh2.AnalysisModuleRunner.MC.TTV.root", "READ");
+  TFile * ttbar_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.TTbar_" + year + ".root", "READ");
+  TFile * singlet_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.SingleTop_" + year + ".root", "READ");
+  TFile * WJets_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.WJets_" + year + ".root", "READ");
+  TFile * DYJets_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.DYJets_" + year + ".root", "READ");
+  TFile * DIB_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.Diboson_" + year + ".root", "READ");
+  TFile * ttV_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.TTV_" + year + ".root", "READ");
 
   //Get all hist from the string hist_name
   TString channel_name = "";
@@ -50,7 +52,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
   TH1F* data = (TH1F*)data_f->Get(hist_name);
   TH1F* ttbar = (TH1F*)ttbar_f->Get(hist_name);
   TH1F* singlet = (TH1F*)singlet_f->Get(hist_name);
-  //TH1F* WJets = (TH1F*)WJets_f->Get(hist_name);
+  TH1F* WJets = (TH1F*)WJets_f->Get(hist_name);
   TH1F* DYJets = (TH1F*)DYJets_f->Get(hist_name);
   TH1F* DIB = (TH1F*)DIB_f->Get(hist_name);
   TH1F* ttV = (TH1F*)ttV_f->Get(hist_name);
@@ -64,6 +66,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
     back = (TH1F*)ttbar->Clone();
     if (all_bkgds){
       back->Add(singlet);
+      //back->Add(WJets);
       back->Add(DYJets);
       back->Add(DIB);
       back->Add(ttV);
@@ -86,7 +89,11 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
   back->SetMarkerSize(1.);
   back->SetLineColor(kBlack);
   back->SetMarkerColor(kBlack);
-  back->GetYaxis()->SetRangeUser(0.01, 500);
+  if (region_name=="cr"){
+    back->GetYaxis()->SetRangeUser(1., 1000);
+  } else {
+    back->GetYaxis()->SetRangeUser(0.05, 1000);
+  }
   back->GetXaxis()->SetRangeUser(200, 2000);
   back->Draw("E1");
 
@@ -99,6 +106,106 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
   }
 
   return back;
+
+}
+
+TH1F* GetAnalysisOutputSignal(int MT, Echannel ch)
+{
+  
+  //All files are read in
+  bool b_error=true;
+  TString unc_name = ""; // "jersmear_up" , "jersmear_down" ,"jecsmear_up" , "jecsmear_down" , "none"
+  // TString folder ="~/ownCloud/masterarbeit/tex/plots/efficiency/master_";
+  // TString unc_folder = "hists";
+  TString MT_name = TString::Format("%d", MT);
+  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
+
+  TString region_name = "sr";
+  TString ech_name  = "chi2h_2_ech_"  + region_name + "/M_Tprime";
+  TString much_name = "chi2h_2_much_" + region_name + "/M_Tprime";
+
+  //Get all hists
+  TH1F* sigh = NULL;
+
+  if (ch==eMuon){
+    sigh = (TH1F*) sig_f->Get(much_name);
+  } else if (ch == eEle) {
+    sigh = (TH1F*) sig_f->Get(ech_name);
+  } else if (ch == eComb) {
+    TH1F* eh = (TH1F*) sig_f->Get(ech_name);
+    TH1F* mh = (TH1F*) sig_f->Get(much_name);
+    sigh = (TH1F*) eh->Clone();
+    sigh->Add(mh);
+  }
+  sigh->Rebin(2);
+
+  // cosmetics
+  sigh->SetXTitle("M_{T}^{rec} [GeV]");
+  sigh->SetYTitle("Events");
+  sigh->SetTitleSize(0.045);
+  sigh->GetYaxis()->SetTitleSize(0.045);
+  sigh->GetYaxis()->SetTitleOffset(1.1);
+  sigh->SetTitle("");
+  sigh->SetMarkerStyle(21);    
+  sigh->SetMarkerSize(1.);
+  sigh->SetLineColor(kBlack);
+  sigh->SetMarkerColor(kBlack);
+  sigh->GetYaxis()->SetRangeUser(0.01, sigh->GetMaximum()*1.3);
+  sigh->GetXaxis()->SetRangeUser(MT-400, MT+400);
+  //sigh->Draw("E1");
+
+  // zero out bins with little MC stats 
+  //for (int i=1; i<back->GetNbinsX()+1; ++i){
+  //  if (back->GetBinContent(i) < 0.1){ 
+  //    back->SetBinContent(i, 0);
+  //    back->SetBinError(i,0);
+  //  }
+  //}
+
+  return sigh;
+
+}
+
+double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT, double& err)
+{
+
+  double gauss_norm_interval = sigf->Integral(sigf->GetXmin(), sigf->GetXmax(), 1e-3 );
+  double f = Npeak / gauss_norm_interval; 
+  double f_err = Npeak_err / Npeak; 
+
+  double xmin = sigf->GetParameter(0) - 3*fabs(sigf->GetParameter(1));
+  double xmax = sigf->GetParameter(0) + 3*fabs(sigf->GetParameter(1));
+  double gauss_norm = sigf->Integral(xmin, xmax, 1e-3 );  
+
+  double Nevts_peak = gauss_norm * f; 
+
+  // get total number of events before any selection
+  TString MT_name = TString::Format("%d", MT);
+  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
+  TString hname = "cleaner/sum_event_weights";
+  TH1F* h = (TH1F*) sig_f->Get(hname);  
+  double Ntot = h->GetBinContent(1); 
+
+  // this is not correct, as Ntot is already after the preselection! 
+  // we should use the total generated number of events, scaled by the cross section (1pb)
+  // todo: read in the preselection file to get this number from the file instead of hard-coding it
+  Ntot = 35800.;
+
+  cout << "\nNevents before selection = " << Ntot << endl;
+  cout << "Sum of weights = " << h->GetSumOfWeights() << endl;
+  cout << "Check: Is this equal to Ntot = L*xs = " << 35.8*1000 << " ? " << endl;
+  cout << "Sum of weights after full selection = " << NSRtot << endl;
+
+  //cout << "N events under peak = " << Nevts_peak << endl;
+  //cout << "N total before selection = " << Ntot << endl;
+
+  double eff = Nevts_peak / Ntot;
+  err = eff*f_err;
+
+  cout << "efficiency under peak = " << eff << " +- " << err << endl;
+  cout << "efficiency total SR = " << NSRtot / Ntot << endl;
+
+  return eff;
 
 }
 
@@ -365,7 +472,7 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
   hist->GetYaxis()->SetNdivisions(6,5,0);
 
   //hist->SetMaximum(max);
-  hist->SetMinimum(0.05);
+  //hist->SetMinimum(0.05);
 
   hist->GetXaxis()->SetTitleSize(0);
   hist->GetXaxis()->SetTitleOffset(0);

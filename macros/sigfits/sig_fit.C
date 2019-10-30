@@ -12,7 +12,7 @@ void sig_fit()
   // decide which channel to do (eEle, eMuon, eComb)
   Echannel ch = eComb;
 
-  std::vector<double> MTs = {600, 650, 700};
+  std::vector<double> MTs = {600, 650, 800, 900, 1000, 1100, 1200};
   std::vector<double> means;
   std::vector<double> means_err;
   std::vector<double> widths;  
@@ -57,7 +57,7 @@ void sig_fit()
   can->SetBottomMargin(0.12);
 
   // cosmetics
-  TH1* painter = new TH1F("painter", "", 1, 550, 750);
+  TH1* painter = new TH1F("painter", "", 1, 550, 1250);
   painter->SetXTitle("Generated M_{T} [GeV]");
   painter->SetYTitle("#mu [GeV]");
   painter->SetTitleSize(0.045);
@@ -65,7 +65,7 @@ void sig_fit()
   painter->GetYaxis()->SetTitleOffset(1.4);
   painter->GetXaxis()->SetTitleOffset(1.2);
   painter->SetTitle("");
-  painter->GetYaxis()->SetRangeUser(550, 750);
+  painter->GetYaxis()->SetRangeUser(550, 1250);
   painter->Draw();
   gmean->SetMarkerStyle(20);
   gmean->SetLineWidth(2);
@@ -73,13 +73,13 @@ void sig_fit()
   gStyle->SetStatX(0.63);
   gStyle->SetStatW(0.24);
   gStyle->SetStatY(0.85);  
-  TF1* lin = new TF1("meanfit", "[0]+[1]*(x-600)", 550, 750);
+  TF1* lin = new TF1("meanfit", "[0]+[1]*(x-600)", 550, 1250);
   lin->SetParName(0, "#mu at 600 GeV");
   lin->SetParName(1, "Slope");
   TFitResultPtr r = gmean->Fit(lin, "0");
 
   MTs[0] = 550;
-  MTs[2] = 750;
+  MTs[6] = 1250;
   TGraphErrors* fit_err_95 = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
   TFitter* fitter = (TFitter*) TVirtualFitter::GetFitter();
   fitter->GetConfidenceIntervals(fit_err_95, 0.95);
@@ -126,7 +126,7 @@ void sig_fit()
   can2->SetBottomMargin(0.12);
 
   // cosmetics
-  TH1* painter2 = new TH1F("painter2", "", 1, 550, 750);
+  TH1* painter2 = new TH1F("painter2", "", 1, 550, 1250);
   painter2->SetXTitle("Generated M_{T} [GeV]");
   painter2->SetYTitle("#sigma [GeV]");
   painter2->SetTitleSize(0.045);
@@ -142,13 +142,13 @@ void sig_fit()
   gStyle->SetStatX(0.70);
   gStyle->SetStatW(0.27);
   gStyle->SetStatY(0.85);  
-  TF1* lin2 = new TF1("sigmafit", "[0]+[1]*(x-600)", 550, 750);
+  TF1* lin2 = new TF1("sigmafit", "[0]+[1]*(x-600)", 550, 1250);
   lin2->SetParName(0, "#sigma at 600 GeV");
   lin2->SetParName(1, "Slope");
   TFitResultPtr r2 = gsigma->Fit(lin2, "0");
 
   MTs[0] = 550;
-  MTs[2] = 750;
+  MTs[6] = 1250;
   TGraphErrors* fit2_err_95 = new TGraphErrors(MTs.size(), MTs.data(), widths.data(), zeros.data(), widths_err.data());  
   fitter = (TFitter*) TVirtualFitter::GetFitter();
   fitter->GetConfidenceIntervals(fit2_err_95, 0.95);
@@ -187,7 +187,7 @@ void sig_fit()
   can3->SetBottomMargin(0.12);
 
   // cosmetics
-  TH1* painter3 = new TH1F("painter", "", 1, 550, 750);
+  TH1* painter3 = new TH1F("painter", "", 1, 550, 1250);
   painter3->SetXTitle("Generated M_{T} [GeV]");
   painter3->SetYTitle("#varepsilon");
   painter3->SetTitleSize(0.045);
@@ -195,7 +195,7 @@ void sig_fit()
   painter3->GetYaxis()->SetTitleOffset(1.4);
   painter3->GetXaxis()->SetTitleOffset(1.2);
   painter3->SetTitle("");
-  painter3->GetYaxis()->SetRangeUser(0, 0.05);
+  painter3->GetYaxis()->SetRangeUser(0, 0.01);
   painter3->Draw();
   geff->SetMarkerStyle(20);
   geff->SetLineWidth(2);
@@ -203,7 +203,7 @@ void sig_fit()
   gStyle->SetStatX(0.63);
   gStyle->SetStatW(0.24);
   gStyle->SetStatY(0.85);  
-  TF1* lin3 = new TF1("efffit", "[0]+[1]*(x-600)", 550, 750);
+  TF1* lin3 = new TF1("efffit", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
   lin3->SetParameter(0, effs[0]);
   lin3->SetParameter(1, 0);  
   lin3->SetParName(0, "#varepsilon at 600 GeV");
@@ -211,7 +211,7 @@ void sig_fit()
   TFitResultPtr r3 = geff->Fit(lin3, "0");
 
   MTs[0] = 550;
-  MTs[2] = 750;
+  MTs[6] = 1250;
   TGraphErrors* fit3_err_95 = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
   fitter = (TFitter*) TVirtualFitter::GetFitter();
   fitter->GetConfidenceIntervals(fit3_err_95, 0.95);
@@ -242,9 +242,15 @@ void sig_fit()
 void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err)
 {
   
-  // set fit regions
-  double fit_xmin = MT-20-120.;
-  double fit_xmax = MT-20+120.;  
+  // set fit regions (crude estimate)
+  double fit_xmin = MT-20-150.;
+  double fit_xmax = MT-20+150.;  
+ 
+  // a bit more precise 
+  double mean = MT-20;
+  double sigma = 61.5+0.0033*(MT-600.);
+  fit_xmin = mean - 2*sigma;
+  fit_xmax = mean + 2.5*sigma;
 
   gROOT->SetBatch(kTRUE);
 
@@ -329,6 +335,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   double efferr;
   double eff = CalcEff(fitmodel, Nevents, Nevents_err, Ntot, MT, efferr);
 
+  cout << "\n" << "Total number of expected events (1pb?) = " << sigh->GetSumOfWeights() << " and within fit range: " << sigh->Integral(sigh->FindBin(xmin), sigh->FindBin(xmax)) << endl << endl;
+
   // store the results
   means.push_back(fitmodel->GetParameter(0));
   means_err.push_back(fitmodel->GetParError(0));
@@ -395,6 +403,11 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   TString info6 = TString::Format("#varepsilon_{sig} = %4.2f #pm %4.2f", eff*100, efferr*100);
   info6.Append("%");
   text->DrawLatex(0.17, 0.60, info6.Data());  
+
+  double corr = sigh->Integral(sigh->GetXaxis()->GetXmin(), sigh->GetXaxis()->GetXmax(), "width") / norm;
+  cout << "corr = " << corr << endl;
+  TString info7 = TString::Format("f_{norm} = %4.3f", sigfuncobj.GetFunc()->GetParameter(0)*corr );
+  text->DrawLatex(0.17, 0.55, info7.Data());  
 
   can->RedrawAxis();
 
