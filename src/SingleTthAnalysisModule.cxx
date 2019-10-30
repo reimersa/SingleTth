@@ -572,7 +572,7 @@ namespace uhh2examples {
 
 
   bool SingleTthAnalysisModule::process(Event & event) {
-
+    cout << "++++++++++ NEW EVENT ++++++++++" << endl;
     event.set(h_is_tprime_reco, false);
 
     is_much = (muon_sel_much->passes(event) && ele_sel_much->passes(event));
@@ -641,7 +641,6 @@ namespace uhh2examples {
       event.set(h_muon_triggerweight_up, 1.);
       event.set(h_muon_triggerweight_down, 1.);
     }
-    SF_btag->process(event);
 
     if(is_much){
       h_trigger->fill(event);
@@ -653,6 +652,8 @@ namespace uhh2examples {
 
       h_btageff_trigger->fill(event);
     }
+
+    SF_btag->process(event);
 
     // 3 b-tags
     if(!btag_loose_sel->passes(event)) return false;
