@@ -133,9 +133,14 @@ namespace uhh2examples {
     for(unsigned int i=0; i<systnames.size(); i++){
       for(unsigned int j=0; j<systshift.size(); j++){
 
-
         TString handlename = handlenames[i] + "_" + systshift[j];
         TString sf_name = handlenames[i];
+
+        // PU doesn't exist in data (grr!!). Give it a dummy and never use it again. Doesn't matter on data anyway.
+        if(systnames[i] == "pu" && !is_mc){
+          handlename = "eventweight_final";
+          sf_name = "eventweight_final";
+        }
 
         // B-tagging uncertainties require a special treatment
         if(systnames[i] == "btag_bc"){
@@ -219,6 +224,8 @@ namespace uhh2examples {
     // Loop over easy systematics
     for(unsigned int i=0; i<systnames.size(); i++){
       for(unsigned int j=0; j<systshift.size(); j++){
+
+        // if(systnames[i] == "pu" && !is_mc) continue;
 
         int idx = 2*i + j;
         float systweight = event.get(systweight_handles[idx]);
