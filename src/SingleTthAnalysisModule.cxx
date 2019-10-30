@@ -52,7 +52,7 @@ namespace uhh2examples {
     unique_ptr<AnalysisModule> SF_muonID, SF_muonIso, SF_eleReco, SF_eleID, SF_btag, scale_variation_module;
     unique_ptr<MCMuonScaleFactor> SF_muonTrigger;
     unique_ptr<ElectronTriggerWeights> SF_eleTrigger;
-    unique_ptr<PDFWeightHandleProducer> pdf_weight_producer;
+    // unique_ptr<PDFWeightHandleProducer> pdf_weight_producer;
 
     // declare the Selections to use.
     unique_ptr<Selection>  btag_loose_sel, btag_2medium_sel, btag_3medium_sel, btag_2tight_sel, btag_3tight_sel, trigger1_much_sel, trigger2_much_sel, trigger1_ech_sel, trigger2_ech_sel, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech;
@@ -111,7 +111,7 @@ namespace uhh2examples {
     unique_ptr<Hists> h_dRbw_15_ech_cr, h_jets_dRbw_15_ech_cr, h_ele_dRbw_15_ech_cr, h_mu_dRbw_15_ech_cr, h_event_dRbw_15_ech_cr, h_lumi_dRbw_15_ech_cr;
 
 
-    unique_ptr<Hists> h_PDF_variations_much_sr, h_PDF_variations_much_cr, h_PDF_variations_ech_sr, h_PDF_variations_ech_cr;
+    // unique_ptr<Hists> h_PDF_variations_much_sr, h_PDF_variations_much_cr, h_PDF_variations_ech_sr, h_PDF_variations_ech_cr;
 
     BTag::algo btag_algo;
     BTag::wp wp_loose, wp_medium, wp_tight;
@@ -180,7 +180,7 @@ namespace uhh2examples {
 
     SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag));
 
-    pdf_weight_producer.reset(new PDFWeightHandleProducer(ctx));
+    // pdf_weight_producer.reset(new PDFWeightHandleProducer(ctx));
 
     h_muon_triggerweight = ctx.declare_event_output<float>("weight_sfmu_trigger");
     h_muon_triggerweight_up = ctx.declare_event_output<float>("weight_sfmu_trigger_up");
@@ -423,10 +423,10 @@ namespace uhh2examples {
     h_event_chi2h_2_ech_cr.reset(new EventHists(ctx, "Event_chi2h_2_ech_cr"));
     h_lumi_chi2h_2_ech_cr.reset(new LuminosityHists(ctx, "Lumi_chi2h_2_ech_cr"));
 
-    h_PDF_variations_much_sr.reset(new SingleTthPDFHists(ctx, "PDF_variations_much_sr"));
-    h_PDF_variations_much_cr.reset(new SingleTthPDFHists(ctx, "PDF_variations_much_cr"));
-    h_PDF_variations_ech_sr.reset(new SingleTthPDFHists(ctx, "PDF_variations_ech_sr"));
-    h_PDF_variations_ech_cr.reset(new SingleTthPDFHists(ctx, "PDF_variations_ech_cr"));
+    // h_PDF_variations_much_sr.reset(new SingleTthPDFHists(ctx, "PDF_variations_much_sr"));
+    // h_PDF_variations_much_cr.reset(new SingleTthPDFHists(ctx, "PDF_variations_much_cr"));
+    // h_PDF_variations_ech_sr.reset(new SingleTthPDFHists(ctx, "PDF_variations_ech_sr"));
+    // h_PDF_variations_ech_cr.reset(new SingleTthPDFHists(ctx, "PDF_variations_ech_cr"));
 
     h_dRbb_much_sr.reset(new SingleTthHists(ctx, "dRbb_much_sr"));
     h_jets_dRbb_much_sr.reset(new JetHists(ctx, "Jets_dRbb_much_sr"));
@@ -881,7 +881,7 @@ namespace uhh2examples {
         h_mu_chi2h_2_much_sr->fill(event);
         h_event_chi2h_2_much_sr->fill(event);
         h_lumi_chi2h_2_much_sr->fill(event);
-        h_PDF_variations_much_sr->fill(event);
+        // h_PDF_variations_much_sr->fill(event);
       }
       else{
         h_chi2h_2_ech_sr->fill(event);
@@ -890,7 +890,7 @@ namespace uhh2examples {
         h_mu_chi2h_2_ech_sr->fill(event);
         h_event_chi2h_2_ech_sr->fill(event);
         h_lumi_chi2h_2_ech_sr->fill(event);
-        h_PDF_variations_ech_sr->fill(event);
+        // h_PDF_variations_ech_sr->fill(event);
       }
     }
     else{
@@ -901,7 +901,7 @@ namespace uhh2examples {
         h_mu_chi2h_2_much_cr->fill(event);
         h_event_chi2h_2_much_cr->fill(event);
         h_lumi_chi2h_2_much_cr->fill(event);
-        h_PDF_variations_much_cr->fill(event);
+        // h_PDF_variations_much_cr->fill(event);
       }
       else{
         h_chi2h_2_ech_cr->fill(event);
@@ -910,7 +910,7 @@ namespace uhh2examples {
         h_mu_chi2h_2_ech_cr->fill(event);
         h_event_chi2h_2_ech_cr->fill(event);
         h_lumi_chi2h_2_ech_cr->fill(event);
-        h_PDF_variations_ech_cr->fill(event);
+        // h_PDF_variations_ech_cr->fill(event);
       }
     }
 
@@ -1110,7 +1110,7 @@ namespace uhh2examples {
     //   }
     // }
 
-    pdf_weight_producer->process(event);
+    // pdf_weight_producer->process(event);
     event.set(h_eventweight_final, event.weight);
     return true;
   }
