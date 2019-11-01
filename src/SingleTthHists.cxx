@@ -223,9 +223,9 @@ void SingleTthHists::fill(const Event & event){
   hist("N_bJets_loose")->Fill(Nbjets_loose,weight);
   hist("N_bJets_med")->Fill(Nbjets_medium,weight);
   hist("N_bJets_tight")->Fill(Nbjets_tight,weight);
-  hist("N_deepjet_loose")->Fill(Nbjets_loose,weight);
-  hist("N_deepjet_med")->Fill(Nbjets_medium,weight);
-  hist("N_deepjet_tight")->Fill(Nbjets_tight,weight);
+  hist("N_deepjet_loose")->Fill(Ndeepjet_loose,weight);
+  hist("N_deepjet_med")->Fill(Ndeepjet_med,weight);
+  hist("N_deepjet_tight")->Fill(Ndeepjet_tight,weight);
 
 
   /*
