@@ -2,7 +2,7 @@
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 
 
-<!ENTITY TargetLumi      "36773">
+<!ENTITY TargetLumi      "35920">
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Preselection/JER_down">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
@@ -685,7 +685,7 @@
 			<Item Name="GenParticleCollection" Value="GenParticles" />
 			<Item Name="GenInfoName" Value="genInfo" />
 
-			<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.root" />
+			<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.root" />
 			<Item Name="lumihists_lumi_per_bin" Value="1000."/>
 
 

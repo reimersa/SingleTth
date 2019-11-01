@@ -2,7 +2,7 @@
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 
 
-<!ENTITY TargetLumi      "36773">
+<!ENTITY TargetLumi      "35920">
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Preselection/JER_up">
 <!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_up">
 <!ENTITY b_Cacheable     "False">
@@ -273,7 +273,7 @@
 		</InputData>
 
 
-<!--
+
 		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Muon_B_2016v3" Cacheable="&b_Cacheable;">
 	    <In FileName="&DATA_Muon_B;" Lumi="0.0"/>
 			<InputTree Name="AnalysisTree" />
@@ -356,7 +356,7 @@
 	    <In FileName="&DATA_Electron_H;" Lumi="0.0"/>
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
-		</InputData> -->
+		</InputData>
 
 
 
