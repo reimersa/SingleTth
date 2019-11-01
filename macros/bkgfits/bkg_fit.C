@@ -4,31 +4,58 @@
 #include "helpers.C"
 
 using namespace std;
-void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds);
+TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95);
+void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString name);
 
-enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p};
+enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p};
 
-EFitFunction FitFunc = eFunc4p;
+EFitFunction FitFunc = eFunc5p;
 
 void bkg_fit()
 {
 
-  one_fit(eCR, eEle, false, true);
-  one_fit(eCR, eMuon, false, true);
+  TH1F* cl68 = NULL; 
+  TH1F* cl95 = NULL;
+  TH1F* dum = NULL; 
 
-  one_fit(eSR, eEle, false, true);
-  one_fit(eSR, eMuon, false, true);
+  // ------------ Control Region --------------
 
-  one_fit(eCR, eEle, true, true);  
-  one_fit(eCR, eMuon, true, true);  
+  TF1* cr_mc_ele = one_fit(eCR, eEle, false, true, dum, dum);
+  TF1* cr_mc_muo = one_fit(eCR, eMuon, false, true, dum, dum);
+
+  TF1* cr_data_ele = one_fit(eCR, eEle, true, true, cl68, cl95);  
+  TF1* cr_data_muo = one_fit(eCR, eMuon, true, true, dum, dum);  
+
+  cr_mc_ele->SetLineStyle(kDashed);
+  cr_mc_muo->SetLineStyle(kDashed);
+  std::vector<TF1*> funcs; 
+  funcs.push_back(cr_mc_ele);
+  funcs.push_back(cr_mc_muo);
+  funcs.push_back(cr_data_ele);
+  funcs.push_back(cr_data_muo);
+
+  // plot comparison of fit functions
+  PlotFuncComparison(funcs, cl68, cl95, "CR_fitcomparison");
+
+  // ------------ Signal Region --------------
+
+  TF1* sr_mc_ele = one_fit(eSR, eEle, false, true, cl68, cl95);
+  TF1* sr_mc_muo = one_fit(eSR, eMuon, false, true, dum, dum);
+
+  funcs.clear();
+  funcs.push_back(sr_mc_ele);
+  funcs.push_back(sr_mc_muo);
+
+  PlotFuncComparison(funcs, cl68, cl95, "SR_MC_fitcomparison");
+
 
   // BLINDED:
-  //one_fit(eSR, eEle, true, true);  
-  //one_fit(eSR, eMuon, true, true);  
+  //one_fit(eSR, eEle, true, true, dum, dum);  
+  //one_fit(eSR, eMuon, true, true, dum, dum);  
 
 }
 
-void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
+TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95)
 {
   
   // set fit regions
@@ -157,6 +184,20 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
     col95 = kPink+1;
     fdesc = "Alt. dijet function, 4 pars";
     ffile = "dijet_alt4p";
+  } else if (FitFunc==eFunc5p){ 
+    dijetfunction_p5 fitfuncobj(xmin, xmax);
+    fitfuncobj.SetNorm(norm);    
+    fitmodel = new TF1("fitmodel", fitfuncobj, xmin, xmax, 5);
+    fitmodel->SetParameter(0, 69);  
+    fitmodel->SetParameter(1, -4);
+    fitmodel->SetParameter(2, 0);
+    fitmodel->SetParameter(3, 0);
+    fitmodel->SetParameter(4, 0);
+    linecol = kBlue+1; 
+    col68 = kAzure-4; 
+    col95 = kAzure-9;
+    fdesc = "Dijet function, 5 pars";
+    ffile = "dijet5p";
   }
 
   cout << "Norm in function = " << fitmodel->Integral(xmin, xmax, 1e-3) << endl;
@@ -184,6 +225,7 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
   clhist->SetFillColor(col95);
   clhist->SetMarkerColor(col95);
   clhist->Draw("e3 same");
+  cl95 = clhist;
 
   // draw 68% CL
   TH1F* clhist2 = ComputeHistWithCL(fitmodel, r, back, 0.68);
@@ -192,6 +234,7 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
   clhist2->SetFillColor(col68);
   clhist2->SetMarkerColor(col68);
   clhist2->Draw("e3 same");
+  cl68 = clhist2;
 
   //fitmodel->DrawClone("same");
   back->DrawClone("PZ same");
@@ -275,6 +318,56 @@ void one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds)
   err_hists.push_back(clhist2);  
   plot_ratio(back, fitmodel, err_hists, region, channel, dodata, all_bkgds, fdesc, ffile);
 
+  return fitmodel;
 
+}
+
+void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString name)
+{
+  TCanvas *c = new TCanvas(name, name, 10,10,700,700);
+  gPad->SetTickx();
+  gPad->SetTicky();
+  c->Clear();
+  c->cd();
+  c->SetLeftMargin(0.12);
+  c->SetRightMargin(0.05);
+  c->SetTopMargin(0.10);
+  c->SetBottomMargin(0.12);
+  //gPad->SetLogy();
+
+  double xmax = funcs[0]->GetMinimumX();
+  double xmin = funcs[0]->GetMaximumX();  
+  double norm0 = funcs[0]->Integral(xmin, xmax, 1e-3); 
+
+  // cosmetics
+  TH1F* plotter = new TH1F("h", "", 100, xmin, xmax);
+  plotter->SetXTitle("M_{T}^{rec} [GeV]");
+  plotter->SetYTitle("Events");
+  plotter->SetTitleSize(0.045);
+  plotter->GetYaxis()->SetTitleSize(0.045);
+  plotter->GetYaxis()->SetTitleOffset(1.1);
+  //plotter->SetTitle("");
+  plotter->GetYaxis()->SetRangeUser(0.1, 300);
+  plotter->Draw();
+
+  //funcs[0]->Draw("same");
+  cl95->Draw("e3same");
+  cl68->Draw("e3same");
+  funcs[0]->SetLineColor(kBlack);
+  funcs[0]->Draw("same");
+
+  for (int i=1; i<funcs.size(); ++i){
+    double norm = funcs[i]->Integral(xmin, xmax, 1e-3); 
+    double sf = norm0/norm; 
+    TH1F* h = new TH1F("h", "", 100, xmin, xmax);
+    h->Add(funcs[i], sf);
+    h->SetLineColor(kBlack);
+    h->SetLineWidth(funcs[i]->GetLineWidth());
+    h->SetLineStyle(funcs[i]->GetLineStyle());
+    //funcs[i]->SetNorm(funcs[0]->GetNorm());
+    h->Draw("lsame");
+  }
+
+  c->SaveAs(name + ".pdf");
 }
 

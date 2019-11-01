@@ -207,4 +207,42 @@ class dijetfunction_altp4 : public dijetfunction {
    }
 };
 
+class dijetfunction_p5 : public dijetfunction {
+ 
+ public:
+   dijetfunction_p5(double xmin, double xmax) : dijetfunction(xmin, xmax){
+     f_xmin = xmin;
+     f_xmax = xmax;
+     f_norm = 1.;
+
+     f = new TF1("dijet5", "[5]*( TMath::Power(5.-x/1000.,[0])) / (TMath::Power(x/1000.,[1] + [2]*TMath::Log(x/1000.) + [3]*TMath::Log(x/1000.)*TMath::Log(x/1000.) + [4]*TMath::Power(TMath::Log(x/1000.),3) ) )", f_xmin, f_xmax);
+
+     // some sensible starting values
+     f->SetParameter(0, 0);
+     f->SetParameter(1, 0);
+     f->SetParameter(2, 0);
+     f->SetParameter(3, 0);      
+     f->SetParameter(4, 0.); 
+     f->SetParameter(5, 1.); 
+
+   }
+
+   double operator() (double *xx, double *p) 
+   {
+
+     Float_t x =xx[0];
+     f->SetParameter(0, p[0]);
+     f->SetParameter(1, p[1]);
+     f->SetParameter(2, p[2]);
+     f->SetParameter(3, p[3]); // set it to 1000 to avoid small numbers
+     f->SetParameter(4, p[4]); // set it to 1000 to avoid small numbers
+     f->SetParameter(5, 1000.); // set it to 1000 to avoid small numbers
+
+     double in = f->Integral(f_xmin, f_xmax, 10e-2);
+     f->SetParameter(5, 1000.*f_norm/in);
+
+     return f->Eval(x);
+
+   }
+};
 
