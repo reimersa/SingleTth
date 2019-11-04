@@ -1,5 +1,3 @@
-#include "../include/cosmetics.h"
-#include "../include/Tools.h"
 #include <TString.h>
 #include <iostream>
 #include <TStyle.h>
@@ -24,78 +22,60 @@
 
 using namespace std;
 
-void FindRMS(TString puppidir, map<TString, TString> samplemap, TString sample);
+void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample);
 
-void AnalysisTool::PDFRMS(){
+void PDFRMS(){
 
   map<TString, TString> samplemap;
-  samplemap["TTbar"] = "uhh2.AnalysisModuleRunner.MC.TTbar.root";
-  samplemap["WJets"] = "uhh2.AnalysisModuleRunner.MC.WJets.root";
-  samplemap["DYJets"] = "uhh2.AnalysisModuleRunner.MC.DYJets.root";
-  samplemap["SingleTop"] = "uhh2.AnalysisModuleRunner.MC.ST.root";
-  samplemap["QCD"] = "uhh2.AnalysisModuleRunner.MC.QCD_Mu.root";
-  samplemap["RSGluon_M500"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M500.root";
-  samplemap["RSGluon_M750"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M750.root";
-  samplemap["RSGluon_M1000"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M1000.root";
-  samplemap["RSGluon_M1250"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M1250.root";
-  samplemap["RSGluon_M1500"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M1500.root";
-  samplemap["RSGluon_M2000"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M2000.root";
-  samplemap["RSGluon_M2500"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M2500.root";
-  samplemap["RSGluon_M3000"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M3000.root";
-  samplemap["RSGluon_M3500"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M3500.root";
-  samplemap["RSGluon_M4000"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M4000.root";
-  samplemap["RSGluon_M4500"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M4500.root";
-  samplemap["RSGluon_M5000"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M5000.root";
-  samplemap["RSGluon_M5500"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M5500.root";
-  samplemap["RSGluon_M6000"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M6000.root";
-  samplemap["RSGluon_M6500"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M6500.root";
-  samplemap["RSGluon_M7000"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M7000.root";
-  samplemap["RSGluon_M7500"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M7500.root";
-  samplemap["RSGluon_M8000"] = "uhh2.AnalysisModuleRunner.MC.RSGluon_M8000.root";
+  samplemap["TTbar"] = "uhh2.AnalysisModuleRunner.MC.TTbar_2016v3.root";
+  samplemap["SingleTop"] = "uhh2.AnalysisModuleRunner.MC.SingleTop_2016v3.root";
+  samplemap["VLQ_RH_600_2016v2"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_600_2016v2.root";
+  samplemap["VLQ_RH_650_2016v2"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_650_2016v2.root";
+  samplemap["VLQ_RH_800_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_800_2016v3.root";
+  samplemap["VLQ_RH_900_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_900_2016v3.root";
+  samplemap["VLQ_RH_1000_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1000_2016v3.root";
+  samplemap["VLQ_RH_1100_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1100_2016v3.root";
+  samplemap["VLQ_RH_1200_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1200_2016v3.root";
+  samplemap["VLQ_RH_1300_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1300_2016v3.root";
+  samplemap["VLQ_RH_1400_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1400_2016v3.root";
+  samplemap["VLQ_RH_1500_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1500_2016v3.root";
+  samplemap["VLQ_RH_1600_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1600_2016v3.root";
 
-  TString puppidir = AnalysisTool::dnn_path_puppi;
 
-  FindRMS(puppidir, samplemap, "TTbar");
-  FindRMS(puppidir, samplemap, "WJets");
-  FindRMS(puppidir, samplemap, "DYJets");
-  FindRMS(puppidir, samplemap, "SingleTop");
-  FindRMS(puppidir, samplemap, "QCD");
-  FindRMS(puppidir, samplemap, "RSGluon_M500");
-  FindRMS(puppidir, samplemap, "RSGluon_M750");
-  FindRMS(puppidir, samplemap, "RSGluon_M1000");
-  FindRMS(puppidir, samplemap, "RSGluon_M1250");
-  FindRMS(puppidir, samplemap, "RSGluon_M1500");
-  FindRMS(puppidir, samplemap, "RSGluon_M2000");
-  FindRMS(puppidir, samplemap, "RSGluon_M2500");
-  FindRMS(puppidir, samplemap, "RSGluon_M3000");
-  FindRMS(puppidir, samplemap, "RSGluon_M3500");
-  FindRMS(puppidir, samplemap, "RSGluon_M4000");
-  FindRMS(puppidir, samplemap, "RSGluon_M4500");
-  FindRMS(puppidir, samplemap, "RSGluon_M5000");
-  FindRMS(puppidir, samplemap, "RSGluon_M5500");
-  FindRMS(puppidir, samplemap, "RSGluon_M6000");
-  FindRMS(puppidir, samplemap, "RSGluon_M6500");
-  FindRMS(puppidir, samplemap, "RSGluon_M7000");
-  FindRMS(puppidir, samplemap, "RSGluon_M7500");
-  FindRMS(puppidir, samplemap, "RSGluon_M8000");
+  TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/";
+
+  FindRMS(infolder, samplemap, "TTbar");
+  FindRMS(infolder, samplemap, "SingleTop");
+  FindRMS(infolder, samplemap, "VLQ_RH_600_2016v2");
+  FindRMS(infolder, samplemap, "VLQ_RH_650_2016v2");
+  FindRMS(infolder, samplemap, "VLQ_RH_700_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_800_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_900_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1000_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1100_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1200_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1300_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1400_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1500_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1600_2016v3");
 
 }
 
 
-void FindRMS(TString puppidir, map<TString, TString> samplemap, TString sample){
+void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample){
   gStyle->SetOptStat(0);
   // gErrorIgnoreLevel = 2002;
 
   // Open File
   // ==========
 
-  TString infilename = puppidir + "/PDF/" + samplemap[sample];
+  TString infilename = infolder +"/NOMINAL/"+ samplemap[sample];
   cout << "infilename: " << infilename << endl;
   TFile* infile = new TFile(infilename, "READ");
 
   // outfiles
-  TString outfilename_up = puppidir + "/PDF_up/" + samplemap[sample];
-  TString outfilename_down = puppidir + "/PDF_down/" + samplemap[sample];
+  TString outfilename_up = infolder + "/PDF_up/" + samplemap[sample];
+  TString outfilename_down = infolder + "/PDF_down/" + samplemap[sample];
   cout << "outfilename_up: " << outfilename_up << endl;
   cout << "outfilename_down: " << outfilename_down << endl;
   TFile* outfile_up = new TFile(outfilename_up, "RECREATE");
@@ -108,6 +88,10 @@ void FindRMS(TString puppidir, map<TString, TString> samplemap, TString sample){
   // ===========================================================================================================================
 
   // get list of foldernames: The PDF folders have "_PDF" in their name
+  vector<TString> histfolders = {"chi2h_2"};
+  vector<TString> channel_tags = {"ech", "much"};
+  vector<TString> region_tags = {"sr", "cr"};
+
   infile->cd();
   vector<TString> foldernames;
   TDirectory* dir = gDirectory;
@@ -117,18 +101,18 @@ void FindRMS(TString puppidir, map<TString, TString> samplemap, TString sample){
     TClass *cl = gROOT->GetClass(key->GetClassName());
     if(cl->InheritsFrom("TDirectoryFile")){
       TString name = key->ReadObj()->GetName();
-      if(name != "SFrame" && name.Contains("_PDF")){
+      if(name != "SFrame" && name.Contains("_pdf")){
         foldernames.emplace_back(name);
+	std::cout<<"name  "<<name<<std::endl;
         // make dirs without "_PDF"
         TString makedirname = name;
-        makedirname.ReplaceAll("_PDF", "_General");
+        makedirname.ReplaceAll("_pdf", "_nominal");
         outfile_up->mkdir(makedirname);
         outfile_down->mkdir(makedirname);
         // cout << "made dir: " << makedirname << endl;
       }
     }
   }
-
 
 
   for(size_t i=0; i<foldernames.size(); i++){
@@ -164,7 +148,7 @@ void FindRMS(TString puppidir, map<TString, TString> samplemap, TString sample){
 
       // systematic histograms (100)
       vector<TH1F*> hists_thisvar;
-      for(size_t k=0; k<100; k++){
+      for(size_t k=1; k<101; k++){
         TString readoutname = foldername + "/" + histname + "_";
         readoutname += k;
         // cout << "readoutname: " << readoutname << endl;
@@ -175,9 +159,13 @@ void FindRMS(TString puppidir, map<TString, TString> samplemap, TString sample){
 
 
       // nominal histograms (1)
+      // std::cout<<"foldername  "<<foldername<<std::endl;
       TString foldername_nom = foldername;
-      foldername_nom.ReplaceAll("_PDF", "_General");
-      TString readoutname = foldername_nom + "/" + histname;
+      foldername_nom.ReplaceAll("_pdf", "_nominal");
+      // std::cout<<"histname  "<<histname<<std::endl;
+      TString histname_nom = histname;
+      histname_nom.ReplaceAll("_PDF", ""); 
+      TString readoutname = foldername_nom + "/" + histname_nom;
       // cout << "readoutname: " << readoutname << endl;
       TH1F* h = (TH1F*)infile->Get(readoutname);
       histograms_nom.emplace_back(h);
@@ -219,7 +207,7 @@ void FindRMS(TString puppidir, map<TString, TString> samplemap, TString sample){
 
     // Write histograms into file, chosing the correct folder
     TString writefoldername = foldername;
-    writefoldername.ReplaceAll("_PDF", "_General");
+    writefoldername.ReplaceAll("_pdf", "_nominal");
     outfile_up->cd(writefoldername);
     for(size_t j=0; j<hists_up.size(); j++){
       hists_up[j]->Write();
