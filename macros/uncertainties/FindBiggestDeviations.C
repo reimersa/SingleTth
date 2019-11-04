@@ -32,27 +32,22 @@ using namespace std;
 void FindBiggestDeviations(){
 
   //Files & histograms for other processes
-  TString path = "/nfs/dust/cms/user/reimersa/SingleVLQStephanie/Fullselection/emuChannels/";
-  TString doforsyst = "TT";
-  TString process = "TTbar";
-  unique_ptr<TFile> f_uu, f_un, f_nu, f_nd, f_dn, f_dd, f_nom;
-  f_uu.reset (new TFile(path + "SCALE" + doforsyst + "_upup/uhh2.AnalysisModuleRunner.MC." + process  + ".root","READ"));
-  f_un.reset (new TFile(path + "SCALE" + doforsyst + "_upnone/uhh2.AnalysisModuleRunner.MC." + process  + ".root","READ"));
-  f_nu.reset (new TFile(path + "SCALE" + doforsyst + "_noneup/uhh2.AnalysisModuleRunner.MC." + process  + ".root","READ"));
-  f_nd.reset (new TFile(path + "SCALE" + doforsyst + "_nonedown/uhh2.AnalysisModuleRunner.MC." + process  + ".root","READ"));
-  f_dn.reset (new TFile(path + "SCALE" + doforsyst + "_downnone/uhh2.AnalysisModuleRunner.MC." + process  + ".root","READ"));
-  f_dd.reset (new TFile(path + "SCALE" + doforsyst + "_downdown/uhh2.AnalysisModuleRunner.MC." + process  + ".root","READ"));
-  f_nom.reset(new TFile(path + "NOMINAL/uhh2.AnalysisModuleRunner.MC." + process  + ".root","READ"));
+  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/";
+  TString process = "TTbar_2016v3";
+  unique_ptr<TFile> f_in;
+  f_in.reset (new TFile(path + "NOMINAL/uhh2.AnalysisModuleRunner.MC." + process  + ".root","READ"));
 
+  // unique_ptr<TH1F> mufmur_up, muf_up, mur_up, nominal, mufmur_down, muf_down, mur_down;
+  // mufmur_up.reset(f_in.Get())
 
-  vector<TString> histfolders = {"chi2h_2", "dRbb_10", "dRbw_15"};
+  vector<TString> histfolders = {"chi2h_2"};
   vector<TString> channel_tags = {"ech", "much"};
   vector<TString> region_tags = {"sr", "cr"};
 
 
   unique_ptr<TFile> f_out_up, f_out_dn;
-  f_out_up.reset(new TFile(path + "SCALE" + doforsyst + "_up/" + process  + ".root","RECREATE"));
-  f_out_dn.reset(new TFile(path + "SCALE" + doforsyst + "_down/" + process  + ".root","RECREATE"));
+  f_out_up.reset(new TFile(path + "SCALE_up/" + process  + ".root","RECREATE"));
+  f_out_dn.reset(new TFile(path + "SCALE_down/" + process  + ".root","RECREATE"));
 
   for(unsigned int i=0; i<channel_tags.size(); i++){
     for(unsigned int j=0; j<region_tags.size(); j++){
@@ -65,7 +60,7 @@ void FindBiggestDeviations(){
 
         unique_ptr<TH1D> h_uu, h_un, h_nu, h_nd, h_dn, h_dd, h_nom;
         TString histname = "";
-        f_nom->cd(histfolder);
+        f_in->cd(histfolder+"_nominal");
         TDirectory* dir = gDirectory;
         TIter iter(dir->GetListOfKeys());
         TKey *key;
@@ -75,28 +70,28 @@ void FindBiggestDeviations(){
           if (!cl->InheritsFrom("TH1")) continue;
           h = (TH1D*)key->ReadObj();
           histname = h->GetName();
-
-          h_uu.reset((TH1D*)f_uu->Get(histfolder + "/" + histname));
-          h_un.reset((TH1D*)f_un->Get(histfolder + "/" + histname));
-          h_nu.reset((TH1D*)f_nu->Get(histfolder + "/" + histname));
-          h_nd.reset((TH1D*)f_nd->Get(histfolder + "/" + histname));
-          h_dn.reset((TH1D*)f_dn->Get(histfolder + "/" + histname));
-          h_dd.reset((TH1D*)f_dd->Get(histfolder + "/" + histname));
-          h_nom.reset((TH1D*)f_nom->Get(histfolder + "/" + histname));
+	  std::cout<<"histname  "<<histname<<std::endl;
+          h_uu.reset((TH1D*)f_in->Get(histfolder + "_scale_upup/" + histname));
+          h_un.reset((TH1D*)f_in->Get(histfolder + "_scale_upnone/" + histname));
+          h_nu.reset((TH1D*)f_in->Get(histfolder + "_scale_noneup/" + histname));
+          h_nd.reset((TH1D*)f_in->Get(histfolder + "_scale_nonedown/" + histname));
+          h_dn.reset((TH1D*)f_in->Get(histfolder + "_scale_downnone/" + histname));
+          h_dd.reset((TH1D*)f_in->Get(histfolder + "_scale_downdown/" + histname));
+          h_nom.reset((TH1D*)f_in->Get(histfolder + "_nominal/" + histname));
 
 
           const int nbins = h_nom->GetNbinsX();
           vector<double> min_bins, max_bins, max_err, min_err;
 
-          for(int i=1; i<h_nom->GetNbinsX()+1; i++){
-            double entries[7] = {h_uu->GetBinContent(i),h_un->GetBinContent(i),h_nu->GetBinContent(i),h_nd->GetBinContent(i),h_dn->GetBinContent(i),h_dd->GetBinContent(i),h_nom->GetBinContent(i)};
-            double errors[7] = {h_uu->GetBinError(i),h_un->GetBinError(i),h_nu->GetBinError(i),h_nd->GetBinError(i),h_dn->GetBinError(i),h_dd->GetBinError(i),h_nom->GetBinError(i)};
+          for(int ii=1; ii<h_nom->GetNbinsX()+1; ii++){
+            double entries[7] = {h_uu->GetBinContent(ii),h_un->GetBinContent(ii),h_nu->GetBinContent(ii),h_nd->GetBinContent(ii),h_dn->GetBinContent(ii),h_dd->GetBinContent(ii),h_nom->GetBinContent(ii)};
+            double errors[7] = {h_uu->GetBinError(ii),h_un->GetBinError(ii),h_nu->GetBinError(ii),h_nd->GetBinError(ii),h_dn->GetBinError(ii),h_dd->GetBinError(ii),h_nom->GetBinError(ii)};
             double min = 9999999;
             double max_error = 0, min_error = 0;
             double max = 0;
-            for(int j=0; j<7; j++){
-              if(entries[j] > max) {max = entries[j]; max_error = errors[j];}
-              if(entries[j] < min) {min = entries[j]; min_error = errors[j];}
+            for(int jj=0; jj<7; jj++){
+              if(entries[jj] > max) {max = entries[jj]; max_error = errors[jj];}
+              if(entries[jj] < min) {min = entries[jj]; min_error = errors[jj];}
             }
 
             min_bins.push_back(min);
@@ -106,22 +101,22 @@ void FindBiggestDeviations(){
           }
 
           vector<double> bins_low;
-          for(int i=1; i<h_nom->GetNbinsX()+2; i++){
-            bins_low.push_back(h_nom->GetBinLowEdge(i));
+          for(int ii=1; ii<h_nom->GetNbinsX()+2; ii++){
+            bins_low.push_back(h_nom->GetBinLowEdge(ii));
           }
 
           unique_ptr<TH1D> hist_out_up, hist_out_dn;
           hist_out_up.reset(new TH1D(histname,"",  nbins, &bins_low[0]));
-          for(int i=1; i<h_nom->GetNbinsX()+1; i++){
-            hist_out_up->SetBinContent(i,max_bins[i-1]);
-            hist_out_up->SetBinError(i, max_err[i-1]);
+          for(int ii=1; ii<h_nom->GetNbinsX()+1; ii++){
+            hist_out_up->SetBinContent(ii,max_bins[ii-1]);
+            hist_out_up->SetBinError(ii, max_err[ii-1]);
           }
 
 
           hist_out_dn.reset(new TH1D(histname,"",  nbins, &bins_low[0]));
-          for(int i=1; i<h_nom->GetNbinsX()+1; i++){
-            hist_out_dn->SetBinContent(i,min_bins[i-1]);
-            hist_out_dn->SetBinError(i, min_err[i-1]);
+          for(int ii=1; ii<h_nom->GetNbinsX()+1; ii++){
+            hist_out_dn->SetBinContent(ii,min_bins[ii-1]);
+            hist_out_dn->SetBinError(ii, min_err[ii-1]);
           }
 
 

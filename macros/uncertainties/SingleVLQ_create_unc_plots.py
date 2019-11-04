@@ -49,8 +49,10 @@ x2 = 0.99
 
 
 #read in postfit file
-inputfile = TFile("/nfs/dust/cms/user/reimersa/theta_new/utils2/SingleVLQ/MConly/input/theta_histograms.root","READ")
+inputfile = TFile("/nfs/dust/cms/user/reimersa/SingleTth/theta_SingleTth/utils2/Limits_MC/input/theta_histograms.root","READ")
 TH1.AddDirectory(0)
+
+outputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/uncertaintyPlots/"
 
 #todo:
 # make labels bigger
@@ -73,126 +75,6 @@ process = {"TTbar"}
 i=0
 for ch in channel:
     for pro in process:
-
-#go over all histograms
-#         for hist in hists_CR:
-# #read in nominal histo of CR
-#             print "channel" + ch
-#             nominal_name = hist+"_"+ch+"__"+pro
-#             nominal_hist_CR = inputfile.Get(nominal_name)
-#             print "got nominal histo "+nominal_name
-
-# #go over all uncertainties and create a plot per histogram in CR
-#             if "muon" in ch :
-#                 unc_names = systname_CR_muon
-#             else:
-#                 unc_names = systname_CR_elec
-
-#             # if "TTbar" in pro:
-#             #     unc_names.add("toppt")
-#             # elif "toppt" in unc_names:
-#             #     unc_names.remove("toppt")
-
-#             if "WJets" in pro or "TTbar" in pro or "ST" in pro:
-#                 unc_names.add("PDF_PDF_NLO")
-#                 if "PDF_PDF_LO" in unc_names:
-#                     unc_names.remove("PDF_PDF_LO")
-#             elif "DY" in pro:
-#                 unc_names.add("PDF_PDF_LO")
-#                 if "PDF_PDF_NLO" in unc_names:
-#                     unc_names.remove("PDF_PDF_NLO")
-
-#             for unc in unc_names:
-#                 print "------------------" + unc
-# # create name of the histogram with up and down variation
-#                 histname_up = nominal_name+"__"+unc+"__plus"
-#                 histname_down = nominal_name+"__"+unc+"__minus"
-
-#                 if "muf_mur" in unc:
-#                     histname_up = nominal_name+"__"+unc+"_"+pro+"__plus"
-#                     histname_down = nominal_name+"__"+unc+"_"+pro+"__minus"
-# # read in histogram and plot it
-#                 hist_up = inputfile.Get(histname_up)
-#                 hist_down = inputfile.Get(histname_down)
-                
-#                 i+=1
-#                 c1 = TCanvas("c"+str(i),"",10,10,600,600)
-#                 m_rp1_top =  TPad("pad1", "Control Plots 2", x1, y2, x2, y3);
-#                 m_rp1 =  TPad("rp1", "Ratio2", x1, y1, x2, y2);
-#                 m_pad1 = TPad("pad1", "Control Plots 2", x1, y1, x2, y3);
-
-#                 m_rp1_top.SetTopMargin(0.065); 
-#                 m_rp1_top.SetBottomMargin(0.0);  
-#                 m_rp1_top.SetLeftMargin(0.19); 
-#                 m_rp1_top.SetRightMargin(0.05);
-#                 m_rp1.SetTopMargin(0.0);    
-#                 m_rp1.SetBottomMargin(0.35);  
-#                 m_rp1.SetLeftMargin(0.19);  
-#                 m_rp1.SetRightMargin(0.05);
-
-#                 m_pad1.Draw()
-#                 m_rp1.Draw();
-#                 m_rp1_top.Draw(); 
-#                 c1.Update();
-#                 m_rp1_top.cd(); 
-#                 gPad.SetTickx();
-#                 gPad.SetTicky();
-#                 nominal_hist_CR.SetTitle("")
-#                 nominal_hist_CR.Draw()
-#                 hist_up.SetTitle("")
-#                 hist_up.SetLineColor(kRed)
-#                 hist_up.Draw("HIST same")
-#                 hist_down.SetTitle("")
-#                 hist_down.SetLineColor(kBlack)
-#                 hist_down.Draw("HIST same")
-
-#                 pt = TPaveText(.7,.7,.9,.9,"nbNDC")
-#                 pt.AddText("CR "+ pro + " "+ch + " "+unc)
-#                 pt.Draw()
-
-
-# #plot also ratio
-#                 m_rp1.cd()
-                
-
-#                 ratio_up = hist_up.Clone()
-#                 ratio_up.Add(nominal_hist_CR,-1)
-#                 ratio_up.Divide(nominal_hist_CR)
-
-#                 ratio_up.GetYaxis().SetTitle("#frac{sys-nom}{nom}");
-#                 ratio_up.GetYaxis().SetNdivisions(505);
-
-
-
-
-#                 ratio_down = hist_down.Clone()
-#                 ratio_down.Add(nominal_hist_CR,-1)
-#                 ratio_down.Divide(nominal_hist_CR)
-
-
-#                 ratio_up.GetYaxis().SetRangeUser(ratio_down.GetMinimum()-0.01,ratio_up.GetMaximum()+0.01)
-#                 ratio_up.Draw("HIST")
-#                 ratio_down.Draw("HIST same")
-
-
-#                 c1.Print("unc/"+nominal_name+"__"+unc+".pdf")
-
-
-
-
-
-#read in nominal for SR
-
-#go over all uncertainties and create a plot per histogram in SR
-
-#go over all histograms
-
-# create name of the histogram with up and down variation
-
-# read in histogram and plot it
-
-#plot also ratio
-
 
 #go over all histograms
         for hist in hists_SR:
@@ -277,5 +159,5 @@ for ch in channel:
 
 
                 
-                c1.Print(nominal_name+"__"+unc+".pdf")
+                c1.Print(outputfolder+nominal_name+"__"+unc+".pdf")
 
