@@ -27,10 +27,11 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample);
 void PDFRMS(){
 
   map<TString, TString> samplemap;
-  samplemap["TTbar"] = "uhh2.AnalysisModuleRunner.MC.TTbar_2016v3.root";
-  samplemap["SingleTop"] = "uhh2.AnalysisModuleRunner.MC.SingleTop_2016v3.root";
+  samplemap["TTbar_2016v3"] = "uhh2.AnalysisModuleRunner.MC.TTbar_2016v3.root";
+  samplemap["SingleTop_2016v3"] = "uhh2.AnalysisModuleRunner.MC.SingleTop_2016v3.root";
   samplemap["VLQ_RH_600_2016v2"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_600_2016v2.root";
   samplemap["VLQ_RH_650_2016v2"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_650_2016v2.root";
+  samplemap["VLQ_LH_700_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_2016v3.root";
   samplemap["VLQ_RH_800_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_800_2016v3.root";
   samplemap["VLQ_RH_900_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_900_2016v3.root";
   samplemap["VLQ_RH_1000_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1000_2016v3.root";
@@ -40,15 +41,17 @@ void PDFRMS(){
   samplemap["VLQ_RH_1400_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1400_2016v3.root";
   samplemap["VLQ_RH_1500_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1500_2016v3.root";
   samplemap["VLQ_RH_1600_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1600_2016v3.root";
+  samplemap["VLQ_RH_1700_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1700_2016v3.root";
+  samplemap["VLQ_RH_1800_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1800_2016v3.root";
 
 
   TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/";
 
-  FindRMS(infolder, samplemap, "TTbar");
-  FindRMS(infolder, samplemap, "SingleTop");
+  FindRMS(infolder, samplemap, "TTbar_2016v3");
+  FindRMS(infolder, samplemap, "SingleTop_2016v3");
   FindRMS(infolder, samplemap, "VLQ_RH_600_2016v2");
   FindRMS(infolder, samplemap, "VLQ_RH_650_2016v2");
-  FindRMS(infolder, samplemap, "VLQ_RH_700_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_LH_700_2016v3");
   FindRMS(infolder, samplemap, "VLQ_RH_800_2016v3");
   FindRMS(infolder, samplemap, "VLQ_RH_900_2016v3");
   FindRMS(infolder, samplemap, "VLQ_RH_1000_2016v3");
@@ -58,6 +61,8 @@ void PDFRMS(){
   FindRMS(infolder, samplemap, "VLQ_RH_1400_2016v3");
   FindRMS(infolder, samplemap, "VLQ_RH_1500_2016v3");
   FindRMS(infolder, samplemap, "VLQ_RH_1600_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1700_2016v3");
+  FindRMS(infolder, samplemap, "VLQ_RH_1800_2016v3");
 
 }
 
@@ -74,12 +79,14 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample){
   TFile* infile = new TFile(infilename, "READ");
 
   // outfiles
-  TString outfilename_up = infolder + "/PDF_up/" + samplemap[sample];
-  TString outfilename_down = infolder + "/PDF_down/" + samplemap[sample];
-  cout << "outfilename_up: " << outfilename_up << endl;
-  cout << "outfilename_down: " << outfilename_down << endl;
-  TFile* outfile_up = new TFile(outfilename_up, "RECREATE");
-  TFile* outfile_down = new TFile(outfilename_down, "RECREATE");
+  // TString outfilename_up = infolder + "/PDF_up/" + sample + ".root";
+  // TString outfilename_down = infolder + "/PDF_down/" + sample + ".root";
+  TString outfilename = infolder + "/pdf/" + sample + ".root";
+  // cout << "outfilename_up: " << outfilename_up << endl;
+  // cout << "outfilename_down: " << outfilename_down << endl;
+  // TFile* outfile_up = new TFile(outfilename_up, "RECREATE");
+  // TFile* outfile_down = new TFile(outfilename_down, "RECREATE");
+  TFile* outfile = new TFile(outfilename, "RECREATE");
 
 
 
@@ -103,12 +110,17 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample){
       TString name = key->ReadObj()->GetName();
       if(name != "SFrame" && name.Contains("_pdf")){
         foldernames.emplace_back(name);
-	std::cout<<"name  "<<name<<std::endl;
+        std::cout<<"name  "<<name<<std::endl;
         // make dirs without "_PDF"
         TString makedirname = name;
-        makedirname.ReplaceAll("_pdf", "_nominal");
-        outfile_up->mkdir(makedirname);
-        outfile_down->mkdir(makedirname);
+        // makedirname.ReplaceAll("_pdf", "_pdf_up");
+        // outfile_up->mkdir(makedirname);
+        // makedirname.ReplaceAll("_pdf_up", "_pdf_down");
+        // outfile_down->mkdir(makedirname);
+        makedirname.ReplaceAll("_pdf", "_pdf_up");
+        outfile->mkdir(makedirname);
+        makedirname.ReplaceAll("_pdf_up", "_pdf_down");
+        outfile->mkdir(makedirname);
         // cout << "made dir: " << makedirname << endl;
       }
     }
@@ -164,7 +176,7 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample){
       foldername_nom.ReplaceAll("_pdf", "_nominal");
       // std::cout<<"histname  "<<histname<<std::endl;
       TString histname_nom = histname;
-      histname_nom.ReplaceAll("_PDF", ""); 
+      histname_nom.ReplaceAll("_PDF", "");
       TString readoutname = foldername_nom + "/" + histname_nom;
       // cout << "readoutname: " << readoutname << endl;
       TH1F* h = (TH1F*)infile->Get(readoutname);
@@ -207,25 +219,30 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample){
 
     // Write histograms into file, chosing the correct folder
     TString writefoldername = foldername;
-    writefoldername.ReplaceAll("_pdf", "_nominal");
-    outfile_up->cd(writefoldername);
+    writefoldername.ReplaceAll("_pdf", "_pdf_up");
+    // outfile_up->cd(writefoldername);
+    outfile->cd(writefoldername);
     for(size_t j=0; j<hists_up.size(); j++){
       hists_up[j]->Write();
     }
-    outfile_down->cd(writefoldername);
+    writefoldername.ReplaceAll("_pdf_up", "_pdf_down");
+    // outfile_down->cd(writefoldername);
+    outfile->cd(writefoldername);
     for(size_t j=0; j<hists_down.size(); j++){
       hists_down[j]->Write();
     }
 
 
   }
-  outfile_up->Close();
-  outfile_down->Close();
+  // outfile_up->Close();
+  // outfile_down->Close();
+  outfile->Close();
 
 
 
-  delete outfile_up;
-  delete outfile_down;
+  // delete outfile_up;
+  // delete outfile_down;
+  delete outfile;
   delete infile;
 
 }
