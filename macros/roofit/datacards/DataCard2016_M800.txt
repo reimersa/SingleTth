@@ -1,0 +1,33 @@
+# Version of the 36/pb SingleTth Analysis
+
+------------------------------
+imax  2 number of channels
+jmax  1 number of backgrounds
+kmax  * number of nuisance parameters (sources of systematical uncertainties)
+
+------------------------------
+shapes * * ws_SingleTth.root SingleTth:$PROCESS_$CHANNEL
+
+------------------------------
+# name of channels, and number of observed events (total number of event in Data)
+
+bin            ech  	      much       
+observation    -1             -1
+
+------------------------------
+# name of the channel you are considering, name of the process (signal,bkg,...),
+# process unique ID (positive number for backgrounds, and zero or negative for signal)
+# expected events for each process (total number of events in MC)
+
+bin            ech         ech     	  much      much
+process        MT800       Dijet4p        MT800     Dijet4p
+process        0           1              0	    1
+rate           84.5782     1547        	  112.097   2263
+
+------------------------------
+# list of independent sources of uncertainties, and give their effect (syst. error)
+
+lumi     lnN   1.025       -   1.025 -             
+
+------------------------------
+

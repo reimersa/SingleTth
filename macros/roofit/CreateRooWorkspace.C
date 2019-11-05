@@ -165,7 +165,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   TH1F* h_data = GetAnalysisOutput(region, channel, dodata, all_bkgds); 
 
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
-  RooDataHist* dataSR = new RooDataHist("dataSR_"+ch_name, "dataSR_"+ch_name, RooArgList(*x), h_data);
+  RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name, "data_obs_"+ch_name, RooArgList(*x), h_data);
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
