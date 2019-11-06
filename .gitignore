@@ -2,7 +2,6 @@
 *.d
 *.submit
 obj/*
-*.txt
 *~
 *#
 workdir*
