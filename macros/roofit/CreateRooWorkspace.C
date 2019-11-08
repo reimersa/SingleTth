@@ -1,6 +1,18 @@
 #include "CreateRooWorkspace.h"
 #include "BkgPdf4p.h" 
 
+
+#include "RooRealVar.h"
+#include "RooDataSet.h"
+#include "RooGaussian.h"
+#include "RooConstVar.h"
+#include "RooPolynomial.h"
+#include "RooHistPdf.h"
+#include "TCanvas.h"
+#include "TAxis.h"
+#include "RooPlot.h"
+
+
 #include <iostream>
 #include <fstream>
 
@@ -19,7 +31,7 @@ CreateRooWorkspace::CreateRooWorkspace() : infotofile("datacards/AnalysisOutput2
 {
    fWS = new RooWorkspace("SingleTth");
    gSystem->Exec("mkdir -p datacards");
-
+   debug_histos = new TFile("debug_histos.root","RECREATE");
 }
 
 TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel ch, bool dodata, bool all_bkgds)
@@ -132,11 +144,13 @@ void CreateRooWorkspace::StoreWorkspace()
 {
   fWS->writeToFile("datacards/ws_SingleTth.root");
   //infotofile.close();
+  debug_histos->Close();
 }
 
 void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel channel, bool dodata, bool all_bkgds)
 {
   using namespace std;
+  using namespace RooFit;
 
   // set fit regions
   double fit_xmin = 0;
@@ -165,6 +179,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   TH1F* h_data = GetAnalysisOutput(region, channel, dodata, all_bkgds); 
 
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
+    //  RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", fit_xmin, fit_xmax);
   RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name, "data_obs_"+ch_name, RooArgList(*x), h_data);
 
   // important: get xmin and xmax from bin edges!
@@ -201,8 +216,36 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   bg_p2->Print(); 
   bg_p3->Print(); 
 
+  // converting function into hist to debug
+  RooDataSet* data1 = bgfunc->generate(RooArgSet(*x), 1000000);
+  RooDataHist *hist1 = data1->binnedClone();
+  TH1* myhist = hist1->createHistogram("myhist",*x);
+  TH1* myhist2 =  hist1->createHistogram("myhist2",*x);
+  std::cout<<"bin content  "<<myhist->GetBinContent(20)<<std::endl;
+  if(ch_name.Contains("much")){
+    myhist->Scale(2268/myhist->Integral());
+    myhist->SetName("data_obs_much");
+    myhist2->Scale(2268/myhist2->Integral());
+    myhist2->SetName("background_much");
+
+  }else{
+    myhist->Scale(1548/myhist->Integral());
+    myhist->SetName("data_obs_ech");
+    myhist2->Scale(1548/myhist2->Integral());
+    myhist2->SetName("background_ech");
+  }
+  TCanvas *test_c = new TCanvas("test_c","test fit",10,10,700,700); 
+  myhist->Draw();
+  test_c->SaveAs("test_hist"+ch_name+".eps");
+  debug_histos->cd();
+  myhist->Write();
+  myhist2->Write();
+
+
+
   dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
   bgfunc->plotOn(plotter);
+  //  hist1->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));  
   cout << "chi^2 = " << plotter->chiSquare() << endl;
 
   TCanvas *background_c = new TCanvas("background_c","background fit",10,10,700,700);
@@ -289,6 +332,22 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
 
     RooGaussian* ModelSg_Gauss = new RooGaussian(SgName, SgName, *x, *sg_mean, *sg_sigma);
 
+
+    // converting function into hist to debug
+    RooDataSet* data1 = ModelSg_Gauss->generate(RooArgSet(*x), 1000000);
+    RooDataHist *hist1 = data1->binnedClone();
+    TH1* myhist = hist1->createHistogram("myhist",*x);
+    TString signalmass = Form("%d",(int)MT);
+    if(ch_name.Contains("much")){
+      myhist->Scale(80/myhist->Integral());
+      myhist->SetName("signal_"+signalmass+"_much");
+    }else{
+      myhist->Scale(53/myhist->Integral());
+      myhist->SetName("signal_"+signalmass+"_ech");
+    }
+    debug_histos->cd();
+    myhist->Write();
+  
     /*
     TCanvas* c_sg = new TCanvas(SgName, SgName, 10, 10, 700, 700);
     RooPlot* plotter=x->frame();

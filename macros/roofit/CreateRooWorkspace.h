@@ -17,9 +17,10 @@ class CreateRooWorkspace {
 
 private:
 	RooWorkspace* fWS; 	
+	TFile* debug_histos;
 	std::ofstream infotofile;
 	CreateRooWorkspace(const CreateRooWorkspace&);
-    CreateRooWorkspace& operator=(const CreateRooWorkspace&);
+	CreateRooWorkspace& operator=(const CreateRooWorkspace&);
 
 public: 
 	CreateRooWorkspace();

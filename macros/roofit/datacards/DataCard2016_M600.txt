@@ -22,8 +22,8 @@ observation    -1             -1
 bin            ech         ech     	  much      much
 process        MT600       Dijet4p        MT600     Dijet4p
 process        0           1              0	    1
-#rate           53.6284     1547       	  80.8364   2263
-rate           53.6284     1447.89        80.8364   2077.74
+rate           53.6284     1547       	  80.8364   2263
+#rate           63.6284     1443        89.8364   2071
 
 ------------------------------
 # list of independent sources of uncertainties, and give their effect (syst. error)
