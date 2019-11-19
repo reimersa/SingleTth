@@ -86,7 +86,7 @@ void SingleTthPDFHists::fill(const Event & event){
   double weight = event.weight;
 
   if(!is_mc) return;
-
+  // cout << " n genweights: " << event.genInfo->systweights().size() << endl;
   if(event.genInfo->systweights().size() == 0 && take_ntupleweights) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is empty but ntupleweights shall be taken. Is this correct? In this case add exception to take_ntupleweights.");
   if(event.genInfo->systweights().size() != 0 && (!take_ntupleweights)) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is NOT empty but take_ntupleweights is set to 'false'. Is this correct? In this case Thomas says the genInfo weight should be used. Add this sample to take_ntupleweights");
 
@@ -106,6 +106,8 @@ void SingleTthPDFHists::fill(const Event & event){
 
       double pdf_weight = event.genInfo->systweights().at(i+9);
       double fillweight = weight * pdf_weight/event.genInfo->originalXWGTUP();
+      if(m_oname.Contains("VLQ_") && !m_oname.Contains("2016v2")) fillweight = weight * pdf_weight/event.genInfo->pdf_scalePDF();
+      // cout << "fillweight: " << weight << " * " << pdf_weight << " / " << event.genInfo->pdf_scalePDF() << " = " << fillweight << endl;
       TString name1 = histo_names1[i];
       TString name2 = histo_names2[i];
 
