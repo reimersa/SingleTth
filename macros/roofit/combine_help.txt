@@ -1,0 +1,28 @@
+This is a hopefully growing instruction on how to run our limits.
+
+First compile with only make (no make -j).
+And export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/roofit
+
+Than run ./create_roo
+
+It will create a rootfile debug_histos.root with the histograms generated from the functions used in combine. This histogram is also printed to test_hist[ech/much].eps
+In addition, the fit function and the underlying histogram will be plottet in test_[ech/much].pdf.
+
+and it will create the workspace in datacards: ws_SingleTth.root
+
+In datacards you can run combine on the following datacards:
+DataCard2016_M600.txt -> limits with the functions
+DataCard2016_M600_debug_histograms.txt -> limits on the histograms generated from the functions
+DataCard2016_M600_histograms.txt -> limits on the histogram we feed in theta
+
+if you want to run on histograms use the following command:
+combine datacard.txt -M AsymptoticLimits --noFitAsimov --run blind -n outputname
+
+if you want to run on functions use the follwing command:
+combine -M AsymptoticLimits -d datacard.txt -t -1 -n outputname --freezeParameters sg_mean,sg_sigma
+
+!The freezeParameters is needed to NOT give combine the freedom to change the signal!
+
+if you want to see the shapes used by combine, pre and post fit, use the following command:
+combine -M FitDiagnostics -d datacard.txt -t -1 -n outputname --saveWorkspace --saveShapes
+

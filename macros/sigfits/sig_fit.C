@@ -10,7 +10,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 void sig_fit()
 {
   // decide which channel to do (eEle, eMuon, eComb)
-  Echannel ch = eComb;
+  Echannel ch = eEle;
 
   std::vector<double> MTs = {600, 650, 800, 900, 1000, 1100, 1200};
   std::vector<double> means;

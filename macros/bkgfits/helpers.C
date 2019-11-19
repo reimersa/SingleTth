@@ -11,8 +11,9 @@ enum Eregion {eCR, eSR};
 enum Echannel {eMuon, eEle, eComb};
 
 // folder where the analysis output files are 
-TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
-TString year = "2016";
+// TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
+TString anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
+TString year = "2016v3";
 
 TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds)
 {
@@ -119,6 +120,8 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch)
   // TString unc_folder = "hists";
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
+  if (MT <700)     sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+  
 
   TString region_name = "sr";
   TString ech_name  = "chi2h_2_ech_"  + region_name + "/M_Tprime";
@@ -182,6 +185,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   // get total number of events before any selection
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
+  if(MT < 700) sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
   TString hname = "cleaner/sum_event_weights";
   TH1F* h = (TH1F*) sig_f->Get(hname);  
   double Ntot = h->GetBinContent(1); 
