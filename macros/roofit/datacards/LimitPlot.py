@@ -43,4 +43,9 @@ for mass in masses:
 
     outputfile.write(mass+"\t"+str(limits[2])+"\t"+str(limits[0])+"\t"+str(limits[4])+"\t"+str(limits[1])+"\t"+str(limits[3])+"\t")
 
+
 outputfile.close()
+
+
+x = open("Limits_combine.txt").read()
+open("Limits_combine.txt","w").write(x[:-1])
