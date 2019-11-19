@@ -32,11 +32,12 @@ for line in listOfLines:
 
 
 #masses = ['600']
-limits = []
+
 outputfile = open("Limits_combine.txt","w")
 for mass in masses:
     rootfile = TFile.Open("higgsCombineoutput_"+mass+".AsymptoticLimits.mH120.root","r")
     tree = rootfile.limit 
+    limits = []
     for event in tree:
         limits.append(event.limit)
 
