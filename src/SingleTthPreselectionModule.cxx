@@ -68,7 +68,7 @@ namespace uhh2examples {
     EleId = AndId<Electron>(ElectronID_Fall17_tight, PtEtaCut(30.0, 2.4));
     Year year = extract_year(ctx);
     if (year == Year::is2016v2) MuId = AndId<Muon>(MuonID(Muon::Tight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
-    else                        MuId = AndId<Muon>(MuonID(Muon::CutBasedIdTight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
+    else                        MuId = AndId<Muon>(MuonID(Muon::CutBasedIdTight), PtEtaCut(30.0, 2.4), MuonID(Muon::PFIsoTight));
     Jet_ID = AndId<Jet>(jet_pfid, PtEtaCut(30.0, 2.4));
 
     is_mc = ctx.get("dataset_type") == "MC";
