@@ -15,8 +15,8 @@ RCXX=$(CFLAGS) $(ROOTCFLAGS)
 RLXX=$(LFLAGS) $(ROOTLIBS)
 
 SRC1= CreateRooWorkspace.o create_roo.o
-SL_HEADERS= BkgPdf4p.h
-SL_SOURCES= BkgPdf4p.C
+SL_HEADERS= BkgPdf3p.h BkgPdf4p.h
+SL_SOURCES= BkgPdf3p.C BkgPdf4p.C
 
 default: all
 

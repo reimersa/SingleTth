@@ -1,4 +1,5 @@
 #include "CreateRooWorkspace.h"
+#include "BkgPdf3p.h" 
 #include "BkgPdf4p.h" 
 
 
@@ -36,13 +37,24 @@ CreateRooWorkspace::CreateRooWorkspace() : infotofile("datacards/AnalysisOutput2
 
 TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel ch, bool dodata, bool all_bkgds)
 {
-	using namespace defs;
+	  using namespace defs;
+    using namespace std;    
 
-	// folder where the analysis output files are 
-	//	TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
-	TString anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
-	TString year = "2016v3";
-	
+	  // folder where the analysis output files are 
+    TString anaoutputfolder;
+    TString year;
+    char *val = getenv( "ROM_SYS" );
+    if (val!=NULL){
+      cout << "Using Roman's setup." << endl;
+      anaoutputfolder = "../../../AnalysisOutput_102X/"; 
+      year = "2016";
+    } else {
+      cout << "Using NAF setup." << endl;
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
+      year = "2016v3";
+    }
+
+
   	//All files are read in
   	bool b_error=true;
   	TString unc_name = ""; // "jersmear_up" , "jersmear_down" ,"jecsmear_up" , "jecsmear_down" , "none"
@@ -201,20 +213,33 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // control plots
   RooPlot *plotter=x->frame();
 
-  RooRealVar* bg_p0 = new RooRealVar("bg_p0", "bg_p0", 66.45, -1000,  1000);
-  RooRealVar* bg_p1 = new RooRealVar("bg_p1", "bg_p1", -12.6, -1000,  1000);
-  RooRealVar* bg_p2 = new RooRealVar("bg_p2", "bg_p2",  -9.6, -100,   100 );
-  RooRealVar* bg_p3 = new RooRealVar("bg_p3", "bg_p3",  -5.3, -100,   100 );
+  // 3 parameter function for nominal result
+  RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0", "bg3p_p0", -13.2, -1000,  1000);
+  RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1", "bg3p_p1",   9.1, -1000,  1000);
+  RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2", "bg3p_p2",   2.5, -100,   100 );
+  BkgPdf3p* bgfunc = new BkgPdf3p("Dijet3p_"+ch_name,"Dijet3p_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
 
-  BkgPdf4p* bgfunc = new BkgPdf4p("Dijet4p_"+ch_name,"Dijet4p_"+ch_name, *x, *bg_p0, *bg_p1, *bg_p2, *bg_p3);
+  // 4 parameter function for systematics
+  RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0", "bg4p_p0", 66.45, -1000,  1000);
+  RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1", "bg4p_p1", -12.6, -1000,  1000);
+  RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2", "bg4p_p2",  -9.6, -100,   100 );
+  RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3", "bg4p_p3",  -5.3, -100,   100 );
+  BkgPdf4p* bgfunc_sys = new BkgPdf4p("Dijet4p_"+ch_name,"Dijet4p_"+ch_name+"_sys", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
+  // nominal fit
   RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
-
   std::cout << "Testing BKG values postfit" << '\n';
-  bg_p0->Print(); 
-  bg_p1->Print();
-  bg_p2->Print(); 
-  bg_p3->Print(); 
+  bg3p_p0->Print(); 
+  bg3p_p1->Print();
+  bg3p_p2->Print(); 
+
+  // systematic fit
+  RooFitResult *r_bg_sys = bgfunc_sys->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  std::cout << "Testing BKG systematic variation (4p) values postfit" << '\n';
+  bg4p_p0->Print(); 
+  bg4p_p1->Print();
+  bg4p_p2->Print(); 
+  bg4p_p3->Print(); 
 
   // converting function into hist to debug
   RooDataSet* data1 = bgfunc->generate(RooArgSet(*x), 1000000);
@@ -242,9 +267,11 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   myhist2->Write();
 
 
-
   dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
   bgfunc->plotOn(plotter);
+  bgfunc_sys->plotOn(plotter);
+  plotter->getAttLine()->SetLineColor(kRed);
+  plotter->getAttLine()->SetLineStyle(kDotted);  
   //  hist1->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));  
   cout << "chi^2 = " << plotter->chiSquare() << endl;
 
@@ -252,13 +279,16 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   background_c->cd();
   //gPad->SetLogy();
   plotter->Draw();
-  background_c->SaveAs("test_"+ch_name+".pdf");
+  background_c->SaveAs("nominal_bkg_3pfit_"+ch_name+".pdf");
 
   // save the data to the workspace
   fWS->import(*dataSR);
 
   // save the bkg fit to the workspace
   fWS->import(*bgfunc);
+
+  // save the bkg systematic fit to the workspace
+  fWS->import(*bgfunc_sys);
 
   // sum up number of events in fit region
   double Ntot = 0;
@@ -278,7 +308,9 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   delete x; delete dataSR; 
   delete plotter;
   delete bgfunc;
-  delete bg_p0; delete bg_p1; delete bg_p2; delete bg_p3; 
+  delete bgfunc_sys;  
+  delete bg3p_p0; delete bg3p_p1; delete bg3p_p2; 
+  delete bg4p_p0; delete bg4p_p1; delete bg4p_p2; delete bg4p_p3; 
   delete r_bg;
   delete background_c;
 
@@ -370,7 +402,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
 
     fWS->import(*ModelSg_Gauss);
 
-    MT+=50;
+    MT+=25;
   }
 
 
