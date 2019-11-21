@@ -4,6 +4,7 @@
 
 
 #include "RooRealVar.h"
+#include "RooConstVar.h"
 #include "RooDataSet.h"
 #include "RooGaussian.h"
 #include "RooConstVar.h"
@@ -217,14 +218,15 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0", "bg3p_p0", -13.2, -1000,  1000);
   RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1", "bg3p_p1",   9.1, -1000,  1000);
   RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2", "bg3p_p2",   2.5, -100,   100 );
-  BkgPdf3p* bgfunc = new BkgPdf3p("Dijet3p_"+ch_name,"Dijet3p_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
+  BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
 
   // 4 parameter function for systematics
   RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0", "bg4p_p0", 66.45, -1000,  1000);
   RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1", "bg4p_p1", -12.6, -1000,  1000);
   RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2", "bg4p_p2",  -9.6, -100,   100 );
   RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3", "bg4p_p3",  -5.3, -100,   100 );
-  BkgPdf4p* bgfunc_sys = new BkgPdf4p("Dijet4p_"+ch_name,"Dijet4p_"+ch_name+"_sys", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
+  BkgPdf4p* bgfunc_sys_up = new BkgPdf4p("Bkgfunc_"+ch_name+"_bkgalt_Up","Bkfunc_"+ch_name+"_bkgalt_Up", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
+  BkgPdf4p* bgfunc_sys_dn = new BkgPdf4p("Bkgfunc_"+ch_name+"_bkgalt_Down","Bkfunc_"+ch_name+"_bkgalt_Down", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
   // nominal fit
   RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
@@ -234,7 +236,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   bg3p_p2->Print(); 
 
   // systematic fit
-  RooFitResult *r_bg_sys = bgfunc_sys->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg_sys_up = bgfunc_sys_up->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg_sys_dn = bgfunc_sys_dn->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   std::cout << "Testing BKG systematic variation (4p) values postfit" << '\n';
   bg4p_p0->Print(); 
   bg4p_p1->Print();
@@ -269,7 +272,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
   bgfunc->plotOn(plotter);
-  bgfunc_sys->plotOn(plotter);
+  bgfunc_sys_up->plotOn(plotter);
   plotter->getAttLine()->SetLineColor(kRed);
   plotter->getAttLine()->SetLineStyle(kDotted);  
   //  hist1->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));  
@@ -288,7 +291,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   fWS->import(*bgfunc);
 
   // save the bkg systematic fit to the workspace
-  fWS->import(*bgfunc_sys);
+  fWS->import(*bgfunc_sys_up);
+  fWS->import(*bgfunc_sys_dn);
 
   // sum up number of events in fit region
   double Ntot = 0;
@@ -308,7 +312,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   delete x; delete dataSR; 
   delete plotter;
   delete bgfunc;
-  delete bgfunc_sys;  
+  delete bgfunc_sys_up;  
+  delete bgfunc_sys_dn;  
   delete bg3p_p0; delete bg3p_p1; delete bg3p_p2; 
   delete bg4p_p0; delete bg4p_p1; delete bg4p_p2; delete bg4p_p3; 
   delete r_bg;
@@ -359,8 +364,8 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
     TString SgName = TString::Format("MT%d_", (int)MT);
     SgName.Append(ch_name);
 
-    RooRealVar* sg_mean  =new RooRealVar("sg_mean",  "sg_mean",  mean->Eval(MT),  200, 2000);
-    RooRealVar* sg_sigma =new RooRealVar("sg_sigma", "sg_sigma", sigma->Eval(MT),  10, 1000);
+    RooConstVar* sg_mean  =new RooConstVar("sg_mean",  "sg_mean",  mean->Eval(MT));
+    RooConstVar* sg_sigma =new RooConstVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
 
     RooGaussian* ModelSg_Gauss = new RooGaussian(SgName, SgName, *x, *sg_mean, *sg_sigma);
 
