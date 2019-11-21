@@ -225,8 +225,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1", "bg4p_p1", -12.6, -1000,  1000);
   RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2", "bg4p_p2",  -9.6, -100,   100 );
   RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3", "bg4p_p3",  -5.3, -100,   100 );
-  BkgPdf4p* bgfunc_sys_up = new BkgPdf4p("Bkgfunc_"+ch_name+"_bkgalt_Up","Bkfunc_"+ch_name+"_bkgalt_Up", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
-  BkgPdf4p* bgfunc_sys_dn = new BkgPdf4p("Bkgfunc_"+ch_name+"_bkgalt_Down","Bkfunc_"+ch_name+"_bkgalt_Down", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
+  BkgPdf4p* bgfunc_sys_up = new BkgPdf4p("Bkgfunc_"+ch_name+"_bkgaltUp","Bkfunc_"+ch_name+"_bkgaltUp", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
+  BkgPdf4p* bgfunc_sys_dn = new BkgPdf4p("Bkgfunc_"+ch_name+"_bkgaltDown","Bkfunc_"+ch_name+"_bkgaltDown", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
   // nominal fit
   RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
