@@ -70,12 +70,14 @@ for mass in signal_much_norm:
     outputfile.write("------------------------------ \n")
     outputfile.write("# name of the channel you are considering, name of the process (signal,bkg,...),\n # process unique ID (positive number for backgrounds, and zero or negative for signal)\n # expected events for each process (total number of events in MC)\n \n")
     outputfile.write("bin            ech         ech            much      much \n")
-    outputfile.write("process        MT600       Dijet4p        MT600     Dijet4p \n")
+#    outputfile.write("process        MT600       Bkgfunc        MT600     Bkgfunc \n")
+    outputfile.write("process        MT600       roomultipdf        MT600     roomultipdf \n")
     outputfile.write("process        0           1              0         1 \n")
     outputfile.write("rate           "+str(signal_ech_norm[mass])+"     "+str(bkg_ech_norm)+"          "+str(signal_much_norm[mass])+"   "+str(bkg_much_norm)+" \n \n")
     outputfile.write("------------------------------ \n")
     outputfile.write("# list of independent sources of uncertainties, and give their effect (syst. error) \n \n")
-    outputfile.write("lumi     lnN   1.00000000001       -   1.00000001 - \n \n")
+    outputfile.write("lumi     lnN   1.025       -   1.025 - \n \n")
+    outputfile.write("pdf_index discrete \n \n")
     outputfile.write("------------------------------ \n")
 
 

@@ -30,7 +30,7 @@ for line in listOfLines:
             masses.append(mass)
     i+=1
 
-
+print masses
 #masses = ['600']
 
 outputfile = open("Limits_combine.txt","w")

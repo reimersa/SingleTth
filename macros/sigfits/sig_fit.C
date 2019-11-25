@@ -5,13 +5,14 @@
 #include "../bkgfits/helpers.C"
 
 using namespace std;
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err);
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="");
 
 void sig_fit()
 {
   // decide which channel to do (eEle, eMuon, eComb)
-  Echannel ch = eEle;
+  Echannel ch = eComb;
 
+  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","JEC","JER"}; // PDF,scale missing 
   std::vector<double> MTs = {600, 650, 800, 900, 1000, 1100, 1200};
   std::vector<double> means;
   std::vector<double> means_err;
@@ -103,7 +104,8 @@ void sig_fit()
   } else if (ch==eComb) {
     channel_name = "comb";
   }
-  TString fname = "results/signal_mean_values_" + channel_name + ".pdf"; 
+  TString fname = "results/signal_mean_values_" + channel_name; 
+
 
   // draw some info
   info = TString::Format("Signal mean values, ");
@@ -111,7 +113,54 @@ void sig_fit()
   text->DrawLatex(0.16, 0.92, info.Data());
 
   can->RedrawAxis();
-  can->SaveAs(fname);
+  can->SaveAs(fname+".eps");
+
+  ////// add uncertainties
+  // for each uncertainties fit linear function and draw it
+  std::vector<double> means_unc;
+  std::vector<double> means_err_unc;
+  std::vector<double> widths_unc;  
+  std::vector<double> widths_err_unc;  
+  std::vector<double> effs_unc;  
+  std::vector<double> effs_err_unc;  
+
+  TLegend *leg = new TLegend(0.5,0.15,0.9,0.5,"","brNDC");
+  leg->SetBorderSize(0);
+  leg->SetFillStyle(0);
+  leg->SetTextSize(0.035);
+  leg->SetFillColor(0);
+  leg->SetLineColor(1);
+  leg->SetTextFont(42);
+
+  int jj=0;
+  MTs = {600, 650, 800, 900, 1000, 1100, 1200};
+  for(TString unc:uncertainties){
+    means_unc.clear();
+    means_err_unc.clear();
+    widths_unc.clear();  
+    widths_err_unc.clear();  
+    effs_unc.clear();  
+    effs_err_unc.clear();  
+
+    for (int i=0; i<MTs.size(); ++i){
+      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_up");
+    }
+    TGraphErrors* gmean_unc  = new TGraphErrors(MTs.size(), MTs.data(), means_unc.data(), zeros.data(), means_err_unc.data());  
+    TF1* lin = new TF1("meanfit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
+    TFitResultPtr r_unc = gmean_unc->Fit(lin, "0");
+    lin->SetLineColor(kBlue+jj);
+    can->cd();
+    if(unc.Contains("JER") or unc.Contains("JEC")){
+      lin->Draw("same");
+      jj+=4;
+    }
+    leg->AddEntry(lin,unc+" Slope "+TString::Format("%.3f", lin->GetParameter(1)),"");
+
+  }
+
+  can->cd();
+  leg->Draw();
+  can->SaveAs(fname+"_unc.eps");
 
 
   //-------------------------------------------------
@@ -134,7 +183,7 @@ void sig_fit()
   painter2->GetYaxis()->SetTitleOffset(1.4);
   painter2->GetXaxis()->SetTitleOffset(1.2);
   painter2->SetTitle("");
-  painter2->GetYaxis()->SetRangeUser(0, 200);
+  painter2->GetYaxis()->SetRangeUser(0, 130);
   painter2->Draw();
   gsigma->SetMarkerStyle(20);
   gsigma->SetLineWidth(2);
@@ -164,7 +213,7 @@ void sig_fit()
   lin2->Draw("same");
   gsigma->Draw("P same");
 
-  TString fname2 = "results/signal_sigma_values_" + channel_name + ".pdf"; 
+  TString fname2 = "results/signal_sigma_values_" + channel_name; 
 
   // draw some info
   info = TString::Format("Signal widths, ");
@@ -172,7 +221,46 @@ void sig_fit()
   text->DrawLatex(0.16, 0.92, info.Data());
 
   can2->RedrawAxis();
-  can2->SaveAs(fname2);
+  can2->SaveAs(fname2 + ".eps");
+
+  ////// add uncertainties
+  // for each uncertainties fit linear function and draw it
+  TLegend *leg2 = new TLegend(0.5,0.15,0.9,0.5,"","brNDC");
+  leg2->SetBorderSize(0);
+  leg2->SetFillStyle(0);
+  leg2->SetTextSize(0.035);
+  leg2->SetFillColor(0);
+  leg2->SetLineColor(1);
+  leg2->SetTextFont(42);
+
+  jj=0;
+  MTs = {600, 650, 800, 900, 1000, 1100, 1200};
+  for(TString unc:uncertainties){
+    means_unc.clear();
+    means_err_unc.clear();
+    widths_unc.clear();  
+    widths_err_unc.clear();  
+    effs_unc.clear();  
+    effs_err_unc.clear();  
+
+    for (int i=0; i<MTs.size(); ++i){
+      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_up");
+    }
+    TGraphErrors* gsigma_unc = new TGraphErrors(MTs.size(), MTs.data(), widths_unc.data(), zeros.data(), widths_err_unc.data());    
+    TF1* lin2 = new TF1("sigmafit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
+    TFitResultPtr r_unc = gsigma_unc->Fit(lin2, "0");
+    lin2->SetLineColor(kBlue+jj);
+    can2->cd();
+    gsigma_unc->SetMarkerStyle(24);
+    if(unc.Contains("PDF"))gsigma_unc->Draw("PE Same");
+    lin2->Draw("same");
+    leg2->AddEntry(lin2,unc+" Slope "+TString::Format("%.3f", lin2->GetParameter(1)),"");
+    jj++;
+  }
+
+  can2->cd();
+  leg2->Draw();
+  can2->SaveAs(fname2+"_unc.eps");
 
 
   //-------------------------------------------------
@@ -232,14 +320,53 @@ void sig_fit()
   info.Append(info2);
   text->DrawLatex(0.16, 0.92, info.Data());
 
-  fname = "results/signal_eff_values_" + channel_name + ".pdf"; 
+  TString fname3 = "results/signal_eff_values_" + channel_name; 
 
   can3->RedrawAxis();
-  can3->SaveAs(fname);
+  can3->SaveAs(fname3+ ".eps");
+
+  ////// add uncertainties
+  // for each uncertainties fit linear function and draw it
+  TLegend *leg3 = new TLegend(0.5,0.15,0.9,0.5,"","brNDC");
+  leg3->SetBorderSize(0);
+  leg3->SetFillStyle(0);
+  leg3->SetTextSize(0.035);
+  leg3->SetFillColor(0);
+  leg3->SetLineColor(1);
+  leg3->SetTextFont(42);
+
+  jj=0;
+  MTs = {600, 650, 800, 900, 1000, 1100, 1200};
+  for(TString unc:uncertainties){
+    means_unc.clear();
+    means_err_unc.clear();
+    widths_unc.clear();  
+    widths_err_unc.clear();  
+    effs_unc.clear();  
+    effs_err_unc.clear();  
+
+    for (int i=0; i<MTs.size(); ++i){
+      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_up");
+    }
+    TGraphErrors* geff_unc   = new TGraphErrors(MTs.size(), MTs.data(), effs_unc.data(), zeros.data(), effs_err_unc.data());      
+    TF1* lin3 = new TF1("efffit"+TString::Format("%d",jj), "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
+    TFitResultPtr r_unc = geff_unc->Fit(lin3, "0");
+    lin3->SetLineColor(kBlue+jj);
+    can3->cd();
+    lin3->Draw("same");
+    leg3->AddEntry(lin3,unc+" Slope "+TString::Format("%f", lin3->GetParameter(1)),"");
+    jj++;
+  }
+
+  can3->cd();
+  leg3->Draw();
+  can3->SaveAs(fname3+"_unc.eps");
+
+
 
 }
 
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err)
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="")
 {
   
   // set fit regions (crude estimate)
@@ -273,7 +400,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   can->SetBottomMargin(0.12);
 
   // get data or MC
-  TH1F* sigh = GetAnalysisOutputSignal(MT, channel); 
+  TH1F* sigh = GetAnalysisOutputSignal(MT, channel,unc); 
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad

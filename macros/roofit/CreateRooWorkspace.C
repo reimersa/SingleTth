@@ -7,7 +7,7 @@
 #include "RooConstVar.h"
 #include "RooDataSet.h"
 #include "RooGaussian.h"
-#include "RooConstVar.h"
+#include "RooMultiPdf.h"
 #include "RooPolynomial.h"
 #include "RooHistPdf.h"
 #include "TCanvas.h"
@@ -40,6 +40,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
 {
 	  using namespace defs;
     using namespace std;    
+
 
 	  // folder where the analysis output files are 
     TString anaoutputfolder;
@@ -191,8 +192,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // get data or MC histogram
   TH1F* h_data = GetAnalysisOutput(region, channel, dodata, all_bkgds); 
 
-  RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
-    //  RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", fit_xmin, fit_xmax);
+  //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
+  RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", fit_xmin, fit_xmax);
   RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name, "data_obs_"+ch_name, RooArgList(*x), h_data);
 
   // important: get xmin and xmax from bin edges!
@@ -218,6 +219,10 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0", "bg3p_p0", -13.2, -1000,  1000);
   RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1", "bg3p_p1",   9.1, -1000,  1000);
   RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2", "bg3p_p2",   2.5, -100,   100 );
+  // RooConstVar* bg3p_p0 = new RooConstVar("bg3p_p0", "bg3p_p0", -13.2);
+  // RooConstVar* bg3p_p1 = new RooConstVar("bg3p_p1", "bg3p_p1",   9.1);
+  // RooConstVar* bg3p_p2 = new RooConstVar("bg3p_p2", "bg3p_p2",   2.5 );
+
   BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
 
   // 4 parameter function for systematics
@@ -225,8 +230,13 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1", "bg4p_p1", -12.6, -1000,  1000);
   RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2", "bg4p_p2",  -9.6, -100,   100 );
   RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3", "bg4p_p3",  -5.3, -100,   100 );
-  BkgPdf4p* bgfunc_sys_up = new BkgPdf4p("Bkgfunc_"+ch_name+"_bkgaltUp","Bkfunc_"+ch_name+"_bkgaltUp", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
-  BkgPdf4p* bgfunc_sys_dn = new BkgPdf4p("Bkgfunc_"+ch_name+"_bkgaltDown","Bkfunc_"+ch_name+"_bkgaltDown", *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
+
+  // RooConstVar* bg4p_p0 = new RooConstVar("bg4p_p0", "bg4p_p0", 66.45);
+  // RooConstVar* bg4p_p1 = new RooConstVar("bg4p_p1", "bg4p_p1", -12.6);
+  // RooConstVar* bg4p_p2 = new RooConstVar("bg4p_p2", "bg4p_p2",  -9.6 );
+  // RooConstVar* bg4p_p3 = new RooConstVar("bg4p_p3", "bg4p_p3",  -5.3 );
+
+  BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name,"Bkfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
   // nominal fit
   RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
@@ -236,13 +246,20 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   bg3p_p2->Print(); 
 
   // systematic fit
-  RooFitResult *r_bg_sys_up = bgfunc_sys_up->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
-  RooFitResult *r_bg_sys_dn = bgfunc_sys_dn->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg_4p = bgfunc_4p->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   std::cout << "Testing BKG systematic variation (4p) values postfit" << '\n';
   bg4p_p0->Print(); 
   bg4p_p1->Print();
   bg4p_p2->Print(); 
   bg4p_p3->Print(); 
+
+  //create a list with all alt and nominal functions
+  RooArgList mypdfs;
+  mypdfs.add(*bgfunc);
+  mypdfs.add(*bgfunc_4p);
+
+  RooCategory cat("pdf_index","Index of Pdf which is active");
+  RooMultiPdf multipdf("roomultipdf_"+ch_name,"All Pdfs",cat,mypdfs);
 
   // converting function into hist to debug
   RooDataSet* data1 = bgfunc->generate(RooArgSet(*x), 1000000);
@@ -272,7 +289,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
   bgfunc->plotOn(plotter);
-  bgfunc_sys_up->plotOn(plotter);
+  bgfunc_4p->plotOn(plotter);
   plotter->getAttLine()->SetLineColor(kRed);
   plotter->getAttLine()->SetLineStyle(kDotted);  
   //  hist1->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));  
@@ -288,11 +305,11 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   fWS->import(*dataSR);
 
   // save the bkg fit to the workspace
-  fWS->import(*bgfunc);
+  //  fWS->import(*bgfunc);
 
   // save the bkg systematic fit to the workspace
-  fWS->import(*bgfunc_sys_up);
-  fWS->import(*bgfunc_sys_dn);
+  //  fWS->import(*bgfunc_4p);
+  fWS->import(multipdf);
 
   // sum up number of events in fit region
   double Ntot = 0;
@@ -312,8 +329,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   delete x; delete dataSR; 
   delete plotter;
   delete bgfunc;
-  delete bgfunc_sys_up;  
-  delete bgfunc_sys_dn;  
+  delete bgfunc_4p;  
   delete bg3p_p0; delete bg3p_p1; delete bg3p_p2; 
   delete bg4p_p0; delete bg4p_p1; delete bg4p_p2; delete bg4p_p3; 
   delete r_bg;
@@ -364,8 +380,11 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
     TString SgName = TString::Format("MT%d_", (int)MT);
     SgName.Append(ch_name);
 
-    RooConstVar* sg_mean  =new RooConstVar("sg_mean",  "sg_mean",  mean->Eval(MT));
+       RooConstVar* sg_mean  =new RooConstVar("sg_mean",  "sg_mean",  mean->Eval(MT));
+    // RooRealVar* sg_mean  =new RooRealVar("sg_mean",  "sg_mean",  mean->Eval(MT));
     RooConstVar* sg_sigma =new RooConstVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
+    // RooRealVar* sg_sigma =new RooRealVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
+
 
     RooGaussian* ModelSg_Gauss = new RooGaussian(SgName, SgName, *x, *sg_mean, *sg_sigma);
 
@@ -404,6 +423,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
 
     double Nevts = 35800*eff;
     infotofile << "MT = " << MT << " GeV,  N = " << Nevts << std::endl;
+
 
     fWS->import(*ModelSg_Gauss);
 

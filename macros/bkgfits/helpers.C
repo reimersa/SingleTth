@@ -13,6 +13,7 @@ enum Echannel {eMuon, eEle, eComb};
 // folder where the analysis output files are 
 // TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
 TString anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
+TString systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/";
 TString year = "2016v3";
 
 TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds)
@@ -110,22 +111,49 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
 
 }
 
-TH1F* GetAnalysisOutputSignal(int MT, Echannel ch)
+TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
 {
   
   //All files are read in
   bool b_error=true;
-  TString unc_name = ""; // "jersmear_up" , "jersmear_down" ,"jecsmear_up" , "jecsmear_down" , "none"
-  // TString folder ="~/ownCloud/masterarbeit/tex/plots/efficiency/master_";
-  // TString unc_folder = "hists";
+
+  std::cout<<"MT  "<< TString::Format("%d", MT)<<std::endl;
+
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
   if (MT <700)     sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+
+  if(unc!=""){
+    TString subfolder = "NOMINAL/";
+      sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
+    if (MT <700)     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+    if(unc.Contains("PDF")) {
+      subfolder = "PDF_up/";
+      sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
+      if (MT <700)     sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+    }
+
+    if(unc.Contains("JEC")||unc.Contains("JER")) {
+      sig_f = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/"+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
+      if (MT <700)     sig_f = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/"+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+    }
+
+  }
   
 
   TString region_name = "sr";
   TString ech_name  = "chi2h_2_ech_"  + region_name + "/M_Tprime";
   TString much_name = "chi2h_2_much_" + region_name + "/M_Tprime";
+
+  if(unc!=""){
+    if(unc.Contains("PDF")) unc.ReplaceAll("PDF_up","pdf");
+    ech_name  = "chi2h_2_ech_"  + region_name +"_"+unc +"/M_Tprime";
+    much_name = "chi2h_2_much_" + region_name +"_"+unc + "/M_Tprime";
+    if(unc.Contains("JEC") || unc.Contains("JER")){
+      ech_name  = "chi2h_2_ech_"  + region_name +"/M_Tprime";
+      much_name = "chi2h_2_much_" + region_name +"/M_Tprime";
+    }
+  }
 
   //Get all hists
   TH1F* sigh = NULL;
