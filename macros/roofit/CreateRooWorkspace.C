@@ -1,4 +1,5 @@
 #include "CreateRooWorkspace.h"
+#include "BkgPdfExp2.h" 
 #include "BkgPdf3p.h" 
 #include "BkgPdf4p.h" 
 
@@ -230,6 +231,12 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name,"Bkfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
+  // 2 parameter exponential function 
+  RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name, "bgexp2_p0"+ch_name, 9.5, -100, 100);
+  RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name, "bgexp2_p1"+ch_name,   2, -10,  10);
+
+  BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
+
   // nominal fit
   RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   std::cout << "Testing BKG values postfit" << '\n';
@@ -249,6 +256,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooArgList mypdfs;
   mypdfs.add(*bgfunc);
   mypdfs.add(*bgfunc_4p);
+  mypdfs.add(*bgfunc_exp);
 
   RooCategory cat("pdf_index","Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name,"All Pdfs",cat,mypdfs);
