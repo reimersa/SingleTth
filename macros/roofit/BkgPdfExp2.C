@@ -37,7 +37,8 @@ Double_t BkgPdfExp2::evaluate() const
 
   Double_t xp = x/1000.; // scale x to TeV
 
-  Double_t arg = (-1) * p0 * xp + p1 * xp * xp; 
+  //Double_t arg = (-1) * p0 * xp + p1 * xp * xp; 
+  Double_t arg = (-1) * (0.8026*p0 + 0.5965*p1) * xp + (0.5965*p0 - 0.8026*p1) * xp * xp; 
   Double_t result = TMath::Exp( arg );
 
   return result; 

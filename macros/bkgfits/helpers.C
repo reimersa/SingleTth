@@ -128,15 +128,18 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
   // folder where the analysis output files are 
   TString anaoutputfolder;
   TString year;
+  TString systfolder; 
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
      anaoutputfolder = "../../../AnalysisOutput_102X/"; 
      year = "2016";
+     systfolder = ""; 
   } else {
      cout << "Using NAF setup." << endl;
      anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
      year = "2016v3";
+     systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/NOMINAL/"; 
   }
 
   

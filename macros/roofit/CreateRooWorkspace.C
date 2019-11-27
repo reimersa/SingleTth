@@ -232,8 +232,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name,"Bkfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
   // 2 parameter exponential function 
-  RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name, "bgexp2_p0"+ch_name, 9.5, -100, 100);
-  RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name, "bgexp2_p1"+ch_name,   2, -100,  100);
+  RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name, "bgexp2_p0"+ch_name, 8.2, -100, 100);
+  RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name, "bgexp2_p1"+ch_name, 4.3, -100, 100);
 
   BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
 

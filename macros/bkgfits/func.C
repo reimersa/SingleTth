@@ -55,7 +55,12 @@ class expfunction_p2 : public dijetfunction {
      f_xmax = xmax;
      f_norm = 1.;
 
-     f = new TF1("exp2", "[2]*( TMath::Exp(-[0]*x/1000 + [1]*x*x/1e6) )", f_xmin, f_xmax);
+     TString func = "[2]*TMath::Exp(-(_p1_)*x/1000 + (_p2_)*x*x/1e6)";
+     func.ReplaceAll("_p1_", "0.8026*[0] + 0.5965*[1]");
+     func.ReplaceAll("_p2_", "0.5965*[0] - 0.8026*[1]");     
+
+     //f = new TF1("exp2", "[2]*( TMath::Exp(-[0]*x/1000 + [1]*x*x/1e6) )", f_xmin, f_xmax);
+     f = new TF1("exp2", func.Data(), f_xmin, f_xmax);
 
    }
 
