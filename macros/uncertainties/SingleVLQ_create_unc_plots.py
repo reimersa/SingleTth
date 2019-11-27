@@ -49,27 +49,22 @@ x2 = 0.99
 
 
 #read in postfit file
-inputfile = TFile("/nfs/dust/cms/user/reimersa/SingleTth/theta_SingleTth/utils2/Limits_MC/input/theta_histograms.root","READ")
+inputfile = TFile("/nfs/dust/cms/user/reimersa/SingleTth/theta_SingleTth/utils2/Limits_MC/input/theta_histograms_fullsyst.root","READ")
 TH1.AddDirectory(0)
 
 outputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/uncertaintyPlots/"
 
-#todo:
-# make labels bigger
-# muf_mur
-# toppt
-# PDF
 
 #list of uncertainties in CR and SR
-systname_SR_muon={"JEC","SCALETT"}
+systname_SR_muon={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","JEC","JER","pdf"}
 
 #list of histograms in SR
-hists_SR = {"MTprime"}
+hists_SR = {"MTprime_much_sr"}
 
 
 # loop over channels and process
 channel = {"muon"}
-process = {"TTbar"}
+process = {"TTbar_2016v3","VLQ_RH_600_2016v2"}
 
 
 i=0

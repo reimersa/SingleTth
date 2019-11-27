@@ -31,10 +31,11 @@ for line in listOfLines:
     i+=1
 
 print masses
-#masses = ['600']
+#masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '800', '825', '875', '925', '950', '1000', '1050','1100', '1125', '1150', '1200']
 
 outputfile = open("Limits_combine.txt","w")
 for mass in masses:
+    print mass
     rootfile = TFile.Open("higgsCombineoutput_"+mass+".AsymptoticLimits.mH120.root","r")
     tree = rootfile.limit 
     limits = []

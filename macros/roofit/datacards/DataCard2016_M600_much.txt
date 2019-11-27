@@ -11,25 +11,29 @@ shapes * * ws_SingleTth.root SingleTth:$PROCESS_$CHANNEL
 ------------------------------
 # name of channels, and number of observed events (total number of event in Data)
 
-bin              	      much       
-observation                 -1
+bin             	      much       
+observation               -1
 
 ------------------------------
 # name of the channel you are considering, name of the process (signal,bkg,...),
 # process unique ID (positive number for backgrounds, and zero or negative for signal)
 # expected events for each process (total number of events in MC)
 
-bin               	  much      much
-process                MT600     Dijet4p
-process                  0	    1
-rate                 	  80.8364   2263
-#rate                  	  89.8364   2263
+bin             much      much
+#process            roomultipdf        roomultipdf_signal_MT600     roomultipdf
+process             MT600     roomultipdf
+#process         MT600     Bkgfunc
+process         0	    1
+#rate            80.8364   2263
+rate            80.8364   10000
 
 ------------------------------
 # list of independent sources of uncertainties, and give their effect (syst. error)
 
-#lumi     lnN    1.025 -             
-lumi     lnN   1.00000001 -             
+lumi     lnN   1.025       -   1.025 -             
+pdf_index discrete
+#pdf_index_sig discrete
+#sg_sigma param 59 1.3
 
 ------------------------------
 

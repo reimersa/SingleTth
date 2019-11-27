@@ -216,25 +216,17 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooPlot *plotter=x->frame();
 
   // 3 parameter function for nominal result
-  RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0", "bg3p_p0", -13.2, -1000,  1000);
-  RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1", "bg3p_p1",   9.1, -1000,  1000);
-  RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2", "bg3p_p2",   2.5, -100,   100 );
-  // RooConstVar* bg3p_p0 = new RooConstVar("bg3p_p0", "bg3p_p0", -13.2);
-  // RooConstVar* bg3p_p1 = new RooConstVar("bg3p_p1", "bg3p_p1",   9.1);
-  // RooConstVar* bg3p_p2 = new RooConstVar("bg3p_p2", "bg3p_p2",   2.5 );
+  RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name, "bg3p_p0"+ch_name, -13.2, -1000,  1000);
+  RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name, "bg3p_p1"+ch_name,   9.1, -1000,  1000);
+  RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name, "bg3p_p2"+ch_name,   2.5, -100,   100 );
 
   BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
 
   // 4 parameter function for systematics
-  RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0", "bg4p_p0", 66.45, -1000,  1000);
-  RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1", "bg4p_p1", -12.6, -1000,  1000);
-  RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2", "bg4p_p2",  -9.6, -100,   100 );
-  RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3", "bg4p_p3",  -5.3, -100,   100 );
-
-  // RooConstVar* bg4p_p0 = new RooConstVar("bg4p_p0", "bg4p_p0", 66.45);
-  // RooConstVar* bg4p_p1 = new RooConstVar("bg4p_p1", "bg4p_p1", -12.6);
-  // RooConstVar* bg4p_p2 = new RooConstVar("bg4p_p2", "bg4p_p2",  -9.6 );
-  // RooConstVar* bg4p_p3 = new RooConstVar("bg4p_p3", "bg4p_p3",  -5.3 );
+  RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0"+ch_name, "bg4p_p0"+ch_name, 66.45, -1000,  1000);
+  RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1"+ch_name, "bg4p_p1"+ch_name, -12.6, -1000,  1000);
+  RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2"+ch_name, "bg4p_p2"+ch_name,  -9.6, -100,   100 );
+  RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3"+ch_name, "bg4p_p3"+ch_name,  -5.3, -100,   100 );
 
   BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name,"Bkfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 

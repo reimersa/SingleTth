@@ -21,8 +21,8 @@ observation    -1             -1
 
 bin            ech         ech     	  much      much
 #process       roomultipdf_signal_MT600       roomultipdf        roomultipdf_signal_MT600     roomultipdf
-#process        MT600       roomultipdf        MT600     roomultipdf
-process        MT600       Bkgfunc        MT600     Bkgfunc
+process        MT600       roomultipdf        MT600     roomultipdf
+#process        MT600       Bkgfunc        MT600     Bkgfunc
 process        0           1              0	    1
 rate           53.6284     1547       	  80.8364   2263
 
@@ -30,7 +30,7 @@ rate           53.6284     1547       	  80.8364   2263
 # list of independent sources of uncertainties, and give their effect (syst. error)
 
 lumi     lnN   1.025       -   1.025 -             
-#pdf_index discrete
+pdf_index discrete
 #pdf_index_sig discrete
 #sg_sigma param 59 1.3
 
