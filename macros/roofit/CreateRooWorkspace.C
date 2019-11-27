@@ -173,7 +173,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   if (region==defs::eSR){
     fit_xmin = 380;
     fit_xmax = 2000;    
-  } else {
+      } else {
     fit_xmin = 500;
     fit_xmax = 2000;       
   }
@@ -233,24 +233,26 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   // 2 parameter exponential function 
   RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name, "bgexp2_p0"+ch_name, 9.5, -100, 100);
-  RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name, "bgexp2_p1"+ch_name,   2, -10,  10);
+  RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name, "bgexp2_p1"+ch_name,   2, -100,  100);
 
   BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
 
   // nominal fit
-  RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(fit_xmin, fit_xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   std::cout << "Testing BKG values postfit" << '\n';
   bg3p_p0->Print(); 
   bg3p_p1->Print();
   bg3p_p2->Print(); 
 
   // systematic fit
-  RooFitResult *r_bg_4p = bgfunc_4p->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg_4p = bgfunc_4p->fitTo(*dataSR, RooFit::Range(fit_xmin,fit_xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   std::cout << "Testing BKG systematic variation (4p) values postfit" << '\n';
   bg4p_p0->Print(); 
   bg4p_p1->Print();
   bg4p_p2->Print(); 
   bg4p_p3->Print(); 
+
+  RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR, RooFit::Range(fit_xmin,fit_xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
 
   //create a list with all alt and nominal functions
   RooArgList mypdfs;
