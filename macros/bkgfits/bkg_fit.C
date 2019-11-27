@@ -7,9 +7,10 @@ using namespace std;
 TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95);
 void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString name);
 
-enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p};
+enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
-EFitFunction FitFunc = eFunc5p;
+//EFitFunction FitFunc = eFunc3p;
+EFitFunction FitFunc = eFuncExp2;
 
 void bkg_fit()
 {
@@ -65,7 +66,7 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     fit_xmin = 380;
     fit_xmax = 2000;    
   } else {
-    fit_xmin = 500;
+    fit_xmin = 560;
     fit_xmax = 2000;       
   }
 
@@ -134,6 +135,17 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     col95 = kAzure-9;
     fdesc = "Dijet function, 2 pars";    
     ffile = "dijet2p";
+  } else if (FitFunc==eFuncExp2){
+    expfunction_p2 fitfuncobj(xmin, xmax);
+    fitfuncobj.SetNorm(norm);    
+    fitmodel = new TF1("fitmodel", fitfuncobj, xmin, xmax, 2);
+    fitmodel->SetParameter(0, 5.3);  
+    fitmodel->SetParameter(1, 0.59);
+    linecol = kBlue+1; 
+    col68 = kAzure-4; 
+    col95 = kAzure-9;
+    fdesc = "Exp, 2 pars";
+    ffile = "exp2p";
   } else if (FitFunc==eFunc3p){
     dijetfunction_p3 fitfuncobj(xmin, xmax);
     fitfuncobj.SetNorm(norm);    

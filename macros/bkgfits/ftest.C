@@ -30,7 +30,7 @@ void ftest()
     if (exlCL>0.05) usep3++;
     else usep4++;
 
-    cout << endl << " CR MC e+jets, 4p vs 5p" << endl;
+    cout << endl << "CR MC e+jets, 4p vs 5p" << endl;
 	c1 = 84.90;
 	c2 = 84.35;
 	p1 = 4;

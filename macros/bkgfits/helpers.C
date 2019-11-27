@@ -12,12 +12,23 @@ enum Echannel {eMuon, eEle, eComb};
 
 // folder where the analysis output files are 
 // TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
-TString anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
-TString systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/";
-TString year = "2016v3";
 
 TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds)
 {
+
+  // folder where the analysis output files are 
+  TString anaoutputfolder;
+  TString year;
+  char *val = getenv( "ROM_SYS" );
+  if (val!=NULL){
+     cout << "Using Roman's setup." << endl;
+     anaoutputfolder = "../../../AnalysisOutput_102X/"; 
+     year = "2016";
+  } else {
+     cout << "Using NAF setup." << endl;
+     anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
+     year = "2016v3";
+  }
 	
   //All files are read in
   bool b_error=true;
@@ -113,6 +124,21 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
 
 TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
 {
+
+  // folder where the analysis output files are 
+  TString anaoutputfolder;
+  TString year;
+  char *val = getenv( "ROM_SYS" );
+  if (val!=NULL){
+     cout << "Using Roman's setup." << endl;
+     anaoutputfolder = "../../../AnalysisOutput_102X/"; 
+     year = "2016";
+  } else {
+     cout << "Using NAF setup." << endl;
+     anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
+     year = "2016v3";
+  }
+
   
   //All files are read in
   bool b_error=true;
@@ -121,25 +147,24 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
 
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-  if (MT <700)     sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+  if ((MT <700) && (val==NULL))     sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
 
   if(unc!=""){
     TString subfolder = "NOMINAL/";
       sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-    if (MT <700)     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+    if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
     if(unc.Contains("PDF")) {
       subfolder = "PDF_up/";
       sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-      if (MT <700)     sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+      if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_2016v2.root", "READ");
     }
 
     if(unc.Contains("JEC")||unc.Contains("JER")) {
       sig_f = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/"+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-      if (MT <700)     sig_f = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/"+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+      if ((MT <700) && (val==NULL))     sig_f = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/"+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
     }
 
-  }
-  
+  }  
 
   TString region_name = "sr";
   TString ech_name  = "chi2h_2_ech_"  + region_name + "/M_Tprime";
@@ -199,6 +224,19 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
 
 double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT, double& err)
 {
+  // folder where the analysis output files are 
+  TString anaoutputfolder;
+  TString year;
+  char *val = getenv( "ROM_SYS" );
+  if (val!=NULL){
+     cout << "Using Roman's setup." << endl;
+     anaoutputfolder = "../../../AnalysisOutput_102X/"; 
+     year = "2016";
+  } else {
+     cout << "Using NAF setup." << endl;
+     anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
+     year = "2016v3";
+  }
 
   double gauss_norm_interval = sigf->Integral(sigf->GetXmin(), sigf->GetXmax(), 1e-3 );
   double f = Npeak / gauss_norm_interval; 
@@ -213,7 +251,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   // get total number of events before any selection
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-  if(MT < 700) sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+  if ((MT <700) && (val==NULL)) sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
   TString hname = "cleaner/sum_event_weights";
   TH1F* h = (TH1F*) sig_f->Get(hname);  
   double Ntot = h->GetBinContent(1); 

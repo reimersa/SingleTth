@@ -47,6 +47,34 @@ class dijetfunction {
    }
 };
 
+class expfunction_p2 : public dijetfunction {
+ 
+ public:
+   expfunction_p2(double xmin, double xmax) : dijetfunction(xmin, xmax) {
+     f_xmin = xmin;
+     f_xmax = xmax;
+     f_norm = 1.;
+
+     f = new TF1("exp2", "[2]*( TMath::Exp(-[0]*x/1000 + [1]*x*x/1e6) )", f_xmin, f_xmax);
+
+   }
+
+   double operator() (double *xx, double *p) 
+   {
+
+     Float_t x =xx[0];
+     f->SetParameter(0, p[0]);
+     f->SetParameter(1, p[1]);
+     f->SetParameter(2, 1000.); // set it to 1000 to avoid small numbers
+
+     double in = f->Integral(f_xmin, f_xmax, 10e-3);
+     f->SetParameter(2, 1000.*f_norm/in);
+
+     return f->Eval(x);
+
+   }
+};
+
 
 class dijetfunction_p2 : public dijetfunction {
  
