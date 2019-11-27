@@ -135,7 +135,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
   	} else {
     	back->GetYaxis()->SetRangeUser(0.05, 1000);
   	}
-  	back->GetXaxis()->SetRangeUser(200, 2000);
+	back->GetXaxis()->SetRangeUser(200, 2000);
   	back->Draw("E1");
 
   	// zero out bins with little MC stats 
@@ -192,6 +192,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   // get data or MC histogram
   TH1F* h_data = GetAnalysisOutput(region, channel, dodata, all_bkgds); 
+
 
   //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", fit_xmin, fit_xmax);
@@ -260,18 +261,22 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   mypdfs.add(*bgfunc_4p);
   mypdfs.add(*bgfunc_exp);
 
-  RooCategory cat("pdf_index","Index of Pdf which is active");
+  RooCategory cat("pdf_index_"+ch_name,"Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name,"All Pdfs",cat,mypdfs);
+  RooRealVar norm("roomultipdf_"+ch_name+"_norm","Number of background events",10000,100000);
 
   // converting function into hist to debug
   RooDataSet* data1 = bgfunc->generate(RooArgSet(*x), 1000000);
   RooDataHist *hist1 = data1->binnedClone();
-  TH1* myhist = hist1->createHistogram("myhist",*x);
+  TH1* myhist = dataSR->createHistogram("myhist",*x);
   TH1* myhist2 =  hist1->createHistogram("myhist2",*x);
-  std::cout<<"bin content  "<<myhist->GetBinContent(20)<<std::endl;
+
+
+
   if(ch_name.Contains("much")){
     myhist->Scale(2268/myhist->Integral());
     myhist->SetName("data_obs_much");
+    myhist->SetLineColor(kRed);
     myhist2->Scale(2268/myhist2->Integral());
     myhist2->SetName("background_much");
 
@@ -281,8 +286,10 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     myhist2->Scale(1548/myhist2->Integral());
     myhist2->SetName("background_ech");
   }
+
   TCanvas *test_c = new TCanvas("test_c","test fit",10,10,700,700); 
   myhist->Draw();
+  myhist2->Draw("same");
   test_c->SaveAs("test_hist"+ch_name+".eps");
   debug_histos->cd();
   myhist->Write();
@@ -311,6 +318,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   // save the bkg systematic fit to the workspace
   //  fWS->import(*bgfunc_4p);
+  fWS->import(cat);
+  //  fWS->import(norm);
   fWS->import(multipdf);
 
   // sum up number of events in fit region

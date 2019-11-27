@@ -20,18 +20,19 @@ observation               -1
 # expected events for each process (total number of events in MC)
 
 bin             much      much
-#process            roomultipdf        roomultipdf_signal_MT600     roomultipdf
 process             MT600     roomultipdf
 #process         MT600     Bkgfunc
 process         0	    1
-#rate            80.8364   2263
-rate            80.8364   10000
+rate            80.8364   2263
+
+
+
 
 ------------------------------
 # list of independent sources of uncertainties, and give their effect (syst. error)
 
-lumi     lnN   1.025       -   1.025 -             
-pdf_index discrete
+lumi     lnN   1.025       -   
+pdf_index_much discrete
 #pdf_index_sig discrete
 #sg_sigma param 59 1.3
 
