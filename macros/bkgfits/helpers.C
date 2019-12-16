@@ -26,7 +26,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
-     anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
+     anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL"; 
      year = "2016v3";
   }
 	
@@ -139,7 +139,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
      cout << "Using NAF setup." << endl;
      anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
      year = "2016v3";
-     systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/NOMINAL/"; 
+     systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/"; 
   }
 
   
@@ -157,7 +157,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
       sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
     if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
     if(unc.Contains("PDF")) {
-      subfolder = "PDF_up/";
+      subfolder = "pdf/";
       sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
       if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_2016v2.root", "READ");
     }
@@ -174,7 +174,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
   TString much_name = "chi2h_2_much_" + region_name + "/M_Tprime";
 
   if(unc!=""){
-    if(unc.Contains("PDF")) unc.ReplaceAll("PDF_up","pdf");
+    if(unc.Contains("PDF")) unc.ReplaceAll("PDF","pdf");
     ech_name  = "chi2h_2_ech_"  + region_name +"_"+unc +"/M_Tprime";
     much_name = "chi2h_2_much_" + region_name +"_"+unc + "/M_Tprime";
     if(unc.Contains("JEC") || unc.Contains("JER")){
@@ -196,6 +196,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
     sigh = (TH1F*) eh->Clone();
     sigh->Add(mh);
   }
+  sigh->SetDirectory(0);
   sigh->Rebin(2);
 
   // cosmetics
@@ -220,7 +221,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
   //    back->SetBinError(i,0);
   //  }
   //}
-
+  sig_f->Close();
   return sigh;
 
 }

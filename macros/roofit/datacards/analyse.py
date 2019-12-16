@@ -25,8 +25,9 @@ infile_gen = TFile("higgsCombineTest.GenerateOnly.mH125.123456.root","r")
 ## Plot toys
 x = RooRealVar("x", "m_{T} [GeV]", 400, 2000);
 plotter=x.frame();
-ds =  infile_gen.Get("toys/toy_93")
+ds =  infile_gen.Get("toys/toy_1")
 hist = ds.binnedClone();
+print "Integral of Toys  " + str(hist.sumEntries())
 hist.plotOn(plotter)
 plotter.Draw()
 
@@ -35,11 +36,15 @@ plotter.Draw()
 sb_prefit = infile.Get("shapes_prefit/much/total")
 sb_prefit.SetLineColor(kRed)
 sb_prefit.SetLineWidth(2)
+sb_prefit.Scale(20)
+print "Integral of sb_prefit  "+str(sb_prefit.Integral())
 sb_prefit.Draw("HIST same")
 
 b_prefit = infile.Get("shapes_prefit/much/total_background")
 b_prefit.SetLineColor(kBlue)
 b_prefit.SetLineWidth(2)
+b_prefit.Scale(20)
+print "Integral of b_prefit  "+ str(b_prefit.Integral())
 b_prefit.Draw("HIST same")
 
 leg=TLegend(0.5,0.5,0.7,0.7,"","brNDC")

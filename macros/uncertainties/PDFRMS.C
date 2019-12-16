@@ -203,6 +203,7 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample){
         float rms = 0.;
         for(size_t l=0; l<histograms[j].size(); l++){
           // if (sample == "VLQ_LH_700_2016v3" || sample == "VLQ_RH_650_2016v2") cout << "l: " << l << ", nom: " << nom << ", var: " << histograms[j][l]->GetBinContent(k) << endl;
+	  if (sample.Contains("VLQ") && k==1) histograms[j][l]->Scale(histograms_nom[j]->Integral()/histograms[j][l]->Integral());
           rms += pow(histograms[j][l]->GetBinContent(k) - nom, 2);
         }
         rms /= histograms[j].size()-1.;

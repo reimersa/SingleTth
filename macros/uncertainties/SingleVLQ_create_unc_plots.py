@@ -57,14 +57,15 @@ outputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/uncertaintyPlots/"
 
 #list of uncertainties in CR and SR
 systname_SR_muon={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","JEC","JER","pdf"}
+systname_SR_elec={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","JEC","JER","pdf"}
 
 #list of histograms in SR
-hists_SR = {"MTprime_much_sr"}
+hists_SR = {"MTprime_much_sr","MTprime_ech_sr"}
 
 
 # loop over channels and process
-channel = {"muon"}
-process = {"TTbar_2016v3","VLQ_RH_600_2016v2"}
+channel = {"muon","elec"}
+process = {"TTbar_2016v3","VLQ_RH_600_2016v2","VLQ_RH_1100_2016v3"}
 
 
 i=0
@@ -154,5 +155,5 @@ for ch in channel:
 
 
                 
-                c1.Print(outputfolder+nominal_name+"__"+unc+".pdf")
+                c1.Print(outputfolder+nominal_name+"__"+ch+"__"+unc+".pdf")
 

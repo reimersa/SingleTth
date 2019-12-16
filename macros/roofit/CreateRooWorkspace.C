@@ -136,7 +136,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
     	back->GetYaxis()->SetRangeUser(0.05, 1000);
   	}
 	back->GetXaxis()->SetRangeUser(200, 2000);
-  	back->Draw("E1");
+
 
   	// zero out bins with little MC stats 
   	for (int i=1; i<back->GetNbinsX()+1; ++i){
@@ -144,7 +144,12 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
       		back->SetBinContent(i, 0);
       		back->SetBinError(i,0);
     	}
-  	}
+	// if(back->GetBinLowEdge(i)<380){
+	//   back->SetBinContent(i,0);
+	//   back->SetBinError(i,0);
+	// }
+	}
+  	back->Draw("E1");
 
   	return back;
 
@@ -196,6 +201,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", fit_xmin, fit_xmax);
+  x->setBins(81);
   RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name, "data_obs_"+ch_name, RooArgList(*x), h_data);
 
   // important: get xmin and xmax from bin edges!
@@ -274,10 +280,10 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 
   if(ch_name.Contains("much")){
-    myhist->Scale(2268/myhist->Integral());
+    //    myhist->Scale(2268/myhist->Integral());
     myhist->SetName("data_obs_much");
     myhist->SetLineColor(kRed);
-    myhist2->Scale(2268/myhist2->Integral());
+    myhist2->Scale(myhist->Integral()/myhist2->Integral());
     myhist2->SetName("background_much");
 
   }else{
@@ -314,7 +320,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   fWS->import(*dataSR);
 
   // save the bkg fit to the workspace
-  //  fWS->import(*bgfunc);
+  //fWS->import(*bgfunc);
 
   // save the bkg systematic fit to the workspace
   //  fWS->import(*bgfunc_4p);
@@ -360,14 +366,154 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
     ch_name = "ech";
   }
 
+  std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput.txt");
+  std::string line;
+
+  string fitname, paramname;
+  double param0_mean_value,param0_mean_error,param1_mean_value,param1_mean_error,param0_sigma_value,param0_sigma_error,param1_sigma_value,param1_sigma_error,param0_eff_value,param1_eff_value,param2_eff_value;
+  double param0_JECmeanup_value,param1_JECmeanup_value,param0_JECsigmaup_value,param1_JECsigmaup_value;
+  double param0_JERmeanup_value,param1_JERmeanup_value,param0_JERsigmaup_value,param1_JERsigmaup_value;
+
+  double param0_JECmeandown_value,param1_JECmeandown_value,param0_JECsigmadown_value,param1_JECsigmadown_value;
+  double param0_JERmeandown_value,param1_JERmeandown_value,param0_JERsigmadown_value,param1_JERsigmadown_value;
+
+  while (infile)
+    {
+      string c,d;
+      infile>>fitname>>paramname>>c>>d;
+      if((fitname.find("mean")!=std::string::npos) && (paramname.find("param0")!=std::string::npos)) {
+	param0_mean_value = std::stod(c); 
+	param0_mean_error = std::stod(d);
+      }
+      if(fitname.find("mean")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
+	param1_mean_value = std::stod(c); 
+	param1_mean_error = std::stod(d);
+      }
+      if((fitname.find("mfitup")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECmeanup_value = std::stod(c); 
+      }
+      if(fitname.find("mfitup")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECmeanup_value = std::stod(c); 
+      }
+      if((fitname.find("mfitup")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERmeanup_value = std::stod(c); 
+      }
+      if(fitname.find("mfitup")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERmeanup_value = std::stod(c); 
+      }
+      if((fitname.find("mfitdown")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECmeandown_value = std::stod(c); 
+      }
+      if(fitname.find("mfitdown")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECmeandown_value = std::stod(c); 
+      }
+      if((fitname.find("mfitdown")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERmeandown_value = std::stod(c); 
+      }
+      if(fitname.find("mfitdown")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERmeandown_value = std::stod(c); 
+      }
+      if(fitname.find("width")!=std::string::npos && paramname.find("param0")!=std::string::npos) {
+	param0_sigma_value = std::stod(c); 
+	param0_sigma_error = std::stod(d);
+      }
+      if(fitname.find("width")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
+	param1_sigma_value = std::stod(c); 
+	param1_sigma_error = std::stod(d);
+      }
+      if((fitname.find("wfitup")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECsigmaup_value = std::stod(c); 
+      }
+      if(fitname.find("wfitup")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECsigmaup_value = std::stod(c); 
+      }
+      if((fitname.find("wfitup")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERsigmaup_value = std::stod(c); 
+      }
+      if(fitname.find("wfitup")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERsigmaup_value = std::stod(c); 
+      }
+      if((fitname.find("wfitdown")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECsigmadown_value = std::stod(c); 
+      }
+      if(fitname.find("wfitdown")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECsigmadown_value = std::stod(c); 
+      }
+      if((fitname.find("wfitdown")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERsigmadown_value = std::stod(c); 
+      }
+      if(fitname.find("wfitdown")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERsigmadown_value = std::stod(c); 
+      }
+      // if(fitname.find("eff")!=std::string::npos && paramname.find("param0")!=std::string::npos) {
+      // 	param0_eff_value = std::stod(c); 
+      // }
+      // if(fitname.find("eff")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
+      // 	param1_eff_value = std::stod(c); 
+      // }
+      // if(fitname.find("eff")!=std::string::npos && paramname.find("param2")!=std::string::npos) {
+      // 	param2_eff_value = std::stod(c); 
+      // }
+
+    }
+
+
   // from the fit to signals: get mean and width from combined fit (higher stats)
   TF1* mean = new TF1("meanfit", "[0]+[1]*(x-600)", 500, 1250);
-  mean->SetParameter(0, 584.9);
-  mean->SetParameter(1, 0.9755);
+  // mean->SetParameter(0, 584.9);
+  // mean->SetParameter(1, 0.9755);
+  mean->SetParameter(0, param0_mean_value);
+  mean->SetParameter(1, param1_mean_value);
+
+  TF1* mean_error = new TF1("meanfit_error", "[0]+[1]*(x-600)", 500, 1250);
+  mean_error->SetParameter(0, param0_mean_value+2*param0_mean_error);
+  mean_error->SetParameter(1, param1_mean_value+2*0.5 *param1_mean_error);
+
+  TF1* JECmeanup_error = new TF1("JECmeanfit_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECmeanup_error->SetParameter(0, param0_JECmeanup_value);
+  JECmeanup_error->SetParameter(1, param1_JECmeanup_value);
+
+  TF1* JERmeanup_error = new TF1("JERmeanfitup_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERmeanup_error->SetParameter(0, param0_JERmeanup_value);
+  JERmeanup_error->SetParameter(1, param1_JERmeanup_value);
+
+  TF1* JECmeandown_error = new TF1("JECmeanfit_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECmeandown_error->SetParameter(0, param0_JECmeandown_value);
+  JECmeandown_error->SetParameter(1, param1_JECmeandown_value);
+
+  TF1* JERmeandown_error = new TF1("JERmeanfitdown_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERmeandown_error->SetParameter(0, param0_JERmeandown_value);
+  JERmeandown_error->SetParameter(1, param1_JERmeandown_value);
+
 
   TF1* sigma = new TF1("sigmafit", "[0]+[1]*(x-600)", 500, 1250);
-  sigma->SetParameter(0, 59.04);
-  sigma->SetParameter(1, 0.04125);
+  // sigma->SetParameter(0, 59.04);
+  // sigma->SetParameter(1, 0.04125);
+  sigma->SetParameter(0, param0_sigma_value);
+  sigma->SetParameter(1, param1_sigma_value);
+
+  TF1* sigma_error = new TF1("sigmafit_error", "[0]+[1]*(x-600)", 500, 1250);
+  sigma_error->SetParameter(0, param0_sigma_value+param0_sigma_error);
+  sigma_error->SetParameter(1, param1_sigma_value+0.5*param1_sigma_error);
+
+  TF1* JECsigmaup_error = new TF1("JECsigmafitup_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECsigmaup_error->SetParameter(0, param0_JECsigmaup_value);
+  JECsigmaup_error->SetParameter(1, param1_JECsigmaup_value);
+
+
+  TF1* JERsigmaup_error = new TF1("JERsigmafitup_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERsigmaup_error->SetParameter(0, param0_JERsigmaup_value);
+  JERsigmaup_error->SetParameter(1, param1_JERsigmaup_value);
+
+  TF1* JECsigmadown_error = new TF1("JECsigmafitdown_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECsigmadown_error->SetParameter(0, param0_JECsigmadown_value);
+  JECsigmadown_error->SetParameter(1, param1_JECsigmadown_value);
+
+
+  TF1* JERsigmadown_error = new TF1("JERsigmafitdown_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERsigmadown_error->SetParameter(0, param0_JERsigmadown_value);
+  JERsigmadown_error->SetParameter(1, param1_JERsigmadown_value);
+
 
   TF1* eff_ele = new TF1("eff_ele", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
   eff_ele->SetParameter(0, 0.001498);
@@ -391,13 +537,29 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
     TString SgName = TString::Format("MT%d_", (int)MT);
     SgName.Append(ch_name);
 
-       RooConstVar* sg_mean  =new RooConstVar("sg_mean",  "sg_mean",  mean->Eval(MT));
-    // RooRealVar* sg_mean  =new RooRealVar("sg_mean",  "sg_mean",  mean->Eval(MT));
-    RooConstVar* sg_sigma =new RooConstVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
-    // RooRealVar* sg_sigma =new RooRealVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
+    //       RooConstVar* sg_mean  =new RooConstVar("sg_mean",  "sg_mean",  mean->Eval(MT));
+    RooRealVar* sg_mean  =new RooRealVar("sg_mean",  "sg_mean",  mean->Eval(MT));
+    //    RooConstVar* sg_sigma =new RooConstVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
+     RooRealVar* sg_sigma =new RooRealVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
+
+    RooConstVar* sg_JECmeanup  =new RooConstVar("sg_JECmeanup",  "sg_JECmeanup",  JECmeanup_error->Eval(MT));
+    RooConstVar* sg_JECsigmaup =new RooConstVar("sg_JECsigmaup", "sg_JECsigmaup", JECsigmaup_error->Eval(MT));
+
+    RooConstVar* sg_JERmeanup  =new RooConstVar("sg_JERmeanup",  "sg_JERmeanup",  JERmeanup_error->Eval(MT));
+    RooConstVar* sg_JERsigmaup =new RooConstVar("sg_JERsigmaup", "sg_JERsigmaup", JERsigmaup_error->Eval(MT));
+
+    RooConstVar* sg_JECmeandown  =new RooConstVar("sg_JECmeandown",  "sg_JECmeandown",  JECmeandown_error->Eval(MT));
+    RooConstVar* sg_JECsigmadown =new RooConstVar("sg_JECsigmadown", "sg_JECsigmadown", JECsigmadown_error->Eval(MT));
+
+    RooConstVar* sg_JERmeandown  =new RooConstVar("sg_JERmeandown",  "sg_JERmeandown",  JERmeandown_error->Eval(MT));
+    RooConstVar* sg_JERsigmadown =new RooConstVar("sg_JERsigmadown", "sg_JERsigmadown", JERsigmadown_error->Eval(MT));
 
 
     RooGaussian* ModelSg_Gauss = new RooGaussian(SgName, SgName, *x, *sg_mean, *sg_sigma);
+    RooGaussian* ModelSg_JECup_Gauss = new RooGaussian(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup);
+    RooGaussian* ModelSg_JERup_Gauss = new RooGaussian(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup);
+    RooGaussian* ModelSg_JECdown_Gauss = new RooGaussian(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown);
+    RooGaussian* ModelSg_JERdown_Gauss = new RooGaussian(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown);
 
 
     // converting function into hist to debug
@@ -415,14 +577,19 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
     debug_histos->cd();
     myhist->Write();
   
-    /*
+
     TCanvas* c_sg = new TCanvas(SgName, SgName, 10, 10, 700, 700);
     RooPlot* plotter=x->frame();
     ModelSg_Gauss->plotOn(plotter, RooFit::LineColor(kRed));
+    ModelSg_JECup_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
+    // ModelSg_JECdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
+    // ModelSg_JERdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
+    ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
     plotter->Draw();
     c_sg->SaveAs("Fit_Sg"+SgName+".pdf");
+    c_sg->SaveAs("Fit_Sg"+SgName+".eps");
 
-    std::cout << "MT = " << MT << " mean = " << mean->Eval(MT) << " sigma = " << sigma->Eval(MT) << std::endl;
+    /*std::cout << "MT = " << MT << " mean = " << mean->Eval(MT) << " sigma = " << sigma->Eval(MT) << std::endl;
     delete c_sg; 
     */
 
@@ -433,10 +600,25 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
     else eff = eff_muon->Eval(MT);
 
     double Nevts = 35800*eff;
-    infotofile << "MT = " << MT << " GeV,  N = " << Nevts << std::endl;
+    infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<mean_error->Eval(MT)-mean->Eval(MT)<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT)<< std::endl;
+
+    //add uncertainties as special shape
+    RooArgList mypdfs;
+    mypdfs.add(*ModelSg_Gauss);
+    mypdfs.add(*ModelSg_JECup_Gauss);
+    mypdfs.add(*ModelSg_JERup_Gauss);
+    mypdfs.add(*ModelSg_JECdown_Gauss);
+    mypdfs.add(*ModelSg_JERdown_Gauss);
+
+    RooCategory cat("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name,"Index of Pdf which is active");
+    RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name,"All Pdfs",cat,mypdfs);
 
 
-    fWS->import(*ModelSg_Gauss);
+
+    //    fWS->import(*ModelSg_Gauss);
+    fWS->import(cat);
+    fWS->import(multipdf);
+
 
     MT+=25;
   }

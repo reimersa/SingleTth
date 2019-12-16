@@ -140,7 +140,6 @@ namespace uhh2examples {
 
   bool SingleTthPreselectionModule::process(Event & event) {
 
-
     h_nocuts->fill(event);
     h_jets_nocuts->fill(event);
     h_ele_nocuts->fill(event);
@@ -158,7 +157,6 @@ namespace uhh2examples {
     h_mu_cleaner->fill(event);
     h_event_cleaner->fill(event);
     h_lumi_cleaner->fill(event);
-
     // lepton selection, consider both: e and mu channel
     if(!((muon_sel_much->passes(event) && ele_sel_much->passes(event)) || (muon_sel_ech->passes(event) && ele_sel_ech->passes(event)))) return false;
     h_lepton->fill(event);

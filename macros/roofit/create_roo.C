@@ -4,7 +4,7 @@ int main(int argc, char *argv[])
 {
   using namespace std;
 
-	bool dodata = true;
+	bool dodata = false;
 	bool all_bkgds = true;
 
   // create the workspace

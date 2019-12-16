@@ -46,7 +46,7 @@ SingleTthHists::SingleTthHists(Context & ctx, const string & dirname): Hists(ctx
 
   book<TH1F>("N_mu", "N^{#mu}", 11, -0.5, 10.5);
   book<TH1F>("pt_mu", "p_{T}^{#mu} [GeV]", 50, 0, 1500);
-  book<TH1F>("pt_mu1", "p_{T}^{#mu 1} [GeV]", 50, 0, 1500);
+  book<TH1F>("pt_mu1", "p_{T}^{#mu 1} [GeV]", 500, 0, 1500);
   book<TH1F>("pt_mu2", "p_{T}^{#mu 2} [GeV]", 50, 0, 1500);
   book<TH1F>("eta_mu", "#eta^{#mu}", 50, -2.5, 2.5);
   book<TH1F>("eta_mu1", "#eta^{#mu 1}", 50, -2.5, 2.5);

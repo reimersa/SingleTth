@@ -23,7 +23,8 @@ bin             much      much
 process             MT600     roomultipdf
 #process         MT600     Bkgfunc
 process         0	    1
-rate            80.8364   2263
+rate            80.8364   2001.55
+
 
 
 
