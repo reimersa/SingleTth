@@ -4,28 +4,31 @@
 #include "helpers.C"
 
 using namespace std;
-TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95);
+TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95, TString year = "2016v3");
 void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString name);
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
-//EFitFunction FitFunc = eFunc3p;
-EFitFunction FitFunc = eFuncExp2;
+// EFitFunction FitFunc = eFunc3p;
+EFitFunction FitFunc = eFunc4p;
+//EFitFunction FitFunc = eFuncExp2;
 
 void bkg_fit()
 {
 
+   // TString year = "2016v3";
+  TString year = "2017v2";
   TH1F* cl68 = NULL; 
   TH1F* cl95 = NULL;
   TH1F* dum = NULL; 
 
   // ------------ Control Region --------------
 
-  TF1* cr_mc_ele = one_fit(eCR, eEle, false, true, dum, dum);
-  TF1* cr_mc_muo = one_fit(eCR, eMuon, false, true, dum, dum);
+  TF1* cr_mc_ele = one_fit(eCR, eEle, false, true, dum, dum,year);
+  TF1* cr_mc_muo = one_fit(eCR, eMuon, false, true, dum, dum,year);
 
-  TF1* cr_data_ele = one_fit(eCR, eEle, true, true, cl68, cl95);  
-  TF1* cr_data_muo = one_fit(eCR, eMuon, true, true, dum, dum);  
+  TF1* cr_data_ele = one_fit(eCR, eEle, true, true, cl68, cl95,year);  
+  TF1* cr_data_muo = one_fit(eCR, eMuon, true, true, dum, dum,year);  
 
   cr_mc_ele->SetLineStyle(kDashed);
   cr_mc_muo->SetLineStyle(kDashed);
@@ -40,8 +43,8 @@ void bkg_fit()
 
   // ------------ Signal Region --------------
 
-  TF1* sr_mc_ele = one_fit(eSR, eEle, false, true, cl68, cl95);
-  TF1* sr_mc_muo = one_fit(eSR, eMuon, false, true, dum, dum);
+  TF1* sr_mc_ele = one_fit(eSR, eEle, false, true, cl68, cl95,year);
+  TF1* sr_mc_muo = one_fit(eSR, eMuon, false, true, dum, dum,year);
 
   funcs.clear();
   funcs.push_back(sr_mc_ele);
@@ -56,7 +59,7 @@ void bkg_fit()
 
 }
 
-TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95)
+TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95, TString year)
 {
   
   // set fit regions
@@ -91,7 +94,7 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   background_c->SetBottomMargin(0.12);
 
   // get data or MC
-  TH1F* back = GetAnalysisOutput(region, channel, dodata, all_bkgds); 
+  TH1F* back = GetAnalysisOutput(region, channel, dodata, all_bkgds,year); 
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
@@ -313,13 +316,13 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     region_name = "sr";
   }  
   if (dodata){
-    background_c->Print(folder + "/" + region_name + "_" + channel_name + "_data_fit_" + ffile + ".pdf");
+    background_c->Print(folder + "/" + region_name + "_" + channel_name + "_data_fit_" + ffile +"_"+year+ ".pdf");
   } else {
 
     if (all_bkgds){
-      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_allbkgds_fit_" + ffile + ".pdf");
+      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_allbkgds_fit_" + ffile + "_"+year+".pdf");
     } else {
-      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_ttbar_fit_" + ffile + ".pdf");
+      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_ttbar_fit_" + ffile + "_"+year+".pdf");
     }
 
   }
@@ -328,7 +331,7 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   std::vector<TH1F*> err_hists;
   err_hists.push_back(clhist);
   err_hists.push_back(clhist2);  
-  plot_ratio(back, fitmodel, err_hists, region, channel, dodata, all_bkgds, fdesc, ffile);
+  plot_ratio(back, fitmodel, err_hists, region, channel, dodata, all_bkgds, fdesc, ffile,year);
 
   return fitmodel;
 

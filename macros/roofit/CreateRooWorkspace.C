@@ -30,14 +30,14 @@
 #include <TSystem.h>
 #include <TF1.h>
 
-CreateRooWorkspace::CreateRooWorkspace() : infotofile("datacards/AnalysisOutput2016.txt", std::ios::out | std::ios::trunc)
+CreateRooWorkspace::CreateRooWorkspace(TString year) : infotofile("datacards/AnalysisOutput_"+year+".txt", std::ios::out | std::ios::trunc)
 {
    fWS = new RooWorkspace("SingleTth");
    gSystem->Exec("mkdir -p datacards");
    debug_histos = new TFile("debug_histos.root","RECREATE");
 }
 
-TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel ch, bool dodata, bool all_bkgds)
+TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel ch, bool dodata, bool all_bkgds, TString year)
 {
 	  using namespace defs;
     using namespace std;    
@@ -45,7 +45,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
 
 	  // folder where the analysis output files are 
     TString anaoutputfolder;
-    TString year;
+
     char *val = getenv( "ROM_SYS" );
     if (val!=NULL){
       cout << "Using Roman's setup." << endl;
@@ -53,8 +53,13 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
       year = "2016";
     } else {
       cout << "Using NAF setup." << endl;
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
-      year = "2016v3";
+      if (year.Contains("2016")){
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
+      } else if(year.Contains("2017")){
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL/"; 
+      } else{
+	throw runtime_error("Year not possible.");
+      }
     }
 
 
@@ -160,14 +165,14 @@ void CreateRooWorkspace::PrintWorkspace()
   fWS->Print();
 }
 
-void CreateRooWorkspace::StoreWorkspace()
+void CreateRooWorkspace::StoreWorkspace(TString year)
 {
-  fWS->writeToFile("datacards/ws_SingleTth.root");
+  fWS->writeToFile("datacards/ws_SingleTth_"+year+".root");
   //infotofile.close();
   debug_histos->Close();
 }
 
-void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel channel, bool dodata, bool all_bkgds)
+void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel channel, bool dodata, bool all_bkgds, TString year)
 {
   using namespace std;
   using namespace RooFit;
@@ -196,7 +201,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   double plot_high = 2000; 
 
   // get data or MC histogram
-  TH1F* h_data = GetAnalysisOutput(region, channel, dodata, all_bkgds); 
+  TH1F* h_data = GetAnalysisOutput(region, channel, dodata, all_bkgds,year); 
 
 
   //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
@@ -314,7 +319,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   background_c->cd();
   //gPad->SetLogy();
   plotter->Draw();
-  background_c->SaveAs("nominal_bkg_3pfit_"+ch_name+".pdf");
+  background_c->SaveAs("plots/nominal_bkg_3pfit_"+ch_name+"_"+year+".pdf");
 
   // save the data to the workspace
   fWS->import(*dataSR);
@@ -356,7 +361,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 }
 
-void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
+void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
 {
   // set up name
   TString ch_name; 
@@ -366,7 +371,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
     ch_name = "ech";
   }
 
-  std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput.txt");
+  std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+".txt");
   std::string line;
 
   string fitname, paramname;
@@ -586,8 +591,8 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch)
     // ModelSg_JERdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
     ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
     plotter->Draw();
-    c_sg->SaveAs("Fit_Sg"+SgName+".pdf");
-    c_sg->SaveAs("Fit_Sg"+SgName+".eps");
+    c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+".pdf");
+    c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+".eps");
 
     /*std::cout << "MT = " << MT << " mean = " << mean->Eval(MT) << " sigma = " << sigma->Eval(MT) << std::endl;
     delete c_sg; 

@@ -13,12 +13,11 @@ enum Echannel {eMuon, eEle, eComb};
 // folder where the analysis output files are 
 // TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
 
-TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds)
+TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString year = "2016v3")
 {
 
   // folder where the analysis output files are 
   TString anaoutputfolder;
-  TString year;
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
@@ -26,8 +25,9 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
-     anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL"; 
-     year = "2016v3";
+     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
+     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL/"; 
+     else throw runtime_error("Year not possible.");
   }
 	
   //All files are read in
@@ -122,13 +122,13 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
 
 }
 
-TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
+TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString year = "2016v3")
 {
 
   // folder where the analysis output files are 
   TString anaoutputfolder;
-  TString year;
   TString systfolder; 
+  TString hand = "RH";
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
@@ -137,9 +137,19 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
      systfolder = ""; 
   } else {
      cout << "Using NAF setup." << endl;
-     anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
-     year = "2016v3";
-     systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/"; 
+     
+     if(year.Contains("2016")) {
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/"; 
+     }
+     else if(year.Contains("2017")){
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/"; 
+       hand = "LH";
+     }
+     else throw runtime_error("Year not possible.");
+
+     if(unc=="") anaoutputfolder +="NOMINAL/";
   }
 
   
@@ -149,22 +159,22 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
   std::cout<<"MT  "<< TString::Format("%d", MT)<<std::endl;
 
   TString MT_name = TString::Format("%d", MT);
-  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-  if ((MT <700) && (val==NULL))     sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+  if ((MT <700) && (val==NULL))     sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
 
   if(unc!=""){
     TString subfolder = "NOMINAL/";
-      sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-    if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+      sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+    if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
     if(unc.Contains("PDF")) {
       subfolder = "pdf/";
-      sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-      if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+      sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+      if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
     }
 
     if(unc.Contains("JEC")||unc.Contains("JER")) {
-      sig_f = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/"+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-      if ((MT <700) && (val==NULL))     sig_f = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/"+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+      sig_f = new TFile(anaoutputfolder+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+      if ((MT <700) && (val==NULL))     sig_f = new TFile(anaoutputfolder+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
     }
 
   }  
@@ -226,11 +236,11 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "")
 
 }
 
-double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT, double& err)
+double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT, double& err, TString year = "2016v3")
 {
   // folder where the analysis output files are 
   TString anaoutputfolder;
-  TString year;
+  TString hand = "RH";
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
@@ -238,8 +248,12 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
-     anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/"; 
-     year = "2016v3";
+     if(year.Contains("2016"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
+     else if (year.Contains("2017")){
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL/"; 
+       hand = "LH";
+     }
+     else throw runtime_error("Year not possible.");
   }
 
   double gauss_norm_interval = sigf->Integral(sigf->GetXmin(), sigf->GetXmax(), 1e-3 );
@@ -254,8 +268,8 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
 
   // get total number of events before any selection
   TString MT_name = TString::Format("%d", MT);
-  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_" + year + ".root", "READ");
-  if ((MT <700) && (val==NULL)) sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_RH_" + MT_name + "_2016v2.root", "READ");
+  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+  if ((MT <700) && (val==NULL)) sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
   TString hname = "cleaner/sum_event_weights";
   TH1F* h = (TH1F*) sig_f->Get(hname);  
   double Ntot = h->GetBinContent(1); 
@@ -482,7 +496,7 @@ TH1F* ComputeHistWithCL(TF1* f, TFitResultPtr fr, TH1F* h, double cl)
 }
 
 
-void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString funcdesc, TString funcfilename)
+void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString funcdesc, TString funcfilename, TString year = "2016v3")
 {
   static int i = 0;
   ++i;
@@ -591,6 +605,7 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
   text->DrawLatex(0.15, 0.905, info3.Data());
 
   TString lumiText = "35.9 fb^{-1}";
+  if(year.Contains("2017")) lumiText = "41.5 fb^{-1}";
   lumiText += " (13 TeV)";
   text->DrawLatex(0.665, 0.905, lumiText.Data());
 
@@ -704,13 +719,13 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
     region_name = "sr";
   }  
   if (dodata){
-    c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_data_fit_" + funcfilename + ".pdf");
+    c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_data_fit_" + funcfilename + "_"+ year+".pdf");
   } else {
 
     if (all_bkgds){
-      c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_allbkgds_fit_" + funcfilename + ".pdf");
+      c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_allbkgds_fit_" + funcfilename + "_"+ year+".pdf");
     } else {
-      c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_ttbar_fit_" + funcfilename + ".pdf");
+      c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_ttbar_fit_" + funcfilename + "_"+ year+".pdf");
     }
 
   }

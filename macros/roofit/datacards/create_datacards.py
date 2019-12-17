@@ -27,9 +27,11 @@ bkg_much_norm = 0
 bkg_ech_norm = 0
 number_of_channels = 2
 number_of_backgrounds = 1
+year = "2016v3"
+year = "2017v2"
 
 # Find all possible MT where we have the normalisation
-inputfile = open("AnalysisOutput2016.txt","r")
+inputfile = open("AnalysisOutput_"+year+".txt","r")
 listOfLines = inputfile.readlines()
 i=0
 for line in listOfLines:
@@ -63,7 +65,7 @@ for line in listOfLines:
 
 # open file to write
 for mass in signal_much_norm:
-    outputfile = open("Datacard_M"+str(mass)+".txt",'w')
+    outputfile = open("Datacard_"+year+"_M"+str(mass)+".txt",'w')
     outputfile.write("# Version of the 36/pb SingleTth Analysis \n\n")
     outputfile.write("------------------------------ \n")
     outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")

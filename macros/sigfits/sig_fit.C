@@ -5,17 +5,20 @@
 #include "../bkgfits/helpers.C"
 
 using namespace std;
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="");
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3");
 
 void sig_fit()
 {
-  std::ofstream infotofile("SignalFitOutput.txt", std::ios::out | std::ios::trunc);
+  TString year =  "2017v2";
+  std::ofstream infotofile("SignalFitOutput_"+year+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
   Echannel ch = eComb;
 
-  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","PDF","JEC","JER"}; // PDF,scale missing 
-  std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};
-  //  std::vector<double> MTs = {600, 650, 800, 900, 1000, 1200};
+  // std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","PDF","JEC","JER"}; // PDF,scale missing 
+ std::vector<TString> uncertainties ={}; // PDF,scale missing 
+
+ // std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
+ std::vector<double> MTs = {650, 700, 800, 1000,1100, 1200};// 2017
   std::vector<double> means;
   std::vector<double> means_err;
   std::vector<double> widths;  
@@ -26,7 +29,7 @@ void sig_fit()
 
   // do the fits, fill results into graph
   for (int i=0; i<MTs.size(); ++i){
-    fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err, effs, effs_err);
+    fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err, effs, effs_err,"",year);
     zeros.push_back(0);
   }
   TGraphErrors* gmean  = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
@@ -120,7 +123,7 @@ void sig_fit()
   } else if (ch==eComb) {
     channel_name = "comb";
   }
-  TString fname = "results/signal_mean_values_" + channel_name; 
+  TString fname = "results/signal_mean_values_" + channel_name +"_"+year; 
 
 
   // draw some info
@@ -163,7 +166,7 @@ void sig_fit()
       effs_err_unc.clear();  
 
       for (int i=0; i<MTs.size(); ++i){
-	fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+direction);
+	fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+direction,year);
       }
     TGraphErrors* gmean_unc  = new TGraphErrors(MTs.size(), MTs.data(), means_unc.data(), zeros.data(), means_err_unc.data());  
     TF1* lin = new TF1("meanfit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
@@ -265,7 +268,7 @@ void sig_fit()
   lin2->DrawCopy("same");
 
 
-  TString fname2 = "results/signal_sigma_values_" + channel_name; 
+  TString fname2 = "results/signal_sigma_values_" + channel_name+"_"+year; 
 
   // draw some info
   info = TString::Format("Signal widths, ");
@@ -299,7 +302,7 @@ void sig_fit()
       effs_err_unc.clear();  
 
       for (int i=0; i<MTs.size(); ++i){
-	fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+direction);
+	fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+direction, year);
       }
       TGraphErrors* gsigma_unc = new TGraphErrors(MTs.size(), MTs.data(), widths_unc.data(), zeros.data(), widths_err_unc.data());    
       TF1* lin2 = new TF1("sigmafit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
@@ -413,7 +416,7 @@ void sig_fit()
   info.Append(info2);
   text->DrawLatex(0.16, 0.92, info.Data());
 
-  TString fname3 = "results/signal_eff_values_" + channel_name; 
+  TString fname3 = "results/signal_eff_values_" + channel_name+"_"+year; 
 
   can3->RedrawAxis();
   can3->SaveAs(fname3+ ".eps");
@@ -439,7 +442,7 @@ void sig_fit()
     effs_err_unc.clear();  
 
     for (int i=0; i<MTs.size(); ++i){
-      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_up");
+      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_up",year);
     }
     TGraphErrors* geff_unc   = new TGraphErrors(MTs.size(), MTs.data(), effs_unc.data(), zeros.data(), effs_err_unc.data());      
     TF1* lin3 = new TF1("efffit"+TString::Format("%d",jj), "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
@@ -470,7 +473,7 @@ void sig_fit()
 
 }
 
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="")
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3")
 {
   
   // set fit regions (crude estimate)
@@ -504,7 +507,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   can->SetBottomMargin(0.12);
 
   // get data or MC
-  TH1F* sigh = GetAnalysisOutputSignal(MT, channel,unc); 
+  TH1F* sigh = GetAnalysisOutputSignal(MT, channel,unc, year); 
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
@@ -564,7 +567,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   double Nevents = sigh->IntegralAndError(sigh->GetXaxis()->FindBin(xmin), sigh->GetXaxis()->FindBin(xmax), Nevents_err);
   double Ntot = sigh->Integral(sigh->GetXaxis()->GetXmin(), sigh->GetXaxis()->GetXmax());
   double efferr;
-  double eff = CalcEff(fitmodel, Nevents, Nevents_err, Ntot, MT, efferr);
+  double eff = CalcEff(fitmodel, Nevents, Nevents_err, Ntot, MT, efferr, year);
 
   cout << "\n" << "Total number of expected events (1pb?) = " << sigh->GetSumOfWeights() << " and within fit range: " << sigh->Integral(sigh->FindBin(xmin), sigh->FindBin(xmax)) << endl << endl;
 
@@ -652,7 +655,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     channel_name = "comb";
   }
 
-  can->Print(folder + "/signalfit_" + channel_name + "_" + ffile + ".pdf");
+  can->Print(folder + "/signalfit_" + channel_name + "_" + ffile + + "_" +year+".pdf");
 
   // save ratios and all infos
 /*  
