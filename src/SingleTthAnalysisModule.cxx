@@ -689,7 +689,7 @@ namespace uhh2examples {
       h_btageff_trigger->fill(event);
     }
 
-       SF_btag->process(event);
+    SF_btag->process(event);
 
     // 3 b-tags
     if(!btag_loose_sel->passes(event)) return false;
