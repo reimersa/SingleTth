@@ -47,7 +47,7 @@ namespace uhh2examples {
     virtual bool process(Event & event) override;
 
   private:
-    
+
     Year year;
     unique_ptr<CommonModules> common;
     unique_ptr<AnalysisModule> SF_muonID, SF_muonIso, SF_eleReco, SF_eleID, SF_btag, scale_variation_module;
@@ -65,6 +65,7 @@ namespace uhh2examples {
     unique_ptr<Hists> h_nocuts, h_jets_nocuts, h_ele_nocuts, h_mu_nocuts, h_event_nocuts, h_lumi_nocuts;
     unique_ptr<Hists> h_cleaner, h_jets_cleaner, h_ele_cleaner, h_mu_cleaner, h_event_cleaner, h_lumi_cleaner;
     unique_ptr<Hists> h_trigger, h_jets_trigger, h_ele_trigger, h_mu_trigger, h_event_trigger, h_lumi_trigger, h_btageff_trigger;
+    unique_ptr<Hists> h_btagsf, h_jets_btagsf, h_ele_btagsf, h_mu_btagsf, h_event_btagsf, h_lumi_btagsf;
     unique_ptr<Hists> h_btag, h_jets_btag, h_ele_btag, h_mu_btag, h_event_btag, h_lumi_btag;
     unique_ptr<Hists> h_btag_2m, h_jets_btag_2m, h_ele_btag_2m, h_mu_btag_2m, h_event_btag_2m, h_lumi_btag_2m;
     unique_ptr<Hists> h_btag_3m, h_jets_btag_3m, h_ele_btag_3m, h_mu_btag_3m, h_event_btag_3m, h_lumi_btag_3m;
@@ -189,7 +190,7 @@ namespace uhh2examples {
     SF_eleID.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/2016LegacyReReco_ElectronTight_Fall17V2.root", 1, "id", sys_eleid));
     SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/LQToTopMu/Run2_80X_v3/TagProbe/Optimization/35867fb_Iso27_NonIso115/ElectronEfficiencies.root", sys_eletrigger));
 
-    SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag));
+    SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag, "comb"));
 
     h_L1prefiring = ctx.declare_event_output<float>("weight_sfL1prefiring");
     h_L1prefiring_up = ctx.declare_event_output<float>("weight_sfL1prefiring_up");
@@ -200,7 +201,7 @@ namespace uhh2examples {
     h_muon_triggerweight = ctx.declare_event_output<float>("weight_sfmu_trigger");
     h_muon_triggerweight_up = ctx.declare_event_output<float>("weight_sfmu_trigger_up");
     h_muon_triggerweight_down = ctx.declare_event_output<float>("weight_sfmu_trigger_down");
-    
+
 
     h_electron_triggerweight = ctx.declare_event_output<float>("weight_sfelec_trigger");
     h_electron_triggerweight_up = ctx.declare_event_output<float>("weight_sfelec_trigger_up");
@@ -260,6 +261,13 @@ namespace uhh2examples {
     h_lumi_trigger.reset(new LuminosityHists(ctx, "Lumi_trigger"));
 
     h_btageff_trigger.reset(new BTagMCEfficiencyHists(ctx, "btageff_trigger", DeepjetTight));
+
+    h_btagsf.reset(new SingleTthHists(ctx, "btagsf"));
+    h_jets_btagsf.reset(new JetHists(ctx, "Jets_btagsf"));
+    h_ele_btagsf.reset(new ElectronHists(ctx, "Ele_btagsf"));
+    h_mu_btagsf.reset(new MuonHists(ctx, "Mu_btagsf"));
+    h_event_btagsf.reset(new EventHists(ctx, "Event_btagsf"));
+    h_lumi_btagsf.reset(new LuminosityHists(ctx, "Lumi_btagsf"));
 
     h_btag.reset(new SingleTthHists(ctx, "btag"));
     h_jets_btag.reset(new JetHists(ctx, "Jets_btag"));
@@ -649,7 +657,7 @@ namespace uhh2examples {
 
     // Trigger
     if(is_much){
-      if((year == Year::is2016v2) || (year == Year::is2016v3)){ 
+      if((year == Year::is2016v2) || (year == Year::is2016v3)){
 	if(!(trigger1_much_sel_2016->passes(event) || trigger2_much_sel_2016->passes(event)) ) return false;
 	SF_muonTrigger->process_onemuon(event,0);
       }else if(year == Year::is2017v2){
@@ -664,7 +672,7 @@ namespace uhh2examples {
       event.set(h_electron_triggerweight_down, 1.);
     }
     else{
-      if((year == Year::is2016v2) || (year == Year::is2016v3)){ 
+      if((year == Year::is2016v2) || (year == Year::is2016v3)){
       if(!(trigger1_ech_sel_2016->passes(event) || trigger2_ech_sel_2016->passes(event)) ) return false;
       SF_eleTrigger->process(event);
       }else  if(year == Year::is2017v2){
@@ -690,6 +698,14 @@ namespace uhh2examples {
     }
 
     SF_btag->process(event);
+    if(is_much){
+      h_btagsf->fill(event);
+      h_jets_btagsf->fill(event);
+      h_ele_btagsf->fill(event);
+      h_mu_btagsf->fill(event);
+      h_event_btagsf->fill(event);
+      h_lumi_btagsf->fill(event);
+    }
 
     // 3 b-tags
     if(!btag_loose_sel->passes(event)) return false;
