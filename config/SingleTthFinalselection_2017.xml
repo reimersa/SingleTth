@@ -3,8 +3,8 @@
 
 
 <!ENTITY TargetLumi      "41530">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/NOMINAL_NoBTagSF">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -130,7 +130,7 @@
 
 <!--
 <ConfigParse NEventsBreak="100000" FileSplit="0" AutoResubmit="5"/>
-<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Full_2017"/>
+<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Final_2017"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -348,12 +348,12 @@
 		</InputData>
 
 
-
-	    <!-- 	<InputData Lumi="46376.6826" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-70to100_2017v2" Cacheable="&b_Cacheable;"> -->
-	    <!-- <In FileName="&DYJetsToLL_HT-70to100;" Lumi="0.0"/> -->
-	    <!-- 		<InputTree Name="AnalysisTree" /> -->
-	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
-	    <!-- 	</InputData> -->
+<!--
+		<InputData Lumi="46376.6826" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-70to100_2017v2" Cacheable="&b_Cacheable;">
+			<In FileName="&DYJetsToLL_HT-70to100;" Lumi="0.0"/>
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData> -->
 
 		<InputData Lumi="69226.78638" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-100to200_2017v2" Cacheable="&b_Cacheable;">
 	    <In FileName="&DYJetsToLL_HT-100to200;" Lumi="0.0"/>
@@ -656,6 +656,7 @@
 			<Item Name="GenJetCollection" Value="slimmedGenJets" />
 			<Item Name="GenParticleCollection" Value="GenParticles" />
 			<Item Name="GenInfoName" Value="genInfo" />
+			<Item Name="additionalBranches"      Value="eventweight_final weight_sfmu_id_up weight_sfmu_id_down weight_sfmu_id weight_pu weight_pu_up weight_pu_down weight_sfelec_id weight_sfelec_id_up weight_sfelec_id_down weight_sfelec_reco weight_sfelec_reco_up weight_sfelec_reco_down weight_sfelec_trigger weight_sfelec_trigger_up weight_sfelec_trigger_down weight_sfmu_iso weight_sfmu_iso_up weight_sfmu_iso_down weight_sfmu_trigger weight_sfmu_trigger_up weight_sfmu_trigger_down weight_btag weight_btag_bc_up weight_btag_bc_down weight_btag_udsg_up weight_btag_udsg_down weight_murmuf_upup weight_murmuf_upnone weight_murmuf_noneup weight_murmuf_nonedown weight_murmuf_downnone weight_murmuf_downdown" />
 
 			<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.root" />
 
@@ -689,7 +690,7 @@
 		-->
 
 		<!-- the class name of the AnalysisModule subclasses to run: -->
-		<Item Name="AnalysisModule" Value="SingleTthAnalysisModule" />
+		<Item Name="AnalysisModule" Value="SingleTthFinalModule" />
 
 		<!-- tell AnalysisModuleRunner NOT to use the MC event weight from SFrame; rather let
 		MCLumiWeight (called via CommonModules) calculate the MC event weight. The MC

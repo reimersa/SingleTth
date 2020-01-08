@@ -36,7 +36,13 @@ SingleTthPDFHists::SingleTthPDFHists(Context & ctx, const string & dirname): His
   //1) the sample is LO (and doesn't have ntupleweights for that reason) (this assumption is protected by a runtime_error later)
   //2) the sample is NLO and yet doesn't have ntupleweights
 
-  take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW"));
+  Year year = extract_year(ctx);
+  if(year == Year::is2017v1 || year == Year::is2017v2){
+    take_ntupleweights = !(m_oname.Contains("QCD"));
+  }
+  else{
+    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW"));
+  }
   // take_ntupleweights =  use_ntupleweights && (!is_LO || m_oname.Contains("DYJets")) && (m_oname != "SingleTop_T_tWch" && m_oname != "SingleTop_Tbar_tWch");
 
   cout << "Are ntupleweights taken for this sample?: " << take_ntupleweights << endl;

@@ -3,8 +3,8 @@
 
 
 <!ENTITY TargetLumi      "41530">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/JEC_up">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/JEC_up_NoBTagSF">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -87,7 +87,7 @@
 <!ENTITY WW_2L2Nu "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DibosonNLO_WW_2L2Nu_2017v2.root">
 <!ENTITY WW_LNuQQ "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DibosonNLO_WW_LNuQQ_2017v2.root">
 
-<!-- <!ENTITY WZ_1L1NuQQ "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DibosonNLO_WZ_1L1NuQQ_2017v2.root"> -->
+<!ENTITY WZ_1L1NuQQ "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DibosonNLO_WZ_1L1NuQQ_2017v2.root">
 <!ENTITY WZ_1L3Nu "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DibosonNLO_WZ_1L3Nu_2017v2.root">
 <!ENTITY WZ_2L2Q "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DibosonNLO_WZ_2L2Q_2017v2.root">
 <!ENTITY WZ_3LNu "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DibosonNLO_WZ_3LNu_2017v2.root">
@@ -130,7 +130,7 @@
 
 <!--
 <ConfigParse NEventsBreak="100000" FileSplit="0" AutoResubmit="5"/>
-<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Full_2017"/>
+<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Full_2017_JEC_up"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -342,18 +342,18 @@
 		</InputData>
 
 		<InputData Lumi="2955966.181" NEventsMax="&NEVT;" Type="MC" Version="ST_s-ch_2017v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&ST_s-ch;" Lumi="0.0"/>
+			<In FileName="&ST_s-ch;" Lumi="0.0"/>
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-
-	    <!-- 	<InputData Lumi="46376.6826" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-70to100_2017v2" Cacheable="&b_Cacheable;"> -->
-	    <!-- <In FileName="&DYJetsToLL_HT-70to100;" Lumi="0.0"/> -->
-	    <!-- 		<InputTree Name="AnalysisTree" /> -->
-	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
-	    <!-- 	</InputData> -->
+<!-- 
+		<InputData Lumi="46376.6826" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-70to100_2017v2" Cacheable="&b_Cacheable;">
+			<In FileName="&DYJetsToLL_HT-70to100;" Lumi="0.0"/>
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData> -->
 
 		<InputData Lumi="69226.78638" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-100to200_2017v2" Cacheable="&b_Cacheable;">
 	    <In FileName="&DYJetsToLL_HT-100to200;" Lumi="0.0"/>
