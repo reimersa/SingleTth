@@ -231,8 +231,8 @@ namespace uhh2examples {
     trigger1_much_sel_2017.reset(new TriggerSelection("HLT_IsoMu27_v*"));
     trigger1_much_sel_2018.reset(new TriggerSelection("HLT_IsoMu24_v*"));
     trigger1_ech_sel_2016.reset(new TriggerSelection("HLT_Ele27_WPTight_Gsf_v*"));
-    trigger2_ech_sel_2016.reset(new TriggerSelection("HLT_Ele115_CaloIdVT_GsfTrkIdT_v*"));
-    trigger1_ech_sel_2017.reset(new TriggerSelection("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*"));
+    trigger2_ech_sel_2016.reset(new TriggerSelection("HLT_Photon175_v*"));
+    trigger1_ech_sel_2017.reset(new TriggerSelection("HLT_Ele35_WPTight_Gsf_v*"));
     trigger2_ech_sel_2017.reset(new TriggerSelection("HLT_Photon200_v*"));
     trigger1_ech_sel_2018.reset(new TriggerSelection("HLT_Ele32_WPTight_Gsf_v*"));
 
