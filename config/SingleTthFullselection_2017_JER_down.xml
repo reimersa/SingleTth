@@ -3,8 +3,8 @@
 
 
 <!ENTITY TargetLumi      "41530">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/JER_down">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/JER_down_NoBTagSF">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -130,7 +130,7 @@
 
 <!--
 <ConfigParse NEventsBreak="100000" FileSplit="0" AutoResubmit="5"/>
-<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Full_2017"/>
+<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Full_2017_JER_down"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -342,18 +342,18 @@
 		</InputData>
 
 		<InputData Lumi="2955966.181" NEventsMax="&NEVT;" Type="MC" Version="ST_s-ch_2017v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&ST_s-ch;" Lumi="0.0"/>
+			<In FileName="&ST_s-ch;" Lumi="0.0"/>
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-
-	    <!-- 	<InputData Lumi="46376.6826" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-70to100_2017v2" Cacheable="&b_Cacheable;"> -->
-	    <!-- <In FileName="&DYJetsToLL_HT-70to100;" Lumi="0.0"/> -->
-	    <!-- 		<InputTree Name="AnalysisTree" /> -->
-	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
-	    <!-- 	</InputData> -->
+<!--
+		<InputData Lumi="46376.6826" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-70to100_2017v2" Cacheable="&b_Cacheable;">
+			<In FileName="&DYJetsToLL_HT-70to100;" Lumi="0.0"/>
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData> -->
 
 		<InputData Lumi="69226.78638" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_HT-100to200_2017v2" Cacheable="&b_Cacheable;">
 	    <In FileName="&DYJetsToLL_HT-100to200;" Lumi="0.0"/>

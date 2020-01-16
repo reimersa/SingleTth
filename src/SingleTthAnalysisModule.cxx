@@ -190,7 +190,7 @@ namespace uhh2examples {
     SF_eleID.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/2016LegacyReReco_ElectronTight_Fall17V2.root", 1, "id", sys_eleid));
     SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/LQToTopMu/Run2_80X_v3/TagProbe/Optimization/35867fb_Iso27_NonIso115/ElectronEfficiencies.root", sys_eletrigger));
 
-    SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag, "comb"));
+    // SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag, "comb"));
 
     h_L1prefiring = ctx.declare_event_output<float>("weight_sfL1prefiring");
     h_L1prefiring_up = ctx.declare_event_output<float>("weight_sfL1prefiring_up");
@@ -596,7 +596,7 @@ namespace uhh2examples {
 
 
   bool SingleTthAnalysisModule::process(Event & event) {
-    cout << "++++++++++ NEW EVENT ++++++++++" << endl;
+    // cout << "++++++++++ NEW EVENT ++++++++++" << endl;
     event.set(h_is_tprime_reco, false);
 
     is_much = (muon_sel_much->passes(event) && ele_sel_much->passes(event));
@@ -697,7 +697,7 @@ namespace uhh2examples {
       h_btageff_trigger->fill(event);
     }
 
-    SF_btag->process(event);
+    // SF_btag->process(event);
     if(is_much){
       h_btagsf->fill(event);
       h_jets_btagsf->fill(event);

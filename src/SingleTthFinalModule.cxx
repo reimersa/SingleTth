@@ -55,6 +55,8 @@ namespace uhh2examples {
     unique_ptr<SingleTthChi2Discriminator> tprime_chi2;
 
     bool is_mc, is_much;
+
+    Year year;
     TString dataset_version;
 
     vector<TString> handlenames, systnames, systshift, systshift_scale;
@@ -114,6 +116,7 @@ namespace uhh2examples {
 
     is_mc = ctx.get("dataset_type") == "MC";
     dataset_version = ctx.get("dataset_version");
+    year = extract_year(ctx);
 
     JetId DeepjetTight = BTag(BTag::DEEPJET, BTag::WP_TIGHT);
     tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
@@ -123,9 +126,20 @@ namespace uhh2examples {
 
     eventweight_nominal = ctx.get_handle<float>("eventweight_final");
 
+
     // Easy systematics
-    systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger", "btag_bc", "btag_udsg"};
-    handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger", "weight_btag" , "weight_btag"};
+    if(year == Year::is2017v1 || year == Year::is2017v2){
+      // Without b-tagging uncertainties in 2017
+      systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger"};
+      handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger"};
+
+    }
+    else{
+      systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger", "btag_bc", "btag_udsg"};
+      handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger", "weight_btag" , "weight_btag"};
+    }
+
+
     systshift = {"up", "down"};
     if(systnames.size() != handlenames.size()) throw runtime_error("In SingleTthFinalModule.cxx: Length of systnames and handlenames is not equal.");
 
