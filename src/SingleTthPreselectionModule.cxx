@@ -147,7 +147,7 @@ namespace uhh2examples {
     h_event_nocuts->fill(event);
     h_lumi_nocuts->fill(event);
 
-    if(!lumi_sel->passes(event)) return false;
+    //    if(!lumi_sel->passes(event)) return false;
     bool pass_common = common->process(event);
     if(!pass_common) return false;
 
