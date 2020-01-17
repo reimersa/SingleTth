@@ -56,7 +56,7 @@ namespace uhh2examples {
     // unique_ptr<PDFWeightHandleProducer> pdf_weight_producer;
 
     // declare the Selections to use.
-    unique_ptr<Selection>  btag_loose_sel, btag_2medium_sel, btag_3medium_sel, btag_2tight_sel, btag_3tight_sel, trigger1_much_sel_2016, trigger2_much_sel_2016,trigger1_much_sel_2017, trigger1_ech_sel_2016, trigger2_ech_sel_2016,trigger1_ech_sel_2017,trigger2_ech_sel_2017, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech;
+    unique_ptr<Selection>  btag_loose_sel, btag_2medium_sel, btag_3medium_sel, btag_2tight_sel, btag_3tight_sel, trigger1_much_sel_2016, trigger2_much_sel_2016,trigger1_much_sel_2017,trigger1_much_sel_2018, trigger1_ech_sel_2016, trigger2_ech_sel_2016,trigger1_ech_sel_2017,trigger2_ech_sel_2017,trigger1_ech_sel_2018, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech;
 
     unique_ptr<HighMassSingleTthReconstruction> tprime_reco;
     unique_ptr<SingleTthChi2Discriminator> tprime_chi2;
@@ -229,10 +229,12 @@ namespace uhh2examples {
     trigger1_much_sel_2016.reset(new TriggerSelection("HLT_IsoMu24_v*"));
     trigger2_much_sel_2016.reset(new TriggerSelection("HLT_IsoTkMu24_v*"));
     trigger1_much_sel_2017.reset(new TriggerSelection("HLT_IsoMu27_v*"));
+    trigger1_much_sel_2018.reset(new TriggerSelection("HLT_IsoMu24_v*"));
     trigger1_ech_sel_2016.reset(new TriggerSelection("HLT_Ele27_WPTight_Gsf_v*"));
-    trigger2_ech_sel_2016.reset(new TriggerSelection("HLT_Ele115_CaloIdVT_GsfTrkIdT_v*"));
-    trigger1_ech_sel_2017.reset(new TriggerSelection("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*"));
+    trigger2_ech_sel_2016.reset(new TriggerSelection("HLT_Photon175_v*"));
+    trigger1_ech_sel_2017.reset(new TriggerSelection("HLT_Ele35_WPTight_Gsf_v*"));
     trigger2_ech_sel_2017.reset(new TriggerSelection("HLT_Photon200_v*"));
+    trigger1_ech_sel_2018.reset(new TriggerSelection("HLT_Ele32_WPTight_Gsf_v*"));
 
     tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
     tprime_chi2.reset(new SingleTthChi2Discriminator(ctx));
@@ -658,14 +660,20 @@ namespace uhh2examples {
     // Trigger
     if(is_much){
       if((year == Year::is2016v2) || (year == Year::is2016v3)){
-	if(!(trigger1_much_sel_2016->passes(event) || trigger2_much_sel_2016->passes(event)) ) return false;
-	SF_muonTrigger->process_onemuon(event,0);
-      }else if(year == Year::is2017v2){
-	if(!(trigger1_much_sel_2017->passes(event)) ) return false;
-	event.set(h_muon_triggerweight, 1.);
-	event.set(h_muon_triggerweight_up, 1.);
-	event.set(h_muon_triggerweight_down, 1.);
-
+        if(!(trigger1_much_sel_2016->passes(event) || trigger2_much_sel_2016->passes(event)) ) return false;
+        SF_muonTrigger->process_onemuon(event,0);
+      }
+      else if(year == Year::is2017v2){
+        if(!(trigger1_much_sel_2017->passes(event)) ) return false;
+        event.set(h_muon_triggerweight, 1.);
+        event.set(h_muon_triggerweight_up, 1.);
+        event.set(h_muon_triggerweight_down, 1.);
+      }
+      else if(year == Year::is2018){
+        if(!(trigger1_much_sel_2018->passes(event)) ) return false;
+        event.set(h_muon_triggerweight, 1.);
+        event.set(h_muon_triggerweight_up, 1.);
+        event.set(h_muon_triggerweight_down, 1.);
       }
       event.set(h_electron_triggerweight, 1.);
       event.set(h_electron_triggerweight_up, 1.);
@@ -673,13 +681,20 @@ namespace uhh2examples {
     }
     else{
       if((year == Year::is2016v2) || (year == Year::is2016v3)){
-      if(!(trigger1_ech_sel_2016->passes(event) || trigger2_ech_sel_2016->passes(event)) ) return false;
-      SF_eleTrigger->process(event);
-      }else  if(year == Year::is2017v2){
-	if(!(trigger1_ech_sel_2017->passes(event) || trigger2_ech_sel_2017->passes(event)) ) return false;
-	event.set(h_electron_triggerweight, 1.);
-	event.set(h_electron_triggerweight_up, 1.);
-	event.set(h_electron_triggerweight_down, 1.);
+        if(!(trigger1_ech_sel_2016->passes(event) || trigger2_ech_sel_2016->passes(event)) ) return false;
+        SF_eleTrigger->process(event);
+      }
+      else  if(year == Year::is2017v2){
+        if(!(trigger1_ech_sel_2017->passes(event) || trigger2_ech_sel_2017->passes(event)) ) return false;
+        event.set(h_electron_triggerweight, 1.);
+        event.set(h_electron_triggerweight_up, 1.);
+        event.set(h_electron_triggerweight_down, 1.);
+      }
+      else  if(year == Year::is2018){
+        if(!(trigger1_ech_sel_2017->passes(event)) ) return false;
+        event.set(h_electron_triggerweight, 1.);
+        event.set(h_electron_triggerweight_up, 1.);
+        event.set(h_electron_triggerweight_down, 1.);
       }
       event.set(h_muon_triggerweight, 1.);
       event.set(h_muon_triggerweight_up, 1.);
