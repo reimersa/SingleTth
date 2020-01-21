@@ -16,10 +16,12 @@ void sig_fit()
 
   // std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","PDF","JEC","JER"}; // PDF,scale missing 
   // std::vector<TString> uncertainties ={}; // PDF,scale missing 
-  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring"}; // 2017
+  //  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring"}; // 2017, PDF, btag, Trigger missing
+  std::vector<TString> uncertainties ={"PDF"}; // 2017, PDF, btag, Trigger missing
 
  // std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
  std::vector<double> MTs = {650, 700, 800, 1000,1100, 1200};// 2017
+ std::vector<double> MTs_backup = {650, 700, 800, 1000,1100, 1200};// 2017
   std::vector<double> means;
   std::vector<double> means_err;
   std::vector<double> widths;  
@@ -153,7 +155,7 @@ void sig_fit()
   leg->SetTextFont(42);
 
   int jj=0;
-  MTs = {600, 650, 800, 900, 1000, 1100,1200};
+  MTs = MTs_backup;//{600, 650, 800, 900, 1000, 1100,1200};
   for(TString unc:uncertainties){
     for(int j=0; j<2; j++){
       TString direction = "_up";
@@ -290,7 +292,7 @@ void sig_fit()
   leg2->SetTextFont(42);
 
   jj=0;
-  MTs = {600, 650, 800, 900, 1000,1100, 1200};
+  MTs = MTs_backup;//{600, 650, 800, 900, 1000,1100, 1200};
   for(TString unc:uncertainties){
     for(int j=0; j<2; j++){
       TString direction = "_up";
@@ -433,8 +435,9 @@ void sig_fit()
   leg3->SetTextFont(42);
 
   jj=0;
-  MTs = {600, 650, 800, 900, 1000, 1100,1200};
+  MTs = MTs_backup;// {600, 650, 800, 900, 1000, 1100,1200};
   for(TString unc:uncertainties){
+    std::cout<<"   ===============================    uncertainty        "<< unc<<std::endl;
     means_unc.clear();
     means_err_unc.clear();
     widths_unc.clear();  
@@ -656,7 +659,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     channel_name = "comb";
   }
 
-  can->Print(folder + "/signalfit_" + channel_name + "_" + ffile + + "_" +year+".pdf");
+  can->Print(folder + "/signalfit_" + channel_name + "_" + ffile + + "_" +year+"_"+unc+".pdf");
 
   // save ratios and all infos
 /*  

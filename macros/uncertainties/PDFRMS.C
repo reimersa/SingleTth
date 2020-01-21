@@ -22,52 +22,63 @@
 
 using namespace std;
 
-void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample);
+void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, TString year);
 
 void PDFRMS(){
 
+  //  TString year = "2016v3";
+  TString year = "2017v2";
+
+
+  TString year_lowmass = "";
+  if(year == "2016v3") year_lowmass = "2016v2";
+  else year_lowmass = year;
+  TString hand = "RH";
+  if(year == "2017v2") hand="LH";
+
+
   map<TString, TString> samplemap;
-  samplemap["TTbar_2016v3"] = "uhh2.AnalysisModuleRunner.MC.TTbar_2016v3.root";
-  samplemap["SingleTop_2016v3"] = "uhh2.AnalysisModuleRunner.MC.SingleTop_2016v3.root";
-  samplemap["VLQ_RH_600_2016v2"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_600_2016v2.root";
-  samplemap["VLQ_RH_650_2016v2"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_650_2016v2.root";
-  samplemap["VLQ_LH_700_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_2016v3.root";
-  samplemap["VLQ_RH_800_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_800_2016v3.root";
-  samplemap["VLQ_RH_900_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_900_2016v3.root";
-  samplemap["VLQ_RH_1000_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1000_2016v3.root";
-  samplemap["VLQ_RH_1100_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1100_2016v3.root";
-  samplemap["VLQ_RH_1200_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1200_2016v3.root";
-  samplemap["VLQ_RH_1300_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1300_2016v3.root";
-  samplemap["VLQ_RH_1400_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1400_2016v3.root";
-  samplemap["VLQ_RH_1500_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1500_2016v3.root";
-  samplemap["VLQ_RH_1600_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1600_2016v3.root";
-  samplemap["VLQ_RH_1700_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1700_2016v3.root";
-  samplemap["VLQ_RH_1800_2016v3"] = "uhh2.AnalysisModuleRunner.MC.VLQ_RH_1800_2016v3.root";
+  samplemap["TTbar_"+year] = "uhh2.AnalysisModuleRunner.MC.TTbar_"+year+".root";
+  samplemap["SingleTop_"+year] = "uhh2.AnalysisModuleRunner.MC.SingleTop_"+year+".root";
+  samplemap["VLQ_"+hand+"_600_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_600_"+year_lowmass+".root";
+  samplemap["VLQ_"+hand+"_650_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_650_"+year_lowmass+".root";
+  samplemap["VLQ_LH_700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_"+year+".root";
+  samplemap["VLQ_"+hand+"_800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_800_"+year+".root";
+  samplemap["VLQ_"+hand+"_900_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_900_"+year+".root";
+  samplemap["VLQ_"+hand+"_1000_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1000_"+year+".root";
+  samplemap["VLQ_"+hand+"_1100_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1100_"+year+".root";
+  samplemap["VLQ_"+hand+"_1200_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1200_"+year+".root";
+  samplemap["VLQ_"+hand+"_1300_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1300_"+year+".root";
+  samplemap["VLQ_"+hand+"_1400_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1400_"+year+".root";
+  samplemap["VLQ_"+hand+"_1500_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1500_"+year+".root";
+  samplemap["VLQ_"+hand+"_1600_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1600_"+year+".root";
+  samplemap["VLQ_"+hand+"_1700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1700_"+year+".root";
+  samplemap["VLQ_"+hand+"_1800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1800_"+year+".root";
 
+  TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/";
+  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/";
 
-  TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/";
-
-  FindRMS(infolder, samplemap, "TTbar_2016v3");
-  FindRMS(infolder, samplemap, "SingleTop_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_600_2016v2");
-  FindRMS(infolder, samplemap, "VLQ_RH_650_2016v2");
-  FindRMS(infolder, samplemap, "VLQ_LH_700_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_800_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_900_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1000_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1100_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1200_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1300_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1400_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1500_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1600_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1700_2016v3");
-  FindRMS(infolder, samplemap, "VLQ_RH_1800_2016v3");
+  FindRMS(infolder, samplemap, "TTbar_"+year,year);
+  FindRMS(infolder, samplemap, "SingleTop_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_600_"+year_lowmass,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_650_"+year_lowmass,year);
+  FindRMS(infolder, samplemap, "VLQ_LH_700_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_800_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_900_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1000_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1100_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1200_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1300_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1400_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1500_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1600_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1700_"+year,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1800_"+year,year);
 
 }
 
 
-void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample){
+void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, TString year){
   gStyle->SetOptStat(0);
   // gErrorIgnoreLevel = 2002;
 
@@ -75,6 +86,7 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample){
   // ==========
 
   TString infilename = infolder +"/NOMINAL/"+ samplemap[sample];
+  if(year =="2017v2") infilename = infolder +"/NOMINAL_NoBTagSF/"+ samplemap[sample];
   cout << "infilename: " << infilename << endl;
   TFile* infile = new TFile(infilename, "READ");
 

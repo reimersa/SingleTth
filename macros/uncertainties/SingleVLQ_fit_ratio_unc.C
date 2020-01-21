@@ -3,16 +3,19 @@
 using namespace std;
 
 
-void fit(TString channel, TString region, TString process,  TString fitfunction, TFile *outputfile, bool b_fit = true, TString unc="jec_up", TString directory = "/nfs/dust/cms/user/abenecke/ZPrimeTotTPrime/CMSSW_8X/rootfiles/uncertainties/"){
+
+
+void fit(TString channel, TString region, TString process,  TString fitfunction, TFile *outputfile, bool b_fit = true, TString unc="jec_up", TString directory = "/nfs/dust/cms/user/abenecke/ZPrimeTotTPrime/CMSSW_8X/rootfiles/uncertainties/", TString year = "2016", TString extention = ""){
   gStyle->SetOptFit(1111);
   gStyle->SetOptStat(0);
 
-TFile * nominal_file = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/uhh2.AnalysisModuleRunner.MC."+process+".root", "READ");
- TFile * up_file;
+  std::cout<<"nominal file:  "<< "/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/NOMINAL"+extention+"/uhh2.AnalysisModuleRunner.MC."+process+".root"<<std::endl;
+  TFile * nominal_file = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/NOMINAL"+extention+"/uhh2.AnalysisModuleRunner.MC."+process+".root", "READ");
+  TFile * up_file;
 
 
- std::cout<<"upfile: "<< directory+"/"+unc+"/uhh2.AnalysisModuleRunner.MC."+process+".root" <<std::endl;
- up_file = new TFile(directory+"/"+unc+"/uhh2.AnalysisModuleRunner.MC."+process+".root", "READ");
+  std::cout<<"upfile: "<< directory+"/"+unc+extention+"/uhh2.AnalysisModuleRunner.MC."+process+".root" <<std::endl;
+  up_file = new TFile(directory+"/"+unc+extention+"/uhh2.AnalysisModuleRunner.MC."+process+".root", "READ");
 
 
 
@@ -36,7 +39,7 @@ TFile * nominal_file = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullsele
   TFitResultPtr fit_result = ratio->Fit(fit,"S");
 
 
-  fit_c->SaveAs("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL/MacroPlots/fit_"+unc+"_"+channel+"_"+region+"_"+process+".pdf");
+  fit_c->SaveAs("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/NOMINAL"+extention+"/MacroPlots/fit_"+unc+"_"+channel+"_"+region+"_"+process+".pdf");
 
   // New up histogram by scaling nominal with the fit result
   TH1F* new_hist = (TH1F*)h_nominal->Clone();
@@ -68,150 +71,154 @@ void SingleVLQ_fit_ratio_unc(){
 
   gROOT->SetBatch(kTRUE);
 
-  TFile *  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_up/TTbar_2016v3_much_sr.root","RECREATE");
-  fit("much","sr", "TTbar_2016v3", "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  TString year = "2017";
+  TString year_ex = "2017v2";
+  TString extention = "_NoBTagSF"; 
+
+  TFile *  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_up"+extention+"/TTbar_"+year_ex+"_much_sr.root","RECREATE");
+  fit("much","sr", "TTbar_"+year_ex, "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JEC_up/SingleTop_2016v3_much_sr.root","RECREATE");
-  fit("much","sr", "SingleTop_2016v3", "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JEC_up"+extention+"/SingleTop_"+year_ex+"_much_sr.root","RECREATE");
+  fit("much","sr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_up/TTbar_2016v3_ech_sr.root","RECREATE");
-  fit("ech","sr", "TTbar_2016v3", "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
-  outputfile->Close();
-
-
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_up/SingleTop_2016v3_ech_sr.root","RECREATE");
-  fit("ech","sr", "SingleTop_2016v3", "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
-  outputfile->Close();
-
-
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_up/TTbar_2016v3_much_cr.root","RECREATE");
-  fit("much","cr", "TTbar_2016v3", "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_up"+extention+"/TTbar_"+year_ex+"_ech_sr.root","RECREATE");
+  fit("ech","sr", "TTbar_"+year_ex, "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_up/SingleTop_2016v3_much_cr.root","RECREATE");
-  fit("much","cr", "SingleTop_2016v3", "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_up"+extention+"/SingleTop_"+year_ex+"_ech_sr.root","RECREATE");
+  fit("ech","sr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_up/TTbar_2016v3_ech_cr.root","RECREATE");
-  fit("ech","cr", "TTbar_2016v3", "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_up"+extention+"/TTbar_"+year_ex+"_much_cr.root","RECREATE");
+  fit("much","cr", "TTbar_"+year_ex, "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_up/SingleTop_2016v3_ech_cr.root","RECREATE");
-  fit("ech","cr", "SingleTop_2016v3", "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_up"+extention+"/SingleTop_"+year_ex+"_much_cr.root","RECREATE");
+  fit("much","cr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
+  outputfile->Close();
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_up"+extention+"/TTbar_"+year_ex+"_ech_cr.root","RECREATE");
+  fit("ech","cr", "TTbar_"+year_ex, "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
+  outputfile->Close();
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_up"+extention+"/SingleTop_"+year_ex+"_ech_cr.root","RECREATE");
+  fit("ech","cr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JEC_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
   //////und fuer down
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JEC_down/TTbar_2016v3_much_sr.root","RECREATE");
-  fit("much","sr", "TTbar_2016v3", "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JEC_down"+extention+"/TTbar_"+year_ex+"_much_sr.root","RECREATE");
+  fit("much","sr", "TTbar_"+year_ex, "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JEC_down/SingleTop_2016v3_much_sr.root","RECREATE");
-  fit("much","sr", "SingleTop_2016v3", "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JEC_down"+extention+"/SingleTop_"+year_ex+"_much_sr.root","RECREATE");
+  fit("much","sr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_down/TTbar_2016v3_ech_sr.root","RECREATE");
-  fit("ech","sr", "TTbar_2016v3", "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_down"+extention+"/TTbar_"+year_ex+"_ech_sr.root","RECREATE");
+  fit("ech","sr", "TTbar_"+year_ex, "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_down/SingleTop_2016v3_ech_sr.root","RECREATE");
-  fit("ech","sr", "SingleTop_2016v3", "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
-  outputfile->Close();
-
-
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_down/TTbar_2016v3_much_cr.root","RECREATE");
-  fit("much","cr", "TTbar_2016v3", "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_down"+extention+"/SingleTop_"+year_ex+"_ech_sr.root","RECREATE");
+  fit("ech","sr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JEC_down/SingleTop_2016v3_much_cr.root","RECREATE");
-  fit("much","cr", "SingleTop_2016v3", "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_down"+extention+"/TTbar_"+year_ex+"_much_cr.root","RECREATE");
+  fit("much","cr", "TTbar_"+year_ex, "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JEC_down/TTbar_2016v3_ech_cr.root","RECREATE");
-  fit("ech","cr", "TTbar_2016v3", "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JEC_down"+extention+"/SingleTop_"+year_ex+"_much_cr.root","RECREATE");
+  fit("much","cr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JEC_down/SingleTop_2016v3_ech_cr.root","RECREATE");
-  fit("ech","cr", "SingleTop_2016v3", "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JEC_down"+extention+"/TTbar_"+year_ex+"_ech_cr.root","RECREATE");
+  fit("ech","cr", "TTbar_"+year_ex, "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
+  outputfile->Close();
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JEC_down"+extention+"/SingleTop_"+year_ex+"_ech_cr.root","RECREATE");
+  fit("ech","cr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JEC_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
   //und fuer JER
-   outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_up/TTbar_2016v3_much_sr.root","RECREATE");
-  fit("much","sr", "TTbar_2016v3", "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+   outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_up"+extention+"/TTbar_"+year_ex+"_much_sr.root","RECREATE");
+  fit("much","sr", "TTbar_"+year_ex, "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JER_up/SingleTop_2016v3_much_sr.root","RECREATE");
-  fit("much","sr", "SingleTop_2016v3", "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JER_up"+extention+"/SingleTop_"+year_ex+"_much_sr.root","RECREATE");
+  fit("much","sr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_up/TTbar_2016v3_ech_sr.root","RECREATE");
-  fit("ech","sr", "TTbar_2016v3", "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
-  outputfile->Close();
-
-
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_up/SingleTop_2016v3_ech_sr.root","RECREATE");
-  fit("ech","sr", "SingleTop_2016v3", "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_up"+extention+"/TTbar_"+year_ex+"_ech_sr.root","RECREATE");
+  fit("ech","sr", "TTbar_"+year_ex, "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_up/TTbar_2016v3_much_cr.root","RECREATE");
-  fit("much","cr", "TTbar_2016v3", "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_up"+extention+"/SingleTop_"+year_ex+"_ech_sr.root","RECREATE");
+  fit("ech","sr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_up/SingleTop_2016v3_much_cr.root","RECREATE");
-  fit("much","cr", "SingleTop_2016v3", "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_up"+extention+"/TTbar_"+year_ex+"_much_cr.root","RECREATE");
+  fit("much","cr", "TTbar_"+year_ex, "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_up/TTbar_2016v3_ech_cr.root","RECREATE");
-  fit("ech","cr", "TTbar_2016v3", "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_up"+extention+"/SingleTop_"+year_ex+"_much_cr.root","RECREATE");
+  fit("much","cr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_up/SingleTop_2016v3_ech_cr.root","RECREATE");
-  fit("ech","cr", "SingleTop_2016v3", "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_up"+extention+"/TTbar_"+year_ex+"_ech_cr.root","RECREATE");
+  fit("ech","cr", "TTbar_"+year_ex, "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
+  outputfile->Close();
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_up"+extention+"/SingleTop_"+year_ex+"_ech_cr.root","RECREATE");
+  fit("ech","cr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JER_up","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
   //////und fuer down
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JER_down/TTbar_2016v3_much_sr.root","RECREATE");
-  fit("much","sr", "TTbar_2016v3", "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JER_down"+extention+"/TTbar_"+year_ex+"_much_sr.root","RECREATE");
+  fit("much","sr", "TTbar_"+year_ex, "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JER_down/SingleTop_2016v3_much_sr.root","RECREATE");
-  fit("much","sr", "SingleTop_2016v3", "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JER_down"+extention+"/SingleTop_"+year_ex+"_much_sr.root","RECREATE");
+  fit("much","sr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_down/TTbar_2016v3_ech_sr.root","RECREATE");
-  fit("ech","sr", "TTbar_2016v3", "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_down"+extention+"/TTbar_"+year_ex+"_ech_sr.root","RECREATE");
+  fit("ech","sr", "TTbar_"+year_ex, "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_down/SingleTop_2016v3_ech_sr.root","RECREATE");
-  fit("ech","sr", "SingleTop_2016v3", "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
-  outputfile->Close();
-
-
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_down/TTbar_2016v3_much_cr.root","RECREATE");
-  fit("much","cr", "TTbar_2016v3", "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_down"+extention+"/SingleTop_"+year_ex+"_ech_sr.root","RECREATE");
+  fit("ech","sr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/JER_down/SingleTop_2016v3_much_cr.root","RECREATE");
-  fit("much","cr", "SingleTop_2016v3", "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_down"+extention+"/TTbar_"+year_ex+"_much_cr.root","RECREATE");
+  fit("much","cr", "TTbar_"+year_ex, "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JER_down/TTbar_2016v3_ech_cr.root","RECREATE");
-  fit("ech","cr", "TTbar_2016v3", "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/JER_down"+extention+"/SingleTop_"+year_ex+"_much_cr.root","RECREATE");
+  fit("much","cr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
-  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/Fullselection//JER_down/SingleTop_2016v3_ech_cr.root","RECREATE");
-  fit("ech","cr", "SingleTop_2016v3", "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/");
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JER_down"+extention+"/TTbar_"+year_ex+"_ech_cr.root","RECREATE");
+  fit("ech","cr", "TTbar_"+year_ex, "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
+  outputfile->Close();
+
+  outputfile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection//JER_down"+extention+"/SingleTop_"+year_ex+"_ech_cr.root","RECREATE");
+  fit("ech","cr", "SingleTop_"+year_ex, "[0]",outputfile, true, "JER_down","/nfs/dust/cms/user/reimersa/SingleTth/"+year+"/Fullselection/",year,extention);
   outputfile->Close();
 
 

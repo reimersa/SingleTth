@@ -166,7 +166,8 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
 
   if(unc!=""){
     TString subfolder = "NOMINAL/";
-      sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+    if(year.Contains("2017")) subfolder = "NOMINAL_NoBTagSF/";
+    sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
     if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
     if(unc.Contains("PDF")) {
       subfolder = "pdf/";
@@ -175,8 +176,10 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
     }
 
     if(unc.Contains("JEC")||unc.Contains("JER")) {
-      sig_f = new TFile(anaoutputfolder+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
-      if ((MT <700) && (val==NULL))     sig_f = new TFile(anaoutputfolder+unc+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
+      TString extention = "";
+      if(year.Contains("2017")) extention = "_NoBTagSF"; 
+      sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+      if ((MT <700) && (val==NULL))     sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
     }
 
   }  
