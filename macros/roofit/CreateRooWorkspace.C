@@ -524,11 +524,22 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   eff_ele->SetParameter(0, 0.001498);
   eff_ele->SetParameter(1, 5.889e-06);
   eff_ele->SetParameter(2, -7.832e-09);
+  if(year.Contains("2017")){
+    eff_ele->SetParameter(0, 0.0025);
+    eff_ele->SetParameter(1, 5.724e-06);
+    eff_ele->SetParameter(2, -6.92e-09);
+  }
+
 
   TF1* eff_muon = new TF1("eff_muon", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
   eff_muon->SetParameter(0, 0.002258);
   eff_muon->SetParameter(1, 6.304e-06);
   eff_muon->SetParameter(2, -9.69e-09);
+  if(year.Contains("2017")){
+    eff_muon->SetParameter(0, 0.0033);
+    eff_muon->SetParameter(1, 6.728e-06);
+    eff_muon->SetParameter(2, -9.11e-09);
+  }
 
   infotofile << "===== Number of events for Signal in the "; 
   if (ch==defs::eEle) infotofile << "Electron channel =====" << std::endl;
@@ -605,6 +616,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     else eff = eff_muon->Eval(MT);
 
     double Nevts = 35800*eff;
+    if(year.Contains("2017")) Nevts = 41500*eff;
     infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<mean_error->Eval(MT)-mean->Eval(MT)<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT)<< std::endl;
 
     //add uncertainties as special shape

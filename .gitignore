@@ -5,3 +5,6 @@ obj/*
 *~
 *#
 workdir*
+macros/roofit/datacards/*.root
+macros/roofit/datacards/*.txt
+jobTempOutput*

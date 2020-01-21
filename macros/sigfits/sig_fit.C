@@ -16,8 +16,8 @@ void sig_fit()
 
   // std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","PDF","JEC","JER"}; // PDF,scale missing 
   // std::vector<TString> uncertainties ={}; // PDF,scale missing 
-  //  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring"}; // 2017, PDF, btag, Trigger missing
-  std::vector<TString> uncertainties ={"PDF"}; // 2017, PDF, btag, Trigger missing
+  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring"}; // 2017, PDF, btag, Trigger missing
+
 
  // std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
  std::vector<double> MTs = {650, 700, 800, 1000,1100, 1200};// 2017
