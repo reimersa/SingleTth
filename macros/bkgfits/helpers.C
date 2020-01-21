@@ -26,7 +26,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
   } else {
      cout << "Using NAF setup." << endl;
      if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
-     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL/"; 
+     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
      else throw runtime_error("Year not possible.");
   }
 	
@@ -149,7 +149,9 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      }
      else throw runtime_error("Year not possible.");
 
-     if(unc=="") anaoutputfolder +="NOMINAL/";
+     if(unc=="" && year.Contains("2017")) anaoutputfolder +="NOMINAL_NoBTagSF/";
+     else if(unc=="") anaoutputfolder +="NOMINAL/";
+
   }
 
   
@@ -250,7 +252,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
      cout << "Using NAF setup." << endl;
      if(year.Contains("2016"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
      else if (year.Contains("2017")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");

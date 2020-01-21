@@ -194,10 +194,11 @@ namespace uhh2examples {
       SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag, "comb"));
     }
 
-    h_L1prefiring = ctx.declare_event_output<float>("weight_sfL1prefiring");
-    h_L1prefiring_up = ctx.declare_event_output<float>("weight_sfL1prefiring_up");
-    h_L1prefiring_down = ctx.declare_event_output<float>("weight_sfL1prefiring_down");
-
+    if(year != Year::is2018){
+      h_L1prefiring = ctx.declare_event_output<float>("weight_sfL1prefiring");
+      h_L1prefiring_up = ctx.declare_event_output<float>("weight_sfL1prefiring_up");
+      h_L1prefiring_down = ctx.declare_event_output<float>("weight_sfL1prefiring_down");
+    }
 
     // pdf_weight_producer.reset(new PDFWeightHandleProducer(ctx));
     h_muon_triggerweight = ctx.declare_event_output<float>("weight_sfmu_trigger");
@@ -640,10 +641,12 @@ namespace uhh2examples {
     double eventweight_lumi = event.weight;
     event.set(h_eventweight_lumi, eventweight_lumi);
 
-    event.weight = event.weight *  event.prefiringWeight;
-    event.set(h_L1prefiring,event.prefiringWeight);
-    event.set(h_L1prefiring_up, event.prefiringWeightUp);
-    event.set(h_L1prefiring_down, event.prefiringWeightDown);
+    if(year != Year::is2018){
+      event.weight = event.weight *  event.prefiringWeight;
+      event.set(h_L1prefiring,event.prefiringWeight);
+      event.set(h_L1prefiring_up, event.prefiringWeightUp);
+      event.set(h_L1prefiring_down, event.prefiringWeightDown);
+    }
 
     SF_muonID->process(event);
     SF_muonIso->process(event);

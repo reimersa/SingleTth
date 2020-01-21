@@ -838,7 +838,7 @@
 		<!-- <Item Name="PDFWeightPath" Value="/nfs/dust/cms/user/reimersa/" /> -->
 
 		<Item Name="jecsmear_direction"      Value="nominal" />
-		<Item Name="jersmear_direction"      Value="nominal" />
+		<Item Name="jersmear_direction"      Value="up" />
 		<Item Name="ScaleVariationMuR"       Value="none" />
 		<Item Name="ScaleVariationMuF"       Value="none" />
 		<Item Name="ScaleVariationProcess"   Value="none" />

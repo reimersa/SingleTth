@@ -15,7 +15,8 @@ void sig_fit()
   Echannel ch = eComb;
 
   // std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","PDF","JEC","JER"}; // PDF,scale missing 
- std::vector<TString> uncertainties ={}; // PDF,scale missing 
+  // std::vector<TString> uncertainties ={}; // PDF,scale missing 
+  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring"}; // 2017
 
  // std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
  std::vector<double> MTs = {650, 700, 800, 1000,1100, 1200};// 2017
@@ -107,12 +108,12 @@ void sig_fit()
   lin->SetParameter(0, lin->GetParameter(0)+2 * lin->GetParError(0));
   lin->SetParameter(1, lin->GetParameter(1)+2*0.5* lin->GetParError(1));
   lin->SetLineColor(kBlue);
-  lin->DrawCopy("same");
+  //  lin->DrawCopy("same");
 
   lin->SetParameter(0, lin->GetParameter(0)-2*lin->GetParError(0));
   lin->SetParameter(1, lin->GetParameter(1)- lin->GetParError(1));
   lin->SetLineColor(kBlue);
-  lin->DrawCopy("same");
+  //  lin->DrawCopy("same");
 
 
   TString channel_name = "";
@@ -260,12 +261,12 @@ void sig_fit()
   lin2->SetParameter(0,lin2->GetParameter(0)+lin2->GetParError(0));
   lin2->SetParameter(1,lin2->GetParameter(1)+0.5*lin2->GetParError(1));
   lin2->SetLineColor(kBlue);
-  lin2->DrawCopy("same");
+  //  lin2->DrawCopy("same");
 
   lin2->SetParameter(0,lin2->GetParameter(0)-2*lin2->GetParError(0));
   lin2->SetParameter(1,lin2->GetParameter(1)-lin2->GetParError(1));
   lin2->SetLineColor(kBlue);
-  lin2->DrawCopy("same");
+  //  lin2->DrawCopy("same");
 
 
   TString fname2 = "results/signal_sigma_values_" + channel_name+"_"+year; 
