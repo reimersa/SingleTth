@@ -696,7 +696,7 @@ namespace uhh2examples {
         event.set(h_electron_triggerweight_down, 1.);
       }
       else  if(year == Year::is2018){
-        if(!(trigger1_ech_sel_2017->passes(event)) ) return false;
+        if(!(trigger1_ech_sel_2018->passes(event)) ) return false;
         event.set(h_electron_triggerweight, 1.);
         event.set(h_electron_triggerweight_up, 1.);
         event.set(h_electron_triggerweight_down, 1.);

@@ -40,6 +40,9 @@ SingleTthPDFHists::SingleTthPDFHists(Context & ctx, const string & dirname): His
   if(year == Year::is2017v1 || year == Year::is2017v2){
     take_ntupleweights = !(m_oname.Contains("QCD"));
   }
+  else if(year == Year::is2018){
+    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("Diboson"));
+  }
   else{
     take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW"));
   }
