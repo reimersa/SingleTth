@@ -16,12 +16,13 @@ RLXX=$(LFLAGS) $(ROOTLIBS)
 
 SRC1= CreateRooWorkspace.o create_roo.o
 SRC2= CreateRooWorkspace.o create_roo_2017.o
+SRC3= CreateRooWorkspace.o create_roo_2018.o
 SL_HEADERS= BkgPdfExp2.h BkgPdf3p.h BkgPdf4p.h RooMultiPdf.h
 SL_SOURCES= BkgPdfExp2.C BkgPdf3p.C BkgPdf4p.C RooMultiPdf.C
 
 default: all
 
-all: libRooVLQ.so create_roo create_roo_2017
+all: libRooVLQ.so create_roo create_roo_2017 create_roo_2018
 
 RooVLQDict.C: $(SL_HEADERS) Linkdef.h
 	rootcint -f $@ -c $(ROOTCFLAGS) -p $^
@@ -40,6 +41,10 @@ create_roo_2017: $(SRC2)
 	$(LD) $(SRC2) $(RLXX) -L. -lRooVLQ  -o create_roo_2017
 	@echo '-> create_roo_2017 created!'
 
+create_roo_2018: $(SRC3)
+	$(LD) $(SRC3) $(RLXX) -L. -lRooVLQ  -o create_roo_2018
+	@echo '-> create_roo_2018 created!'
+
 
 clean:
 		@rm -f *~
@@ -50,3 +55,4 @@ clean:
 		@rm -f libRooVLQ.so
 		@rm -f create_roo
 		@rm -f create_roo_2017
+		@rm -f create_roo_2018

@@ -9,15 +9,16 @@ void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
-// EFitFunction FitFunc = eFunc3p;
-EFitFunction FitFunc = eFunc4p;
-//EFitFunction FitFunc = eFuncExp2;
+ // EFitFunction FitFunc = eFunc3p;
+// EFitFunction FitFunc = eFunc4p;
+EFitFunction FitFunc = eFuncExp2;
 
 void bkg_fit()
 {
 
    // TString year = "2016v3";
-  TString year = "2017v2";
+  // TString year = "2017v2";
+ TString year = "2018";
   TH1F* cl68 = NULL; 
   TH1F* cl95 = NULL;
   TH1F* dum = NULL; 

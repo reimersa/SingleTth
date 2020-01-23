@@ -6,7 +6,8 @@ masses=(550 575 600 625 650 675 700 725 750 775 800 825 850 875 900 925 950 975 
 #masses=(950 975 1000 1025 1050 1075)
 
 #year="2016v3"
-year="2017v2"
+#year="2017v2"
+year="2018"
 
 for mass in "${masses[@]}" ; do
     echo "Working on mass " $mass

@@ -27,14 +27,14 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      cout << "Using NAF setup." << endl;
      if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
      else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/NOMINAL_NoBTagSF/"; 
      else throw runtime_error("Year not possible.");
   }
 	
   //All files are read in
   bool b_error=true;
   TString unc_name = ""; // "jersmear_up" , "jersmear_down" ,"jecsmear_up" , "jecsmear_down" , "none"
-  // TString folder ="~/ownCloud/masterarbeit/tex/plots/efficiency/master_";
-  // TString unc_folder = "hists";
+
   TFile * data_f = NULL;
   if (ch == eMuon){
     data_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.DATA.DATA_Muon_" + year + ".root", "READ");
@@ -141,15 +141,21 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      if(year.Contains("2016")) {
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/"; 
-     }
+       if ((MT <700) && (val==NULL)) year = "2016v2";
+   }
      else if(year.Contains("2017")){
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/"; 
        hand = "LH";
      }
+     else if(year.Contains("2018")){
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/"; 
+       hand = "LH";
+     }
      else throw runtime_error("Year not possible.");
 
-     if(unc=="" && year.Contains("2017")) anaoutputfolder +="NOMINAL_NoBTagSF/";
+     if(unc=="" && (year.Contains("2017") || year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
      else if(unc=="") anaoutputfolder +="NOMINAL/";
 
   }
@@ -162,26 +168,21 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
 
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
-  if ((MT <700) && (val==NULL))     sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
 
   if(unc!=""){
     TString subfolder = "NOMINAL/";
-    if(year.Contains("2017")) subfolder = "NOMINAL_NoBTagSF/";
+    if(year.Contains("2017")|| year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
-    if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
     if(unc.Contains("PDF")) {
       subfolder = "pdf/";
       sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
-      if ((MT <700) && (val==NULL))     sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
     }
 
     if(unc.Contains("JEC")||unc.Contains("JER")) {
       TString extention = "";
-      if(year.Contains("2017")) extention = "_NoBTagSF"; 
+      if((year.Contains("2017")||year.Contains("2018"))) extention = "_NoBTagSF"; 
       sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
-      if ((MT <700) && (val==NULL))     sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
     }
-
   }  
 
   TString region_name = "sr";
@@ -253,9 +254,16 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
-     if(year.Contains("2016"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
+     if(year.Contains("2016")){
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
+       if ((MT <700) && (val==NULL)) year = "2016v2";
+     }
      else if (year.Contains("2017")){
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+       hand = "LH";
+     }
+     else if (year.Contains("2018")){
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/NOMINAL_NoBTagSF/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");
@@ -274,7 +282,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   // get total number of events before any selection
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
-  if ((MT <700) && (val==NULL)) sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_"+year+".root", "READ");
+
   TString hname = "cleaner/sum_event_weights";
   TH1F* h = (TH1F*) sig_f->Get(hname);  
   double Ntot = h->GetBinContent(1); 
@@ -611,6 +619,7 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
 
   TString lumiText = "35.9 fb^{-1}";
   if(year.Contains("2017")) lumiText = "41.5 fb^{-1}";
+  if(year.Contains("2018")) lumiText = "59.7 fb^{-1}";
   lumiText += " (13 TeV)";
   text->DrawLatex(0.665, 0.905, lumiText.Data());
 

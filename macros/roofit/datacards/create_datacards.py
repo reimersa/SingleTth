@@ -29,6 +29,7 @@ number_of_channels = 2
 number_of_backgrounds = 1
 year = "2016v3"
 year = "2017v2"
+year = "2018"
 
 # Find all possible MT where we have the normalisation
 inputfile = open("AnalysisOutput_"+year+".txt","r")

@@ -9,14 +9,18 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
 void sig_fit()
 {
-  TString year =  "2017v2";
+  //  TString year =  "2017v2";
+  TString year =  "2018";
   std::ofstream infotofile("SignalFitOutput_"+year+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
   Echannel ch = eComb;
+  //  Echannel ch = eEle;
+  // Echannel ch = eMuon;
 
   // std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","PDF","JEC","JER"}; // PDF,scale missing 
   // std::vector<TString> uncertainties ={}; // PDF,scale missing 
   std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring"}; // 2017, PDF, btag, Trigger missing
+  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER"};
 
 
  // std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
@@ -362,7 +366,7 @@ void sig_fit()
   painter3->GetYaxis()->SetTitleOffset(1.4);
   painter3->GetXaxis()->SetTitleOffset(1.2);
   painter3->SetTitle("");
-  painter3->GetYaxis()->SetRangeUser(0, 0.01);
+  painter3->GetYaxis()->SetRangeUser(0, 0.02);
   painter3->Draw();
   geff->SetMarkerStyle(20);
   geff->SetLineWidth(2);
