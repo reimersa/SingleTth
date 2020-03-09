@@ -60,28 +60,176 @@ bool PDFWeightHandleProducer::process(Event & event){
 }
 
 
-ElectronTriggerWeights::ElectronTriggerWeights(Context & ctx, TString path_, TString SysDirection_): path(path_), SysDirection(SysDirection_){
+MuonTriggerWeights::MuonTriggerWeights(Context & ctx, TString path_, Year year_): path(path_), year(year_){
+
+  h_muon_weight      = ctx.declare_event_output<float>("weight_sfmu_trigger");
+  h_muon_weight_up   = ctx.declare_event_output<float>("weight_sfmu_trigger_up");
+  h_muon_weight_down = ctx.declare_event_output<float>("weight_sfmu_trigger_down");
 
   auto dataset_type = ctx.get("dataset_type");
   bool is_mc = dataset_type == "MC";
+  if(!is_mc){
+    cout << "Warning: MuonTriggerWeights will not have an effect on this non-MC sample (dataset_type = '" + dataset_type + "')" << endl;
+    return;
+  }
+
+  TString yeartag = "2016";
+  if(year == Year::is2017v1 || year == Year::is2017v2) yeartag = "2017";
+  else if(year == Year::is2018) yeartag = "2018";
+
+  unique_ptr<TFile> file_30to50, file_50to100, file_100to200, file_200toinf;
+  file_30to50.reset(new TFile(path+"/" + yeartag + "/MuonTriggerScaleFactors_eta_mu_binned_pt30to50.root","READ"));
+  file_50to100.reset(new TFile(path+"/" + yeartag + "/MuonTriggerScaleFactors_eta_mu_binned_pt50to100.root","READ"));
+  file_100to200.reset(new TFile(path+"/" + yeartag + "/MuonTriggerScaleFactors_eta_mu_binned_pt100to200.root","READ"));
+  file_200toinf.reset(new TFile(path+"/" + yeartag + "/MuonTriggerScaleFactors_eta_mu_binned_pt200toInf.root","READ"));
+
+  g_sf_30to50.reset((TGraphAsymmErrors*)file_30to50->Get("ScaleFactors"));
+  g_sf_50to100.reset((TGraphAsymmErrors*)file_50to100->Get("ScaleFactors"));
+  g_sf_100to200.reset((TGraphAsymmErrors*)file_100to200->Get("ScaleFactors"));
+  g_sf_200toinf.reset((TGraphAsymmErrors*)file_200toinf->Get("ScaleFactors"));
+
+}
+
+bool MuonTriggerWeights::process(Event & event){
+
+  if(event.isRealData){
+    event.set(h_muon_weight, 1.);
+    event.set(h_muon_weight_up, 1.);
+    event.set(h_muon_weight_down, 1.);
+    return true;
+  }
+
+  const Muon muon = event.muons->at(0);
+  double eta = muon.eta();
+  double pt = muon.pt();
+  if(fabs(eta) > 2.4) throw runtime_error("In LQToTopMuModules.cxx, MuonTriggerWeights.process(): Muon-|eta| > 2.4 is not supported at the moment.");
+  if(pt < 30) throw runtime_error("In LQToTopMuModules.cxx, MuonTriggerWeights.process(): Muon-pt < 30 is not supported at the moment.");
+
+  // find number of correct eta bin
+  int idx = 0;
+  if(pt < 50){
+    bool keep_going = true;
+    while(keep_going){
+      double x,y;
+      g_sf_30to50->GetPoint(idx,x,y);
+      keep_going = eta > x + g_sf_30to50->GetErrorXhigh(idx);
+      if(keep_going) idx++;
+    }
+  }
+  if(pt < 100){
+    bool keep_going = true;
+    while(keep_going){
+      double x,y;
+      g_sf_50to100->GetPoint(idx,x,y);
+      keep_going = eta > x + g_sf_50to100->GetErrorXhigh(idx);
+      if(keep_going) idx++;
+    }
+  }
+  else if (pt < 200){
+    bool keep_going = true;
+    while(keep_going){
+      double x,y;
+      g_sf_100to200->GetPoint(idx,x,y);
+      keep_going = eta > x + g_sf_100to200->GetErrorXhigh(idx);
+      if(keep_going) idx++;
+    }
+  }
+  else{
+    bool keep_going = true;
+    while(keep_going){
+      double x,y;
+      g_sf_200toinf->GetPoint(idx,x,y);
+      keep_going = eta > x + g_sf_200toinf->GetErrorXhigh(idx);
+      if(keep_going) idx++;
+    }
+  }
+
+
+  //access scale factors, add 2% t&p systematic uncertainty
+  double sf, sf_up, sf_down, dummy_x;
+  double stat_up = -1., stat_down = -1., tp = 0.02, total_up = -1., total_down = -1.;
+  if(pt < 50){
+    g_sf_30to50->GetPoint(idx,dummy_x,sf);
+
+    stat_up = g_sf_30to50->GetErrorYhigh(idx);
+    stat_down = g_sf_30to50->GetErrorYlow(idx);
+    total_up = sqrt(pow(stat_up,2) + pow(tp,2));
+    total_down = sqrt(pow(stat_down,2) + pow(tp,2));
+
+    sf_up = sf + total_up;
+    sf_down = sf + total_down;
+  }
+  if(pt < 100){
+    g_sf_50to100->GetPoint(idx,dummy_x,sf);
+
+    stat_up = g_sf_50to100->GetErrorYhigh(idx);
+    stat_down = g_sf_50to100->GetErrorYlow(idx);
+    total_up = sqrt(pow(stat_up,2) + pow(tp,2));
+    total_down = sqrt(pow(stat_down,2) + pow(tp,2));
+
+    sf_up = sf + total_up;
+    sf_down = sf + total_down;
+  }
+  else if(pt < 200){
+    g_sf_100to200->GetPoint(idx,dummy_x,sf);
+
+    stat_up = g_sf_100to200->GetErrorYhigh(idx);
+    stat_down = g_sf_100to200->GetErrorYlow(idx);
+    total_up = sqrt(pow(stat_up,2) + pow(tp,2));
+    total_down = sqrt(pow(stat_down,2) + pow(tp,2));
+
+    sf_up = sf + total_up;
+    sf_down = sf + total_down;
+  }
+  else{
+    g_sf_200toinf->GetPoint(idx,dummy_x,sf);
+
+    stat_up = g_sf_200toinf->GetErrorYhigh(idx);
+    stat_down = g_sf_200toinf->GetErrorYlow(idx);
+    total_up = sqrt(pow(stat_up,2) + pow(tp,2));
+    total_down = sqrt(pow(stat_down,2) + pow(tp,2));
+
+    sf_up = sf + total_up;
+    sf_down = sf + total_down;
+  }
+
+  event.weight *= sf;
+  event.set(h_muon_weight, sf);
+  event.set(h_muon_weight_up, sf_up);
+  event.set(h_muon_weight_down, sf_down);
+  return true;
+}
+
+
+ElectronTriggerWeights::ElectronTriggerWeights(Context & ctx, TString path_, Year year_): path(path_), year(year_){
+
   h_elec_weight      = ctx.declare_event_output<float>("weight_sfelec_trigger");
   h_elec_weight_up   = ctx.declare_event_output<float>("weight_sfelec_trigger_up");
   h_elec_weight_down = ctx.declare_event_output<float>("weight_sfelec_trigger_down");
+
+  auto dataset_type = ctx.get("dataset_type");
+  bool is_mc = dataset_type == "MC";
   if(!is_mc){
     cout << "Warning: ElectronTriggerWeights will not have an effect on this non-MC sample (dataset_type = '" + dataset_type + "')" << endl;
     return;
   }
 
+  TString yeartag = "2016";
+  if(year == Year::is2017v1 || year == Year::is2017v2) yeartag = "2017";
+  else if(year == Year::is2018) yeartag = "2018";
 
-  unique_ptr<TFile> file;
-  file.reset(new TFile(path,"READ"));
+  unique_ptr<TFile> file_low, file_high;
+  pt_split = 175;
+  file_low.reset(new TFile(path+"/" + yeartag + "/ElectronTriggerScaleFactors_eta_ele_binned_pt30to175.root","READ"));
+  file_high.reset(new TFile(path+"/" + yeartag + "/ElectronTriggerScaleFactors_eta_ele_binned_pt175toInf.root","READ"));
+  if(year == Year::is2017v1 || year == Year::is2017v2){
+    file_low.reset(new TFile(path+"/" + yeartag + "/ElectronTriggerScaleFactors_eta_ele_binned_pt30to200.root","READ"));
+    file_high.reset(new TFile(path+"/" + yeartag + "/ElectronTriggerScaleFactors_eta_ele_binned_pt200toInf.root","READ"));
+    pt_split = 200;
+  }
 
-  Eff_lowpt_MC.reset((TGraphAsymmErrors*)file->Get("gr_lowpt_eta_TTbar_eff"));
-  Eff_highpt_MC.reset((TGraphAsymmErrors*)file->Get("gr_highpt_eta_TTbar_eff"));
-  Eff_lowpt_DATA.reset((TGraphAsymmErrors*)file->Get("gr_lowpt_eta_DATA_eff"));
-  Eff_highpt_DATA.reset((TGraphAsymmErrors*)file->Get("gr_highpt_eta_DATA_eff"));
-
-  if(SysDirection != "nominal" && SysDirection != "up" && SysDirection != "down") throw runtime_error("In SingleTthModules.cxx, ElectronTriggerWeights.process(): Invalid SysDirection specified.");
+  g_sf_low.reset((TGraphAsymmErrors*)file_low->Get("ScaleFactors"));
+  g_sf_high.reset((TGraphAsymmErrors*)file_high->Get("ScaleFactors"));
 
 }
 
@@ -94,101 +242,64 @@ bool ElectronTriggerWeights::process(Event & event){
     return true;
   }
 
-  const auto ele = event.electrons->at(0);
-  double eta = ele.eta();
-  if(fabs(eta) > 2.4) throw runtime_error("In SingleTthModules.cxx, ElectronTriggerWeights.process(): Ele-|eta| > 2.4 is not supported at the moment.");
+  const Electron elec = event.electrons->at(0);
+  double eta = elec.eta();
+  double pt = elec.pt();
+  if(fabs(eta) > 2.4) throw runtime_error("In LQToTopMuModules.cxx, ElectronTriggerWeights.process(): Elec-|eta| > 2.4 is not supported at the moment.");
+  if(pt < 30) throw runtime_error("In LQToTopMuModules.cxx, ElectronTriggerWeights.process(): Elec-pt < 30 is not supported at the moment.");
 
-
-  //find right bin in eta
+  // find number of correct eta bin
   int idx = 0;
-  bool lowpt = false;
-  if(30 <= ele.pt() && ele.pt() < 120){
-    lowpt = true;
-    //lowpt trigger
+  if(pt < pt_split){
     bool keep_going = true;
     while(keep_going){
       double x,y;
-      Eff_lowpt_MC->GetPoint(idx,x,y);
-      keep_going = eta > x + Eff_lowpt_MC->GetErrorXhigh(idx);
+      g_sf_low->GetPoint(idx,x,y);
+      keep_going = eta > x + g_sf_low->GetErrorXhigh(idx);
       if(keep_going) idx++;
     }
-  }
-  else if(ele.pt() >= 120){
-    //highpt trigger
-    bool keep_going = true;
-    while(keep_going){
-      double x,y;
-      Eff_highpt_MC->GetPoint(idx,x,y);
-      keep_going = eta > x + Eff_highpt_MC->GetErrorXhigh(idx);
-      if(keep_going) idx++;
-    }
-  }
-  else throw runtime_error("In SingleTthModules.cxx, ElectronTriggerWeights.process(): Electron has pt<30. Clean electron collection before applying weights.");
-
-  //access efficiencies for MC and DATA, possibly accout for systematics = statistical + add. 2% up/down + 2% because SFs are from 80X
-  double eff_data = -1, eff_mc = -1, eff_data_up = -1, eff_mc_up = -1, eff_data_down = -1, eff_mc_down = -1, dummy_x;
-  double stat_data_up = -1, stat_mc_up = -1, stat_data_down = -1, stat_mc_down = -1, tp = 0.04, total_syst_data_up = -1, total_syst_mc_up = -1, total_syst_data_down = -1, total_syst_mc_down = -1;
-  if(lowpt){
-    Eff_lowpt_MC->GetPoint(idx,dummy_x,eff_mc);
-    Eff_lowpt_DATA->GetPoint(idx,dummy_x,eff_data);
-    Eff_lowpt_MC->GetPoint(idx,dummy_x,eff_mc_up);
-    Eff_lowpt_DATA->GetPoint(idx,dummy_x,eff_data_up);
-    Eff_lowpt_MC->GetPoint(idx,dummy_x,eff_mc_down);
-    Eff_lowpt_DATA->GetPoint(idx,dummy_x,eff_data_down);
-
-    // if(SysDirection == "up"){
-    stat_mc_up = Eff_lowpt_MC->GetErrorYlow(idx);
-    stat_data_up = Eff_lowpt_DATA->GetErrorYhigh(idx);
-    total_syst_mc_up = sqrt(pow(stat_mc_up,2) + pow(tp,2));
-    total_syst_data_up = sqrt(pow(stat_data_up,2) + pow(tp,2));
-    eff_mc_up -= total_syst_mc_up;
-    eff_data_up += total_syst_data_up;
-    // }
-    // else if(SysDirection == "down"){
-    stat_mc_down = Eff_lowpt_MC->GetErrorYhigh(idx);
-    stat_data_down = Eff_lowpt_DATA->GetErrorYlow(idx);
-    total_syst_mc_down = sqrt(pow(stat_mc_down,2) + pow(tp,2));
-    total_syst_data_down = sqrt(pow(stat_data_down,2) + pow(tp,2));
-    eff_mc_down += total_syst_mc_down;
-    eff_data_down -= total_syst_data_down;
-    // }
-
   }
   else{
-    Eff_highpt_MC->GetPoint(idx,dummy_x,eff_mc);
-    Eff_highpt_DATA->GetPoint(idx,dummy_x,eff_data);
-    Eff_highpt_MC->GetPoint(idx,dummy_x,eff_mc_up);
-    Eff_highpt_DATA->GetPoint(idx,dummy_x,eff_data_up);
-    Eff_highpt_MC->GetPoint(idx,dummy_x,eff_mc_down);
-    Eff_highpt_DATA->GetPoint(idx,dummy_x,eff_data_down);
-
-    // if(SysDirection == "up"){
-    stat_mc_up = Eff_highpt_MC->GetErrorYlow(idx);
-    stat_data_up = Eff_highpt_DATA->GetErrorYhigh(idx);
-    total_syst_mc_up = sqrt(pow(stat_mc_up,2) + pow(tp,2));
-    total_syst_data_up = sqrt(pow(stat_data_up,2) + pow(tp,2));
-    eff_mc_up -= total_syst_mc_up;
-    eff_data_up += total_syst_data_up;
-    // }
-    // else if(SysDirection == "down"){
-    stat_mc_down = Eff_highpt_MC->GetErrorYhigh(idx);
-    stat_data_down = Eff_highpt_DATA->GetErrorYlow(idx);
-    total_syst_mc_down = sqrt(pow(stat_mc_down,2) + pow(tp,2));
-    total_syst_data_down = sqrt(pow(stat_data_down,2) + pow(tp,2));
-    eff_mc_down += total_syst_mc_down;
-    eff_data_down -= total_syst_data_down;
-    // }
+    bool keep_going = true;
+    while(keep_going){
+      double x,y;
+      g_sf_high->GetPoint(idx,x,y);
+      keep_going = eta > x + g_sf_high->GetErrorXhigh(idx);
+      if(keep_going) idx++;
+    }
   }
 
-  event.set(h_elec_weight, eff_data/eff_mc);
-  event.set(h_elec_weight_up, eff_data_up/eff_mc_up);
-  event.set(h_elec_weight_down, eff_data_down/eff_mc_down);
 
-  //Scale weight by (eff_data) / (eff_mc)
-  if(SysDirection == "up")        event.weight *= eff_data_up / eff_mc_up;
-  else if(SysDirection == "down") event.weight *= eff_data_down / eff_mc_down;
-  else                            event.weight *= eff_data / eff_mc;
+  //access scale factors, add 2% t&p systematic uncertainty
+  double sf, sf_up, sf_down, dummy_x;
+  double stat_up = -1., stat_down = -1., tp = 0.02, total_up = -1., total_down = -1.;
+  if(pt < pt_split){
+    g_sf_low->GetPoint(idx,dummy_x,sf);
 
+    stat_up = g_sf_low->GetErrorYhigh(idx);
+    stat_down = g_sf_low->GetErrorYlow(idx);
+    total_up = sqrt(pow(stat_up,2) + pow(tp,2));
+    total_down = sqrt(pow(stat_down,2) + pow(tp,2));
 
+    sf_up = sf + total_up;
+    sf_down = sf + total_down;
+  }
+  else{
+    g_sf_high->GetPoint(idx,dummy_x,sf);
+
+    stat_up = g_sf_high->GetErrorYhigh(idx);
+    stat_down = g_sf_high->GetErrorYlow(idx);
+    total_up = sqrt(pow(stat_up,2) + pow(tp,2));
+    total_down = sqrt(pow(stat_down,2) + pow(tp,2));
+
+    sf_up = sf + total_up;
+    sf_down = sf + total_down;
+  }
+
+  event.weight *= sf;
+  event.set(h_elec_weight, sf);
+  event.set(h_elec_weight_up, sf_up);
+  event.set(h_elec_weight_down, sf_down);
   return true;
 }
+

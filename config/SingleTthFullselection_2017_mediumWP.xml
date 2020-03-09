@@ -4,7 +4,7 @@
 
 <!ENTITY TargetLumi      "41530">
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -49,12 +49,6 @@
 <!ENTITY DATA_Electron_D "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Electron_D_2017v2.root">
 <!ENTITY DATA_Electron_E "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Electron_E_2017v2.root">
 <!ENTITY DATA_Electron_F "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Electron_F_2017v2.root">
-
-<!ENTITY DATA_Photon_B "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_B_2017v2.root">
-<!ENTITY DATA_Photon_C "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_C_2017v2.root">
-<!ENTITY DATA_Photon_D "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_D_2017v2.root">
-<!ENTITY DATA_Photon_E "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_E_2017v2.root">
-<!ENTITY DATA_Photon_F "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_F_2017v2.root">
 
 
 <!ENTITY TTbar_hadronic "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbar_hadronic_2017v2.root">
@@ -136,7 +130,7 @@
 
 <!--
 <ConfigParse NEventsBreak="100000" FileSplit="0" AutoResubmit="5"/>
-<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Full_2017"/>
+<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Full_2017_mediumwp"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -244,37 +238,6 @@
 
 	  	<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Electron_F_2017v2" Cacheable="&b_Cacheable;">
 	    <In FileName="&DATA_Electron_F;" Lumi="0.0"/>
-	  		<InputTree Name="AnalysisTree" />
-	  		<OutputTree Name="AnalysisTree" />
-	  	</InputData>
-
-
-	  	<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_B_2017v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&DATA_Photon_B;" Lumi="0.0"/>
-	  		<InputTree Name="AnalysisTree" />
-	  		<OutputTree Name="AnalysisTree" />
-	  	</InputData>
-
-	  	<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_C_2017v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&DATA_Photon_C;" Lumi="0.0"/>
-	  		<InputTree Name="AnalysisTree" />
-	  		<OutputTree Name="AnalysisTree" />
-	  	</InputData>
-
-	  	<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_D_2017v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&DATA_Photon_D;" Lumi="0.0"/>
-	  		<InputTree Name="AnalysisTree" />
-	  		<OutputTree Name="AnalysisTree" />
-	  	</InputData>
-
-	  	<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_E_2017v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&DATA_Photon_E;" Lumi="0.0"/>
-	  		<InputTree Name="AnalysisTree" />
-	  		<OutputTree Name="AnalysisTree" />
-	  	</InputData>
-
-	  	<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_F_2017v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&DATA_Photon_F;" Lumi="0.0"/>
 	  		<InputTree Name="AnalysisTree" />
 	  		<OutputTree Name="AnalysisTree" />
 	  	</InputData>
@@ -735,7 +698,7 @@
 		<Item Name="pileup_directory" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyMCPileupHistogram.root" />
 		<Item Name="pileup_directory_data" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram2017.root" />
 
-		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2017/BTagMCEfficiencyHists.root" />
+		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2017/BTagMCEfficiencyHists_mediumwp.root" />
 		<Item Name="BTagCalibration" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/DeepFlavour_94XSF_WP_V3_B_F.csv" />
 
 

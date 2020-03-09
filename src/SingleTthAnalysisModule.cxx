@@ -51,9 +51,11 @@ namespace uhh2examples {
     Year year;
     unique_ptr<CommonModules> common;
     unique_ptr<AnalysisModule> SF_muonID, SF_muonIso, SF_eleReco, SF_eleID, SF_btag, scale_variation_module;
-    unique_ptr<MCMuonScaleFactor> SF_muonTrigger;
+    unique_ptr<MuonTriggerWeights> SF_muonTrigger;
     unique_ptr<ElectronTriggerWeights> SF_eleTrigger;
     // unique_ptr<PDFWeightHandleProducer> pdf_weight_producer;
+
+    unique_ptr<ElectronCleaner> ele_cleaner_2016, ele_cleaner_2017, ele_cleaner_2018;
 
     // declare the Selections to use.
     unique_ptr<Selection>  btag_loose_sel, btag_2medium_sel, btag_3medium_sel, btag_2tight_sel, btag_3tight_sel, trigger1_much_sel_2016, trigger2_much_sel_2016,trigger1_much_sel_2017,trigger1_much_sel_2018, trigger1_ech_sel_2016, trigger2_ech_sel_2016,trigger1_ech_sel_2017,trigger2_ech_sel_2017,trigger1_ech_sel_2018, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech;
@@ -165,6 +167,7 @@ namespace uhh2examples {
 
 
     btag_algo = BTag::DEEPJET;
+    //    btag_algo = BTag::DEEPCSV;
     wp_loose = BTag::WP_LOOSE;
     wp_medium = BTag::WP_MEDIUM;
     wp_tight = BTag::WP_TIGHT;
@@ -179,18 +182,23 @@ namespace uhh2examples {
     common->disable_jec();
     common->init(ctx, sys_pu);
 
+    ele_cleaner_2016.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(30.0, 2.4))));
+    ele_cleaner_2017.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(40.0, 2.4))));
+    ele_cleaner_2018.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(45.0, 2.4))));
 
     SF_muonID.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "NUM_TightID_DEN_genTracks_eta_pt", 0., "id", false, sys_muonid));
-    if(year == Year::is2016v2 || year == Year::is2016v3){
-      SF_muonTrigger.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonTrigger_EfficienciesAndSF_average_RunBtoH.root", "IsoMu24_OR_IsoTkMu24_PtEtaBins", 2.5, "trigger", false, sys_muontrigger));
+    if(year == Year::is2016v2 || year == Year::is2016v3 || (year == Year::is2017v2)){
+      SF_muonTrigger.reset(new MuonTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/LQTopLep/data/", year));
+      SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/LQTopLep/data/", year));
     }
+
     SF_muonIso.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonIso_EfficienciesAndSF_average_RunBtoH.root", "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt", 0., "iso", false, sys_muoniso));
 
     SF_eleReco.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root", 1, "reco", sys_elereco));
     SF_eleID.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/2016LegacyReReco_ElectronTight_Fall17V2.root", 1, "id", sys_eleid));
-    SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/LQToTopMu/Run2_80X_v3/TagProbe/Optimization/35867fb_Iso27_NonIso115/ElectronEfficiencies.root", sys_eletrigger));
 
-    if((year == Year::is2016v2) || (year == Year::is2016v3)){
+    if((year == Year::is2016v2) || (year == Year::is2016v3) || (year == Year::is2017v2)){
+	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
       SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag, "comb"));
     }
 
@@ -239,7 +247,8 @@ namespace uhh2examples {
     trigger2_ech_sel_2017.reset(new TriggerSelection("HLT_Photon200_v*"));
     trigger1_ech_sel_2018.reset(new TriggerSelection("HLT_Ele32_WPTight_Gsf_v*"));
 
-    tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
+    //    tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
+    tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetMedium));
     tprime_chi2.reset(new SingleTthChi2Discriminator(ctx));
 
     scale_variation_module.reset(new MCScaleVariation(ctx));
@@ -265,7 +274,8 @@ namespace uhh2examples {
     h_event_trigger.reset(new EventHists(ctx, "Event_trigger"));
     h_lumi_trigger.reset(new LuminosityHists(ctx, "Lumi_trigger"));
 
-    h_btageff_trigger.reset(new BTagMCEfficiencyHists(ctx, "btageff_trigger", DeepjetTight));
+    //    h_btageff_trigger.reset(new BTagMCEfficiencyHists(ctx, "btageff_trigger", DeepjetTight));
+    h_btageff_trigger.reset(new BTagMCEfficiencyHists(ctx, "btageff_trigger", DeepjetMedium));
 
     h_btagsf.reset(new SingleTthHists(ctx, "btagsf"));
     h_jets_btagsf.reset(new JetHists(ctx, "Jets_btagsf"));
@@ -666,13 +676,11 @@ namespace uhh2examples {
     if(is_much){
       if((year == Year::is2016v2) || (year == Year::is2016v3)){
         if(!(trigger1_much_sel_2016->passes(event) || trigger2_much_sel_2016->passes(event)) ) return false;
-        SF_muonTrigger->process_onemuon(event,0);
+        SF_muonTrigger->process(event);
       }
       else if(year == Year::is2017v2){
         if(!(trigger1_much_sel_2017->passes(event)) ) return false;
-        event.set(h_muon_triggerweight, 1.);
-        event.set(h_muon_triggerweight_up, 1.);
-        event.set(h_muon_triggerweight_down, 1.);
+        SF_muonTrigger->process(event);
       }
       else if(year == Year::is2018){
         if(!(trigger1_much_sel_2018->passes(event)) ) return false;
@@ -686,24 +694,42 @@ namespace uhh2examples {
     }
     else{
       if((year == Year::is2016v2) || (year == Year::is2016v3)){
-        if(!(trigger1_ech_sel_2016->passes(event) || trigger2_ech_sel_2016->passes(event)) ) return false;
-        SF_eleTrigger->process(event);
+	if(dataset_version.Contains("Photon")){
+	  if(trigger1_ech_sel_2016->passes(event)) return false;
+	  if(!trigger2_ech_sel_2016->passes(event)) return false;
+	}else if(!is_mc){
+	  if(!trigger1_ech_sel_2016->passes(event)) return false;
+	}else{
+	  if(!(trigger1_ech_sel_2016->passes(event) || trigger2_ech_sel_2016->passes(event)) ) return false; 
+	}
+	SF_eleTrigger->process(event);
+	ele_cleaner_2016->process(event);
+        
       }
       else  if(year == Year::is2017v2){
-        if(!(trigger1_ech_sel_2017->passes(event) || trigger2_ech_sel_2017->passes(event)) ) return false;
-        event.set(h_electron_triggerweight, 1.);
-        event.set(h_electron_triggerweight_up, 1.);
-        event.set(h_electron_triggerweight_down, 1.);
+	if(dataset_version.Contains("Photon")){
+	  if(trigger1_ech_sel_2017->passes(event)) return false;
+	  if(!trigger2_ech_sel_2017->passes(event)) return false;
+	}else if(!is_mc){
+	  if(!trigger1_ech_sel_2017->passes(event)) return false;
+	}else{
+	  if(!(trigger1_ech_sel_2017->passes(event) || trigger2_ech_sel_2017->passes(event)) ) return false; 
+	}
+	
+	SF_eleTrigger->process(event);
+	ele_cleaner_2017->process(event);
       }
       else  if(year == Year::is2018){
         if(!(trigger1_ech_sel_2018->passes(event)) ) return false;
         event.set(h_electron_triggerweight, 1.);
         event.set(h_electron_triggerweight_up, 1.);
         event.set(h_electron_triggerweight_down, 1.);
+	ele_cleaner_2018->process(event);
       }
       event.set(h_muon_triggerweight, 1.);
       event.set(h_muon_triggerweight_up, 1.);
       event.set(h_muon_triggerweight_down, 1.);
+      if(event.electrons->size()<1) return false;
     }
 
     if(is_much){
@@ -717,7 +743,8 @@ namespace uhh2examples {
       h_btageff_trigger->fill(event);
     }
 
-    if((year == Year::is2016v2) || (year == Year::is2016v3)){
+    if((year == Year::is2016v2) || (year == Year::is2016v3)|| (year == Year::is2017v2)){
+	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
       SF_btag->process(event);
     }
 
@@ -761,26 +788,26 @@ namespace uhh2examples {
       h_lumi_btag_3m->fill(event);
     }
 
-    if(!(btag_2tight_sel->passes(event))) return false;
-    if(is_much){
-      h_btag_2t->fill(event);
-      h_jets_btag_2t->fill(event);
-      h_ele_btag_2t->fill(event);
-      h_mu_btag_2t->fill(event);
-      h_event_btag_2t->fill(event);
-      h_lumi_btag_2t->fill(event);
-    }
+    // if(!(btag_2tight_sel->passes(event))) return false;
+    // if(is_much){
+    //   h_btag_2t->fill(event);
+    //   h_jets_btag_2t->fill(event);
+    //   h_ele_btag_2t->fill(event);
+    //   h_mu_btag_2t->fill(event);
+    //   h_event_btag_2t->fill(event);
+    //   h_lumi_btag_2t->fill(event);
+    // }
 
 
-    if(!(btag_3tight_sel->passes(event))) return false;
-    if(is_much){
-      h_btag_3t->fill(event);
-      h_jets_btag_3t->fill(event);
-      h_ele_btag_3t->fill(event);
-      h_mu_btag_3t->fill(event);
-      h_event_btag_3t->fill(event);
-      h_lumi_btag_3t->fill(event);
-    }
+    // if(!(btag_3tight_sel->passes(event))) return false;
+    // if(is_much){
+    //   h_btag_3t->fill(event);
+    //   h_jets_btag_3t->fill(event);
+    //   h_ele_btag_3t->fill(event);
+    //   h_mu_btag_3t->fill(event);
+    //   h_event_btag_3t->fill(event);
+    //   h_lumi_btag_3t->fill(event);
+    // }
 
     //TODO after each step fill 2 sets of histos instead of 1, one for ech and one for much
     //TODO what about SR/CR? This happens already at chi2 cuts, but probably we don't want to check for chi2 every time we apply a new cut? (once for SR, once for CR)

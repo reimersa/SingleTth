@@ -50,6 +50,12 @@
 <!ENTITY DATA_Electron_E SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2017/DATA_SingleElectron_Run2017E.xml">
 <!ENTITY DATA_Electron_F SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2017/DATA_SingleElectron_Run2017F.xml">
 
+<!ENTITY DATA_Photon_B SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v2/2017//DATA_SinglePhoton_2017B_v1.xml">
+<!ENTITY DATA_Photon_C SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v2/2017/DATA_SinglePhoton_2017C_v1.xml">
+<!ENTITY DATA_Photon_D SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v2/2017/DATA_SinglePhoton_2017D_v1.xml">
+<!ENTITY DATA_Photon_E SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v2/2017/DATA_SinglePhoton_2017E_v1.xml">
+<!ENTITY DATA_Photon_F SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v2/2017/DATA_SinglePhoton_2017F_v1.xml">
+
 
 
 <!ENTITY TTbar_hadronic SYSTEM "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/datasets/RunII_102X_v1/2017/MC_TTToHadronic_TuneCP5_13TeV-powheg-pythia8.xml">
@@ -258,6 +264,37 @@
 		<!-- 	<InputTree Name="AnalysisTree" /> -->
 		<!-- 	<OutputTree Name="AnalysisTree" /> -->
 		<!-- </InputData> -->
+
+
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_B_2017v2" Cacheable="&b_Cacheable;">
+			&DATA_Photon_B;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_C_2017v2" Cacheable="&b_Cacheable;">
+			&DATA_Photon_C;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_D_2017v2" Cacheable="&b_Cacheable;">
+			&DATA_Photon_D;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_E_2017v2" Cacheable="&b_Cacheable;">
+			&DATA_Photon_E;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_F_2017v2" Cacheable="&b_Cacheable;">
+			&DATA_Photon_F;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
 
 
 
@@ -566,35 +603,35 @@
 
 
 
-		<InputData Lumi="0.01995163126" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-20to30_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_EM_PT20to30;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="0.01995163126" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-20to30_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_EM_PT20to30; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="0.1077810949" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-30to50_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_EM_PT30to50;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="0.1077810949" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-30to50_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_EM_PT30to50; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="0.5489958947" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-50to80_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_EM_PT50to80;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="0.5489958947" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-50to80_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_EM_PT50to80; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="6.504578431" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-80to120_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_EM_PT80to120;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="6.504578431" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-80to120_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_EM_PT80to120; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="35.42930888" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-120to170_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_EM_PT120to170;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="35.42930888" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-120to170_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_EM_PT120to170; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
 		<!-- not available in DAS -->
 		<!-- <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-170to300_2017v2" Cacheable="&b_Cacheable;"> -->
@@ -603,44 +640,44 @@
 		<!-- 	<OutputTree Name="AnalysisTree" /> -->
 		<!-- </InputData> -->
 
-		<InputData Lumi="319.3661111" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-300toInf_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_EM_PT300toInf;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="319.3661111" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-300toInf_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_EM_PT300toInf; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
 
 
 
-		<InputData Lumi="0.01446797212" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-20to30_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_bcE_PT20to30;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="0.01446797212" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-20to30_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_bcE_PT20to30; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="0.02519285542" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-30to80_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_bcE_PT30to80;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="0.02519285542" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-30to80_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_bcE_PT30to80; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="0.01255032601" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-80to170_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_bcE_PT80to170;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="0.01255032601" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-80to170_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_bcE_PT80to170; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="0.007736391978" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-170to250_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_bcE_PT170to250;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="0.007736391978" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-170to250_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_bcE_PT170to250; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="0.01566876777" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-250toInf_2017v2" Cacheable="&b_Cacheable;">
-			&QCD_bcE_PT250toInf;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="0.01566876777" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-250toInf_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&QCD_bcE_PT250toInf; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
 
 

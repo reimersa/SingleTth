@@ -118,7 +118,7 @@ namespace uhh2examples {
     dataset_version = ctx.get("dataset_version");
     year = extract_year(ctx);
 
-    JetId DeepjetTight = BTag(BTag::DEEPJET, BTag::WP_TIGHT);
+    JetId DeepjetTight = BTag(BTag::DEEPJET, BTag::WP_MEDIUM);
     tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
     tprime_chi2.reset(new SingleTthChi2Discriminator(ctx));
     h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
@@ -130,8 +130,8 @@ namespace uhh2examples {
     // Easy systematics
     if(year == Year::is2017v1 || year == Year::is2017v2){
       // Without b-tagging uncertainties in 2017
-      systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger","prefiring"};
-      handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger","weight_sfL1prefiring"};
+      systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger","prefiring","btag_bc", "btag_udsg"};
+      handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger","weight_sfL1prefiring", "weight_btag" , "weight_btag"};
 
     }
     else if(year == Year::is2018){

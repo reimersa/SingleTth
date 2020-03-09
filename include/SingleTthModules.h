@@ -27,14 +27,34 @@ private:
 };
 
 
-class ElectronTriggerWeights: public uhh2::AnalysisModule{
 
-public:
-  explicit ElectronTriggerWeights(uhh2::Context & ctx, TString path_, TString SysDirection_);
+class MuonTriggerWeights: public uhh2::AnalysisModule{
+
+ public:
+  explicit MuonTriggerWeights(uhh2::Context & ctx, TString path_, Year year_);
   virtual bool process(uhh2::Event & event) override;
 
-private:
-  TString path, SysDirection;
-  std::unique_ptr<TGraphAsymmErrors> Eff_lowpt_MC, Eff_lowpt_DATA, Eff_highpt_MC, Eff_highpt_DATA;
+ private:
+  TString path;
+  Year year;
+  std::unique_ptr<TGraphAsymmErrors> g_sf_30to50, g_sf_50to100, g_sf_100to200, g_sf_200toinf;
+  uhh2::Event::Handle<float> h_muon_weight, h_muon_weight_up, h_muon_weight_down;
+
+};
+
+
+
+class ElectronTriggerWeights: public uhh2::AnalysisModule{
+
+ public:
+  explicit ElectronTriggerWeights(uhh2::Context & ctx, TString path_, Year year_);
+  virtual bool process(uhh2::Event & event) override;
+
+ private:
+  TString path;
+  Year year;
+  double pt_split;
+  std::unique_ptr<TGraphAsymmErrors> g_sf_low, g_sf_high;
   uhh2::Event::Handle<float> h_elec_weight, h_elec_weight_up, h_elec_weight_down;
+
 };

@@ -52,7 +52,7 @@ namespace uhh2examples {
     unique_ptr<CommonModules> common;
     unique_ptr<AnalysisModule> SF_muonID, SF_muonIso, SF_eleReco, SF_eleID, SF_btag, scale_variation_module;
     unique_ptr<MCMuonScaleFactor> SF_muonTrigger;
-    unique_ptr<ElectronTriggerWeights> SF_eleTrigger;
+    //    unique_ptr<ElectronTriggerWeights> SF_eleTrigger;
     // unique_ptr<PDFWeightHandleProducer> pdf_weight_producer;
 
     // declare the Selections to use.
