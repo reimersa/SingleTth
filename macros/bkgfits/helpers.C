@@ -26,7 +26,8 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
   } else {
      cout << "Using NAF setup." << endl;
      if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
-     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+     //     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
      else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/NOMINAL_NoBTagSF/"; 
      else throw runtime_error("Year not possible.");
   }
@@ -144,8 +145,10 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
        if ((MT <700) && (val==NULL)) year = "2016v2";
    }
      else if(year.Contains("2017")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/"; 
+       //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/"; 
        hand = "LH";
      }
      else if(year.Contains("2018")){
@@ -155,7 +158,8 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      }
      else throw runtime_error("Year not possible.");
 
-     if(unc=="" && (year.Contains("2017") || year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
+     // if(unc=="" && (year.Contains("2017") || year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
+     if(unc=="" && ( year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
      else if(unc=="") anaoutputfolder +="NOMINAL/";
 
   }
@@ -171,7 +175,8 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
 
   if(unc!=""){
     TString subfolder = "NOMINAL/";
-    if(year.Contains("2017")|| year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
+    //    if(year.Contains("2017")|| year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
+    if(year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
     if(unc.Contains("PDF")) {
       subfolder = "pdf/";
@@ -180,7 +185,8 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
 
     if(unc.Contains("JEC")||unc.Contains("JER")) {
       TString extention = "";
-      if((year.Contains("2017")||year.Contains("2018"))) extention = "_NoBTagSF"; 
+      //      if((year.Contains("2017")||year.Contains("2018"))) extention = "_NoBTagSF"; 
+      if((year.Contains("2018"))) extention = "_NoBTagSF"; 
       sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
     }
   }  
@@ -259,7 +265,8 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
        if ((MT <700) && (val==NULL)) year = "2016v2";
      }
      else if (year.Contains("2017")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
        hand = "LH";
      }
      else if (year.Contains("2018")){
@@ -291,11 +298,13 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   // we should use the total generated number of events, scaled by the cross section (1pb)
   // todo: read in the preselection file to get this number from the file instead of hard-coding it
   Ntot = 35800.;
+  if(year.Contains("2017")) Ntot = 41500;
+  if(year.Contains("2018")) Ntot = 59700;
 
-  cout << "\nNevents before selection = " << Ntot << endl;
-  cout << "Sum of weights = " << h->GetSumOfWeights() << endl;
-  cout << "Check: Is this equal to Ntot = L*xs = " << 35.8*1000 << " ? " << endl;
-  cout << "Sum of weights after full selection = " << NSRtot << endl;
+  // cout << "\nNevents before selection = " << Ntot << endl;
+  // cout << "Sum of weights = " << h->GetSumOfWeights() << endl;
+  // cout << "Check: Is this equal to Ntot = L*xs = " << 35.8*1000 << " ? " << endl;
+  // cout << "Sum of weights after full selection = " << NSRtot << endl;
 
   //cout << "N events under peak = " << Nevts_peak << endl;
   //cout << "N total before selection = " << Ntot << endl;

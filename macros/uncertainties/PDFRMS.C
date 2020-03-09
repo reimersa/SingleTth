@@ -27,8 +27,8 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 void PDFRMS(){
 
   //  TString year = "2016v3";
-  // TString year = "2017v2";
-  TString year = "2018";
+  TString year = "2017v2";
+  //  TString year = "2018";
 
 
   TString year_lowmass = "";
@@ -57,7 +57,7 @@ void PDFRMS(){
   samplemap["VLQ_"+hand+"_1800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1800_"+year+".root";
 
   TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/";
-  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/";
+  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/";
   if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/";
 
   FindRMS(infolder, samplemap, "TTbar_"+year,year);
@@ -88,7 +88,8 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
   // ==========
 
   TString infilename = infolder +"/NOMINAL/"+ samplemap[sample];
-  if(year =="2017v2" || year == "2018") infilename = infolder +"/NOMINAL_NoBTagSF/"+ samplemap[sample];
+  //  if(year =="2017v2" || year == "2018") infilename = infolder +"/NOMINAL_NoBTagSF/"+ samplemap[sample];
+  if(year == "2018") infilename = infolder +"/NOMINAL_NoBTagSF/"+ samplemap[sample];
   cout << "infilename: " << infilename << endl;
   TFile* infile = new TFile(infilename, "READ");
 

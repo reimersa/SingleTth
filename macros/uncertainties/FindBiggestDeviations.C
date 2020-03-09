@@ -32,8 +32,9 @@ using namespace std;
 void FindBiggestDeviations(){
 
   //Files & histograms for other processes
-  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/";
-  vector<TString> processes = {"TTbar_2016v3","SingleTop_2016v3"};
+  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/";
+  //  vector<TString> processes = {"TTbar_2016v3","SingleTop_2016v3"};
+  vector<TString> processes = {"TTbar_2017v2","SingleTop_2017v2"};
   unique_ptr<TFile> f_in;
 
   for(unsigned int aa=0; aa< processes.size();aa++){

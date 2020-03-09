@@ -9,17 +9,20 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
 void sig_fit()
 {
-  //  TString year =  "2017v2";
-  TString year =  "2018";
+  TString year =  "2017v2";
+  // TString year =  "2018";
+
+  TString postfix = "_mediumWP";
+
   std::ofstream infotofile("SignalFitOutput_"+year+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
-  Echannel ch = eComb;
+     Echannel ch = eComb;
   //  Echannel ch = eEle;
   // Echannel ch = eMuon;
 
   // std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","PDF","JEC","JER"}; // PDF,scale missing 
-  // std::vector<TString> uncertainties ={}; // PDF,scale missing 
-  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring"}; // 2017, PDF, btag, Trigger missing
+     //  std::vector<TString> uncertainties ={}; // PDF,scale missing 
+     std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg"}; // 2017, PDF, btag, Trigger missing
   if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER"};
 
 
@@ -139,7 +142,7 @@ void sig_fit()
   text->DrawLatex(0.16, 0.92, info.Data());
 
   can->RedrawAxis();
-  can->SaveAs(fname+".eps");
+  can->SaveAs(fname+postfix+".eps");
 
   ////// add uncertainties
   // for each uncertainties fit linear function and draw it
@@ -207,7 +210,7 @@ void sig_fit()
 
   can->cd();
   leg->Draw();
-  can->SaveAs(fname+"_unc.eps");
+  can->SaveAs(fname+postfix+"_unc.eps");
 
 
   //-------------------------------------------------
@@ -283,7 +286,7 @@ void sig_fit()
   text->DrawLatex(0.16, 0.92, info.Data());
 
   can2->RedrawAxis();
-  can2->SaveAs(fname2 + ".eps");
+  can2->SaveAs(fname2+postfix + ".eps");
 
   ////// add uncertainties
   // for each uncertainties fit linear function and draw it
@@ -343,7 +346,7 @@ void sig_fit()
 
   can2->cd();
   leg2->Draw();
-  can2->SaveAs(fname2+"_unc.eps");
+  can2->SaveAs(fname2+postfix+"_unc.eps");
 
 
   //-------------------------------------------------
@@ -426,7 +429,7 @@ void sig_fit()
   TString fname3 = "results/signal_eff_values_" + channel_name+"_"+year; 
 
   can3->RedrawAxis();
-  can3->SaveAs(fname3+ ".eps");
+  can3->SaveAs(fname3+postfix+ ".eps");
 
   ////// add uncertainties
   // for each uncertainties fit linear function and draw it
@@ -475,7 +478,7 @@ void sig_fit()
 
   can3->cd();
   leg3->Draw();
-  can3->SaveAs(fname3+"_unc.eps");
+  can3->SaveAs(fname3+postfix+"_unc.eps");
 
 
 

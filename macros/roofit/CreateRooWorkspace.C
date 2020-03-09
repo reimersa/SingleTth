@@ -56,10 +56,13 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
       if (year.Contains("2016")){
 	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
       } else if(year.Contains("2017")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+	//	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
       } else if(year.Contains("2018")){
 	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/NOMINAL_NoBTagSF/"; 
-      } else{
+      }else if(year.Contains("andrea")){ 
+	anaoutputfolder = "/nfs/dust/cms/user/amalara/WorkingArea/File/Analysis/2016/SignalRegion/Puppi/muonchannel/";
+      }else{
 	throw runtime_error("Year not possible.");
       }
     }
@@ -73,6 +76,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
   	TFile * data_f = NULL;
   	if (ch == eMuon){
     	data_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.DATA.DATA_Muon_" + year + ".root", "READ");
+	if(year.Contains("andrea"))     	data_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.DATA.DATA_SingleMuon_noTree.root", "READ");
   	} else {
     	data_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.DATA.DATA_Electron_" + year + ".root", "READ");
   	}
@@ -97,6 +101,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
   		region_name = "sr";
   	}
   	TString hist_name = "chi2h_2_" + channel_name + "_" + region_name + "/M_Tprime";
+	if(year.Contains("andrea"))hist_name = "ZprimeCandidate_btag_DeepBoosted_H4qvsQCD_CR/Zprime_mass_rebin2";
   	TH1F* data = (TH1F*)data_f->Get(hist_name);
   	TH1F* ttbar = (TH1F*)ttbar_f->Get(hist_name);
   	TH1F* singlet = (TH1F*)singlet_f->Get(hist_name);
@@ -527,14 +532,20 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   eff_ele->SetParameter(1, 5.889e-06);
   eff_ele->SetParameter(2, -7.832e-09);
   if(year.Contains("2017")){
-    eff_ele->SetParameter(0, 0.0025);
-    eff_ele->SetParameter(1, 5.724e-06);
-    eff_ele->SetParameter(2, -6.92e-09);
+    // eff_ele->SetParameter(0, 0.00215);
+    // eff_ele->SetParameter(1, 4.938e-06);
+    // eff_ele->SetParameter(2, -5.968e-09);
+    
+    //medium WP
+    eff_ele->SetParameter(0, 0.0043);
+    eff_ele->SetParameter(1, 9.97e-06);
+    eff_ele->SetParameter(2, -1.004e-08);
+
   }
   if(year.Contains("2018")){
-    eff_ele->SetParameter(0, 0.0038);
-    eff_ele->SetParameter(1, 8.141e-06);
-    eff_ele->SetParameter(2, -1.006e-08);
+    eff_ele->SetParameter(0, 0.00299);
+    eff_ele->SetParameter(1, 4.882e-06);
+    eff_ele->SetParameter(2, -6.394e-08);
   }
 
 
@@ -543,14 +554,20 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   eff_muon->SetParameter(1, 6.304e-06);
   eff_muon->SetParameter(2, -9.69e-09);
   if(year.Contains("2017")){
-    eff_muon->SetParameter(0, 0.0033);
-    eff_muon->SetParameter(1, 6.728e-06);
-    eff_muon->SetParameter(2, -9.11e-09);
+    // eff_muon->SetParameter(0, 0.002875);
+    // eff_muon->SetParameter(1, 5.804e-06);
+    // eff_muon->SetParameter(2, -7.862e-09);
+
+    //medium WP
+    eff_ele->SetParameter(0, 0.006);
+    eff_ele->SetParameter(1, 1.24e-05);
+    eff_ele->SetParameter(2, -1.443e-08);
+    
   }
   if(year.Contains("2018")){
-    eff_muon->SetParameter(0, 0.005);
-    eff_muon->SetParameter(1, 9.067e-06);
-    eff_muon->SetParameter(2, -1.19e-08);
+    eff_muon->SetParameter(0, 0.0031);
+    eff_muon->SetParameter(1, 5.437e-06);
+    eff_muon->SetParameter(2, -7.136e-08);
   }
 
   infotofile << "===== Number of events for Signal in the "; 
