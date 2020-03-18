@@ -3,8 +3,8 @@
 
 
 <!ENTITY TargetLumi      "35920">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/Fullselection/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/Finalselection/NOMINAL">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/NOMINAL">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -145,7 +145,7 @@
 
 <!--
 <ConfigParse NEventsBreak="10000" FileSplit="0" AutoResubmit="5"/>
-<ConfigSGE RAM="4" DISK="3" Mail="arne.reimers@desy.de" Notification="as" Workdir="workdir_SingleTth_Final"/>
+<ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Final"/>
 -->
 
 <!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
@@ -738,7 +738,7 @@
 	<Item Name="GenJetCollection" Value="slimmedGenJets" />
 	<Item Name="GenParticleCollection" Value="GenParticles" />
 	<Item Name="GenInfoName" Value="genInfo" />
-	<Item Name="additionalBranches"      Value="eventweight_final weight_sfmu_id_up weight_sfmu_id_down weight_sfmu_id weight_pu weight_pu_up weight_pu_down weight_sfelec_id weight_sfelec_id_up weight_sfelec_id_down weight_sfelec_reco weight_sfelec_reco_up weight_sfelec_reco_down weight_sfelec_trigger weight_sfelec_trigger_up weight_sfelec_trigger_down weight_sfmu_iso weight_sfmu_iso_up weight_sfmu_iso_down weight_sfmu_trigger weight_sfmu_trigger_up weight_sfmu_trigger_down weight_btag weight_btag_bc_up weight_btag_bc_down weight_btag_udsg_up weight_btag_udsg_down weight_murmuf_upup weight_murmuf_upnone weight_murmuf_noneup weight_murmuf_nonedown weight_murmuf_downnone weight_murmuf_downdown" />
+	<Item Name="additionalBranches"      Value="eventweight_final weight_sfmu_id_up weight_sfmu_id_down weight_sfmu_id weight_pu weight_pu_up weight_pu_down weight_sfelec_id weight_sfelec_id_up weight_sfelec_id_down weight_sfelec_reco weight_sfelec_reco_up weight_sfelec_reco_down weight_sfelec_trigger weight_sfelec_trigger_up weight_sfelec_trigger_down weight_sfmu_iso weight_sfmu_iso_up weight_sfmu_iso_down weight_sfmu_trigger weight_sfmu_trigger_up weight_sfmu_trigger_down weight_btag weight_btag_bc_up weight_btag_bc_down weight_btag_udsg_up weight_btag_udsg_down weight_murmuf_upup weight_murmuf_upnone weight_murmuf_noneup weight_murmuf_nonedown weight_murmuf_downnone weight_murmuf_downdown weight_sfL1prefiring weight_sfL1prefiring_up weight_sfL1prefiring_down" />
 
 	<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.root" />
 	<Item Name="lumihists_lumi_per_bin" Value="1000."/>

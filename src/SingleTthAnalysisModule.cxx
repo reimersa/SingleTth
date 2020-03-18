@@ -184,23 +184,23 @@ namespace uhh2examples {
 
     ele_cleaner_2016.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(30.0, 2.4))));
     ele_cleaner_2017.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(40.0, 2.4))));
-    ele_cleaner_2018.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(45.0, 2.4))));
+    ele_cleaner_2018.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(35.0, 2.4))));
 
     SF_muonID.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "NUM_TightID_DEN_genTracks_eta_pt", 0., "id", false, sys_muonid));
-    if(year == Year::is2016v2 || year == Year::is2016v3 || (year == Year::is2017v2)){
+    //    if(year == Year::is2016v2 || year == Year::is2016v3 || (year == Year::is2017v2)){
       SF_muonTrigger.reset(new MuonTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/LQTopLep/data/", year));
       SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/LQTopLep/data/", year));
-    }
+      //    }
 
     SF_muonIso.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonIso_EfficienciesAndSF_average_RunBtoH.root", "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt", 0., "iso", false, sys_muoniso));
 
     SF_eleReco.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root", 1, "reco", sys_elereco));
     SF_eleID.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/2016LegacyReReco_ElectronTight_Fall17V2.root", 1, "id", sys_eleid));
 
-    if((year == Year::is2016v2) || (year == Year::is2016v3) || (year == Year::is2017v2)){
+    //    if((year == Year::is2016v2) || (year == Year::is2016v3) || (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
       SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag, "comb"));
-    }
+      //    }
 
     if(year != Year::is2018){
       h_L1prefiring = ctx.declare_event_output<float>("weight_sfL1prefiring");
@@ -684,9 +684,7 @@ namespace uhh2examples {
       }
       else if(year == Year::is2018){
         if(!(trigger1_much_sel_2018->passes(event)) ) return false;
-        event.set(h_muon_triggerweight, 1.);
-        event.set(h_muon_triggerweight_up, 1.);
-        event.set(h_muon_triggerweight_down, 1.);
+	SF_muonTrigger->process(event);
       }
       event.set(h_electron_triggerweight, 1.);
       event.set(h_electron_triggerweight_up, 1.);
@@ -721,9 +719,7 @@ namespace uhh2examples {
       }
       else  if(year == Year::is2018){
         if(!(trigger1_ech_sel_2018->passes(event)) ) return false;
-        event.set(h_electron_triggerweight, 1.);
-        event.set(h_electron_triggerweight_up, 1.);
-        event.set(h_electron_triggerweight_down, 1.);
+	SF_eleTrigger->process(event);
 	ele_cleaner_2018->process(event);
       }
       event.set(h_muon_triggerweight, 1.);
@@ -743,10 +739,10 @@ namespace uhh2examples {
       h_btageff_trigger->fill(event);
     }
 
-    if((year == Year::is2016v2) || (year == Year::is2016v3)|| (year == Year::is2017v2)){
+    //    if((year == Year::is2016v2) || (year == Year::is2016v3)|| (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
       SF_btag->process(event);
-    }
+      //    }
 
     if(is_much){
       h_btagsf->fill(event);

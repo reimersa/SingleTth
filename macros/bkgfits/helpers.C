@@ -25,10 +25,10 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
-     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
-     //     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/"; 
+
      else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
-     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/NOMINAL_NoBTagSF/"; 
+     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
      else throw runtime_error("Year not possible.");
   }
 	
@@ -140,8 +140,8 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      cout << "Using NAF setup." << endl;
      
      if(year.Contains("2016")) {
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/"; 
        if ((MT <700) && (val==NULL)) year = "2016v2";
    }
      else if(year.Contains("2017")){
@@ -152,15 +152,15 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
        hand = "LH";
      }
      else if(year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");
 
      // if(unc=="" && (year.Contains("2017") || year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
-     if(unc=="" && ( year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
-     else if(unc=="") anaoutputfolder +="NOMINAL/";
+     //     if(unc=="" && ( year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
+     if(unc=="") anaoutputfolder +="NOMINAL/";
 
   }
 
@@ -176,17 +176,23 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   if(unc!=""){
     TString subfolder = "NOMINAL/";
     //    if(year.Contains("2017")|| year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
-    if(year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
+    //    if(year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
     sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
     if(unc.Contains("PDF")) {
       subfolder = "pdf/";
       sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
     }
 
+    if(unc.Contains("scale")) {
+      subfolder = "scale/";
+      sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+    }
+
+
     if(unc.Contains("JEC")||unc.Contains("JER")) {
       TString extention = "";
       //      if((year.Contains("2017")||year.Contains("2018"))) extention = "_NoBTagSF"; 
-      if((year.Contains("2018"))) extention = "_NoBTagSF"; 
+      //if((year.Contains("2018"))) extention = "_NoBTagSF"; 
       sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
     }
   }  
@@ -261,7 +267,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   } else {
      cout << "Using NAF setup." << endl;
      if(year.Contains("2016")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/"; 
        if ((MT <700) && (val==NULL)) year = "2016v2";
      }
      else if (year.Contains("2017")){
@@ -270,7 +276,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
        hand = "LH";
      }
      else if (year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/NOMINAL_NoBTagSF/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");
@@ -581,7 +587,7 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
   hist->GetXaxis()->SetNdivisions(6,5,0);
   hist->GetYaxis()->SetNdivisions(6,5,0);
 
-  //hist->SetMaximum(max);
+  hist->SetMaximum(10*hist->GetMaximum());
   //hist->SetMinimum(0.05);
 
   hist->GetXaxis()->SetTitleSize(0);

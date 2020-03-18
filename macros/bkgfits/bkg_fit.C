@@ -9,16 +9,20 @@ void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
-EFitFunction FitFunc = eFunc3p;
+// EFitFunction FitFunc = eFunc3p;
 // EFitFunction FitFunc = eFunc4p;
 // EFitFunction FitFunc = eFuncExp2;
+
+// EFitFunction FitFunc = eFunc2p;
+// EFitFunction FitFunc = eFuncAlt3p;
+ EFitFunction FitFunc = eFuncAlt4p;
 
 void bkg_fit()
 {
 
-   // TString year = "2016v3";
-  TString year = "2017v2";
-  // TString year = "2018";
+  //  TString year = "2016v3";
+  //  TString year = "2017v2";
+  TString year = "2018";
   TH1F* cl68 = NULL; 
   TH1F* cl95 = NULL;
   TH1F* dum = NULL; 
@@ -67,8 +71,10 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   double fit_xmin = 0;
   double fit_xmax = 0;  
   if (region==eSR){
-    fit_xmin = 380;
+    fit_xmin = 500;
     fit_xmax = 2000;    
+    if(FitFunc == eFuncExp2 or FitFunc == eFuncAlt4p)fit_xmin =380;
+
   } else {
     fit_xmin = 560;
     fit_xmax = 2000;       
@@ -363,7 +369,7 @@ void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString
   plotter->GetYaxis()->SetTitleSize(0.045);
   plotter->GetYaxis()->SetTitleOffset(1.1);
   //plotter->SetTitle("");
-  plotter->GetYaxis()->SetRangeUser(0.1, 300);
+  plotter->GetYaxis()->SetRangeUser(0.1, 3000);
   plotter->Draw();
 
   //funcs[0]->Draw("same");

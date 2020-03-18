@@ -129,20 +129,20 @@ namespace uhh2examples {
 
     // Easy systematics
     if(year == Year::is2017v1 || year == Year::is2017v2){
-      // Without b-tagging uncertainties in 2017
+      // 2017
       systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger","prefiring","btag_bc", "btag_udsg"};
       handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger","weight_sfL1prefiring", "weight_btag" , "weight_btag"};
 
     }
     else if(year == Year::is2018){
-      // Without b-tagging and L1prefiring uncertainties in 2018
-      systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger"};
-      handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger"};
+      // Without L1prefiring uncertainties in 2018
+      systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger","btag_bc", "btag_udsg"};
+      handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger","weight_btag" , "weight_btag"};
 
     }
     else{
-      systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger", "btag_bc", "btag_udsg"};
-      handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger", "weight_btag" , "weight_btag"};
+      systnames = {"muid", "pu", "eleid", "elereco", "eletrigger", "muiso", "mutrigger", "btag_bc", "btag_udsg","prefiring"};
+      handlenames = {"weight_sfmu_id", "weight_pu", "weight_sfelec_id", "weight_sfelec_reco", "weight_sfelec_trigger", "weight_sfmu_iso", "weight_sfmu_trigger", "weight_btag" , "weight_btag","weight_sfL1prefiring"};
     }
 
 
@@ -251,7 +251,7 @@ namespace uhh2examples {
         float systweight = event.get(systweight_handles[idx]);
         float sfweight = event.get(scalefactor_handles[idx]);
         event.weight = weight_nominal * systweight / sfweight;
-        // cout << "idx: " << idx << ", systweight/sfweight: " << systweight/sfweight << endl;
+	//	cout << "idx: " << idx << ", systweight/sfweight: " << systweight/sfweight << endl;
 
         TString tag = systnames[i] + "_" + systshift[j];
         fill_histograms(event, (string)tag, is_sr, is_much);

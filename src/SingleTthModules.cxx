@@ -222,7 +222,7 @@ ElectronTriggerWeights::ElectronTriggerWeights(Context & ctx, TString path_, Yea
   pt_split = 175;
   file_low.reset(new TFile(path+"/" + yeartag + "/ElectronTriggerScaleFactors_eta_ele_binned_pt30to175.root","READ"));
   file_high.reset(new TFile(path+"/" + yeartag + "/ElectronTriggerScaleFactors_eta_ele_binned_pt175toInf.root","READ"));
-  if(year == Year::is2017v1 || year == Year::is2017v2){
+  if(year == Year::is2017v1 || year == Year::is2017v2||year == Year::is2018){
     file_low.reset(new TFile(path+"/" + yeartag + "/ElectronTriggerScaleFactors_eta_ele_binned_pt30to200.root","READ"));
     file_high.reset(new TFile(path+"/" + yeartag + "/ElectronTriggerScaleFactors_eta_ele_binned_pt200toInf.root","READ"));
     pt_split = 200;

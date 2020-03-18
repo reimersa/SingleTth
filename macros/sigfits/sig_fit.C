@@ -9,26 +9,31 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
 void sig_fit()
 {
-  TString year =  "2017v2";
-  // TString year =  "2018";
+  //   TString year =  "2016v3";
+  // TString year =  "2017v2";
+  TString year =  "2018";
 
   TString postfix = "_mediumWP";
 
   std::ofstream infotofile("SignalFitOutput_"+year+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
-     Echannel ch = eComb;
-  //  Echannel ch = eEle;
-  // Echannel ch = eMuon;
+  Echannel ch = eComb;
+  //   Echannel ch = eEle;
+  //   Echannel ch = eMuon;
 
-  // std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","eletrigger","muiso","mutrigger","btag_bc","btag_udsg","PDF","JEC","JER"}; // PDF,scale missing 
-     //  std::vector<TString> uncertainties ={}; // PDF,scale missing 
-     std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg"}; // 2017, PDF, btag, Trigger missing
-  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER"};
+       //  std::vector<TString> uncertainties ={}; // no syst.
+  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2016 & 2017 
+  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
 
 
- // std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
- std::vector<double> MTs = {650, 700, 800, 1000,1100, 1200};// 2017
- std::vector<double> MTs_backup = {650, 700, 800, 1000,1100, 1200};// 2017
+  std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
+  std::vector<double> MTs_backup = {600,650, 800,900, 1000,1100, 1200};// 2016
+
+ if(year.Contains("2018") or year.Contains("2017")){
+   MTs = {650, 700, 800, 1000,1100, 1200};// 2017
+   MTs_backup = {650, 700, 800, 1000,1100, 1200};// 2017
+ }
+
   std::vector<double> means;
   std::vector<double> means_err;
   std::vector<double> widths;  
@@ -117,7 +122,7 @@ void sig_fit()
   lin->SetParameter(0, lin->GetParameter(0)+2 * lin->GetParError(0));
   lin->SetParameter(1, lin->GetParameter(1)+2*0.5* lin->GetParError(1));
   lin->SetLineColor(kBlue);
-  //  lin->DrawCopy("same");
+  //lin->DrawCopy("same");
 
   lin->SetParameter(0, lin->GetParameter(0)-2*lin->GetParError(0));
   lin->SetParameter(1, lin->GetParameter(1)- lin->GetParError(1));
@@ -143,6 +148,7 @@ void sig_fit()
 
   can->RedrawAxis();
   can->SaveAs(fname+postfix+".eps");
+  can->SaveAs(fname+postfix+".pdf");
 
   ////// add uncertainties
   // for each uncertainties fit linear function and draw it
@@ -182,10 +188,11 @@ void sig_fit()
     TF1* lin = new TF1("meanfit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
     TFitResultPtr r_unc = gmean_unc->Fit(lin, "0");
     lin->SetLineColor(kBlue+jj);
+    lin->SetLineStyle(jj); 
     can->cd();
     if(unc.Contains("JER") or unc.Contains("JEC")){
       lin->DrawCopy("same");
-      jj+=4;
+      //jj+=4;
     }
     if(unc.Contains("JEC")&&direction.Contains("up")){
       infotofile<< "JECmfitup param0 \t"<< lin->GetParameter(0)<<"\t"<<lin->GetParError(0)<<std::endl;
@@ -204,13 +211,19 @@ void sig_fit()
       infotofile<< "JERmfitdown param1 \t"<< lin->GetParameter(1)<<"\t"<<  lin->GetParError(1)<<std::endl;
     }
 
-    if(j==0)leg->AddEntry(lin,unc+" Slope "+TString::Format("%.3f", lin->GetParameter(1)),"");
+    if(j==0){
+      leg->AddEntry(lin,unc+" Slope "+TString::Format("%.3f", lin->GetParameter(1)),"l");
+      jj+=1;
+      if (jj == 5) jj++;
     }
+    }
+
   }
 
   can->cd();
   leg->Draw();
   can->SaveAs(fname+postfix+"_unc.eps");
+  can->SaveAs(fname+postfix+"_unc.pdf");
 
 
   //-------------------------------------------------
@@ -287,6 +300,7 @@ void sig_fit()
 
   can2->RedrawAxis();
   can2->SaveAs(fname2+postfix + ".eps");
+  can2->SaveAs(fname2+postfix + ".pdf");
 
   ////// add uncertainties
   // for each uncertainties fit linear function and draw it
@@ -318,6 +332,7 @@ void sig_fit()
       TF1* lin2 = new TF1("sigmafit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
       TFitResultPtr r_unc = gsigma_unc->Fit(lin2, "0");
       lin2->SetLineColor(kBlue+jj);
+      lin2->SetLineStyle(jj);
       can2->cd();
       gsigma_unc->SetMarkerStyle(24);
       if(unc.Contains("PDF"))gsigma_unc->Draw("PE Same");
@@ -339,14 +354,16 @@ void sig_fit()
       }
 
       if(j==0)lin2->Draw("same");
-      if(j==0)leg2->AddEntry(lin2,unc+" Slope "+TString::Format("%.3f", lin2->GetParameter(1)),"");
+      if(j==0)leg2->AddEntry(lin2,unc+" Slope "+TString::Format("%.3f", lin2->GetParameter(1)),"l");
       if(j==0)jj++;
+      if(jj==5)jj++;
     }
   }
 
   can2->cd();
   leg2->Draw();
   can2->SaveAs(fname2+postfix+"_unc.eps");
+  can2->SaveAs(fname2+postfix+"_unc.pdf");
 
 
   //-------------------------------------------------
@@ -430,6 +447,7 @@ void sig_fit()
 
   can3->RedrawAxis();
   can3->SaveAs(fname3+postfix+ ".eps");
+  can3->SaveAs(fname3+postfix+ ".pdf");
 
   ////// add uncertainties
   // for each uncertainties fit linear function and draw it
@@ -444,6 +462,7 @@ void sig_fit()
   jj=0;
   MTs = MTs_backup;// {600, 650, 800, 900, 1000, 1100,1200};
   for(TString unc:uncertainties){
+    if (unc == "scale") continue;
     std::cout<<"   ===============================    uncertainty        "<< unc<<std::endl;
     means_unc.clear();
     means_err_unc.clear();
@@ -465,20 +484,25 @@ void sig_fit()
     if(unc.Contains("btag_bc")) {
       geff_unc->SetMarkerStyle(24);
       geff_unc->SetLineWidth(2);     
-      geff_unc->Draw("P same");
+      //      geff_unc->Draw("P same");
       infotofile<<"efficiency estimate btag_bc  "<<lin3->GetParameter(0)<<std::endl;
     }
     if(unc.Contains("eletrigger")){
       infotofile<<"efficiency estimate eletrigger  "<<lin3->GetParameter(0)<<std::endl;
     }
+    if(unc.Contains("PDF")){
+      infotofile<<"efficiency estimate PDF  "<<lin3->GetParameter(0)<<std::endl;
+    }
     leg3->AddEntry(lin3,unc+" Slope "+TString::Format("%f", lin3->GetParameter(1)),"l");
     jj++;
+    if (jj==5)jj++;
     
   }
 
   can3->cd();
   leg3->Draw();
   can3->SaveAs(fname3+postfix+"_unc.eps");
+  can3->SaveAs(fname3+postfix+"_unc.pdf");
 
 
 

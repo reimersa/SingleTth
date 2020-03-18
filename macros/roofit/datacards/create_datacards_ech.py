@@ -25,21 +25,11 @@ sigma_value = {}
 sigma_error = {}
 bkg_much_norm = 0
 bkg_ech_norm = 0
-number_of_channels = 2
+number_of_channels = 1
 number_of_backgrounds = 1
-
-#year = "2016v3"
-#year = "2017v2"
-year = "2018"
-
-all_years_eaul = True
-rate_unc = 1.15
-lumi_unc = 1.025
-if "2017" in year: lumi_unc = 1.023
-if "2016" in year and not all_years_eaul: rate_unc = 1.05
-if "2017" in year and not all_years_eaul: rate_unc = 1.15
-if "2018" in year and not all_years_eaul: rate_unc = 1.12
-
+# year = "2016v3"
+year = "2017v2"
+# year = "2018"
 
 # Find all possible MT where we have the normalisation
 inputfile = open("AnalysisOutput_"+year+".txt","r")
@@ -76,7 +66,7 @@ for line in listOfLines:
 
 # open file to write
 for mass in signal_much_norm:
-    outputfile = open("Datacard_"+year+"_M"+str(mass)+".txt",'w')
+    outputfile = open("Datacard_"+year+"_M"+str(mass)+"_ech.txt",'w')
     outputfile.write("# Version of the 36/pb SingleTth Analysis \n\n")
     outputfile.write("------------------------------ \n")
     outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
@@ -86,23 +76,21 @@ for mass in signal_much_norm:
     outputfile.write("shapes * * ws_SingleTth.root SingleTth:$PROCESS_$CHANNEL \n \n")
     outputfile.write("------------------------------ \n")
     outputfile.write("# name of channels, and number of observed events (total number of event in Data) \n \n")
-    outputfile.write("bin            ech            much \n")
-    outputfile.write("observation    -1             -1 \n \n")
+    outputfile.write("bin            ech             \n")
+    outputfile.write("observation    -1              \n \n")
     outputfile.write("------------------------------ \n")
     outputfile.write("# name of the channel you are considering, name of the process (signal,bkg,...),\n # process unique ID (positive number for backgrounds, and zero or negative for signal)\n # expected events for each process (total number of events in MC)\n \n")
-    outputfile.write("bin            ech         ech            much      much \n")
+    outputfile.write("bin            ech         ech \n")
 #    outputfile.write("process        MT600       Bkgfunc        MT600     Bkgfunc \n")
 #    outputfile.write("process        MT600       roomultipdf        MT600     roomultipdf \n")
-    outputfile.write("process        roomultipdf_MT"+str(mass)+"       roomultipdf        roomultipdf_MT"+str(mass)+"     roomultipdf \n")
-    outputfile.write("process        0           1              0         1 \n")
-    outputfile.write("rate           "+str(signal_ech_norm[mass])+"     "+str(bkg_ech_norm)+"          "+str(signal_much_norm[mass])+"   "+str(bkg_much_norm)+" \n \n")
+    outputfile.write("process        roomultipdf_MT"+str(mass)+"       roomultipdf         \n")
+    outputfile.write("process        0           1 \n")
+    outputfile.write("rate           "+str(signal_ech_norm[mass])+"     "+str(bkg_ech_norm)+" \n \n")
     outputfile.write("------------------------------ \n")
     outputfile.write("# list of independent sources of uncertainties, and give their effect (syst. error) \n \n")
-    outputfile.write("lumi     lnN   "+str(lumi_unc)+"       -    "+str(lumi_unc)+" - \n ")
-    outputfile.write("rate_signal     lnN    "+str(rate_unc)+"       -    "+str(rate_unc)+" - \n ")
-    outputfile.write("pdf_index_much discrete \n ")
+    outputfile.write("lumi     lnN   1.025       -    \n ")
+#    outputfile.write("rate_signal     lnN   1.21       -   1.21 - \n ")
     outputfile.write("pdf_index_ech discrete \n ")
-    outputfile.write("pdf_index_MT"+str(mass)+"_much discrete \n ")
     outputfile.write("pdf_index_MT"+str(mass)+"_ech discrete \n ")
     outputfile.write("sg_mean param "+str(mean_value[mass])+"  "+str(mean_error[mass])+" \n ")
     outputfile.write("sg_sigma param "+str(sigma_value[mass])+"  "+str(sigma_error[mass])+" \n ")

@@ -17,10 +17,10 @@ from collections import OrderedDict
 
 berror = False
 #year = "2016v3"
-year = "2017v2"
-#year = "2018"
+#year = "2017v2"
+year = "2018"
 
-postfix = "_tightWP"
+postfix = "_mediumWP_allyearsunc"
 
 masses = []
 inputfile = open("AnalysisOutput_"+year+".txt","r")
@@ -35,7 +35,7 @@ for line in listOfLines:
     i+=1
 
 print masses
-#masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '800', '825', '875', '925', '950', '1000', '1050','1100', '1125', '1150', '1200']
+#masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '800', '825', '875', '925', '950', '1000','1025', '1050', '1075', '1100', '1125', '1150', '1175', '1200', '1225']
 
 outputfile = open("Limits_combine_"+year+postfix+".txt","w")
 for mass in masses:

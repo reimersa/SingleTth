@@ -39,8 +39,8 @@ CreateRooWorkspace::CreateRooWorkspace(TString year) : infotofile("datacards/Ana
 
 TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel ch, bool dodata, bool all_bkgds, TString year)
 {
-	  using namespace defs;
-    using namespace std;    
+  using namespace defs;
+  using namespace std;    
 
 
 	  // folder where the analysis output files are 
@@ -54,12 +54,12 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
     } else {
       cout << "Using NAF setup." << endl;
       if (year.Contains("2016")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/NOMINAL/"; 
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/"; 
       } else if(year.Contains("2017")){
 	//	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
 	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
       } else if(year.Contains("2018")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/NOMINAL_NoBTagSF/"; 
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
       }else if(year.Contains("andrea")){ 
 	anaoutputfolder = "/nfs/dust/cms/user/amalara/WorkingArea/File/Analysis/2016/SignalRegion/Puppi/muonchannel/";
       }else{
@@ -188,8 +188,13 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   double fit_xmin = 0;
   double fit_xmax = 0;  
   if (region==defs::eSR){
-    fit_xmin = 380;
+    // fit_xmin = 380;
+    // fit_xmax = 2000;    
+
+    fit_xmin = 500;
     fit_xmax = 2000;    
+    if(year.Contains("2018"))fit_xmin = 550;
+
       } else {
     fit_xmin = 500;
     fit_xmax = 2000;       
@@ -240,6 +245,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name, "bg3p_p1"+ch_name,   9.1, -1000,  1000);
   RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name, "bg3p_p2"+ch_name,   2.5, -100,   100 );
 
+
+
   BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
 
   // 4 parameter function for systematics
@@ -247,6 +254,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1"+ch_name, "bg4p_p1"+ch_name, -12.6, -1000,  1000);
   RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2"+ch_name, "bg4p_p2"+ch_name,  -9.6, -100,   100 );
   RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3"+ch_name, "bg4p_p3"+ch_name,  -5.3, -100,   100 );
+
 
   BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name,"Bkfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
@@ -528,46 +536,46 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
 
 
   TF1* eff_ele = new TF1("eff_ele", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
-  eff_ele->SetParameter(0, 0.001498);
-  eff_ele->SetParameter(1, 5.889e-06);
-  eff_ele->SetParameter(2, -7.832e-09);
+  eff_ele->SetParameter(0, 0.003325);
+  eff_ele->SetParameter(1, 1.301e-05);
+  eff_ele->SetParameter(2, -1.737e-08);
   if(year.Contains("2017")){
     // eff_ele->SetParameter(0, 0.00215);
     // eff_ele->SetParameter(1, 4.938e-06);
     // eff_ele->SetParameter(2, -5.968e-09);
     
     //medium WP
-    eff_ele->SetParameter(0, 0.0043);
-    eff_ele->SetParameter(1, 9.97e-06);
-    eff_ele->SetParameter(2, -1.004e-08);
+    eff_ele->SetParameter(0, 0.0040);
+    eff_ele->SetParameter(1, 9.523e-06);
+    eff_ele->SetParameter(2, -9.442e-09);
 
   }
   if(year.Contains("2018")){
-    eff_ele->SetParameter(0, 0.00299);
-    eff_ele->SetParameter(1, 4.882e-06);
-    eff_ele->SetParameter(2, -6.394e-08);
+    eff_ele->SetParameter(0, 0.003825);
+    eff_ele->SetParameter(1, 1.258e-05);
+    eff_ele->SetParameter(2, -1.547e-08);
   }
 
 
   TF1* eff_muon = new TF1("eff_muon", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
-  eff_muon->SetParameter(0, 0.002258);
-  eff_muon->SetParameter(1, 6.304e-06);
-  eff_muon->SetParameter(2, -9.69e-09);
+  eff_muon->SetParameter(0, 0.004818);
+  eff_muon->SetParameter(1, 1.25e-05);
+  eff_muon->SetParameter(2, -1.885e-08);
   if(year.Contains("2017")){
     // eff_muon->SetParameter(0, 0.002875);
     // eff_muon->SetParameter(1, 5.804e-06);
     // eff_muon->SetParameter(2, -7.862e-09);
 
     //medium WP
-    eff_ele->SetParameter(0, 0.006);
-    eff_ele->SetParameter(1, 1.24e-05);
-    eff_ele->SetParameter(2, -1.443e-08);
+    eff_muon->SetParameter(0, 0.0059);
+    eff_muon->SetParameter(1, 1.217e-05);
+    eff_muon->SetParameter(2, -1.419e-08);
     
   }
   if(year.Contains("2018")){
-    eff_muon->SetParameter(0, 0.0031);
-    eff_muon->SetParameter(1, 5.437e-06);
-    eff_muon->SetParameter(2, -7.136e-08);
+    eff_muon->SetParameter(0, 0.005623);
+    eff_muon->SetParameter(1, 1.35e-05);
+    eff_muon->SetParameter(2, -1.869e-08);
   }
 
   infotofile << "===== Number of events for Signal in the "; 
