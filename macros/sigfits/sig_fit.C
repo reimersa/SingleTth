@@ -9,9 +9,9 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
 void sig_fit()
 {
-  //   TString year =  "2016v3";
-  // TString year =  "2017v2";
-  TString year =  "2018";
+     TString year =  "2016v3";
+     // TString year =  "2017v2";
+  // TString year =  "2018";
 
   TString postfix = "_mediumWP";
 

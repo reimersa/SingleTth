@@ -191,9 +191,11 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     // fit_xmin = 380;
     // fit_xmax = 2000;    
 
-    fit_xmin = 500;
+    fit_xmin = 400;
     fit_xmax = 2000;    
-    if(year.Contains("2018"))fit_xmin = 550;
+
+    //    if(year.Contains("2017")) fit_xmin = 500;
+    //    if(year.Contains("2018"))fit_xmin = 550;
 
       } else {
     fit_xmin = 500;
@@ -350,8 +352,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   // sum up number of events in fit region
   double Ntot = 0;
-  int lowbin = h_data->FindBin(xmin);
-  int highbin = h_data->FindBin(xmax);
+  int lowbin = h_data->FindBin(fit_xmin);
+  int highbin = h_data->FindBin(fit_xmax);
   for (int i=1; i<h_data->GetNbinsX()+1; ++i){
     if ((i>=lowbin) && (i<=highbin)) Ntot += h_data->GetBinContent(i); 
   }

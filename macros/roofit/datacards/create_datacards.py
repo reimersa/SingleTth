@@ -29,8 +29,8 @@ number_of_channels = 2
 number_of_backgrounds = 1
 
 #year = "2016v3"
-#year = "2017v2"
-year = "2018"
+year = "2017v2"
+#year = "2018"
 
 all_years_eaul = True
 rate_unc = 1.15
@@ -83,7 +83,7 @@ for mass in signal_much_norm:
     outputfile.write("jmax  "+str(number_of_backgrounds)+" number of backgrounds \n")
     outputfile.write("kmax  * number of nuisance parameters (sources of systematical uncertainties) \n \n")
     outputfile.write("------------------------------ \n")
-    outputfile.write("shapes * * ws_SingleTth.root SingleTth:$PROCESS_$CHANNEL \n \n")
+    outputfile.write("shapes * * ws_SingleTth_"+str(year)+".root SingleTth:$PROCESS_$CHANNEL \n \n")
     outputfile.write("------------------------------ \n")
     outputfile.write("# name of channels, and number of observed events (total number of event in Data) \n \n")
     outputfile.write("bin            ech            much \n")
