@@ -218,10 +218,6 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   TH1F* h_data = GetAnalysisOutput(region, channel, dodata, all_bkgds,year); 
 
 
-  //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
-  RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", fit_xmin, fit_xmax);
-  x->setBins(81);
-  RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name, "data_obs_"+ch_name, RooArgList(*x), h_data);
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
@@ -239,49 +235,74 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   }
 
 
+  //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
+  RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", xmin, xmax);
+  x->setBins(81);
+  RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), h_data);
+
+
   // control plots
   RooPlot *plotter=x->frame();
 
   // 3 parameter function for nominal result
-  RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name, "bg3p_p0"+ch_name, -13.2, -1000,  1000);
-  RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name, "bg3p_p1"+ch_name,   9.1, -1000,  1000);
-  RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name, "bg3p_p2"+ch_name,   2.5, -100,   100 );
+  RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year, "bg3p_p0"+ch_name, -13.2, -1000,  1000);
+  RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year, "bg3p_p1"+ch_name,   9.1, -1000,  1000);
+  RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year, "bg3p_p2"+ch_name,   2.5, -100,   100 );
 
 
-
-  BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
+  BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name+"_"+year,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
 
   // 4 parameter function for systematics
-  RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0"+ch_name, "bg4p_p0"+ch_name, 66.45, -1000,  1000);
-  RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1"+ch_name, "bg4p_p1"+ch_name, -12.6, -1000,  1000);
-  RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2"+ch_name, "bg4p_p2"+ch_name,  -9.6, -100,   100 );
-  RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3"+ch_name, "bg4p_p3"+ch_name,  -5.3, -100,   100 );
+  RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0"+ch_name+"_"+year, "bg4p_p0"+ch_name, 66.45, -1000,  1000);
+  RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1"+ch_name+"_"+year, "bg4p_p1"+ch_name, -12.6, -1000,  1000);
+  RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2"+ch_name+"_"+year, "bg4p_p2"+ch_name,  -9.6, -100,   100 );
+  RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3"+ch_name+"_"+year, "bg4p_p3"+ch_name,  -5.3, -100,   100 );
 
 
-  BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name,"Bkfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
+  BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name+"_"+year,"Bkfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
   // 2 parameter exponential function 
-  RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name, "bgexp2_p0"+ch_name, 8.2, -100, 100);
-  RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name, "bgexp2_p1"+ch_name, 4.3, -100, 100);
+  RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name+"_"+year, "bgexp2_p0"+ch_name, 8.2, -100, 100);
+  RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name+"_"+year, "bgexp2_p1"+ch_name, 4.3, -100, 100);
 
-  BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
+  BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name+"_"+year,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
 
   // nominal fit
-  RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(fit_xmin, fit_xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   std::cout << "Testing BKG values postfit" << '\n';
   bg3p_p0->Print(); 
   bg3p_p1->Print();
   bg3p_p2->Print(); 
 
+  infotofile << "---------  Bg3p  "+ch_name+"  ---------"<<std::endl;
+  infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"  " << bg3p_p0->getValV() <<"  error  "<< bg3p_p0->getError()<<std::endl;
+  infotofile << "bg3p_p1"<<ch_name<<"_"<<year<<"   " << bg3p_p1->getValV() <<"  error  "<< bg3p_p1->getError()<<std::endl;
+  infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"   " << bg3p_p2->getValV() <<"  error  "<< bg3p_p2->getError()<<std::endl;
+
+
+
   // systematic fit
-  RooFitResult *r_bg_4p = bgfunc_4p->fitTo(*dataSR, RooFit::Range(fit_xmin,fit_xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg_4p = bgfunc_4p->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   std::cout << "Testing BKG systematic variation (4p) values postfit" << '\n';
   bg4p_p0->Print(); 
   bg4p_p1->Print();
   bg4p_p2->Print(); 
   bg4p_p3->Print(); 
 
-  RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR, RooFit::Range(fit_xmin,fit_xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  infotofile << "---------  Bg4p  "+ch_name+"  - ---------"<<std::endl;
+  infotofile << "bg4p_p0"<<ch_name<<"_"<<year<<"   " << bg4p_p0->getValV() <<"  error  "<< bg4p_p0->getError()<<std::endl;
+  infotofile << "bg4p_p1"<<ch_name<<"_"<<year<<"   " << bg4p_p1->getValV() <<"  error  "<< bg4p_p1->getError()<<std::endl;
+  infotofile << "bg4p_p2"<<ch_name<<"_"<<year<<"   " << bg4p_p2->getValV() <<"  error  "<< bg4p_p2->getError()<<std::endl;
+  infotofile << "bg4p_p3"<<ch_name<<"_"<<year<<"   " << bg4p_p3->getValV() <<"  error  "<< bg4p_p3->getError()<<std::endl;
+
+
+
+  RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+
+  infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
+  infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"   " << bgexp2_p0->getValV() <<"  error  "<< bgexp2_p0->getError()<<std::endl;
+  infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"   " << bgexp2_p1->getValV() <<"  error  "<< bgexp2_p1->getError()<<std::endl;
+
 
   //create a list with all alt and nominal functions
   RooArgList mypdfs;
@@ -289,8 +310,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   mypdfs.add(*bgfunc_4p);
   mypdfs.add(*bgfunc_exp);
 
-  RooCategory cat("pdf_index_"+ch_name,"Index of Pdf which is active");
-  RooMultiPdf multipdf("roomultipdf_"+ch_name,"All Pdfs",cat,mypdfs);
+  RooCategory cat("pdf_index_"+ch_name+"_"+year,"Index of Pdf which is active");
+  RooMultiPdf multipdf("roomultipdf_"+ch_name+"_"+year,"All Pdfs",cat,mypdfs);
   RooRealVar norm("roomultipdf_"+ch_name+"_norm","Number of background events",10000,100000);
 
   // converting function into hist to debug
@@ -352,8 +373,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   // sum up number of events in fit region
   double Ntot = 0;
-  int lowbin = h_data->FindBin(fit_xmin);
-  int highbin = h_data->FindBin(fit_xmax);
+  int lowbin = h_data->FindBin(xmin);
+  int highbin = h_data->FindBin(xmax);
   for (int i=1; i<h_data->GetNbinsX()+1; ++i){
     if ((i>=lowbin) && (i<=highbin)) Ntot += h_data->GetBinContent(i); 
   }
@@ -488,8 +509,11 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   mean->SetParameter(1, param1_mean_value);
 
   TF1* mean_error = new TF1("meanfit_error", "[0]+[1]*(x-600)", 500, 1250);
-  mean_error->SetParameter(0, param0_mean_value+2*param0_mean_error);
-  mean_error->SetParameter(1, param1_mean_value+2*0.5 *param1_mean_error);
+  //mean_error->SetParameter(0, param0_mean_value+2*param0_mean_error);
+  //  mean_error->SetParameter(1, param1_mean_value+2*0.5 *param1_mean_error);
+  mean_error->SetParameter(0, param0_mean_value+param0_mean_error);
+  mean_error->SetParameter(1, param1_mean_value+0.5 *param1_mean_error);
+
 
   TF1* JECmeanup_error = new TF1("JECmeanfit_error", "[0]+[1]*(x-600)", 500, 1250);
   JECmeanup_error->SetParameter(0, param0_JECmeanup_value);
@@ -586,31 +610,38 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
 
   // loop over mass points, create PDFs and store them
   double MT = 550; 
+  //  double MT = 800; 
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", 200, 2000);
   while (MT<1250)
+      //  while (MT<810)
   {
     TString SgName = TString::Format("MT%d_", (int)MT);
     SgName.Append(ch_name);
+    SgName.Append(year);
 
     //       RooConstVar* sg_mean  =new RooConstVar("sg_mean",  "sg_mean",  mean->Eval(MT));
-    RooRealVar* sg_mean  =new RooRealVar("sg_mean",  "sg_mean",  mean->Eval(MT));
+    RooRealVar* sg_mean  =new RooRealVar("sg_mean_"+year,  "sg_mean",  mean->Eval(MT));
+
+    RooRealVar* sg_mean_variation  =new RooRealVar("sg_mean_variation",  "sg_mean_variation",  mean_error->Eval(MT));
+
     //    RooConstVar* sg_sigma =new RooConstVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
-     RooRealVar* sg_sigma =new RooRealVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
+     RooRealVar* sg_sigma =new RooRealVar("sg_sigma_"+year, "sg_sigma", sigma->Eval(MT));
 
-    RooConstVar* sg_JECmeanup  =new RooConstVar("sg_JECmeanup",  "sg_JECmeanup",  JECmeanup_error->Eval(MT));
-    RooConstVar* sg_JECsigmaup =new RooConstVar("sg_JECsigmaup", "sg_JECsigmaup", JECsigmaup_error->Eval(MT));
+    RooConstVar* sg_JECmeanup  =new RooConstVar("sg_JECmeanup_"+year,  "sg_JECmeanup",  JECmeanup_error->Eval(MT));
+    RooConstVar* sg_JECsigmaup =new RooConstVar("sg_JECsigmaup_"+year, "sg_JECsigmaup", JECsigmaup_error->Eval(MT));
 
-    RooConstVar* sg_JERmeanup  =new RooConstVar("sg_JERmeanup",  "sg_JERmeanup",  JERmeanup_error->Eval(MT));
-    RooConstVar* sg_JERsigmaup =new RooConstVar("sg_JERsigmaup", "sg_JERsigmaup", JERsigmaup_error->Eval(MT));
+    RooConstVar* sg_JERmeanup  =new RooConstVar("sg_JERmeanup_"+year,  "sg_JERmeanup",  JERmeanup_error->Eval(MT));
+    RooConstVar* sg_JERsigmaup =new RooConstVar("sg_JERsigmaup_"+year, "sg_JERsigmaup", JERsigmaup_error->Eval(MT));
 
-    RooConstVar* sg_JECmeandown  =new RooConstVar("sg_JECmeandown",  "sg_JECmeandown",  JECmeandown_error->Eval(MT));
-    RooConstVar* sg_JECsigmadown =new RooConstVar("sg_JECsigmadown", "sg_JECsigmadown", JECsigmadown_error->Eval(MT));
+    RooConstVar* sg_JECmeandown  =new RooConstVar("sg_JECmeandown_"+year,  "sg_JECmeandown",  JECmeandown_error->Eval(MT));
+    RooConstVar* sg_JECsigmadown =new RooConstVar("sg_JECsigmadown_"+year, "sg_JECsigmadown", JECsigmadown_error->Eval(MT));
 
-    RooConstVar* sg_JERmeandown  =new RooConstVar("sg_JERmeandown",  "sg_JERmeandown",  JERmeandown_error->Eval(MT));
-    RooConstVar* sg_JERsigmadown =new RooConstVar("sg_JERsigmadown", "sg_JERsigmadown", JERsigmadown_error->Eval(MT));
+    RooConstVar* sg_JERmeandown  =new RooConstVar("sg_JERmeandown_"+year,  "sg_JERmeandown",  JERmeandown_error->Eval(MT));
+    RooConstVar* sg_JERsigmadown =new RooConstVar("sg_JERsigmadown_"+year, "sg_JERsigmadown", JERsigmadown_error->Eval(MT));
 
 
     RooGaussian* ModelSg_Gauss = new RooGaussian(SgName, SgName, *x, *sg_mean, *sg_sigma);
+    RooGaussian* ModelSg_Gauss_variation = new RooGaussian(SgName, SgName, *x, *sg_mean_variation, *sg_sigma);
     RooGaussian* ModelSg_JECup_Gauss = new RooGaussian(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup);
     RooGaussian* ModelSg_JERup_Gauss = new RooGaussian(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup);
     RooGaussian* ModelSg_JECdown_Gauss = new RooGaussian(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown);
@@ -657,18 +688,22 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     double Nevts = 35800*eff;
     if(year.Contains("2017")) Nevts = 41500*eff;
     if(year.Contains("2018")) Nevts = 59700*eff;
-    infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<mean_error->Eval(MT)-mean->Eval(MT)<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT)<< std::endl;
+    //    infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<mean_error->Eval(MT)-mean->Eval(MT)<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT)<< std::endl;
+    infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<(mean_error->Eval(MT)-mean->Eval(MT))<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT);
+    infotofile << "  JERupmean   "<<JERmeanup_error->Eval(MT)<<"   JERsigmaup   "<<JERsigmaup_error->Eval(MT)<<"  JERdownmean   "<<JERmeandown_error->Eval(MT)<<"   JERsigmadown   "<<JERsigmadown_error->Eval(MT)<< "  JECupmean   "<<JECmeanup_error->Eval(MT)<<"   JECsigmaup   "<<JECsigmaup_error->Eval(MT)<<"  JECdownmean   "<<JECmeandown_error->Eval(MT)<<"   JECsigmadown   "<<JECsigmadown_error->Eval(MT)<<std::endl;
+
 
     //add uncertainties as special shape
     RooArgList mypdfs;
     mypdfs.add(*ModelSg_Gauss);
+    //mypdfs.add(*ModelSg_Gauss_variation);
     mypdfs.add(*ModelSg_JECup_Gauss);
     mypdfs.add(*ModelSg_JERup_Gauss);
     mypdfs.add(*ModelSg_JECdown_Gauss);
     mypdfs.add(*ModelSg_JERdown_Gauss);
 
-    RooCategory cat("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name,"Index of Pdf which is active");
-    RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name,"All Pdfs",cat,mypdfs);
+    RooCategory cat("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year,"Index of Pdf which is active");
+    RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year,"All Pdfs",cat,mypdfs);
 
 
 

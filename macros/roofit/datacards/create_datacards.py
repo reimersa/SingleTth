@@ -23,14 +23,21 @@ mean_value = {}
 mean_error = {}
 sigma_value = {}
 sigma_error = {}
+
+bg3p_v = {}
+
+bg3p_err = {}
+
+
+
 bkg_much_norm = 0
 bkg_ech_norm = 0
 number_of_channels = 2
 number_of_backgrounds = 1
 
 #year = "2016v3"
-year = "2017v2"
-#year = "2018"
+#year = "2017v2"
+year = "2018"
 
 all_years_eaul = True
 rate_unc = 1.15
@@ -72,6 +79,18 @@ for line in listOfLines:
             norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
             signal_ech_norm[mass] = norm
 
+    if "Bg" in line:
+        for j in range(i+1,len(listOfLines)):
+            if "bg" in listOfLines[j]:
+                value = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[0]
+                error = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[1]
+                key = listOfLines[j].split("  ")[0]
+                
+                bg3p_v[key] = value
+                bg3p_err[key] = error
+                
+        
+
     i+=1 
 
 # open file to write
@@ -106,6 +125,8 @@ for mass in signal_much_norm:
     outputfile.write("pdf_index_MT"+str(mass)+"_ech discrete \n ")
     outputfile.write("sg_mean param "+str(mean_value[mass])+"  "+str(mean_error[mass])+" \n ")
     outputfile.write("sg_sigma param "+str(sigma_value[mass])+"  "+str(sigma_error[mass])+" \n ")
+    for key in bg3p_v:
+        outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")
     outputfile.write("------------------------------ \n")
 
 

@@ -17,13 +17,19 @@ from collections import OrderedDict
 
 berror = False
 #year = "2016v3"
-year = "2017v2"
+#year = "2017v2"
 #year = "2018"
+year = "allyears"
 
 postfix = "_mediumWP_allyearsunc"
 
 masses = []
-inputfile = open("AnalysisOutput_"+year+".txt","r")
+
+if "allyears" in year:
+    inputfile = open("AnalysisOutput_2016v3.txt","r")
+else:
+    inputfile = open("AnalysisOutput_"+year+".txt","r")
+
 listOfLines = inputfile.readlines()
 i=0
 for line in listOfLines:
@@ -52,5 +58,5 @@ for mass in masses:
 outputfile.close()
 
 
-x = open("Limits_combine_"+year+".txt").read()
-open("Limits_combine_"+year+".txt","w").write(x[:-1])
+x = open("Limits_combine_"+year+postfix+".txt").read()
+open("Limits_combine_"+year+postfix+".txt","w").write(x[:-1])
