@@ -51,14 +51,14 @@ namespace uhh2examples {
     Year year;
     unique_ptr<CommonModules> common;
     unique_ptr<AnalysisModule> SF_muonID, SF_muonIso, SF_eleReco, SF_eleID, SF_btag, scale_variation_module;
-    unique_ptr<MuonTriggerWeights> SF_muonTrigger;
+    unique_ptr<MuonTriggerWeightsOffical> SF_muonTrigger;
     unique_ptr<ElectronTriggerWeights> SF_eleTrigger;
     // unique_ptr<PDFWeightHandleProducer> pdf_weight_producer;
 
     unique_ptr<ElectronCleaner> ele_cleaner_2016, ele_cleaner_2017, ele_cleaner_2018;
 
     // declare the Selections to use.
-    unique_ptr<Selection>  btag_loose_sel, btag_2medium_sel, btag_3medium_sel, btag_2tight_sel, btag_3tight_sel, trigger1_much_sel_2016, trigger2_much_sel_2016,trigger1_much_sel_2017,trigger1_much_sel_2018, trigger1_ech_sel_2016, trigger2_ech_sel_2016,trigger1_ech_sel_2017,trigger2_ech_sel_2017,trigger1_ech_sel_2018, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech;
+    unique_ptr<Selection>  btag_loose_sel, btag_2medium_sel, btag_3medium_sel, btag_2tight_sel, btag_3tight_sel, trigger1_much_sel_2016, trigger2_much_sel_2016,trigger1_much_sel_2017,trigger1_much_sel_2018, trigger1_ech_sel_2016, trigger2_ech_sel_2016,trigger1_ech_sel_2017,trigger2_ech_sel_2017,trigger1_ech_sel_2018, muon_sel_much, ele_sel_much, muon_sel_ech, ele_sel_ech, HEMIssue_sel_2018;
 
     unique_ptr<HighMassSingleTthReconstruction> tprime_reco;
     unique_ptr<SingleTthChi2Discriminator> tprime_chi2;
@@ -188,7 +188,7 @@ namespace uhh2examples {
 
     SF_muonID.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "NUM_TightID_DEN_genTracks_eta_pt", 0., "id", false, sys_muonid));
     //    if(year == Year::is2016v2 || year == Year::is2016v3 || (year == Year::is2017v2)){
-      SF_muonTrigger.reset(new MuonTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/LQTopLep/data/", year));
+    SF_muonTrigger.reset(new MuonTriggerWeightsOffical(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/LQTopLep/data/", year));
       SF_eleTrigger.reset(new ElectronTriggerWeights(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/LQTopLep/data/", year));
       //    }
 
@@ -249,9 +249,12 @@ namespace uhh2examples {
 
     //    tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
     tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetMedium));
-    tprime_chi2.reset(new SingleTthChi2Discriminator(ctx));
+    tprime_chi2.reset(new SingleTthChi2Discriminator(ctx,year));
 
     scale_variation_module.reset(new MCScaleVariation(ctx));
+
+    HEMIssue_sel_2018.reset(new HEMIssueSelection(DeepjetMedium));
+
     // 3. Set up Hists classes:
     h_nocuts.reset(new SingleTthHists(ctx, "nocuts"));
     h_jets_nocuts.reset(new JetHists(ctx, "Jets_nocuts"));
@@ -676,11 +679,11 @@ namespace uhh2examples {
     if(is_much){
       if((year == Year::is2016v2) || (year == Year::is2016v3)){
         if(!(trigger1_much_sel_2016->passes(event) || trigger2_much_sel_2016->passes(event)) ) return false;
-        SF_muonTrigger->process(event);
+	SF_muonTrigger->process(event);
       }
       else if(year == Year::is2017v2){
         if(!(trigger1_much_sel_2017->passes(event)) ) return false;
-        SF_muonTrigger->process(event);
+	SF_muonTrigger->process(event);
       }
       else if(year == Year::is2018){
         if(!(trigger1_much_sel_2018->passes(event)) ) return false;
@@ -784,15 +787,20 @@ namespace uhh2examples {
       h_lumi_btag_3m->fill(event);
     }
 
+    if(year == Year::is2018){
+      bool pass_HEMIssue = HEMIssue_sel_2018 -> passes(event);
+      if (!pass_HEMIssue) return false;
+    }
+
     // if(!(btag_2tight_sel->passes(event))) return false;
-    // if(is_much){
-    //   h_btag_2t->fill(event);
-    //   h_jets_btag_2t->fill(event);
-    //   h_ele_btag_2t->fill(event);
-    //   h_mu_btag_2t->fill(event);
-    //   h_event_btag_2t->fill(event);
-    //   h_lumi_btag_2t->fill(event);
-    // }
+    if(is_much){
+      h_btag_2t->fill(event);
+      h_jets_btag_2t->fill(event);
+      h_ele_btag_2t->fill(event);
+      h_mu_btag_2t->fill(event);
+      h_event_btag_2t->fill(event);
+      h_lumi_btag_2t->fill(event);
+    }
 
 
     // if(!(btag_3tight_sel->passes(event))) return false;

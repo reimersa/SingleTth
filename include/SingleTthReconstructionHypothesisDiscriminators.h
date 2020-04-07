@@ -2,7 +2,7 @@
 
 #include "UHH2/core/include/AnalysisModule.h"
 #include "UHH2/core/include/Event.h"
-
+#include "UHH2/common/include/CommonModules.h"
 #include "UHH2/SingleTth/include/SingleTthReconstructionHypothesis.h"
 #include "UHH2/common/include/TTbarGen.h"
 #include "UHH2/SingleTth/include/SingleTthGen.h"
@@ -17,11 +17,12 @@ public:
         cfg(): discriminator_label("Chi2"){}
     };
 
-    SingleTthChi2Discriminator(uhh2::Context & ctx, const cfg & config = cfg());
+    SingleTthChi2Discriminator(uhh2::Context & ctx, Year year_, const cfg & config = cfg());
     virtual bool process(uhh2::Event & event) override;
 
 private:
     uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;
     uhh2::Event::Handle<bool> h_is_tprime_reco;
     cfg config;
+    Year year;
 };

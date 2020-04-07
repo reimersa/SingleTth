@@ -59,7 +59,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
 	//	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
 	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
       } else if(year.Contains("2018")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/HEMIssue/NOMINAL/"; 
       }else if(year.Contains("andrea")){ 
 	anaoutputfolder = "/nfs/dust/cms/user/amalara/WorkingArea/File/Analysis/2016/SignalRegion/Puppi/muonchannel/";
       }else{
@@ -312,7 +312,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   RooCategory cat("pdf_index_"+ch_name+"_"+year,"Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name+"_"+year,"All Pdfs",cat,mypdfs);
-  RooRealVar norm("roomultipdf_"+ch_name+"_norm","Number of background events",10000,100000);
+  RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_norm","Number of background events",12014,0,1000000);
 
   // converting function into hist to debug
   RooDataSet* data1 = bgfunc->generate(RooArgSet(*x), 1000000);
@@ -368,7 +368,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // save the bkg systematic fit to the workspace
   //  fWS->import(*bgfunc_4p);
   fWS->import(cat);
-  //  fWS->import(norm);
+  //fWS->import(norm);
   fWS->import(multipdf);
 
   // sum up number of events in fit region
@@ -577,9 +577,16 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
 
   }
   if(year.Contains("2018")){
-    eff_ele->SetParameter(0, 0.003825);
-    eff_ele->SetParameter(1, 1.258e-05);
-    eff_ele->SetParameter(2, -1.547e-08);
+    //mediumWP
+    // eff_ele->SetParameter(0, 0.003825);
+    // eff_ele->SetParameter(1, 1.258e-05);
+    // eff_ele->SetParameter(2, -1.547e-08);
+ 
+    //HEMIssue
+    eff_ele->SetParameter(0, 0.003969);
+    eff_ele->SetParameter(1, 9.421e-06);
+    eff_ele->SetParameter(2, -1.075e-08);
+    
   }
 
 
@@ -599,9 +606,16 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     
   }
   if(year.Contains("2018")){
-    eff_muon->SetParameter(0, 0.005623);
-    eff_muon->SetParameter(1, 1.35e-05);
-    eff_muon->SetParameter(2, -1.869e-08);
+    // // mediumWP
+    // eff_muon->SetParameter(0, 0.005623);
+    // eff_muon->SetParameter(1, 1.35e-05);
+    // eff_muon->SetParameter(2, -1.869e-08);
+
+    // HEMIssue
+    eff_muon->SetParameter(0, 0.005785);
+    eff_muon->SetParameter(1, 1.012e-05);
+    eff_muon->SetParameter(2, -1.412e-08);
+
   }
 
   infotofile << "===== Number of events for Signal in the "; 

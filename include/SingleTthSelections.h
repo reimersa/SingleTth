@@ -2,6 +2,7 @@
 
 #include "UHH2/core/include/fwd.h"
 #include "UHH2/core/include/Selection.h"
+#include "UHH2/common/include/JetIds.h"
 
 namespace uhh2examples {
     
@@ -16,6 +17,14 @@ public:
     virtual bool passes(const uhh2::Event & event) override;
 private:
     float dphi_min, third_frac_max;
+};
+
+class HEMIssueSelection: public uhh2::Selection {
+public:
+    HEMIssueSelection(JetId btag);
+    virtual bool passes(const uhh2::Event & event) override;
+private:
+    JetId btag; 
 };
 
 

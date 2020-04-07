@@ -120,7 +120,7 @@ namespace uhh2examples {
 
     JetId DeepjetTight = BTag(BTag::DEEPJET, BTag::WP_MEDIUM);
     tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
-    tprime_chi2.reset(new SingleTthChi2Discriminator(ctx));
+    tprime_chi2.reset(new SingleTthChi2Discriminator(ctx,year));
     h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
     h_hyps = ctx.get_handle<vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
 

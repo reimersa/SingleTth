@@ -4,8 +4,8 @@ int main(int argc, char *argv[])
 {
   using namespace std;
 
-  bool dodata = true;
-  bool all_bkgds = true;
+  bool dodata = false;
+  bool all_bkgds = false;
 
   // create the workspace
   CreateRooWorkspace prod("2018");

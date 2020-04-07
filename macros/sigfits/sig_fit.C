@@ -9,16 +9,16 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
 void sig_fit()
 {
-     TString year =  "2016v3";
+  //   TString year =  "2016v3";
      // TString year =  "2017v2";
-  // TString year =  "2018";
+   TString year =  "2018";
 
-  TString postfix = "_mediumWP";
+  TString postfix = "_HEMIssue_LH";
 
   std::ofstream infotofile("SignalFitOutput_"+year+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
   Echannel ch = eComb;
-  //   Echannel ch = eEle;
+  //  Echannel ch = eEle;
   //   Echannel ch = eMuon;
 
        //  std::vector<TString> uncertainties ={}; // no syst.
@@ -29,9 +29,10 @@ void sig_fit()
   std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
   std::vector<double> MTs_backup = {600,650, 800,900, 1000,1100, 1200};// 2016
 
+
  if(year.Contains("2018") or year.Contains("2017")){
-   MTs = {650, 700, 800, 1000,1100, 1200};// 2017
-   MTs_backup = {650, 700, 800, 1000,1100, 1200};// 2017
+   MTs = {600, 650, 700, 800,900, 1000,1100, 1200};// 2017
+   MTs_backup = {600, 650, 700, 800,900, 1000,1100, 1200};// 2017
  }
 
   std::vector<double> means;

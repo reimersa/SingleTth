@@ -35,8 +35,9 @@ const SingleTthReconstructionHypothesis * get_best_hypothesis(const std::vector<
   }
 }
 
-SingleTthChi2Discriminator::SingleTthChi2Discriminator(Context & ctx, const cfg & config_): config(config_){
+SingleTthChi2Discriminator::SingleTthChi2Discriminator(Context & ctx,Year year_, const cfg & config_): config(config_){
   h_hyps = ctx.get_handle<vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
+  year= year_;
 }
 
 
@@ -45,8 +46,18 @@ bool SingleTthChi2Discriminator::process(uhh2::Event & event){
 
   const double mass_tlep = 173.;
   const double mass_tlep_sigma = 22.;
-  const double mass_higgs = 121.;
-  const double mass_higgs_sigma = 13.;
+  double mass_higgs = 121.9;	
+  double mass_higgs_sigma = 13.5;
+
+  if(year == Year::is2017v2){
+    mass_higgs = 120.4;	
+    mass_higgs_sigma = 14.1;
+  }
+
+  if(year == Year::is2018){
+    mass_higgs = 120.7;	
+    mass_higgs_sigma = 14.;
+  }
 
 
   for(auto & hyp: hyps){

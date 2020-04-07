@@ -129,7 +129,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   // folder where the analysis output files are 
   TString anaoutputfolder;
   TString systfolder; 
-  TString hand = "RH";
+  TString hand = "LH";
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
@@ -152,8 +152,8 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
        hand = "LH";
      }
      else if(year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/HEMIssue/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/HEMIssue/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");
@@ -276,7 +276,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
        hand = "LH";
      }
      else if (year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/HEMIssue/NOMINAL/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");

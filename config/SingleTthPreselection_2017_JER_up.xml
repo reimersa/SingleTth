@@ -33,6 +33,7 @@
 <!ENTITY VLQ_LH_650 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2017v2/TprimeBToTH_M-650_LH_TuneCP5_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_LH_700 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2017v2/TprimeBToTH_M-700_LH_TuneCP5_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_LH_800 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2017v2/TprimeBToTH_M-800_LH_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2017v2/TprimeBToTH_M-900_LH_TuneCP5_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_LH_1000 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2017v2/TprimeBToTH_M-1000_LH_TuneCP5_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_LH_1100 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2017v2/TprimeBToTH_M-1100_LH_TuneCP5_13TeV-madgraph-pythia8.xml">
 <!ENTITY VLQ_LH_1200 SYSTEM      "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10_v2/CMSSW_10_2_16/src/UHH2/scripts/crab/SingleVLQ/2017v2/TprimeBToTH_M-1200_LH_TuneCP5_13TeV-madgraph-pythia8.xml">
@@ -148,11 +149,11 @@
 
 
 
-		<InputData Lumi="300000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_2017v2" Cacheable="&b_Cacheable;">
-			&VLQ_LH_600;
-			<InputTree Name="AnalysisTree" />
-			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="300000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_2017v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	&VLQ_LH_600; -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- 	<OutputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
 
 		<!-- <InputData Lumi="300000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_650_2017v2" Cacheable="&b_Cacheable;"> -->
@@ -173,11 +174,11 @@
 		<!-- 	<OutputTree Name="AnalysisTree" /> -->
 		<!-- </InputData> -->
 
-		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_2017v2" Cacheable="&b_Cacheable;"> -->
-		<!-- 	&VLQ_LH_900; -->
-		<!-- 	<InputTree Name="AnalysisTree" /> -->
-		<!-- 	<OutputTree Name="AnalysisTree" /> -->
-		<!-- </InputData> -->
+		<InputData Lumi="300000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_2017v2" Cacheable="&b_Cacheable;">
+			&VLQ_LH_900;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
 
 		<!-- <InputData Lumi="300000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_2017v2" Cacheable="&b_Cacheable;"> -->
 		<!-- 	&VLQ_LH_1000; -->
