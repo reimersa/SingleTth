@@ -1,6 +1,7 @@
 #include "CreateRooWorkspace.h"
 #include "BkgPdfExp2.h" 
 #include "BkgPdf3p.h" 
+#include "BkgPdf2p.h" 
 #include "BkgPdf4p.h" 
 
 
@@ -101,6 +102,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
   		region_name = "sr";
   	}
   	TString hist_name = "chi2h_2_" + channel_name + "_" + region_name + "/M_Tprime";
+	//	if(region_name.Contains("cr")) hist_name = "chi2_10_" + channel_name + "_" + region_name + "/M_Tprime";
 	if(year.Contains("andrea"))hist_name = "ZprimeCandidate_btag_DeepBoosted_H4qvsQCD_CR/Zprime_mass_rebin2";
   	TH1F* data = (TH1F*)data_f->Get(hist_name);
   	TH1F* ttbar = (TH1F*)ttbar_f->Get(hist_name);
@@ -198,7 +200,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     //    if(year.Contains("2018"))fit_xmin = 550;
 
       } else {
-    fit_xmin = 500;
+    fit_xmin = 550;
     fit_xmax = 2000;       
   }
 
@@ -244,6 +246,13 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // control plots
   RooPlot *plotter=x->frame();
 
+  // 2 parameter function for nominal result
+  RooRealVar* bg2p_p0 = new RooRealVar("bg2p_p0"+ch_name+"_"+year, "bg2p_p0"+ch_name, 7.74, -1000,  1000);
+  RooRealVar* bg2p_p1 = new RooRealVar("bg2p_p1"+ch_name+"_"+year, "bg2p_p1"+ch_name,   1.99, -1000,  1000);
+
+  BkgPdf2p* bgfunc_2p = new BkgPdf2p("Bkgfunc_"+ch_name+"_"+year,"Bkgfunc_"+ch_name, *x, *bg2p_p0, *bg2p_p1);
+
+
   // 3 parameter function for nominal result
   RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year, "bg3p_p0"+ch_name, -13.2, -1000,  1000);
   RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year, "bg3p_p1"+ch_name,   9.1, -1000,  1000);
@@ -267,8 +276,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name+"_"+year,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
 
-  // nominal fit
-  RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  //  nominal fit
+   RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   std::cout << "Testing BKG values postfit" << '\n';
   bg3p_p0->Print(); 
   bg3p_p1->Print();
@@ -295,6 +304,16 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   infotofile << "bg4p_p2"<<ch_name<<"_"<<year<<"   " << bg4p_p2->getValV() <<"  error  "<< bg4p_p2->getError()<<std::endl;
   infotofile << "bg4p_p3"<<ch_name<<"_"<<year<<"   " << bg4p_p3->getValV() <<"  error  "<< bg4p_p3->getError()<<std::endl;
 
+  // nominal fit
+  RooFitResult *r_bg_2p = bgfunc_2p->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  std::cout << "Testing BKG values postfit" << '\n';
+  bg2p_p0->Print(); 
+  bg2p_p1->Print();
+
+
+  infotofile << "---------  Bg2p  "+ch_name+"  ---------"<<std::endl;
+  infotofile << "bg2p_p0"<<ch_name<<"_"<<year<<"  " << bg2p_p0->getValV() <<"  error  "<< bg2p_p0->getError()<<std::endl;
+  infotofile << "bg2p_p1"<<ch_name<<"_"<<year<<"   " << bg2p_p1->getValV() <<"  error  "<< bg2p_p1->getError()<<std::endl;
 
 
   RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
@@ -302,62 +321,63 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
   infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"   " << bgexp2_p0->getValV() <<"  error  "<< bgexp2_p0->getError()<<std::endl;
   infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"   " << bgexp2_p1->getValV() <<"  error  "<< bgexp2_p1->getError()<<std::endl;
-
+  
 
   //create a list with all alt and nominal functions
   RooArgList mypdfs;
-  mypdfs.add(*bgfunc);
-  mypdfs.add(*bgfunc_4p);
+  //mypdfs.add(*bgfunc);
+  //  mypdfs.add(*bgfunc_4p);
   mypdfs.add(*bgfunc_exp);
+  //  mypdfs.add(*bgfunc_2p);
 
   RooCategory cat("pdf_index_"+ch_name+"_"+year,"Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name+"_"+year,"All Pdfs",cat,mypdfs);
   RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_norm","Number of background events",12014,0,1000000);
 
-  // converting function into hist to debug
-  RooDataSet* data1 = bgfunc->generate(RooArgSet(*x), 1000000);
-  RooDataHist *hist1 = data1->binnedClone();
-  TH1* myhist = dataSR->createHistogram("myhist",*x);
-  TH1* myhist2 =  hist1->createHistogram("myhist2",*x);
+  // //  converting function into hist to debug
+  // RooDataSet* data1 = bgfunc->generate(RooArgSet(*x), 1000000);
+  // RooDataHist *hist1 = data1->binnedClone();
+  // TH1* myhist = dataSR->createHistogram("myhist",*x);
+  // TH1* myhist2 =  hist1->createHistogram("myhist2",*x);
 
 
 
-  if(ch_name.Contains("much")){
-    //    myhist->Scale(2268/myhist->Integral());
-    myhist->SetName("data_obs_much");
-    myhist->SetLineColor(kRed);
-    myhist2->Scale(myhist->Integral()/myhist2->Integral());
-    myhist2->SetName("background_much");
+  // if(ch_name.Contains("much")){
+  //   //    myhist->Scale(2268/myhist->Integral());
+  //   myhist->SetName("data_obs_much");
+  //   myhist->SetLineColor(kRed);
+  //   myhist2->Scale(myhist->Integral()/myhist2->Integral());
+  //   myhist2->SetName("background_much");
 
-  }else{
-    myhist->Scale(1548/myhist->Integral());
-    myhist->SetName("data_obs_ech");
-    myhist2->Scale(1548/myhist2->Integral());
-    myhist2->SetName("background_ech");
-  }
+  // }else{
+  //   myhist->Scale(1548/myhist->Integral());
+  //   myhist->SetName("data_obs_ech");
+  //   myhist2->Scale(1548/myhist2->Integral());
+  //   myhist2->SetName("background_ech");
+  // }
 
-  TCanvas *test_c = new TCanvas("test_c","test fit",10,10,700,700); 
-  myhist->Draw();
-  myhist2->Draw("same");
-  test_c->SaveAs("test_hist"+ch_name+".eps");
-  debug_histos->cd();
-  myhist->Write();
-  myhist2->Write();
+  // TCanvas *test_c = new TCanvas("test_c","test fit",10,10,700,700); 
+  // myhist->Draw();
+  // myhist2->Draw("same");
+  // test_c->SaveAs("test_hist"+ch_name+".eps");
+  // debug_histos->cd();
+  // myhist->Write();
+  // myhist2->Write();
 
 
-  dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
-  bgfunc->plotOn(plotter);
-  bgfunc_4p->plotOn(plotter);
-  plotter->getAttLine()->SetLineColor(kRed);
-  plotter->getAttLine()->SetLineStyle(kDotted);  
-  //  hist1->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));  
-  cout << "chi^2 = " << plotter->chiSquare() << endl;
+  // dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
+  // bgfunc->plotOn(plotter);
+  // bgfunc_4p->plotOn(plotter);
+  // plotter->getAttLine()->SetLineColor(kRed);
+  // plotter->getAttLine()->SetLineStyle(kDotted);  
+  // //  hist1->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));  
+  // cout << "chi^2 = " << plotter->chiSquare() << endl;
 
-  TCanvas *background_c = new TCanvas("background_c","background fit",10,10,700,700);
-  background_c->cd();
-  //gPad->SetLogy();
-  plotter->Draw();
-  background_c->SaveAs("plots/nominal_bkg_3pfit_"+ch_name+"_"+year+".pdf");
+  // TCanvas *background_c = new TCanvas("background_c","background fit",10,10,700,700);
+  // background_c->cd();
+  // //gPad->SetLogy();
+  // plotter->Draw();
+  // background_c->SaveAs("plots/nominal_bkg_3pfit_"+ch_name+"_"+year+".pdf");
 
   // save the data to the workspace
   fWS->import(*dataSR);
@@ -368,7 +388,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // save the bkg systematic fit to the workspace
   //  fWS->import(*bgfunc_4p);
   fWS->import(cat);
-  //fWS->import(norm);
+  //  fWS->import(norm);
   fWS->import(multipdf);
 
   // sum up number of events in fit region
@@ -387,13 +407,15 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   // clean up
   delete x; delete dataSR; 
-  delete plotter;
+   delete plotter;
   delete bgfunc;
+  delete bgfunc_2p;
   delete bgfunc_4p;  
+  delete bgfunc_exp;
   delete bg3p_p0; delete bg3p_p1; delete bg3p_p2; 
   delete bg4p_p0; delete bg4p_p1; delete bg4p_p2; delete bg4p_p3; 
   delete r_bg;
-  delete background_c;
+  //  delete background_c;
 
   return;
 

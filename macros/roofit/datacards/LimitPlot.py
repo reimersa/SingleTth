@@ -21,7 +21,7 @@ berror = False
 #year = "2018"
 year = "allyears"
 
-postfix = "_mediumWP_allyearsunc"
+postfix = "_mediumWP_allyearsunc_exp"
 
 masses = []
 

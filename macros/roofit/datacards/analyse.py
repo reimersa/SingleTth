@@ -18,8 +18,8 @@ from collections import OrderedDict
 berror = False
 bscale = False
 
-infile = TFile("fitDiagnostics.root","r")
-infile_gen = TFile("higgsCombineTest.GenerateOnly.mH125.123456.root","r")
+infile = TFile("fitDiagnosticsTEST_signal1_800.root","r")
+infile_gen = TFile("higgsCombine800.GenerateOnly.mH125.123456.root","r")
 
 
 ## Plot toys

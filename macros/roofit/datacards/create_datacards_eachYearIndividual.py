@@ -203,8 +203,6 @@ for mass in masses:
 
     outputfile.write(lumi)
     outputfile.write(rate_sig)
-    # outputfile.write("pdf_index_much discrete \n ")
-    # outputfile.write("pdf_index_ech discrete \n ")
 
     for year in years:
         outputfile.write("pdf_index_much_"+year+" discrete \n ")
