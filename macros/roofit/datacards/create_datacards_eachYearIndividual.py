@@ -17,6 +17,9 @@ from collections import OrderedDict
 
 berror = False
 
+b_multipdf = True
+b_signalrate = True
+
 bkg_much_norm = {} # for all years: key is year
 bkg_ech_norm = {} # for all years: key is year
 
@@ -147,15 +150,6 @@ for mass in masses:
     rate_sig = "rate_signal     lnN    "
 
     for year in sorted(years):
-        # outputfile.write("shapes bkg ech_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:roomultipdf_ech \n \n")
-        # outputfile.write("shapes bkg much_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:roomultipdf_much \n \n")
-
-
-        # outputfile.write("shapes sig ech_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:roomultipdf_MT"+str(mass)+"_ech \n \n")
-        # outputfile.write("shapes sig much_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:roomultipdf_MT"+str(mass)+"_much \n \n")
-
-        # outputfile.write("shapes data_obs ech_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:data_obs_ech \n \n")
-        # outputfile.write("shapes data_obs much_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:data_obs_much \n \n")
         outputfile.write("shapes * ech_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:$PROCESS_$CHANNEL \n \n")
         outputfile.write("shapes * much_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:$PROCESS_$CHANNEL \n \n")
 
@@ -165,8 +159,11 @@ for mass in masses:
         bins +=  "ech_"+year+"   much_"+year+"   "
         double_bins +=  "ech_"+year+"    ech_"+year+"   much_"+year+"   "+"   much_"+year+"   "
         obs +=    " -1             -1 "
-#        process_names += " sig"+year+"   bkg"+year+"  sig"+year+" bkg"+year+"   "
-        process_names += " roomultipdf_MT"+str(mass)+"   roomultipdf  roomultipdf_MT"+str(mass)+"   roomultipdf"
+        if b_multipdf:
+            process_names += " roomultipdf_MT"+str(mass)+"   roomultipdf  roomultipdf_MT"+str(mass)+"   roomultipdf"
+        else:
+            process_names += " roomultipdf_MT"+str(mass)+"   Bkgfunc_Exp2p  roomultipdf_MT"+str(mass)+"   Bkgfunc_Exp2p"
+        
         process_bins += "0   1    0    1   "
 
         rates += str(signal_ech_norm[year+"_"+mass]) + "   "+ str(bkg_ech_norm[year])+"          "+str(signal_much_norm[year+"_"+mass])+"   "+str(bkg_much_norm[year]) + "   "
@@ -202,17 +199,18 @@ for mass in masses:
     outputfile.write("# list of independent sources of uncertainties, and give their effect (syst. error) \n \n")
 
     outputfile.write(lumi)
-    outputfile.write(rate_sig)
+    if b_signalrate:
+        outputfile.write(rate_sig)
 
     for year in years:
-        outputfile.write("pdf_index_much_"+year+" discrete \n ")
-        outputfile.write("pdf_index_ech_"+year+" discrete \n ")
+        if b_multipdf:
+            outputfile.write("pdf_index_much_"+year+" discrete \n ")
+            outputfile.write("pdf_index_ech_"+year+" discrete \n ")
 
 
         outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+" discrete \n ")
         outputfile.write("pdf_index_MT"+str(mass)+"_ech_"+year+" discrete \n ")
 
-    #### hier weiter jec und jer nciht auch setzten in nominal
         outputfile.write("sg_mean_"+year+" param "+str(mean_value[year+"_"+mass])+"  "+str(mean_error[year+"_"+mass])+" \n ")
         outputfile.write("sg_sigma_"+year+" param "+str(sigma_value[year+"_"+mass])+"  "+str(sigma_error[year+"_"+mass])+" \n ")
 

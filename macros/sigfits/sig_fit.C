@@ -5,35 +5,54 @@
 #include "../bkgfits/helpers.C"
 
 using namespace std;
+  bool b_test = false;
+
 void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3");
 
 void sig_fit()
 {
-  //   TString year =  "2016v3";
+  //     TString year =  "2016v3";
      // TString year =  "2017v2";
-   TString year =  "2018";
+  //   TString year =  "2018";
+     TString year =  "allyears";
 
-  TString postfix = "_HEMIssue_LH";
+     //  TString postfix = "_HEMIssue_LH";
+  TString postfix = "";
+
+
 
   std::ofstream infotofile("SignalFitOutput_"+year+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
   Echannel ch = eComb;
   //  Echannel ch = eEle;
-  //   Echannel ch = eMuon;
+  //Echannel ch = eMuon;
 
-       //  std::vector<TString> uncertainties ={}; // no syst.
-  std::vector<TString> uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2016 & 2017 
-  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
+         std::vector<TString> uncertainties ={}; // no syst.
+	 if(!b_test) {
+	   uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2016 & 2017 
+	   if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
+	   if(year.Contains("allyears")) uncertainties = {};
+	 }
 
 
-  std::vector<double> MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
-  std::vector<double> MTs_backup = {600,650, 800,900, 1000,1100, 1200};// 2016
+  std::vector<double> MTs = {650};// 2016
+  std::vector<double> MTs_backup = {650};// 2016
+  if (!b_test){
+
+    MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
+    MTs_backup = {600,650, 800,900, 1000,1100, 1200};// 2016
 
 
- if(year.Contains("2018") or year.Contains("2017")){
+    if(year.Contains("2018") or year.Contains("2017")){
    MTs = {600, 650, 700, 800,900, 1000,1100, 1200};// 2017
    MTs_backup = {600, 650, 700, 800,900, 1000,1100, 1200};// 2017
  }
+    if(year.Contains("allyears")){
+      MTs = {600,650, 700,800,900, 1000,1100, 1200};// 2017
+      MTs_backup = {600, 650, 700,800,900, 1000,1100, 1200};// 2017
+ }
+
+  }
 
   std::vector<double> means;
   std::vector<double> means_err;
@@ -248,6 +267,7 @@ void sig_fit()
   painter2->GetXaxis()->SetTitleOffset(1.2);
   painter2->SetTitle("");
   painter2->GetYaxis()->SetRangeUser(0, 130);
+  if(year.Contains("allyear"))   painter2->GetYaxis()->SetRangeUser(40, 130);
   painter2->Draw();
   gsigma->SetMarkerStyle(20);
   gsigma->SetLineWidth(2);
@@ -388,6 +408,7 @@ void sig_fit()
   painter3->GetXaxis()->SetTitleOffset(1.2);
   painter3->SetTitle("");
   painter3->GetYaxis()->SetRangeUser(0, 0.02);
+  if(year.Contains("allyears"))  painter3->GetYaxis()->SetRangeUser(0.006, 0.02);
   painter3->Draw();
   geff->SetMarkerStyle(20);
   geff->SetLineWidth(2);
@@ -429,13 +450,13 @@ void sig_fit()
   lin3->SetParameter(0,lin3->GetParameter(0)+lin3->GetParError(0));
   //  lin3->SetParameter(1,lin3->GetParameter(1)+0.5*lin3->GetParError(1));
   lin3->SetLineColor(kBlue);
-  lin3->DrawCopy("same");
+  //  lin3->DrawCopy("same");
   infotofile<<"efficiency estimate +1sigma  "<<lin3->GetParameter(0)<<std::endl;
 
   lin3->SetParameter(0,lin3->GetParameter(0)-2*lin3->GetParError(0));
   //  lin3->SetParameter(1,lin3->GetParameter(1)-lin3->GetParError(1));
   lin3->SetLineColor(kBlue);
-  lin3->DrawCopy("same");
+  //  lin3->DrawCopy("same");
   infotofile<<"efficiency estimate -1sigma  "<<lin3->GetParameter(0)<<std::endl;
 
 
@@ -515,12 +536,22 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   // set fit regions (crude estimate)
   double fit_xmin = MT-20-150.;
   double fit_xmax = MT-20+150.;  
+
  
   // a bit more precise 
   double mean = MT-20;
   double sigma = 61.5+0.0033*(MT-600.);
   fit_xmin = mean - 2*sigma;
   fit_xmax = mean + 2.5*sigma;
+
+  // if(b_test){
+  //   fit_xmin = MT-300.; //600
+  //   fit_xmax = MT+300.; //600
+  //   // fit_xmin = MT-400.; //1000
+  //   // fit_xmax = MT+100.;  //1000
+  
+  // }
+
 
   gROOT->SetBatch(kTRUE);
 
@@ -571,11 +602,15 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   // set up function for fit
   //-----------------------------------
   signalfunction_gauss sigfuncobj(xmin, xmax);
+  //   signalfunction_doublegauss sigfuncobj(xmin, xmax);
   sigfuncobj.SetNorm(norm);    
 
+  //  TCanvas c = TCanvas();
   TF1* fitmodel = new TF1("fitmodel", sigfuncobj, xmin, xmax, 2);
   fitmodel->SetParameter(0, MT-20.);  
   fitmodel->SetParameter(1, 60);
+
+
   fitmodel->SetParName(0,"#mu");
   fitmodel->SetParName(1,"#sigma");
   Int_t linecol = kRed+2; 
@@ -591,13 +626,17 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   fitmodel->SetLineStyle(kSolid);
   fitmodel->SetLineWidth(2);
 
+  sigh->Draw();
+
   // FIT!
-  TFitResultPtr r = sigh->Fit(fitmodel, "RS 0");
+  //  TFitResultPtr r = sigh->Fit(fitmodel, "RS 0");
+  TFitResultPtr r = sigh->Fit(fitmodel, "RS");
   TMatrixDSym covmatr = r->GetCovarianceMatrix();
   TMatrixDSym rho = r->GetCorrelationMatrix();
   covmatr.Print();
   rho.Print();
 
+  //  c.SaveAs("test.eps");
   // efficiency calculation
   double Nevents_err; 
   double Nevents = sigh->IntegralAndError(sigh->GetXaxis()->FindBin(xmin), sigh->GetXaxis()->FindBin(xmax), Nevents_err);

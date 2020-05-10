@@ -17,6 +17,9 @@ from collections import OrderedDict
 
 berror = False
 
+b_multipdf = True
+b_signalrate = True
+
 bkg_much_norm = {} # for all years: key is year
 bkg_ech_norm = {} # for all years: key is year
 
@@ -60,7 +63,7 @@ lumi_unc["2017v2"] = 1.023
 lumi_unc["2018"] = 1.025
 
 #years = {"2016v3","2017v2","2018"}
-years = {"2018"}
+years = {"2016v3"}
 
 number_of_channels =  len(years)
 number_of_backgrounds = "*"
@@ -152,7 +155,10 @@ for mass in masses:
         bins +=  "   much_"+year+"   "
         double_bins += "   much_"+year+"   "+"   much_"+year+"   "
         obs +=    "            -1 "
-        process_names += "  roomultipdf_MT"+str(mass)+"   roomultipdf"
+        if b_multipdf:
+            process_names += "  roomultipdf_MT"+str(mass)+"   roomultipdf"
+        else:
+            process_names += "  roomultipdf_MT"+str(mass)+"   Bkgfunc_Exp2p"
         process_bins += "    0    1   "
 
         rates += str(signal_much_norm[year+"_"+mass])+"   "+str(bkg_much_norm[year]) + "   "
@@ -188,10 +194,12 @@ for mass in masses:
     outputfile.write("# list of independent sources of uncertainties, and give their effect (syst. error) \n \n")
 
     outputfile.write(lumi)
-    outputfile.write(rate_sig)
+    if b_signalrate:
+        outputfile.write(rate_sig)
 
     for year in years:
-        outputfile.write("pdf_index_much_"+year+" discrete \n ")
+        if b_multipdf:
+            outputfile.write("pdf_index_much_"+year+" discrete \n ")
 
 
         outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+" discrete \n ")

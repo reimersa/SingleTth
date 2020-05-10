@@ -4,6 +4,7 @@
 #pragma link C++ class BkgPdf3p;
 #pragma link C++ class BkgPdf2p;
 #pragma link C++ class BkgPdfExp2;
+#pragma link C++ class SignalDoubleGauss;
 #pragma link C++ class RooMultiPdf;
 
 #endif

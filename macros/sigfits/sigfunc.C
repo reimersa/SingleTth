@@ -76,3 +76,41 @@ class signalfunction_gauss : public signalfunction {
    }
 };
 
+
+class signalfunction_doublegauss : public signalfunction {
+ 
+ public:
+   signalfunction_doublegauss(double xmin, double xmax) : signalfunction(xmin, xmax) {
+   	 f_xmin = xmin;
+   	 f_xmax = xmax;
+   	 f_norm = 1.;
+
+	 //	 f = new TF1("doublegauss", "[0]*exp(-0.5*((x-[1])/[2])**2) + [5]*exp(-0.5*((x-[3])/[4])**2)", f_xmin, f_xmax);
+	 f = new TF1("doublegauss", "[0]*(0.85 * exp(-0.5*((x-[1])/[2])**2) + 0.15*exp(-0.5*((x-[3])/[4])**2))", f_xmin, f_xmax);
+
+   }
+
+   double operator() (double *xx, double *p) 
+   {
+
+   	 Float_t x =xx[0];
+   	 f->SetParameter(0, 10.);
+   	 f->SetParameter(1, p[0]);
+   	 f->SetParameter(2, p[1]); 
+   	 f->SetParameter(3, 390);  // MT 600
+   	 f->SetParameter(4, 50);   // MT 600
+	 // 	 f->SetParameter(5, 3.8);   // MT 600
+   	 // f->SetParameter(3, 750);  // MT 1000
+   	 // f->SetParameter(4, 90);   // MT 1000
+ 	 // f->SetParameter(5, 3.6);   // MT 1000
+
+	 //   	 double in = f->Integral(f_xmin, f_xmax, 10e-3);  //orig  
+	 double in = f->Integral(f_xmin+80, f_xmax, 10e-3);//600
+   	 // double in = f->Integral(f_xmin+150, f_xmax, 10e-3); //1000
+   	 f->SetParameter(0, 10.*f_norm/in);
+
+     return f->Eval(x);
+
+   }
+};
+

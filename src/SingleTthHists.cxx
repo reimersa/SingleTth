@@ -155,6 +155,13 @@ SingleTthHists::SingleTthHists(Context & ctx, const string & dirname): Hists(ctx
   h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
   is_mc = ctx.get("dataset_type") == "MC";
 
+  //////// signal sample
+  TString sample = ctx.get("dataset_version");
+  is_signal_sample = sample.Contains("VLQ");
+  book<TH1F>("signal_tprime_mass_inv","tprime mass reconstructed on generator level from H and top",600, 0, 3000);
+  book<TH1F>("signal_tprime_mass","tprime mass reconstructed on generator level Tprime",600, 0, 3000);
+  book<TH1F>("M_Tprime_matched", "M_{T} [GeV]", 300, 0, 3000);
+
 }
 
 
@@ -453,6 +460,106 @@ void SingleTthHists::fill(const Event & event){
     hist("dPhi_bH_bH")->Fill(dPhi_bH_bH, weight);
     hist("dPhi_bt_Wt")->Fill(dPhi_bt_Wt, weight);
     hist("dPhi_t_H")->Fill(dPhi_t_H, weight);
+
+    ///// Plotting matched mass
+    if(is_signal_sample){
+      GenParticle Higgs_q1,Higgs_q2, Top_q1, Tprime, daughter1, daughter2;
+      bool b_had_higgs = false;
+      bool b_had_top = false;
+      // for(auto genp:*event.genparticles){
+      // 	std::cout<<" PDG " << genp.pdgId() << "  index  "<< genp.index() << "  mother 1  "<<genp.mother1() << "  mother 2  " << genp.mother2() <<"  duaghter 1  "<<genp.daughter1() << "  duaghter 2  " << genp.daughter2() <<std::endl;
+      // }
+
+      for(auto genp:*event.genparticles){
+
+	
+	if(abs(genp.pdgId()) == 8000001){
+	  Tprime = genp;
+	  daughter1 = event.genparticles->at(genp.daughter1());
+	  daughter2 = event.genparticles->at(genp.daughter2());
+	  if (abs(daughter1.pdgId())==25) {
+	    if(daughter1.daughter1() < 100 && daughter1.daughter2() < 100 && abs(event.genparticles->at(daughter1.daughter1()).pdgId()) < 6 && abs(event.genparticles->at(daughter1.daughter2()).pdgId()) < 6){
+	      b_had_higgs = true;
+	      Higgs_q1 = event.genparticles->at(daughter1.daughter1());
+	      Higgs_q2 = event.genparticles->at(daughter1.daughter2());
+	    }
+	  }
+	  else if (abs(daughter2.pdgId())==25){
+	    if(daughter2.daughter1() < 100 && daughter2.daughter2() < 100 && abs(event.genparticles->at(daughter2.daughter1()).pdgId()) < 6 && abs(event.genparticles->at(daughter2.daughter2()).pdgId()) < 6) {
+	      b_had_higgs = true;
+	      Higgs_q1 = event.genparticles->at(daughter2.daughter1());
+	      Higgs_q2 = event.genparticles->at(daughter2.daughter2());
+	    }
+	  } 
+	  if (abs(daughter1.pdgId())==6) {
+	    if(abs(event.genparticles->at(daughter1.daughter1()).pdgId()) < 6) {
+	      b_had_top = true;
+	      Top_q1 = event.genparticles->at(daughter1.daughter1());
+	    }else{
+	      b_had_top = true;
+	      Top_q1 = event.genparticles->at(daughter1.daughter2());
+	    }	    
+	  }
+	  else if (abs(daughter2.pdgId())==6){
+	    if(abs(event.genparticles->at(daughter2.daughter1()).pdgId()) < 6) {
+	      b_had_top = true;
+	      Top_q1 = event.genparticles->at(daughter2.daughter1());
+	    }else{
+	      b_had_top = true;
+	      Top_q1 = event.genparticles->at(daughter2.daughter2());
+	    }
+	  } 
+	  //break;
+	}
+      }//// for loop over genp
+      bool hq1 = false;
+      bool hq2 = false;
+      bool tq1 = false;
+      std::cout<<"  higgs  "<<b_had_higgs<<"  top  "<<b_had_top<<std::endl;
+      if(b_had_higgs && b_had_top){
+	for(auto hjet:hyp->higgs_jets()){
+	  double deltaR_q1 = deltaR(hjet,Higgs_q1);
+	  double deltaR_q2 = deltaR(hjet,Higgs_q2);
+	  std::cout<<"  deltar hq1 " << deltaR_q1 <<"  deltar hq2  "<<deltaR_q2<<std::endl;
+	  if(deltaR_q1<0.4) hq1 = true;
+	  if(deltaR_q2<0.4) hq2 = true;
+	}
+	for(auto tjet:hyp->toplep_jets()){
+	  double deltaR_tq1 = deltaR(tjet,Top_q1);
+	  if(deltaR_tq1 < 0.4) tq1 = true;
+	}
+      }
+      std::cout<<" hq1 "<<hq1<<"  hq2  "<<hq2<<"  tq1  "<<tq1<<std::endl;
+      if (hq1 && hq2 && tq1) hist("M_Tprime_matched")->Fill(m_tprime,weight);
+    }//// is signal sample
+
+  }
+
+
+  //  std::cout<<"========================= new Event"<<std::endl;
+  ///////////// signal samples  variables
+  if(is_signal_sample){
+    GenParticle Higgs, Top, Tprime, daughter1, daughter2;
+
+    for(auto genp:*event.genparticles){
+      //std::cout<<" PDG " << genp.pdgId() << "  index  "<< genp.index() << "  mother 1  "<<genp.mother1() << "  mother 2  " << genp.mother2() <<std::endl;
+
+      if(abs(genp.pdgId()) == 8000001){
+	Tprime = genp;
+	daughter1 = event.genparticles->at(genp.daughter1());
+	daughter2 = event.genparticles->at(genp.daughter2());
+	if (abs(daughter1.pdgId())==25) Higgs = daughter1;
+	else if (abs(daughter2.pdgId())==25) Higgs = daughter2;
+	if (abs(daughter1.pdgId())==6) Top = daughter1;
+	else if (abs(daughter2.pdgId())==6) Top = daughter2;
+
+	break;
+      }
+    }
+
+    double invMass = (Higgs.v4() + Top.v4()).M();
+    hist("signal_tprime_mass_inv")->Fill(invMass,weight);
+    hist("signal_tprime_mass")->Fill(Tprime.v4().M(),weight);
   }
 
 } //Methode

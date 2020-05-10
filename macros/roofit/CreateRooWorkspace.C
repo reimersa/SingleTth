@@ -250,7 +250,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar* bg2p_p0 = new RooRealVar("bg2p_p0"+ch_name+"_"+year, "bg2p_p0"+ch_name, 7.74, -1000,  1000);
   RooRealVar* bg2p_p1 = new RooRealVar("bg2p_p1"+ch_name+"_"+year, "bg2p_p1"+ch_name,   1.99, -1000,  1000);
 
-  BkgPdf2p* bgfunc_2p = new BkgPdf2p("Bkgfunc_"+ch_name+"_"+year,"Bkgfunc_"+ch_name, *x, *bg2p_p0, *bg2p_p1);
+  BkgPdf2p* bgfunc_2p = new BkgPdf2p("Bkgfunc_2p_"+ch_name+"_"+year,"Bkgfunc_2p_"+ch_name, *x, *bg2p_p0, *bg2p_p1);
 
 
   // 3 parameter function for nominal result
@@ -325,10 +325,10 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   //create a list with all alt and nominal functions
   RooArgList mypdfs;
-  //mypdfs.add(*bgfunc);
-  //  mypdfs.add(*bgfunc_4p);
+  mypdfs.add(*bgfunc);
+  mypdfs.add(*bgfunc_4p);
   mypdfs.add(*bgfunc_exp);
-  //  mypdfs.add(*bgfunc_2p);
+  mypdfs.add(*bgfunc_2p);
 
   RooCategory cat("pdf_index_"+ch_name+"_"+year,"Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name+"_"+year,"All Pdfs",cat,mypdfs);

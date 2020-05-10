@@ -18,8 +18,9 @@ from collections import OrderedDict
 berror = False
 bscale = False
 
-infile = TFile("fitDiagnosticsTEST_signal1_800.root","r")
-infile_gen = TFile("higgsCombine800.GenerateOnly.mH125.123456.root","r")
+infile = TFile("fitDiagnosticssignal1_1000.root","r")
+infile_gen = TFile("higgsCombine1000.GenerateOnly.mH125.123123.root","r")
+infile_gen2 = TFile("higgsCombine600.GenerateOnly.mH125.123123_signal0.root","r")
 
 
 ## Plot toys
@@ -31,6 +32,14 @@ print "Integral of Toys  " + str(hist.sumEntries())
 if bscale: hist.Scale(1/hist.sumEntries())
 hist.plotOn(plotter)
 plotter.Draw()
+
+##### second toys
+ds2 =  infile_gen2.Get("toys/toy_1")
+hist2 = ds2.binnedClone();
+print "Integral of Toys  " + str(hist2.sumEntries())
+if bscale: hist2.Scale(1/hist2.sumEntries())
+hist2.plotOn(plotter)
+#plotter.Draw("same")
 
 
 ## Plot prefit s+b and b

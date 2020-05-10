@@ -20,7 +20,7 @@ namespace uhh2examples {
     uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;
     uhh2::Event::Handle<bool> h_is_tprime_reco;
     bool is_mc;
-
+    bool is_signal_sample;
 
     virtual ~SingleTthHists();
   };

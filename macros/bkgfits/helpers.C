@@ -29,6 +29,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
 
      else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
      else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
+     else if(year.Contains("allyears"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/NOMINAL/"; 
      else throw runtime_error("Year not possible.");
   }
 	
@@ -129,7 +130,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   // folder where the analysis output files are 
   TString anaoutputfolder;
   TString systfolder; 
-  TString hand = "LH";
+  TString hand = "RH";
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
@@ -152,8 +153,13 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
        hand = "LH";
      }
      else if(year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/HEMIssue/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/HEMIssue/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/"; 
+       hand = "LH";
+     }
+     else if(year.Contains("allyears")){
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Finalselection/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");
@@ -276,7 +282,11 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
        hand = "LH";
      }
      else if (year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/HEMIssue/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
+       hand = "LH";
+     }
+     else if (year.Contains("allyears")){
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/NOMINAL/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");
@@ -306,6 +316,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   Ntot = 35800.;
   if(year.Contains("2017")) Ntot = 41500;
   if(year.Contains("2018")) Ntot = 59700;
+  if(year.Contains("allyears")) Ntot = 137200;
 
   // cout << "\nNevents before selection = " << Ntot << endl;
   // cout << "Sum of weights = " << h->GetSumOfWeights() << endl;
@@ -588,6 +599,8 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
   hist->GetYaxis()->SetNdivisions(6,5,0);
 
   hist->SetMaximum(10*hist->GetMaximum());
+  if(year.Contains("allyears"))   hist->SetMaximum(6*hist->GetMaximum());
+  if(year.Contains("allyears"))   hist->SetMinimum(10);
   //hist->SetMinimum(0.05);
 
   hist->GetXaxis()->SetTitleSize(0);
@@ -635,6 +648,7 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
   TString lumiText = "35.9 fb^{-1}";
   if(year.Contains("2017")) lumiText = "41.5 fb^{-1}";
   if(year.Contains("2018")) lumiText = "59.7 fb^{-1}";
+  if(year.Contains("allyears")) lumiText = "137.2 fb^{-1}";
   lumiText += " (13 TeV)";
   text->DrawLatex(0.665, 0.905, lumiText.Data());
 
