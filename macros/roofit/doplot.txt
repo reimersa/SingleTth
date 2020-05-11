@@ -1,0 +1,6 @@
+ RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", 400, 2000);
+  RooPlot *plotter=x->frame();
+ RooDataSet* ds = (RooDataSet*) _file0->Get("toys/toy_93")
+  RooDataHist *hist = ds->binnedClone();
+ hist->plotOn(plotter)
+ plotter->Draw()

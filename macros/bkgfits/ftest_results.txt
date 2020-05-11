@@ -1,0 +1,135 @@
+
+Processing ftest.C...
+
+CR MC e+jets, 2p vs 3p
+F = 21.6133
+cumulative F-distribution: CL in new model with one more parameter: 0.999984
+CL to exclude model with more parameters = 1.55453e-05
+
+CR MC e+jets, Exp vs 3p
+F = 3.23018
+cumulative F-distribution: CL in new model with one more parameter: 0.923331
+CL to exclude model with more parameters = 0.0766688
+
+CR MC e+jets, 3p vs 4p
+F = 11.5475
+cumulative F-distribution: CL in new model with one more parameter: 0.998862
+CL to exclude model with more parameters = 0.00113794
+
+CR MC e+jets, Exp vs 4p
+F = 7.63938
+cumulative F-distribution: CL in new model with one more parameter: 0.998983
+CL to exclude model with more parameters = 0.00101658
+
+CR MC mu+jets, 2p vs 3p
+F = 19.6202
+cumulative F-distribution: CL in new model with one more parameter: 0.999965
+CL to exclude model with more parameters = 3.46238e-05
+
+CR MC mu+jets, Exp vs 3p
+F = 2.35876
+cumulative F-distribution: CL in new model with one more parameter: 0.870845
+CL to exclude model with more parameters = 0.129155
+
+CR MC mu+jets, 3p vs 4p
+F = 7.94174
+cumulative F-distribution: CL in new model with one more parameter: 0.99368
+CL to exclude model with more parameters = 0.00632014
+
+CR MC mu+jets, Exp vs 4p
+F = 5.27065
+cumulative F-distribution: CL in new model with one more parameter: 0.992553
+CL to exclude model with more parameters = 0.0074468
+
+CR Data e+jets, 2p vs 3p
+F = 12.1543
+cumulative F-distribution: CL in new model with one more parameter: 0.999144
+CL to exclude model with more parameters = 0.000856219
+
+CR Data e+jets, Exp2p vs 3p
+F = 3.05589
+cumulative F-distribution: CL in new model with one more parameter: 0.915107
+CL to exclude model with more parameters = 0.0848931
+
+CR Data e+jets, 3p vs 4p
+F = 3.17133
+cumulative F-distribution: CL in new model with one more parameter: 0.920592
+CL to exclude model with more parameters = 0.0794077
+
+CR Data e+jets, Exp2p vs 4p
+F = 3.1624
+cumulative F-distribution: CL in new model with one more parameter: 0.951387
+CL to exclude model with more parameters = 0.0486134
+
+CR Data mu+jets, 2p vs 3p
+F = 14.6836
+cumulative F-distribution: CL in new model with one more parameter: 0.999723
+CL to exclude model with more parameters = 0.000277271
+
+CR Data mu+jets, Exp2p vs 3p
+F = 1.11134
+cumulative F-distribution: CL in new model with one more parameter: 0.704531
+CL to exclude model with more parameters = 0.295469
+
+CR Data mu+jets, 3p vs 4p
+F = 0.330117
+cumulative F-distribution: CL in new model with one more parameter: 0.432514
+CL to exclude model with more parameters = 0.567486
+
+CR Data mu+jets, Exp2p vs 4p
+F = 0.715254
+cumulative F-distribution: CL in new model with one more parameter: 0.50729
+CL to exclude model with more parameters = 0.49271
+
+SR MC e+jets, 2p vs 3p
+F = 0.0254592
+cumulative F-distribution: CL in new model with one more parameter: 0.126319
+CL to exclude model with more parameters = 0.873681
+
+SR MC e+jets, Exp2p vs 3p
+F = 44.2099
+cumulative F-distribution: CL in new model with one more parameter: 1
+CL to exclude model with more parameters = 5.13411e-09
+
+SR MC e+jets, 3p vs 4p
+F = 0.315126
+cumulative F-distribution: CL in new model with one more parameter: 0.423656
+CL to exclude model with more parameters = 0.576344
+
+SR MC e+jets, Exp2p vs 4p
+F = 22.0462
+cumulative F-distribution: CL in new model with one more parameter: 1
+CL to exclude model with more parameters = 3.75354e-08
+
+SR MC mu+jets, 2p vs 3p
+F = 3.82803
+cumulative F-distribution: CL in new model with one more parameter: 0.945608
+CL to exclude model with more parameters = 0.0543922
+
+SR MC mu+jets, Exp2 vs 3p
+F = 73.9848
+cumulative F-distribution: CL in new model with one more parameter: 1
+CL to exclude model with more parameters = 1.42641e-12
+
+SR MC mu+jets, 3p vs 4p
+F = 0.0726644
+cumulative F-distribution: CL in new model with one more parameter: 0.211722
+CL to exclude model with more parameters = 0.788278
+
+SR MC mu+jets, Exp2 vs 4p
+F = 36.5294
+cumulative F-distribution: CL in new model with one more parameter: 1
+CL to exclude model with more parameters = 1.51406e-11
+
+----------- SUMMARY -----------
+Use 2-par fit: 2
+Use EXP2-par fit: 5
+Use 3-par fit: 6
+Use 4-par fit: 5
+Use 5-par fit: 0
+Tests on Data in CRs only:
+Use 2-par fit: 0
+Use EXP2-par fit: 3
+Use 3-par fit: 2
+Use 4-par fit: 1
+Use 5-par fit: 0

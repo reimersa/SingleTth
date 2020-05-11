@@ -1,0 +1,5 @@
+RooDataSet* ds = (RooDataSet*) _file0->Get("toys/toy_93")
+RooDataHist *hist = ds->binnedClone();
+RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", 400, 2000);
+TH1* myhist = hist->createHistogram("myhist",*x)
+myhist->Draw()
