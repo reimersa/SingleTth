@@ -36,6 +36,12 @@ bool HEMIssueSelection::passes(const Event & event){
     if(-3.2 < jet.eta()  &&  jet.eta() < -1.3 && -1.57<jet.phi()  &&  jet.phi() < -0.87 ) return false;
   }
 
+  if(event.electrons ->size()){
+    double ele_eta = event.electrons ->at(0).eta();
+    double ele_phi = event.electrons ->at(0).phi();
+    if(-3.2 < ele_eta  &&  ele_eta < -1.3 && -1.57<ele_phi  &&  ele_phi < -0.87) return false;
+  }
+
   return true;
 
 }
