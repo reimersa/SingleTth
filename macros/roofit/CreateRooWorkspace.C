@@ -193,7 +193,9 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     // fit_xmin = 380;
     // fit_xmax = 2000;    
 
-    fit_xmin = 400;
+    //    fit_xmin = 400;
+    // fit_xmax = 2000;    
+    fit_xmin = 550;
     fit_xmax = 2000;    
 
     //    if(year.Contains("2017")) fit_xmin = 500;
@@ -247,8 +249,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooPlot *plotter=x->frame();
 
   // 2 parameter function for nominal result
-  RooRealVar* bg2p_p0 = new RooRealVar("bg2p_p0"+ch_name+"_"+year, "bg2p_p0"+ch_name, 7.74, -1000,  1000);
-  RooRealVar* bg2p_p1 = new RooRealVar("bg2p_p1"+ch_name+"_"+year, "bg2p_p1"+ch_name,   1.99, -1000,  1000);
+  RooRealVar* bg2p_p0 = new RooRealVar("bg2p_p0"+ch_name+"_"+year, "bg2p_p0"+ch_name, 7.74, -100,  100);
+  RooRealVar* bg2p_p1 = new RooRealVar("bg2p_p1"+ch_name+"_"+year, "bg2p_p1"+ch_name,   1.99, -100,  100);
 
   BkgPdf2p* bgfunc_2p = new BkgPdf2p("Bkgfunc_2p_"+ch_name+"_"+year,"Bkgfunc_2p_"+ch_name, *x, *bg2p_p0, *bg2p_p1);
 

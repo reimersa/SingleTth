@@ -220,10 +220,10 @@ ElectronTriggerWeights::ElectronTriggerWeights(Context & ctx, TString path_, Yea
 
   unique_ptr<TFile> file_low, file_high;
   pt_split = 175;
-  file_low.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/ElectronTriggerScaleFactors_eta_ele_binned_pt30to175.root","READ"));
+  file_low.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/ElectronTriggerScaleFactors_eta_ele_binned_official_pt30to175_withsyst.root","READ"));
   file_high.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/ElectronTriggerScaleFactors_eta_ele_binned_pt175toInf.root","READ"));
   if(year == Year::is2017v1 || year == Year::is2017v2||year == Year::is2018){
-    file_low.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/ElectronTriggerScaleFactors_eta_ele_binned_pt30to200.root","READ"));
+    file_low.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/ElectronTriggerScaleFactors_eta_ele_binned_official_pt30to200_withsyst.root","READ"));
     file_high.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/ElectronTriggerScaleFactors_eta_ele_binned_pt200toInf.root","READ"));
     pt_split = 200;
   }
@@ -321,10 +321,10 @@ MuonTriggerWeightsOffical::MuonTriggerWeightsOffical(Context & ctx, TString path
   else if(year == Year::is2018) yeartag = "2018";
 
   unique_ptr<TFile> file_eta0p9to1p2, file_eta0to0p9, file_eta1p2to2p1, file_eta2p1to2p4;
-  file_eta0p9to1p2.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/MuonTriggerScaleFactors_pt_mu_binned_official_eta0p9to1p2.root","READ"));
-  file_eta0to0p9.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/MuonTriggerScaleFactors_pt_mu_binned_official_eta0to0p9.root","READ"));
-  file_eta1p2to2p1.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/MuonTriggerScaleFactors_pt_mu_binned_official_eta1p2to2p1.root","READ"));
-  file_eta2p1to2p4.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/MuonTriggerScaleFactors_pt_mu_binned_official_eta2p1to2p4.root","READ"));
+  file_eta0p9to1p2.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/MuonTriggerScaleFactors_pt_mu_binned_official_eta0p9to1p2_withsyst.root","READ"));
+  file_eta0to0p9.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/MuonTriggerScaleFactors_pt_mu_binned_official_eta0to0p9_withsyst.root","READ"));
+  file_eta1p2to2p1.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/MuonTriggerScaleFactors_pt_mu_binned_official_eta1p2to2p1_withsyst.root","READ"));
+  file_eta2p1to2p4.reset(new TFile(path+"/" + yeartag + "/TriggerEfficiencies2e/MuonTriggerScaleFactors_pt_mu_binned_official_rebin_eta2p1to2p4_withsyst.root","READ"));
 
   g_sf_eta0p9to1p2.reset((TGraphAsymmErrors*)file_eta0p9to1p2->Get("ScaleFactors"));
   g_sf_eta0to0p9.reset((TGraphAsymmErrors*)file_eta0to0p9->Get("ScaleFactors"));

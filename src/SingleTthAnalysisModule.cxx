@@ -746,7 +746,7 @@ namespace uhh2examples {
 	ele_cleaner_2017->process(event);
       }
       else  if(year == Year::is2018){
-        if(!(trigger1_ech_sel_2018->passes(event)) ) return false;
+        if(!(trigger1_ech_sel_2018->passes(event)||trigger2_ech_sel_2017->passes(event)) ) return false;
 	SF_eleTrigger->process(event);
 	ele_cleaner_2018->process(event);
       }

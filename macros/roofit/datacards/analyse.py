@@ -18,8 +18,12 @@ from collections import OrderedDict
 berror = False
 bscale = False
 
-infile = TFile("fitDiagnosticssignal1_1000.root","r")
-infile_gen = TFile("higgsCombine1000.GenerateOnly.mH125.123123.root","r")
+# infile = TFile("fitDiagnosticssignal1_1000.root","r")
+# infile_gen = TFile("higgsCombine1000.GenerateOnly.mH125.123123.root","r")
+# infile_gen2 = TFile("higgsCombine600.GenerateOnly.mH125.123123_signal0.root","r")
+
+infile = TFile("fitDiagnosticsdijet2p.root","r")
+infile_gen = TFile("higgsCombineTest.GenerateOnly.mH125.123456.root","r")
 infile_gen2 = TFile("higgsCombine600.GenerateOnly.mH125.123123_signal0.root","r")
 
 
