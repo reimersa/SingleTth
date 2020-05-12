@@ -3,7 +3,7 @@
 #include "BkgPdf3p.h" 
 #include "BkgPdf2p.h" 
 #include "BkgPdf4p.h" 
-#include "SignalDoubleGauss_M1000.h" 
+#include "SignalDoubleGauss_M600.h" 
 
 
 #include "RooRealVar.h"
@@ -522,10 +522,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   else infotofile << "Muon channel =====" << std::endl;
 
   // loop over mass points, create PDFs and store them
-  double MT = 1000; 
+  double MT = 600; 
   //  double MT = 800; 
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", 200, 2000);
-  while (MT<1010)
+  while (MT<610)
       //  while (MT<810)
   {
    TString SgName = TString::Format("MT%d_", (int)MT);
@@ -553,7 +553,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     RooConstVar* sg_JERsigmadown =new RooConstVar("sg_JERsigmadown_"+year, "sg_JERsigmadown", JERsigmadown_error->Eval(MT));
 
 
-    SignalDoubleGauss_M1000* ModelSg_Gauss = new SignalDoubleGauss_M1000(SgName, SgName, *x, *sg_mean, *sg_sigma);
+    SignalDoubleGauss_M600* ModelSg_Gauss = new SignalDoubleGauss_M600(SgName, SgName, *x, *sg_mean, *sg_sigma);
     // RooGaussian* ModelSg_Gauss_variation = new RooGaussian(SgName, SgName, *x, *sg_mean_variation, *sg_sigma);
     // RooGaussian* ModelSg_JECup_Gauss = new RooGaussian(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup);
     // RooGaussian* ModelSg_JERup_Gauss = new RooGaussian(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup);

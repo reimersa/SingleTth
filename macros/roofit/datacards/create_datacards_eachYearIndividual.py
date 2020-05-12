@@ -17,8 +17,9 @@ from collections import OrderedDict
 
 berror = False
 
-b_multipdf = True
-b_signalrate = True
+b_multipdf = False
+b_signalrate = False
+b_lumiunc = True
 
 bkg_much_norm = {} # for all years: key is year
 bkg_ech_norm = {} # for all years: key is year
@@ -197,8 +198,9 @@ for mass in masses:
 
     outputfile.write("------------------------------ \n")
     outputfile.write("# list of independent sources of uncertainties, and give their effect (syst. error) \n \n")
-
-    outputfile.write(lumi)
+    
+    if b_lumiunc:
+        outputfile.write(lumi)
     if b_signalrate:
         outputfile.write(rate_sig)
 

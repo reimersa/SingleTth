@@ -22,7 +22,7 @@ observation     -1             -1
  # expected events for each process (total number of events in MC)
  
 bin           ech_2016v3    ech_2016v3   much_2016v3      much_2016v3    
-process         roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf 
+process         roomultipdf_MT600   Bkgfunc_Exp2p  roomultipdf_MT600   Bkgfunc_Exp2p 
 process        0   1    0    1    
 rate           119.035   8152          172.484   12014   
  
@@ -30,10 +30,7 @@ rate           119.035   8152          172.484   12014
 # list of independent sources of uncertainties, and give their effect (syst. error) 
  
 lumi     lnN   1.025       -    1.025       -     
-rate_signal     lnN    1.15       -    1.15       -     
-pdf_index_much_2016v3 discrete 
- pdf_index_ech_2016v3 discrete 
- pdf_index_MT600_much_2016v3 discrete 
+pdf_index_MT600_much_2016v3 discrete 
  pdf_index_MT600_ech_2016v3 discrete 
  sg_mean_2016v3 param 583.611  1.38017 
  sg_sigma_2016v3 param 60.7867  1.35714 
@@ -45,26 +42,8 @@ pdf_index_much_2016v3 discrete
  sg_JERsigmaup_2016v3 param 62.2502  0.001 
  sg_JECsigmadown_2016v3 param 60.1662  0.001 
  sg_JECsigmaup_2016v3 param 62.2219  0.001 
- bg4p_p1much_2016v3 param -4.78743  2.9425 
- bg2p_p0ech_2016v3 param 11.7768  1.30786 
- bg4p_p0much_2016v3 param 42.2408  11.5364 
- bg4p_p3much_2016v3 param -2.2939  0.644686 
- bg4p_p2ech_2016v3 param -2.0712  1.305 
- bg2p_p1much_2016v3 param 2.70675  0.175027 
- bgexp2_p0ech_2016v3 param 9.23129  0.338196 
- bgexp2_p1much_2016v3 param 4.42932  0.0380847 
- bg4p_p3ech_2016v3 param -1.12615  0.520926 
- bg3p_p0ech_2016v3 param -15.1401  3.94302 
- bg4p_p0ech_2016v3 param 20.3523  7.91522 
- bg3p_p2much_2016v3 param 3.22804  0.418322 
- bg2p_p1ech_2016v3 param 2.8421  0.199962 
- bg4p_p2much_2016v3 param -5.4419  1.83609 
- bg4p_p1ech_2016v3 param 0.582391  2.02233 
- bg2p_p0much_2016v3 param 13.32  1.16388 
- bg3p_p1ech_2016v3 param 9.69594  0.983959 
- bgexp2_p0much_2016v3 param 9.21922  0.296106 
- bg3p_p0much_2016v3 param -16.8686  4.08131 
- bg3p_p1much_2016v3 param 10.3352  1.01279 
- bg3p_p2ech_2016v3 param 2.93504  0.412688 
+ bgexp2_p1much_2016v3 param 4.42941  0.038085 
  bgexp2_p1ech_2016v3 param 4.3431  0.0454971 
+ bgexp2_p0much_2016v3 param 9.2199  0.296095 
+ bgexp2_p0ech_2016v3 param 9.23129  0.338196 
  ------------------------------ 
