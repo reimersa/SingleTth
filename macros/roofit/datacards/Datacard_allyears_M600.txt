@@ -30,6 +30,7 @@ rate           119.035   8152          172.484   12014
 # list of independent sources of uncertainties, and give their effect (syst. error) 
  
 lumi     lnN   1.025       -    1.025       -     
+rate_signal     lnN    1.15       -    1.15       -     
 pdf_index_MT600_much_2016v3 discrete 
  pdf_index_MT600_ech_2016v3 discrete 
  sg_mean_2016v3 param 583.611  1.38017 

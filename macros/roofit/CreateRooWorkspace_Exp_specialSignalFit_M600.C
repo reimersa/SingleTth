@@ -177,7 +177,7 @@ void CreateRooWorkspace::PrintWorkspace()
 
 void CreateRooWorkspace::StoreWorkspace(TString year)
 {
-  fWS->writeToFile("datacards/ws_SingleTth_"+year+".root");
+  fWS->writeToFile("datacards/ws_SingleTth_"+year+"generateM600.root");
   //infotofile.close();
   debug_histos->Close();
 }

@@ -18,7 +18,7 @@ from collections import OrderedDict
 berror = False
 
 b_multipdf = False
-b_signalrate = False
+b_signalrate = True
 b_lumiunc = True
 
 bkg_much_norm = {} # for all years: key is year

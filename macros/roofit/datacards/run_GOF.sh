@@ -4,7 +4,7 @@
 #year="2017v2"
 #year="2018"
 year="allyears"
-channel="ech"
+channel="much"
 name="GOF_CR_data_2018_${channel}"
 mass=600
 

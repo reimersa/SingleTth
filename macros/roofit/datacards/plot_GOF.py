@@ -44,8 +44,8 @@ tree_fit_sb = infile.Get("limit")
 tree_fit_sb.Draw("limit>>h(40,50,150)")
 
 histo = gROOT.FindObject("h")
-histo.GetXaxis().SetTitle("#chi^{2}")
-histo.GetYaxis().SetTitle("Events")
+histo.GetXaxis().SetTitle("Saturated test statistic")
+histo.GetYaxis().SetTitle("Toys")
 gPad.Update()
 
 

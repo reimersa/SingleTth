@@ -3,7 +3,6 @@
 #include "BkgPdf3p.h" 
 #include "BkgPdf2p.h" 
 #include "BkgPdf4p.h" 
-#include "SignalDoubleGauss_M1000.h" 
 
 
 #include "RooRealVar.h"
@@ -307,7 +306,6 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     ch_name = "ech";
   }
 
-  //  std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/M600_specialFit.txt");
   std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+".txt");
   std::string line;
 
@@ -522,13 +520,13 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   else infotofile << "Muon channel =====" << std::endl;
 
   // loop over mass points, create PDFs and store them
-  double MT = 1000; 
+  double MT = 550; 
   //  double MT = 800; 
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", 200, 2000);
-  while (MT<1010)
+  while (MT<1250)
       //  while (MT<810)
   {
-   TString SgName = TString::Format("MT%d_", (int)MT);
+    TString SgName = TString::Format("MT%d_", (int)MT);
     SgName.Append(ch_name);
     SgName.Append(year);
 
@@ -553,12 +551,12 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     RooConstVar* sg_JERsigmadown =new RooConstVar("sg_JERsigmadown_"+year, "sg_JERsigmadown", JERsigmadown_error->Eval(MT));
 
 
-    SignalDoubleGauss_M1000* ModelSg_Gauss = new SignalDoubleGauss_M1000(SgName, SgName, *x, *sg_mean, *sg_sigma);
-    // RooGaussian* ModelSg_Gauss_variation = new RooGaussian(SgName, SgName, *x, *sg_mean_variation, *sg_sigma);
-    // RooGaussian* ModelSg_JECup_Gauss = new RooGaussian(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup);
-    // RooGaussian* ModelSg_JERup_Gauss = new RooGaussian(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup);
-    // RooGaussian* ModelSg_JECdown_Gauss = new RooGaussian(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown);
-    // RooGaussian* ModelSg_JERdown_Gauss = new RooGaussian(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown);
+    RooGaussian* ModelSg_Gauss = new RooGaussian(SgName, SgName, *x, *sg_mean, *sg_sigma);
+    RooGaussian* ModelSg_Gauss_variation = new RooGaussian(SgName, SgName, *x, *sg_mean_variation, *sg_sigma);
+    RooGaussian* ModelSg_JECup_Gauss = new RooGaussian(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup);
+    RooGaussian* ModelSg_JERup_Gauss = new RooGaussian(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup);
+    RooGaussian* ModelSg_JECdown_Gauss = new RooGaussian(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown);
+    RooGaussian* ModelSg_JERdown_Gauss = new RooGaussian(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown);
 
 
     // converting function into hist to debug
@@ -580,10 +578,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     TCanvas* c_sg = new TCanvas(SgName, SgName, 10, 10, 700, 700);
     RooPlot* plotter=x->frame();
     ModelSg_Gauss->plotOn(plotter, RooFit::LineColor(kRed));
-    //    ModelSg_JECup_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
+    ModelSg_JECup_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
     // ModelSg_JECdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
     // ModelSg_JERdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
-    //    ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
+    ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
     plotter->Draw();
     c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+".pdf");
     c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+".eps");
@@ -610,10 +608,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     RooArgList mypdfs;
     mypdfs.add(*ModelSg_Gauss);
     //mypdfs.add(*ModelSg_Gauss_variation);
-    // mypdfs.add(*ModelSg_JECup_Gauss);
-    // mypdfs.add(*ModelSg_JERup_Gauss);
-    // mypdfs.add(*ModelSg_JECdown_Gauss);
-    // mypdfs.add(*ModelSg_JERdown_Gauss);
+    mypdfs.add(*ModelSg_JECup_Gauss);
+    mypdfs.add(*ModelSg_JERup_Gauss);
+    mypdfs.add(*ModelSg_JECdown_Gauss);
+    mypdfs.add(*ModelSg_JERdown_Gauss);
 
     RooCategory cat("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year,"Index of Pdf which is active");
     RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year,"All Pdfs",cat,mypdfs);
