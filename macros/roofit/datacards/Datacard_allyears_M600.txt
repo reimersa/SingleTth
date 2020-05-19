@@ -43,8 +43,8 @@ pdf_index_MT600_much_2016v3 discrete
  sg_JERsigmaup_2016v3 param 62.2502  0.001 
  sg_JECsigmadown_2016v3 param 60.1662  0.001 
  sg_JECsigmaup_2016v3 param 62.2219  0.001 
- bgexp2_p1much_2016v3 param 4.42941  0.038085 
- bgexp2_p1ech_2016v3 param 4.3431  0.0454971 
- bgexp2_p0much_2016v3 param 9.2199  0.296095 
- bgexp2_p0ech_2016v3 param 9.23129  0.338196 
+ bgexp2_p1much_2016v3 param 4.49771  0.0384491 
+ bgexp2_p1ech_2016v3 param 4.37595  0.0459273 
+ bgexp2_p0much_2016v3 param 9.49336  0.298057 
+ bgexp2_p0ech_2016v3 param 8.92606  0.36163 
  ------------------------------ 

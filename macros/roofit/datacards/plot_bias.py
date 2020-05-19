@@ -90,9 +90,9 @@ leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 #leg.SetHeader("#splitline{Bias test: r=1}{#splitline{Fit function: exp.}{Generation with}}")
 leg.SetHeader("Generation with")
-leg.AddEntry(histo_exp,"exp. (<#mu> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet2p,"dijet 2p (<#mu> = %.2f)"%(mean_dijet2p),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<#mu> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
+leg.AddEntry(histo_dijet2p,"dijet 2p (<r/#sigma_{r}> = %.2f)"%(mean_dijet2p),"l")
+leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)
@@ -136,7 +136,7 @@ histo_dijet3p.SetLineWidth(2)
 histo_dijet3p.SetLineStyle(2)
 mean_dijet3p = histo_dijet3p.GetMean()
 
-histo_exp.GetXaxis().SetTitle("r/rErr")
+histo_exp.GetXaxis().SetTitle("r/#sigma_{r}")
 histo_exp.GetYaxis().SetTitle("Toys")
 histo_exp.SetMaximum(120)
 histo_exp.Draw("HIST")
@@ -156,9 +156,9 @@ leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 #leg.SetHeader("#splitline{Bias test: r=1}{#splitline{Fit function: exp.}{Generation with}}")
 leg.SetHeader("Generation with")
-leg.AddEntry(histo_exp,"exp. (<#mu> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet2p,"dijet 2p (<#mu> = %.2f)"%(mean_dijet2p),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<#mu> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
+leg.AddEntry(histo_dijet2p,"dijet 2p (<r/#sigma_{r}> = %.2f)"%(mean_dijet2p),"l")
+leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)

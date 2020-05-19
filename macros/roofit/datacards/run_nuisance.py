@@ -1,8 +1,8 @@
 #!/bin/bash
 
 years="2016v3"
-masses=(800)
-
+masses=(600)
+mass=600
 #set_params="pdf_index_much_2016v3=2,pdf_index_ech_2016v3=2,pdf_index_much_2017v2=2,pdf_index_ech_2017v2=2,pdf_index_much_2018=2,pdf_index_ech_2018=2,pdf_index_MT${mass}_much_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_MT${mass}_much_2017v2=0,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_MT${mass}_much_2018=0,pdf_index_MT${mass}_ech_2018=0"
 
 #set_params="pdf_index_much_${years}=2,pdf_index_ech_${years}=2,pdf_index_MT${mass}_much_${years}=0,pdf_index_MT${mass}_ech_${years}=0"
@@ -28,27 +28,25 @@ for mass in "${masses[@]}" ; do
     eval "text2workspace.py Datacard_"$year"_M$mass.txt -m 125" 
 #     eval "combine Datacard_"$year"_M$mass.txt -M GenerateOnly --setParameters  ${set_params}  --freezeParameters ${freeze_params}  --toysFrequentist -t 1 --expectSignal 0 --saveToys -m 125 --saveWorkspace"
 
-##### all three years
-    eval "combineTool.py -M Impacts -d Datacard_"$year"_M$mass.root --doInitialFit --robustFit 1 -m 125  --freezeParameters ${freeze_params} --rMin -3 --rMax 3 --cminDefaultMinimizerStrategy=0" # normal version --seed 8192
 
-     eval "combineTool.py -M Impacts -d Datacard_"$year"_M$mass.root -m 125 --robustFit 1 --doFits --rMin -3 --rMax 3 --cminDefaultMinimizerStrategy=0"
+
+
+##### all three years
+   eval "combineTool.py -M Impacts -d Datacard_"$year"_M$mass.root --doInitialFit --robustFit 1 -m 125  --freezeParameters ${freeze_params} --rMin -3 --rMax 3 --cminDefaultMinimizerStrategy=0" # normal version --seed 8192
+
+    eval "combineTool.py -M Impacts -d Datacard_"$year"_M$mass.root -m 125 --robustFit 1 --doFits --rMin -3 --rMax 3 --cminDefaultMinimizerStrategy=0 "
+
+    eval "combineTool.py -M Impacts -d Datacard_"$year"_M$mass.root  -m 125 -o impacts.json"
+
+
+ 
 
 #    eval "source remove_parameters.sh"
-
-    eval "combineTool.py -M Impacts -d Datacard_"$year"_M$mass.root -m 125 -o impacts.json"
 
     eval "plotImpacts.py -i impacts.json -o impacts"
 
 
 
-    # eval "combineTool.py -M Impacts -d higgsCombineTest.GenerateOnly.mH125.123456.root --doInitialFit --robustFit 1 -m 125 --setParameters ${set_params} --freezeParameters ${freeze_params}   -t 1 --rMin -3 --rMax 3" # normal version --seed 8192
-
-    #  eval "combineTool.py -M Impacts -d higgsCombineTest.GenerateOnly.mH125.123456.root -m 125 --robustFit 1 --doFits -t 1 --rMin -3 --rMax 3"
-
-
-    # eval "combineTool.py -M Impacts -d higgsCombineTest.GenerateOnly.mH125.123456.root -m 125 -o impacts.json"
-
-    # eval "plotImpacts.py -i impacts.json -o impacts"
 
 ##############  Nuisance pre and post fit
 # eval "combine Datacard_"$year"_M$mass.txt -M GenerateOnly --setParameters  pdf_index_much_2016v3=2,pdf_index_ech_2016v3=2,pdf_index_much_2017v2=2,pdf_index_ech_2017v2=2,pdf_index_much_2018=2,pdf_index_ech_2018=2,pdf_index_MT${mass}_much_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_MT${mass}_much_2017v2=0,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_MT${mass}_much_2018=0,pdf_index_MT${mass}_ech_2018=0  --freezeParameters  pdf_index_much_2016v3,pdf_index_ech_2016v3,pdf_index_much_2017v2,pdf_index_ech_2017v2,pdf_index_much_2018,pdf_index_ech_2018,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_MT${mass}_ech_2016v3,pdf_index_MT${mass}_much_2017v2,pdf_index_MT${mass}_ech_2017v2,pdf_index_MT${mass}_much_2018,pdf_index_MT${mass}_ech_2018 --toysFrequentist -t 1 --expectSignal 0 --saveToys -m 125"

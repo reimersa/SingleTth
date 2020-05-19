@@ -63,7 +63,7 @@ lumi_unc["2017v2"] = 1.023
 lumi_unc["2018"] = 1.025
 
 #years = {"2016v3","2017v2","2018"}
-years = {"2018"}
+years = {"2016v3"}
 
 number_of_channels =  len(years)
 number_of_backgrounds = "*"

@@ -114,6 +114,13 @@ namespace uhh2examples {
     unique_ptr<Hists> h_dRbw_15_much_cr, h_jets_dRbw_15_much_cr, h_ele_dRbw_15_much_cr, h_mu_dRbw_15_much_cr, h_event_dRbw_15_much_cr, h_lumi_dRbw_15_much_cr;
     unique_ptr<Hists> h_dRbw_15_ech_cr, h_jets_dRbw_15_ech_cr, h_ele_dRbw_15_ech_cr, h_mu_dRbw_15_ech_cr, h_event_dRbw_15_ech_cr, h_lumi_dRbw_15_ech_cr;
 
+    unique_ptr<Hists> h_cleaner_ele, h_jets_cleaner_ele, h_ele_cleaner_ele, h_mu_cleaner_ele, h_event_cleaner_ele, h_lumi_cleaner_ele;
+    unique_ptr<Hists> h_trigger_ele, h_jets_trigger_ele, h_ele_trigger_ele, h_mu_trigger_ele, h_event_trigger_ele, h_lumi_trigger_ele, h_btageff_trigger_ele;
+    unique_ptr<Hists> h_btagsf_ele, h_jets_btagsf_ele, h_ele_btagsf_ele, h_mu_btagsf_ele, h_event_btagsf_ele, h_lumi_btagsf_ele;
+    unique_ptr<Hists> h_btag_ele, h_jets_btag_ele, h_ele_btag_ele, h_mu_btag_ele, h_event_btag_ele, h_lumi_btag_ele;
+    unique_ptr<Hists> h_btag_2m_ele, h_jets_btag_2m_ele, h_ele_btag_2m_ele, h_mu_btag_2m_ele, h_event_btag_2m_ele, h_lumi_btag_2m_ele;
+    unique_ptr<Hists> h_btag_3m_ele, h_jets_btag_3m_ele, h_ele_btag_3m_ele, h_mu_btag_3m_ele, h_event_btag_3m_ele, h_lumi_btag_3m_ele;
+
 
     // unique_ptr<Hists> h_PDF_variations_much_sr, h_PDF_variations_much_cr, h_PDF_variations_ech_sr, h_PDF_variations_ech_cr;
 
@@ -214,7 +221,7 @@ namespace uhh2examples {
 	SF_eleID.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/2017_ElectronTight.root", 1, "id", "nominal"));
       }
       else if(year == Year::is2018){
-	//
+
 	SF_muonID.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2018/Muon_ID_SF_RunABCD.root", "NUM_TightID_DEN_TrackerMuons_pt_abseta", 0., "id", true, "nominal"));
 	SF_muonIso.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2018/Muon_Iso_SF_RunABCD.root", "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta", 0., "iso", true, "nominal"));
 
@@ -224,7 +231,7 @@ namespace uhh2examples {
 
     //    if((year == Year::is2016v2) || (year == Year::is2016v3) || (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
-      SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag, "comb"));
+           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_tight, "jets", sys_btag, "comb"));
       //    }
 
     if(year != Year::is2018){
@@ -332,6 +339,51 @@ namespace uhh2examples {
     h_mu_btag_3m.reset(new MuonHists(ctx, "Mu_btag_3m"));
     h_event_btag_3m.reset(new EventHists(ctx, "Event_btag_3m"));
     h_lumi_btag_3m.reset(new LuminosityHists(ctx, "Lumi_btag_3m"));
+
+    ////////// Electron chanel
+    h_cleaner_ele.reset(new SingleTthHists(ctx, "cleaner_ele"));
+    h_jets_cleaner_ele.reset(new JetHists(ctx, "Jets_cleaner_ele"));
+    h_ele_cleaner_ele.reset(new ElectronHists(ctx, "Ele_cleaner_ele"));
+    h_mu_cleaner_ele.reset(new MuonHists(ctx, "Mu_cleaner_ele"));
+    h_event_cleaner_ele.reset(new EventHists(ctx, "Event_cleaner_ele"));
+    h_lumi_cleaner_ele.reset(new LuminosityHists(ctx, "Lumi_cleaner_ele"));
+
+    h_trigger_ele.reset(new SingleTthHists(ctx, "trigger_ele"));
+    h_jets_trigger_ele.reset(new JetHists(ctx, "Jets_trigger_ele"));
+    h_ele_trigger_ele.reset(new ElectronHists(ctx, "Ele_trigger_ele"));
+    h_mu_trigger_ele.reset(new MuonHists(ctx, "Mu_trigger_ele"));
+    h_event_trigger_ele.reset(new EventHists(ctx, "Event_trigger_ele"));
+    h_lumi_trigger_ele.reset(new LuminosityHists(ctx, "Lumi_trigger_ele"));
+
+    h_btagsf_ele.reset(new SingleTthHists(ctx, "btagsf_ele"));
+    h_jets_btagsf_ele.reset(new JetHists(ctx, "Jets_btagsf_ele"));
+    h_ele_btagsf_ele.reset(new ElectronHists(ctx, "Ele_btagsf_ele"));
+    h_mu_btagsf_ele.reset(new MuonHists(ctx, "Mu_btagsf_ele"));
+    h_event_btagsf_ele.reset(new EventHists(ctx, "Event_btagsf_ele"));
+    h_lumi_btagsf_ele.reset(new LuminosityHists(ctx, "Lumi_btagsf_ele"));
+
+    h_btag_ele.reset(new SingleTthHists(ctx, "btag_ele"));
+    h_jets_btag_ele.reset(new JetHists(ctx, "Jets_btag_ele"));
+    h_ele_btag_ele.reset(new ElectronHists(ctx, "Ele_btag_ele"));
+    h_mu_btag_ele.reset(new MuonHists(ctx, "Mu_btag_ele"));
+    h_event_btag_ele.reset(new EventHists(ctx, "Event_btag_ele"));
+    h_lumi_btag_ele.reset(new LuminosityHists(ctx, "Lumi_btag_ele"));
+
+    h_btag_2m_ele.reset(new SingleTthHists(ctx, "btag_2m_ele"));
+    h_jets_btag_2m_ele.reset(new JetHists(ctx, "Jets_btag_2m_ele"));
+    h_ele_btag_2m_ele.reset(new ElectronHists(ctx, "Ele_btag_2m_ele"));
+    h_mu_btag_2m_ele.reset(new MuonHists(ctx, "Mu_btag_2m_ele"));
+    h_event_btag_2m_ele.reset(new EventHists(ctx, "Event_btag_2m_ele"));
+    h_lumi_btag_2m_ele.reset(new LuminosityHists(ctx, "Lumi_btag_2m_ele"));
+
+    h_btag_3m_ele.reset(new SingleTthHists(ctx, "btag_3m_ele"));
+    h_jets_btag_3m_ele.reset(new JetHists(ctx, "Jets_btag_3m_ele"));
+    h_ele_btag_3m_ele.reset(new ElectronHists(ctx, "Ele_btag_3m_ele"));
+    h_mu_btag_3m_ele.reset(new MuonHists(ctx, "Mu_btag_3m_ele"));
+    h_event_btag_3m_ele.reset(new EventHists(ctx, "Event_btag_3m_ele"));
+    h_lumi_btag_3m_ele.reset(new LuminosityHists(ctx, "Lumi_btag_3m_ele"));
+
+    ///////
 
     h_btag_2t.reset(new SingleTthHists(ctx, "btag_2t"));
     h_jets_btag_2t.reset(new JetHists(ctx, "Jets_btag_2t"));
@@ -698,6 +750,14 @@ namespace uhh2examples {
       h_mu_cleaner->fill(event);
       h_event_cleaner->fill(event);
       h_lumi_cleaner->fill(event);
+    }else{
+      h_cleaner_ele->fill(event);
+      h_jets_cleaner_ele->fill(event);
+      h_ele_cleaner_ele->fill(event);
+      h_mu_cleaner_ele->fill(event);
+      h_event_cleaner_ele->fill(event);
+      h_lumi_cleaner_ele->fill(event);
+
     }
 
     // Trigger
@@ -713,6 +773,10 @@ namespace uhh2examples {
       else if(year == Year::is2018){
         if(!(trigger1_much_sel_2018->passes(event)) ) return false;
 	SF_muonTrigger->process(event);
+      // event.set(h_muon_triggerweight, 1.);
+      // event.set(h_muon_triggerweight_up, 1.);
+      // event.set(h_muon_triggerweight_down, 1.);
+
       }
       event.set(h_electron_triggerweight, 1.);
       event.set(h_electron_triggerweight_up, 1.);
@@ -747,8 +811,13 @@ namespace uhh2examples {
       }
       else  if(year == Year::is2018){
         if(!(trigger1_ech_sel_2018->passes(event)||trigger2_ech_sel_2017->passes(event)) ) return false;
+	
 	SF_eleTrigger->process(event);
 	ele_cleaner_2018->process(event);
+      // event.set(h_electron_triggerweight, 1.);
+      // event.set(h_electron_triggerweight_up, 1.);
+      // event.set(h_electron_triggerweight_down, 1.);
+
       }
       event.set(h_muon_triggerweight, 1.);
       event.set(h_muon_triggerweight_up, 1.);
@@ -765,11 +834,19 @@ namespace uhh2examples {
       h_lumi_trigger->fill(event);
 
       h_btageff_trigger->fill(event);
+    }else{
+      h_trigger_ele->fill(event);
+      h_jets_trigger_ele->fill(event);
+      h_ele_trigger_ele->fill(event);
+      h_mu_trigger_ele->fill(event);
+      h_event_trigger_ele->fill(event);
+      h_lumi_trigger_ele->fill(event);
+
     }
 
     //    if((year == Year::is2016v2) || (year == Year::is2016v3)|| (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
-      SF_btag->process(event);
+         SF_btag->process(event);
       //    }
 
     if(is_much){
@@ -779,6 +856,14 @@ namespace uhh2examples {
       h_mu_btagsf->fill(event);
       h_event_btagsf->fill(event);
       h_lumi_btagsf->fill(event);
+    }else{
+      h_btagsf_ele->fill(event);
+      h_jets_btagsf_ele->fill(event);
+      h_ele_btagsf_ele->fill(event);
+      h_mu_btagsf_ele->fill(event);
+      h_event_btagsf_ele->fill(event);
+      h_lumi_btagsf_ele->fill(event);
+
     }
 
     // 3 b-tags
@@ -790,6 +875,13 @@ namespace uhh2examples {
       h_mu_btag->fill(event);
       h_event_btag->fill(event);
       h_lumi_btag->fill(event);
+    }else{
+      h_btag_ele->fill(event);
+      h_jets_btag_ele->fill(event);
+      h_ele_btag_ele->fill(event);
+      h_mu_btag_ele->fill(event);
+      h_event_btag_ele->fill(event);
+      h_lumi_btag_ele->fill(event);
     }
 
     if(!(btag_2medium_sel->passes(event))) return false;
@@ -800,6 +892,13 @@ namespace uhh2examples {
       h_mu_btag_2m->fill(event);
       h_event_btag_2m->fill(event);
       h_lumi_btag_2m->fill(event);
+    }else{
+      h_btag_2m_ele->fill(event);
+      h_jets_btag_2m_ele->fill(event);
+      h_ele_btag_2m_ele->fill(event);
+      h_mu_btag_2m_ele->fill(event);
+      h_event_btag_2m_ele->fill(event);
+      h_lumi_btag_2m_ele->fill(event);
     }
 
     if(!(btag_3medium_sel->passes(event))) return false;
@@ -810,6 +909,13 @@ namespace uhh2examples {
       h_mu_btag_3m->fill(event);
       h_event_btag_3m->fill(event);
       h_lumi_btag_3m->fill(event);
+    }else{
+      h_btag_3m_ele->fill(event);
+      h_jets_btag_3m_ele->fill(event);
+      h_ele_btag_3m_ele->fill(event);
+      h_mu_btag_3m_ele->fill(event);
+      h_event_btag_3m_ele->fill(event);
+      h_lumi_btag_3m_ele->fill(event);
     }
 
     if(year == Year::is2018){

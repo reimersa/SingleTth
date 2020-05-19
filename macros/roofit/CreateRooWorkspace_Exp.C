@@ -245,11 +245,11 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 
 
-  RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg_exp1 = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
 
-  infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
-  infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"   " << bgexp2_p0->getValV() <<"  error  "<< bgexp2_p0->getError()<<std::endl;
-  infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"   " << bgexp2_p1->getValV() <<"  error  "<< bgexp2_p1->getError()<<std::endl;
+  // infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
+  // infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"   " << bgexp2_p0->getValV() <<"  error  "<< bgexp2_p0->getError()<<std::endl;
+  // infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"   " << bgexp2_p1->getValV() <<"  error  "<< bgexp2_p1->getError()<<std::endl;
   
 
   //create a list with all alt and nominal functions
@@ -262,8 +262,24 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_norm","Number of background events",12014,0,1000000);
 
 
+  // convert exp function to pseudo data:
+  RooDataSet* data1 = bgfunc_exp->generate(RooArgSet(*x),5000);
+  RooDataHist *hist1 = data1->binnedClone();
+  TH1* myhist2 =  hist1->createHistogram("myhist2",*x);
+  TH1* myhist = dataSR->createHistogram("myhist",*x);
+  myhist2->Scale(myhist->Integral()/myhist2->Integral());
+
+  RooDataHist* dataSR_generated = new RooDataHist("data_obs_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), myhist2);
+ 
+  RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR_generated, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
+  infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"   " << bgexp2_p0->getValV() <<"  error  "<< bgexp2_p0->getError()<<std::endl;
+  infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"   " << bgexp2_p1->getValV() <<"  error  "<< bgexp2_p1->getError()<<std::endl;
+
+
+
   // save the data to the workspace
-  fWS->import(*dataSR);
+  fWS->import(*dataSR_generated);
 
   // save the bkg fit to the workspace
   fWS->import(*bgfunc_exp);
