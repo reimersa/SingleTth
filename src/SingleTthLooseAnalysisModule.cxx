@@ -40,10 +40,10 @@ using namespace uhh2;
 
 namespace uhh2examples {
 
-  class SingleTthAnalysisModule: public AnalysisModule {
+  class SingleTthLooseAnalysisModule: public AnalysisModule {
   public:
 
-    explicit SingleTthAnalysisModule(Context & ctx);
+    explicit SingleTthLooseAnalysisModule(Context & ctx);
     virtual bool process(Event & event) override;
 
   private:
@@ -153,9 +153,9 @@ namespace uhh2examples {
   };
 
 
-  SingleTthAnalysisModule::SingleTthAnalysisModule(Context & ctx){
+  SingleTthLooseAnalysisModule::SingleTthLooseAnalysisModule(Context & ctx){
 
-    cout << "Hello World from SingleTthAnalysisModule!" << endl;
+    cout << "Hello World from SingleTthLooseAnalysisModule!" << endl;
 
     for(auto & kv : ctx.get_all()) cout << " " << kv.first << " = " << kv.second << endl;
 
@@ -186,7 +186,6 @@ namespace uhh2examples {
     JetId DeepjetTight = BTag(btag_algo, wp_tight);
 
     common.reset(new CommonModules());
-    common->switch_jetlepcleaner(true);
     common->disable_lumisel();
     common->disable_jersmear();
     common->disable_jec();
@@ -234,7 +233,7 @@ namespace uhh2examples {
 
     //    if((year == Year::is2016v2) || (year == Year::is2016v3) || (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
-      //           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
+           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
       //    }
 
     if(year != Year::is2018){
@@ -314,7 +313,6 @@ namespace uhh2examples {
 
     //    h_btageff_trigger.reset(new BTagMCEfficiencyHists(ctx, "btageff_trigger", DeepjetTight));
     h_btageff_trigger.reset(new BTagMCEfficiencyHists(ctx, "btageff_trigger", DeepjetMedium));
-    h_btageff_trigger_ele.reset(new BTagMCEfficiencyHists(ctx, "btageff_trigger_ele", DeepjetMedium));
 
     h_btagsf.reset(new SingleTthHists(ctx, "btagsf"));
     h_jets_btagsf.reset(new JetHists(ctx, "Jets_btagsf"));
@@ -701,7 +699,7 @@ namespace uhh2examples {
   }
 
 
-  bool SingleTthAnalysisModule::process(Event & event) {
+  bool SingleTthLooseAnalysisModule::process(Event & event) {
     // cout << "++++++++++ NEW EVENT ++++++++++" << endl;
     event.set(h_is_tprime_reco, false);
 
@@ -774,26 +772,23 @@ namespace uhh2examples {
     // Trigger
     if(is_much){
       if((year == Year::is2016v2) || (year == Year::is2016v3)){
-	h_triggeroffline->fill(event);
         if(!(trigger1_much_sel_2016->passes(event) || trigger2_much_sel_2016->passes(event)) ) return false;
 	h_aftertrigger->fill(event);
-
+	h_triggeroffline->fill(event);
 	SF_muonTrigger->process(event);
 	h_triggerSF->fill(event);
       }
       else if(year == Year::is2017v2){
-	h_triggeroffline->fill(event);
         if(!(trigger1_much_sel_2017->passes(event)) ) return false;
 	h_aftertrigger->fill(event);
-
+	h_triggeroffline->fill(event);
 	SF_muonTrigger->process(event);
 	h_triggerSF->fill(event);
       }
       else if(year == Year::is2018){
-	h_triggeroffline->fill(event);
         if(!(trigger1_much_sel_2018->passes(event)) ) return false;
 	h_aftertrigger->fill(event);
-
+	h_triggeroffline->fill(event);
 
 	SF_muonTrigger->process(event);
 	h_triggerSF->fill(event);
@@ -808,11 +803,6 @@ namespace uhh2examples {
     }
     else{
       if((year == Year::is2016v2) || (year == Year::is2016v3)){
-	ele_cleaner_2016->process(event);
-	if(!event.electrons->size()) return false;
-	h_triggeroffline_ele->fill(event);
-
-
 	if(dataset_version.Contains("Photon")){
 	  if(trigger1_ech_sel_2016->passes(event)) return false;
 	  if(!trigger2_ech_sel_2016->passes(event)) return false;
@@ -822,14 +812,13 @@ namespace uhh2examples {
 	  if(!(trigger1_ech_sel_2016->passes(event) || trigger2_ech_sel_2016->passes(event)) ) return false; 
 	}
 	h_aftertrigger_ele->fill(event);
+	if(!event.electrons->size()) return false;
+	h_triggeroffline_ele->fill(event);
+	ele_cleaner_2016->process(event);
 	SF_eleTrigger->process(event);  
 	h_triggerSF_ele->fill(event);      
       }
       else  if(year == Year::is2017v2){
-	ele_cleaner_2017->process(event);
-	if(!event.electrons->size()) return false;
-	h_triggeroffline_ele->fill(event);
-
 	if(dataset_version.Contains("Photon")){
 	  if(trigger1_ech_sel_2017->passes(event)) return false;
 	  if(!trigger2_ech_sel_2017->passes(event)) return false;
@@ -839,18 +828,20 @@ namespace uhh2examples {
 	  if(!(trigger1_ech_sel_2017->passes(event) || trigger2_ech_sel_2017->passes(event)) ) return false; 
 	}
 	h_aftertrigger_ele->fill(event);
+	ele_cleaner_2017->process(event);
+	if(!event.electrons->size()) return false;
+	h_triggeroffline_ele->fill(event);
 	SF_eleTrigger->process(event);
 	h_triggerSF_ele->fill(event);
 
       }
       else  if(year == Year::is2018){
-	ele_cleaner_2018->process(event);
-	if(!event.electrons->size()) return false;
-	h_triggeroffline_ele->fill(event);
-
         if(!(trigger1_ech_sel_2018->passes(event)||trigger2_ech_sel_2017->passes(event)) ) return false;
 	
 	h_aftertrigger_ele->fill(event);
+	ele_cleaner_2018->process(event);
+	if(!event.electrons->size()) return false;
+	h_triggeroffline_ele->fill(event);
 
 	SF_eleTrigger->process(event);
 	h_triggerSF_ele->fill(event);
@@ -881,13 +872,13 @@ namespace uhh2examples {
       h_mu_trigger_ele->fill(event);
       h_event_trigger_ele->fill(event);
       h_lumi_trigger_ele->fill(event);
-      h_btageff_trigger_ele->fill(event);
+
     }
 
     //    if((year == Year::is2016v2) || (year == Year::is2016v3)|| (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
-    //    SF_btag->process(event);
-          //    }
+         SF_btag->process(event);
+      //    }
 
     if(is_much){
       h_btagsf->fill(event);
@@ -924,7 +915,7 @@ namespace uhh2examples {
       h_lumi_btag_ele->fill(event);
     }
 
-    if(!(btag_2medium_sel->passes(event))) return false;
+    //    if(!(btag_2medium_sel->passes(event))) return false;
     if(is_much){
       h_btag_2m->fill(event);
       h_jets_btag_2m->fill(event);
@@ -941,7 +932,7 @@ namespace uhh2examples {
       h_lumi_btag_2m_ele->fill(event);
     }
 
-    if(!(btag_3medium_sel->passes(event))) return false;
+    //    if(!(btag_3medium_sel->passes(event))) return false;
     if(is_much){
       h_btag_3m->fill(event);
       h_jets_btag_3m->fill(event);
@@ -1392,5 +1383,5 @@ namespace uhh2examples {
   }
 
 
-  UHH2_REGISTER_ANALYSIS_MODULE(SingleTthAnalysisModule)
+  UHH2_REGISTER_ANALYSIS_MODULE(SingleTthLooseAnalysisModule)
 }
