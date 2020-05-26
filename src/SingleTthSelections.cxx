@@ -47,3 +47,26 @@ bool HEMIssueSelection::passes(const Event & event){
 }
 
 
+JetLeptonOverlapRemoval::JetLeptonOverlapRemoval(double deltaRmin):
+deltaRmin_(deltaRmin){}
+
+bool JetLeptonOverlapRemoval::process(Event & event){
+   
+   assert(event.muons);
+   Particle lepton;
+   std::vector<Jet> result;
+   if(event.muons->size()){
+
+     lepton =event.muons->at(0);
+   }else{
+     lepton =event.electrons->at(0);
+   }
+   for(const auto & jet : *event.jets){
+     if(deltaR(jet, lepton) > deltaRmin_){
+       result.push_back(jet);
+     }
+   }
+   std::swap(result, *event.jets);
+   
+   return true;
+}

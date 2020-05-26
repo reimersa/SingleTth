@@ -515,12 +515,11 @@ void SingleTthHists::fill(const Event & event){
       bool hq1 = false;
       bool hq2 = false;
       bool tq1 = false;
-      std::cout<<"  higgs  "<<b_had_higgs<<"  top  "<<b_had_top<<std::endl;
+
       if(b_had_higgs && b_had_top){
 	for(auto hjet:hyp->higgs_jets()){
 	  double deltaR_q1 = deltaR(hjet,Higgs_q1);
 	  double deltaR_q2 = deltaR(hjet,Higgs_q2);
-	  std::cout<<"  deltar hq1 " << deltaR_q1 <<"  deltar hq2  "<<deltaR_q2<<std::endl;
 	  if(deltaR_q1<0.4) hq1 = true;
 	  if(deltaR_q2<0.4) hq2 = true;
 	}
@@ -529,7 +528,6 @@ void SingleTthHists::fill(const Event & event){
 	  if(deltaR_tq1 < 0.4) tq1 = true;
 	}
       }
-      std::cout<<" hq1 "<<hq1<<"  hq2  "<<hq2<<"  tq1  "<<tq1<<std::endl;
       if (hq1 && hq2 && tq1) hist("M_Tprime_matched")->Fill(m_tprime,weight);
     }//// is signal sample
 

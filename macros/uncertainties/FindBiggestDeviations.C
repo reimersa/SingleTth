@@ -41,12 +41,12 @@ void FindBiggestDeviations(){
 
 
   // 2017
-  //  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/";
-  // vector<TString> processes = {"TTbar_2017v2","SingleTop_2017v2","VLQ_LH_650_2017v2","VLQ_LH_700_2017v2","VLQ_LH_800_2017v2","VLQ_LH_1000_2017v2","VLQ_LH_1100_2017v2","VLQ_LH_1200_2017v2"};
+   TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/";
+   vector<TString> processes = {"TTbar_2017v2","SingleTop_2017v2","VLQ_LH_650_2017v2","VLQ_LH_600_2017v2","VLQ_LH_700_2017v2","VLQ_LH_800_2017v2","VLQ_LH_900_2017v2","VLQ_LH_1000_2017v2","VLQ_LH_1100_2017v2","VLQ_LH_1200_2017v2"};
 
   // 2018
-  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/HEMIssue/";
-  vector<TString> processes = {"TTbar_2018","SingleTop_2018","VLQ_LH_600_2018","VLQ_LH_650_2018","VLQ_LH_700_2018","VLQ_LH_800_2018","VLQ_LH_900_2018","VLQ_LH_1000_2018","VLQ_LH_1100_2018","VLQ_LH_1200_2018"};
+  // TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/";
+  // vector<TString> processes = {"TTbar_2018","SingleTop_2018","VLQ_LH_600_2018","VLQ_LH_650_2018","VLQ_LH_700_2018","VLQ_LH_800_2018","VLQ_LH_900_2018","VLQ_LH_1000_2018","VLQ_LH_1100_2018","VLQ_LH_1200_2018"};
 
   unique_ptr<TFile> f_in;
 

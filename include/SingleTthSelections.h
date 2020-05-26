@@ -1,5 +1,5 @@
 #pragma once
-
+#include "UHH2/core/include/AnalysisModule.h"
 #include "UHH2/core/include/fwd.h"
 #include "UHH2/core/include/Selection.h"
 #include "UHH2/common/include/JetIds.h"
@@ -27,5 +27,14 @@ private:
     JetId btag; 
 };
 
+class JetLeptonOverlapRemoval: public uhh2::AnalysisModule {
+   public:
+      explicit JetLeptonOverlapRemoval(double deltaRmax);
+      virtual bool process(uhh2::Event & event) override;
+      
+   private:
+      double deltaRmin_;
+ };
 
 }
+
