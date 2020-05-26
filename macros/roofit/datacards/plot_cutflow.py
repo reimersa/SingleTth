@@ -545,7 +545,7 @@ for el in lista_ele:
 
 
 ##################### signal cutflow
-infile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2016v3.root") 
+infile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_RH_1000_2016v3.root") 
 TH1.AddDirectory(0)    
 
 infile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2017v2.root") 
@@ -554,7 +554,7 @@ TH1.AddDirectory(0)
 infile_2018 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2018.root") 
 TH1.AddDirectory(0)    
 
-preinfile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2016v3.root") 
+preinfile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_RH_1000_2016v3.root") 
 TH1.AddDirectory(0)    
 
 preinfile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2017v2.root") 
