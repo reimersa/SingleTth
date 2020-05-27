@@ -161,6 +161,11 @@ SingleTthHists::SingleTthHists(Context & ctx, const string & dirname): Hists(ctx
   book<TH1F>("signal_tprime_mass_inv","tprime mass reconstructed on generator level from H and top",600, 0, 3000);
   book<TH1F>("signal_tprime_mass","tprime mass reconstructed on generator level Tprime",600, 0, 3000);
   book<TH1F>("M_Tprime_matched", "M_{T} [GeV]", 300, 0, 3000);
+  book<TH1F>("M_Higgs_matched", "M_{H} [GeV]", 300, 0, 300);
+  book<TH1F>("M_Higgs_gen", "M_{H}_gen [GeV]", 300, 0, 300);
+  book<TH1F>("DeltaRminH1bjet", "DeltaR(H1,bjet)", 60, 0, 3);
+  book<TH1F>("DeltaRminH2bjet", "DeltaR(H2,bjet)", 60, 0, 3);
+  book<TH1F>("M_Toplep_matched", "M_{toplep} [GeV]", 300, 0, 300);
 
 }
 
@@ -512,25 +517,75 @@ void SingleTthHists::fill(const Event & event){
 	  //break;
 	}
       }//// for loop over genp
-      bool hq1 = false;
-      bool hq2 = false;
-      bool tq1 = false;
 
-      if(b_had_higgs && b_had_top){
-	for(auto hjet:hyp->higgs_jets()){
-	  double deltaR_q1 = deltaR(hjet,Higgs_q1);
-	  double deltaR_q2 = deltaR(hjet,Higgs_q2);
-	  if(deltaR_q1<0.4) hq1 = true;
-	  if(deltaR_q2<0.4) hq2 = true;
+      bool hfirst = true;
+      bool tfirst = true;
+
+      for(auto & hyp_matched:hyps){
+	bool hq1 = false;
+	bool hq2 = false;
+	bool tq1 = false;
+	bool tl1 = false;
+	bool tnphi = false;
+
+	if(b_had_higgs){
+	  hist("M_Higgs_gen")->Fill((Higgs_q1.v4() + Higgs_q2.v4()).M(),weight);
+	  double drminHq1 = 1000;
+	  double drminHq2 = 1000;
+
+	  for(auto hjet:hyp_matched.higgs_jets()){
+	    double deltaR_q1 = deltaR(hjet,Higgs_q1);
+	    double deltaR_q2 = deltaR(hjet,Higgs_q2);
+	    if(deltaR_q1<0.4) hq1 = true;
+	    if(deltaR_q2<0.4) hq2 = true;
+
+	    if(deltaR_q1<drminHq1) drminHq1 = deltaR_q1;
+	    if(deltaR_q2<drminHq2) drminHq2 = deltaR_q2;
+	  }
+	  hist("DeltaRminH1bjet")->Fill(drminHq1,weight);
+	  hist("DeltaRminH2bjet")->Fill(drminHq2,weight);
+
 	}
-	for(auto tjet:hyp->toplep_jets()){
-	  double deltaR_tq1 = deltaR(tjet,Top_q1);
-	  if(deltaR_tq1 < 0.4) tq1 = true;
+
+
+	if(b_had_top){
+	  for(auto tjet:hyp_matched.toplep_jets()){
+	    double deltaR_tq1 = deltaR(tjet,Top_q1);
+	    if(deltaR_tq1 < 0.4) tq1 = true;
+	  }
 	}
-      }
-      if (hq1 && hq2 && tq1) hist("M_Tprime_matched")->Fill(m_tprime,weight);
+	
+	Particle lepton;
+	if(event.muons->size()) lepton = event.muons->at(0);
+	else lepton = event.electrons->at(0);
+	
+	tl1 = deltaR(lepton,hyp_matched.lepton())<0.1;
+	
+	tnphi = deltaPhi(event.met->v4(),hyp_matched.neutrino_v4())<0.3;
+	
+	if (hq1 && hq2 && tq1) hist("M_Tprime_matched")->Fill(m_tprime,weight);
+	if (hq1 && hq2 && hfirst){
+	  double m_higgs_matched = 0;
+	  LorentzVector Higgs = hyp_matched.higgs_jets().at(0).v4() +hyp_matched.higgs_jets().at(1).v4();
+	  if( (Higgs ).isTimelike() ) {m_higgs_matched = (Higgs).M();}
+	  else {m_higgs_matched = sqrt( -(Higgs).mass2());}
+	  
+	  hist("M_Higgs_matched")->Fill(m_higgs_matched,weight);
+	  hfirst = false;
+	}
+	if(tq1 && tl1 && tnphi && tfirst){
+	  double m_top_matched=0;
+	  if( (hyp_matched.toplep_v4()).isTimelike() ) {m_top_matched = (hyp_matched.toplep_v4()).M();}
+	  else {m_top_matched = sqrt( -(hyp_matched.toplep_v4()).mass2());}
+	  
+	  hist("M_Toplep_matched")->Fill(m_top_matched,weight);
+	  tfirst = false;
+	}
+      }///hyps  
+    
+    
     }//// is signal sample
-
+  
   }
 
 

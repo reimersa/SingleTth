@@ -23,13 +23,13 @@ void sig_fit()
 
   std::ofstream infotofile("SignalFitOutput_"+year+postfix+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
-  Echannel ch = eComb;
+    Echannel ch = eComb;
   //  Echannel ch = eEle;
-  //Echannel ch = eMuon;
+  //  Echannel ch = eMuon;
 
          std::vector<TString> uncertainties ={}; // no syst.
 	 if(!b_test) {
-	   uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2016 & 2017 
+	   //	   uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2016 & 2017 
 	   if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
 	   if(year.Contains("allyears")) uncertainties = {};
 	 }
@@ -43,8 +43,8 @@ void sig_fit()
 
   if (!b_test){
 
-    MTs = {600, 650, 800, 900, 1000,1100, 1200};// 2016
-    MTs_backup = {600,650, 800,900, 1000,1100, 1200};// 2016
+    MTs = {700,800,  900, 1000, 1200};// 2016
+    MTs_backup = {700,800,900, 1000, 1200};// 2016
 
 
     if(year.Contains("2018") or year.Contains("2017")){

@@ -131,6 +131,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   TString anaoutputfolder;
   TString systfolder; 
   TString hand = "RH";
+  TString prodch = "";
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
@@ -141,19 +142,22 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      cout << "Using NAF setup." << endl;
      
      if(year.Contains("2016")) {
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtaginc/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/"; 
+       hand = "LH";
+       prodch = "_B";
        if ((MT <700) && (val==NULL)) year = "2016v2";
    }
      else if(year.Contains("2017")){
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/"; 
-       //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/"; 
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtaginc/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/"; 
        hand = "LH";
      }
      else if(year.Contains("2018")){
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/"; 
        hand = "LH";
      }
@@ -164,7 +168,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      }
      else throw runtime_error("Year not possible.");
 
-     // if(unc=="" && (year.Contains("2017") || year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
+     //     if(unc=="" && (year.Contains("2017") || year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBtagSF/";
      //     if(unc=="" && ( year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
      if(unc=="") anaoutputfolder +="NOMINAL/";
 
@@ -174,16 +178,16 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   //All files are read in
   bool b_error=true;
 
-  std::cout<<"MT  "<< TString::Format("%d", MT)<<std::endl;
+  std::cout<<"MT  "<< TString::Format("%d", MT)<<"   unc   "<<unc<<std::endl;
 
   TString MT_name = TString::Format("%d", MT);
-  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");
 
   if(unc!=""){
     TString subfolder = "NOMINAL/";
     //    if(year.Contains("2017")|| year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
     //    if(year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
-    sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+    sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");
     if(unc.Contains("PDF")) {
       subfolder = "pdf/";
       sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
@@ -191,7 +195,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
 
     if(unc.Contains("scale")) {
       subfolder = "scale/";
-      sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+      sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");
     }
 
 
@@ -199,7 +203,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
       TString extention = "";
       //      if((year.Contains("2017")||year.Contains("2018"))) extention = "_NoBTagSF"; 
       //if((year.Contains("2018"))) extention = "_NoBTagSF"; 
-      sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+      sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");
     }
   }  
 
@@ -264,7 +268,8 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
 {
   // folder where the analysis output files are 
   TString anaoutputfolder;
-  TString hand = "RH";
+  TString hand = "LH";
+  TString prodch = "";
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
@@ -273,16 +278,20 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   } else {
      cout << "Using NAF setup." << endl;
      if(year.Contains("2016")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/"; 
+       //anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtaginc/NOMINAL/"; 
+       prodch = "_B";
        if ((MT <700) && (val==NULL)) year = "2016v2";
      }
      else if (year.Contains("2017")){
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL_NoBtagSF/"; 
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"; 
        hand = "LH";
      }
      else if (year.Contains("2018")){
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
        hand = "LH";
      }
      else if (year.Contains("allyears")){
@@ -304,7 +313,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
 
   // get total number of events before any selection
   TString MT_name = TString::Format("%d", MT);
-  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+  TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name+prodch + "_" + year + ".root", "READ");
 
   TString hname = "cleaner/sum_event_weights";
   TH1F* h = (TH1F*) sig_f->Get(hname);  
@@ -331,7 +340,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
 
   cout << "efficiency under peak = " << eff << " +- " << err << endl;
   cout << "efficiency total SR = " << NSRtot / Ntot << endl;
-
+  sig_f->Close();
   return eff;
 
 }

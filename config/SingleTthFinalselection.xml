@@ -29,11 +29,11 @@
 <!ENTITY VLQ_RH_1700 "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_RH_1700_2016v3.root">
 <!ENTITY VLQ_RH_1800 "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_RH_1800_2016v3.root">
 
-<!ENTITY VLQ_LH_800_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_B_800_2016v3.root">
-<!ENTITY VLQ_LH_700_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_B_700_2016v3.root">
-<!ENTITY VLQ_LH_900_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_B_900_2016v3.root">
-<!ENTITY VLQ_LH_1000_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_B_1000_2016v3.root">
-<!ENTITY VLQ_LH_1200_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_B_1200_2016v3.root">
+<!ENTITY VLQ_LH_800_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_B_2016v3.root">
+<!ENTITY VLQ_LH_700_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_B_2016v3.root">
+<!ENTITY VLQ_LH_900_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_B_2016v3.root">
+<!ENTITY VLQ_LH_1000_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_B_2016v3.root">
+<!ENTITY VLQ_LH_1200_B  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_B_2016v3.root">
 
 
 <!ENTITY VLQ_LH_700      "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_2016v3.root">
