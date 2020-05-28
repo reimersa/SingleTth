@@ -21,7 +21,11 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
-     anaoutputfolder = "../../../AnalysisOutput_102X/"; 
+     if(year.Contains("2016")) anaoutputfolder = "../../../AnalysisOutput_102X/2016/"; 
+     else if(year.Contains("2017"))anaoutputfolder = "../../../AnalysisOutput_102X/2017/"; 
+     else if(year.Contains("2018"))anaoutputfolder = "../../../AnalysisOutput_102X/2018/"; 
+     else if(year.Contains("allyears"))anaoutputfolder = "../../../AnalysisOutput_102X/allyears/"; 
+     else throw runtime_error("Year not possible.");
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
@@ -135,9 +139,11 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
-     anaoutputfolder = "../../../AnalysisOutput_102X/"; 
-     year = "2016";
-     systfolder = ""; 
+     anaoutputfolder = "../../../AnalysisOutput_102X/2016/output/"; 
+     year = "2016v3";
+     hand = "LH"; 
+     if ((MT <700) && (val==NULL)) year = "2016v2";
+     systfolder = "../../../AnalysisOutput_102X/2016/syst/"; 
   } else {
      cout << "Using NAF setup." << endl;
      
@@ -273,8 +279,10 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   char *val = getenv( "ROM_SYS" );
   if (val!=NULL){
      cout << "Using Roman's setup." << endl;
-     anaoutputfolder = "../../../AnalysisOutput_102X/"; 
-     year = "2016";
+     anaoutputfolder = "../../../AnalysisOutput_102X/2016/output/"; 
+     year = "2016v3";
+     if ((MT <700) && (val==NULL)) year = "2016v2";
+     hand = "LH";
   } else {
      cout << "Using NAF setup." << endl;
      if(year.Contains("2016")){
@@ -282,6 +290,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtaginc/NOMINAL/"; 
        prodch = "_B";
        if ((MT <700) && (val==NULL)) year = "2016v2";
+       hand = "LH";
      }
      else if (year.Contains("2017")){
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL_NoBtagSF/"; 
@@ -340,7 +349,9 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
 
   cout << "efficiency under peak = " << eff << " +- " << err << endl;
   cout << "efficiency total SR = " << NSRtot / Ntot << endl;
+
   sig_f->Close();
+  
   return eff;
 
 }
