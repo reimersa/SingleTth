@@ -7,33 +7,33 @@
 using namespace std;
 bool b_test = false;
 
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3", float factormin=2.5, float factormax=2);
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3", float factormin=2, float factormax=2.5);
 void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_dn, TString name);
 
 void sig_fit()
 {
   TString year =  "2016v3";
-  // TString year =  "2017v2";
-  // TString year =  "2018";
+  //TString year =  "2017v2";
+  //   TString year =  "2018";
   // TString year =  "allyears";
 
   //  TString postfix = "_HEMIssue_LH";
-  TString postfix = "_comb";
+  TString postfix = "";
 
 
 
   std::ofstream infotofile("SignalFitOutput_"+year+postfix+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
-    Echannel ch = eComb;
-  //  Echannel ch = eEle;
+  Echannel ch = eComb;
+  //   Echannel ch = eEle;
   //  Echannel ch = eMuon;
 
   std::vector<TString> uncertainties ={}; // no syst.
-	if(!b_test) {
-	  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2016 & 2017 
-	  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
-	  if(year.Contains("allyears")) uncertainties = {};
-	}
+  if(!b_test) {
+    uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2016 & 2017 
+    if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
+    if(year.Contains("allyears")) uncertainties = {};
+  }
 
   std::vector<double> MTs = {650};// 2016
   std::vector<double> MTs_backup = {650};// 2016
@@ -526,11 +526,12 @@ void sig_fit()
   //MTs[0] = 550;
   //MTs[6] = 1250;
   //TGraphErrors* fit3_err_95 = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
-  //fitter = (TFitter*) TVirtualFitter::GetFitter();
+  fitter = (TFitter*) TVirtualFitter::GetFitter();
   //fitter->GetConfidenceIntervals(fit3_err_95, 0.95);
   //fit3_err_95->SetFillColor(kOrange-4);
   //fit3_err_95->Draw("L3 same");
 
+  //hier
   TGraphErrors* fit3_err_68 = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
   fitter->GetConfidenceIntervals(fit3_err_68, 0.68);
   fit3_err_68->SetFillColor(kOrange+1);
@@ -591,7 +592,6 @@ void sig_fit()
   }
 
   for(TString unc:uncertainties){
-    if (unc == "scale") continue;
     std::cout << "   ===============================    uncertainty        " << unc << std::endl;
 
     means_unc.clear();
@@ -677,46 +677,46 @@ void sig_fit()
     cout << "MT = " << MTs[i] << " rel err up = " << sqrt(effs_uperr2[i]) << " rel err down = " << sqrt(effs_dnerr2[i]) << endl;
   }
 
-  // ///////
-  // ///
-  // /// testing fit range
-  // ///
-  // /////
-  // TLegend *leg3_fitrange = new TLegend(0.5,0.15,0.9,0.5,"","brNDC");
-  // leg3_fitrange->SetBorderSize(0);
-  // leg3_fitrange->SetFillStyle(0);
-  // leg3_fitrange->SetTextSize(0.035);
-  // leg3_fitrange->SetFillColor(0);
-  // leg3_fitrange->SetLineColor(1);
-  // leg3_fitrange->SetTextFont(42);
+  // // ///////
+  // // ///
+  // // /// testing fit range
+  // // ///
+  // // /////
+  // // TLegend *leg3_fitrange = new TLegend(0.5,0.15,0.9,0.5,"","brNDC");
+  // // leg3_fitrange->SetBorderSize(0);
+  // // leg3_fitrange->SetFillStyle(0);
+  // // leg3_fitrange->SetTextSize(0.035);
+  // // leg3_fitrange->SetFillColor(0);
+  // // leg3_fitrange->SetLineColor(1);
+  // // leg3_fitrange->SetTextFont(42);
 
-  // MTs = MTs_backup;// {600, 650, 800, 900, 1000, 1100,1200};
-  // for(int j=0; j<sigma_ranges.size(); j++){
-  //   means_fitrange.clear();
-  //   means_err_fitrange.clear();
-  //   widths_fitrange.clear();  
-  //   widths_err_fitrange.clear();  
-  //   effs_fitrange.clear();  
-  //   effs_err_fitrange.clear();  
+  // // MTs = MTs_backup;// {600, 650, 800, 900, 1000, 1100,1200};
+  // // for(int j=0; j<sigma_ranges.size(); j++){
+  // //   means_fitrange.clear();
+  // //   means_err_fitrange.clear();
+  // //   widths_fitrange.clear();  
+  // //   widths_err_fitrange.clear();  
+  // //   effs_fitrange.clear();  
+  // //   effs_err_fitrange.clear();  
 
-  //   for (int i=0; i<MTs.size(); ++i){
-  //     fitsignal(ch,  (int) MTs[i], means_fitrange, means_err_fitrange, widths_fitrange, widths_err_fitrange, effs_fitrange, effs_err_fitrange, "",year,sigma_ranges[j],sigma_ranges[j]);
-  //   }
-  //   TGraphErrors* geff_fitrange   = new TGraphErrors(MTs.size(), MTs.data(), effs_fitrange.data(), zeros.data(), effs_err_fitrange.data());      
-  //   TF1* lin3 = new TF1("efffit"+TString::Format("%d",jj), "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
-  //   TFitResultPtr r_fitrange = geff_fitrange->Fit(lin3, "0");
-  //   lin3->SetLineColor(kBlue+j+1);
-  //   lin3->SetLineStyle(j+1);
-  //   can3->cd();
-  //   lin3->Draw("same");
-  //   leg3_fitrange->AddEntry(lin3,TString::Format("%.2f",sigma_ranges[j])+" Slope "+TString::Format("%f", lin3->GetParameter(1)),"l");
+  // //   for (int i=0; i<MTs.size(); ++i){
+  // //     fitsignal(ch,  (int) MTs[i], means_fitrange, means_err_fitrange, widths_fitrange, widths_err_fitrange, effs_fitrange, effs_err_fitrange, "",year,sigma_ranges[j],sigma_ranges[j]);
+  // //   }
+  // //   TGraphErrors* geff_fitrange   = new TGraphErrors(MTs.size(), MTs.data(), effs_fitrange.data(), zeros.data(), effs_err_fitrange.data());      
+  // //   TF1* lin3 = new TF1("efffit"+TString::Format("%d",jj), "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
+  // //   TFitResultPtr r_fitrange = geff_fitrange->Fit(lin3, "0");
+  // //   lin3->SetLineColor(kBlue+j+1);
+  // //   lin3->SetLineStyle(j+1);
+  // //   can3->cd();
+  // //   lin3->Draw("same");
+  // //   leg3_fitrange->AddEntry(lin3,TString::Format("%.2f",sigma_ranges[j])+" Slope "+TString::Format("%f", lin3->GetParameter(1)),"l");
     
-  // }
+  // // }
 
-  // can3->cd();
-  // leg3_fitrange->Draw();
-  // can3->SaveAs(fname3+postfix+"_fitrange.eps");
-  // can3->SaveAs(fname3+postfix+"_fitrange.pdf");
+  // // can3->cd();
+  // // leg3_fitrange->Draw();
+  // // can3->SaveAs(fname3+postfix+"_fitrange.eps");
+  // // can3->SaveAs(fname3+postfix+"_fitrange.pdf");
 
 
   //---------------------------------------------------------
@@ -777,8 +777,8 @@ void sig_fit()
   TF1* lin_tot = new TF1("efffit_tot", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
   lin_tot->SetParameter(0, effs[0]);
   lin_tot->SetParameter(1, 0);  
-  lin_tot->SetParName(0, "#varepsilon at 600 GeV");
-  lin_tot->SetParName(1, "Slope");
+  // lin_tot->SetParName(0, "#varepsilon at 600 GeV");
+  // lin_tot->SetParName(1, "Slope");
   TFitResultPtr rtot = geff_totunc->Fit(lin_tot, "0");
 
   //infotofile<<"efficiency estimate  "<<lin3->GetParameter(0)<<std::endl;
@@ -813,8 +813,8 @@ void sig_fit()
   TF1* lin_stat = new TF1("efffit_stat", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
   lin_stat->SetParameter(0, effs[0]);
   lin_stat->SetParameter(1, 0);  
-  lin_stat->SetParName(0, "#varepsilon at 600 GeV");
-  lin_stat->SetParName(1, "Slope");
+  // lin_stat->SetParName(0, "#varepsilon at 600 GeV");
+  // lin_stat->SetParName(1, "Slope");
   TFitResultPtr r6 = geff->Fit(lin_stat, "0");
 
   // use uncertainty in p0 to estimate 1sigma uncertainty
@@ -1062,7 +1062,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   effs_err.push_back(efferr);
 
   // draw the result
-  sigh->GetYaxis()->SetRangeUser(0,100);
+  //  sigh->GetYaxis()->SetRangeUser(0,100);
   sigh->Draw("PZ");
   //gPad->SetLogy(true);
 

@@ -44,7 +44,7 @@ SingleTthPDFHists::SingleTthPDFHists(Context & ctx, const string & dirname): His
     take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("Diboson")|| m_oname.Contains("VLQ"));
   }
   else{
-    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW"));
+    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW")|| m_oname.Contains("VLQ"));
   }
   // take_ntupleweights =  use_ntupleweights && (!is_LO || m_oname.Contains("DYJets")) && (m_oname != "SingleTop_T_tWch" && m_oname != "SingleTop_Tbar_tWch");
 

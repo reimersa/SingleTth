@@ -29,10 +29,10 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
-     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/"; 
+     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/"; 
 
-     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
-     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
+     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"; 
+     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
      else if(year.Contains("allyears"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/NOMINAL/"; 
      else throw runtime_error("Year not possible.");
   }
@@ -149,22 +149,22 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      
      if(year.Contains("2016")) {
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtaginc/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/SFbtagmujets/"; 
        hand = "LH";
        prodch = "_B";
        if ((MT <700) && (val==NULL)) year = "2016v2";
    }
      else if(year.Contains("2017")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/"; 
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtaginc/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/SFbtagmujets/"; 
        hand = "LH";
      }
      else if(year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/"; 
+       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtaginc/"; 
        hand = "LH";
      }
      else if(year.Contains("allyears")){
@@ -287,19 +287,19 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
      cout << "Using NAF setup." << endl;
      if(year.Contains("2016")){
        //anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtaginc/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/"; 
        prodch = "_B";
        if ((MT <700) && (val==NULL)) year = "2016v2";
        hand = "LH";
      }
      else if (year.Contains("2017")){
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL_NoBtagSF/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"; 
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"; 
        hand = "LH";
      }
      else if (year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
        hand = "LH";
      }

@@ -18,8 +18,8 @@ from collections import OrderedDict
 berror = False
 #year = "2016v3"
 #year = "2017v2"
-#year = "2018"
-year = "allyears"
+year = "2018"
+#year = "allyears"
 
 postfix = "_mediumWP_allyearsunc_exp"
 
@@ -45,6 +45,7 @@ print masses
 
 outputfile = open("Limits_combine_"+year+postfix+".txt","w")
 for mass in masses:
+    if "550" in mass or "575" in mass: continue
     print mass
     rootfile = TFile.Open("higgsCombineoutput_"+mass+".AsymptoticLimits.mH120.root","r")
     tree = rootfile.limit 
