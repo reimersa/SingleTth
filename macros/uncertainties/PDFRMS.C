@@ -26,9 +26,9 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 
 void PDFRMS(){
 
-  //    TString year = "2016v3";
+     TString year = "2016v3";
   //    TString year = "2017v2";
-    TString year = "2018";
+     //    TString year = "2018";
 
 
   TString prodch = "";

@@ -17,7 +17,7 @@ from collections import OrderedDict
 
 berror = False
 
-b_multipdf = False
+b_multipdf = True
 b_signalrate = True
 b_lumiunc = True
 
@@ -55,9 +55,9 @@ rate_unc["2016v3"] = 1.05
 rate_unc["2017v2"] = 1.11
 rate_unc["2018"] = 1.12
 if all_years_eaul:
-    rate_unc["2016v3"] = 1.04
-    rate_unc["2018"] = 1.04
-    rate_unc["2017v2"] = 1.04
+    rate_unc["2016v3"] = 1.05
+    rate_unc["2018"] = 1.05
+    rate_unc["2017v2"] = 1.05
 
 rate_btag_unc = {}
 rate_btag_unc["2016v3"] = 1.10
@@ -71,7 +71,7 @@ lumi_unc["2017v2"] = 1.023
 lumi_unc["2018"] = 1.025
 
 #years = {"2016v3","2017v2","2018"}
-years = {"2016v3"}
+years = {"2018"}
 
 number_of_channels = 2 * len(years)
 number_of_backgrounds = "*"
@@ -156,15 +156,17 @@ for mass in masses:
     rates = "rate           "
     lumi = "lumi     lnN   "
     rate_sig = "rate_signal     lnN    "
-    rate_sig_btag = "rate_signal_btag     lnN    "
-    rate_sig_btag_ech = "rate_signal_btag_ech     lnN    "
+    rate_sig_btag_2016 = "rate_signal_btag_2016v3     lnN    "
+    rate_sig_btag_ech_2016 = "rate_signal_btag_ech_2016v3     lnN    "
+    rate_sig_btag_2017 = "rate_signal_btag_2017v2     lnN    "
+    rate_sig_btag_ech_2017 = "rate_signal_btag_ech_2017v2     lnN    "
+    rate_sig_btag_2018 = "rate_signal_btag_2018     lnN    "
+    rate_sig_btag_ech_2018 = "rate_signal_btag_ech_2018     lnN    "
+
 
     for year in sorted(years):
         outputfile.write("shapes * ech_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:$PROCESS_$CHANNEL \n \n")
         outputfile.write("shapes * much_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:$PROCESS_$CHANNEL \n \n")
-
-
-
 
         bins +=  "ech_"+year+"   much_"+year+"   "
         double_bins +=  "ech_"+year+"    ech_"+year+"   much_"+year+"   "+"   much_"+year+"   "
@@ -180,16 +182,41 @@ for mass in masses:
 
         lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
         rate_sig += str(rate_unc[year]) + "       -   "+str(rate_unc[year]) +"       -    "
-        rate_sig_btag_ech += str(rate_btag_unc[year]) + "       -    -       -    "
-        rate_sig_btag += "-       -    " + str(rate_btag_unc[year]) + "       -    "
+        if("2016" in year):
+            rate_sig_btag_ech_2016 += str(rate_btag_unc[year]) + "       -    -       -    "
+            rate_sig_btag_2016 += "-       -    " + str(rate_btag_unc[year]) + "       -    "
+            rate_sig_btag_ech_2017 +=  "-       -    -       -    "
+            rate_sig_btag_2017 += "-       -    -       -    "
+            rate_sig_btag_ech_2018 +=  "-       -    -       -    "
+            rate_sig_btag_2018 += "-       -    -       -    "
+        if("2017" in year):
+            rate_sig_btag_ech_2017 += str(rate_btag_unc[year]) + "       -    -       -    "
+            rate_sig_btag_2017 += "-       -    " + str(rate_btag_unc[year]) + "       -    "
+            rate_sig_btag_ech_2016 +=  "-       -    -       -    "
+            rate_sig_btag_2016 += "-       -    -       -    "
+            rate_sig_btag_ech_2018 +=  "-       -    -       -    "
+            rate_sig_btag_2018 += "-       -    -       -    "
+        if("2018" in year):
+            rate_sig_btag_ech_2018 += str(rate_btag_unc[year]) + "       -    -       -    "
+            rate_sig_btag_2018 += "-       -    " + str(rate_btag_unc[year]) + "       -    "
+            rate_sig_btag_ech_2016 +=  "-       -    -       -    "
+            rate_sig_btag_2016 += "-       -    -       -    "
+            rate_sig_btag_ech_2017 +=  "-       -    -       -    "
+            rate_sig_btag_2017 += "-       -    -       -    "
+
+
 
     process_names += " \n"
     process_bins += " \n"
     rates += "\n \n"
     lumi += " \n"
-    rate_sig_btag += " \n"
+    rate_sig_btag_2016 += " \n"
+    rate_sig_btag_2017 += " \n"
+    rate_sig_btag_2018 += " \n"
     rate_sig += " \n"
-    rate_sig_btag_ech += " \n"
+    rate_sig_btag_ech_2016 += " \n"
+    rate_sig_btag_ech_2017 += " \n"
+    rate_sig_btag_ech_2018 += " \n"
     
     outputfile.write("------------------------------ \n")
     outputfile.write("# name of channels, and number of observed events (total number of event in Data) \n \n")
@@ -216,13 +243,21 @@ for mass in masses:
         outputfile.write(lumi)
     if b_signalrate:
         outputfile.write(rate_sig)
-        outputfile.write(rate_sig_btag)
-        outputfile.write(rate_sig_btag_ech)
 
     for year in years:
         if b_multipdf:
             outputfile.write("pdf_index_much_"+year+" discrete \n ")
             outputfile.write("pdf_index_ech_"+year+" discrete \n ")
+        if b_signalrate:
+            if "2016" in year:
+                outputfile.write(rate_sig_btag_2016)
+                outputfile.write(rate_sig_btag_ech_2016)
+            if "2017" in year:
+                outputfile.write(rate_sig_btag_2017)
+                outputfile.write(rate_sig_btag_ech_2017)
+            if "2018" in year:
+                outputfile.write(rate_sig_btag_2018)
+                outputfile.write(rate_sig_btag_ech_2018)
 
 
         outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+" discrete \n ")

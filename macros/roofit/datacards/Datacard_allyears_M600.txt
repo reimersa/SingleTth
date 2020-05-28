@@ -6,14 +6,14 @@ jmax  * number of backgrounds
 kmax  * number of nuisance parameters (sources of systematical uncertainties) 
  
 ------------------------------ 
-shapes * ech_2016v3 ws_SingleTth_2016v3.root SingleTth:$PROCESS_$CHANNEL 
+shapes * ech_2018 ws_SingleTth_2018.root SingleTth:$PROCESS_$CHANNEL 
  
-shapes * much_2016v3 ws_SingleTth_2016v3.root SingleTth:$PROCESS_$CHANNEL 
+shapes * much_2018 ws_SingleTth_2018.root SingleTth:$PROCESS_$CHANNEL 
  
 ------------------------------ 
 # name of channels, and number of observed events (total number of event in Data) 
  
-bin           ech_2016v3   much_2016v3    
+bin           ech_2018   much_2018    
 observation     -1             -1  
  
 ------------------------------ 
@@ -21,32 +21,52 @@ observation     -1             -1
  # process unique ID (positive number for backgrounds, and zero or negative for signal)
  # expected events for each process (total number of events in MC)
  
-bin           ech_2016v3    ech_2016v3   much_2016v3      much_2016v3    
-process         roomultipdf_MT600   Bkgfunc_Exp2p  roomultipdf_MT600   Bkgfunc_Exp2p 
+bin           ech_2018    ech_2018   much_2018      much_2018    
+process         roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf 
 process        0   1    0    1    
-rate           119.035   8445          172.484   12341   
+rate           237.279   5334          347.634   8457   
  
 ------------------------------ 
 # list of independent sources of uncertainties, and give their effect (syst. error) 
  
 lumi     lnN   1.025       -    1.025       -     
-rate_signal     lnN    1.04       -   1.04       -     
-rate_signal_btag     lnN    -       -    1.1       -     
-rate_signal_btag_ech     lnN    1.1       -    -       -     
-pdf_index_MT600_much_2016v3 discrete 
- pdf_index_MT600_ech_2016v3 discrete 
- sg_mean_2016v3 param 583.611  1.38017 
- sg_sigma_2016v3 param 60.7867  1.35714 
- sg_JERmeandown_2016v3 param 582.518  0.001 
- sg_JERmeanup_2016v3 param 583.358  0.001 
- sg_JECmeandown_2016v3 param 579.99  0.001 
- sg_JECmeanup_2016v3 param 586.52  0.001 
- sg_JERsigmadown_2016v3 param 59.6682  0.001 
- sg_JERsigmaup_2016v3 param 62.2502  0.001 
- sg_JECsigmadown_2016v3 param 60.1662  0.001 
- sg_JECsigmaup_2016v3 param 62.2219  0.001 
- bgexp2_p1much_2016v3 param 4.47207  0.0378227 
- bgexp2_p1ech_2016v3 param 4.35768  0.0450837 
- bgexp2_p0much_2016v3 param 9.34666  0.295264 
- bgexp2_p0ech_2016v3 param 8.75889  0.359603 
+rate_signal     lnN    1.05       -   1.05       -     
+pdf_index_much_2018 discrete 
+ pdf_index_ech_2018 discrete 
+ rate_signal_btag_2018     lnN    -       -    1.1       -     
+rate_signal_btag_ech_2018     lnN    1.1       -    -       -     
+pdf_index_MT600_much_2018 discrete 
+ pdf_index_MT600_ech_2018 discrete 
+ sg_mean_2018 param 581.158  0.816429 
+ sg_sigma_2018 param 60.1242  0.80248 
+ sg_JERmeandown_2018 param 580.538  0.001 
+ sg_JERmeanup_2018 param 580.964  0.001 
+ sg_JECmeandown_2018 param 576.797  0.001 
+ sg_JECmeanup_2018 param 584.648  0.001 
+ sg_JERsigmadown_2018 param 59.7101  0.001 
+ sg_JERsigmaup_2018 param 61.0783  0.001 
+ sg_JECsigmadown_2018 param 59.9789  0.001 
+ sg_JECsigmaup_2018 param 61.5755  0.001 
+ bg2p_p1ech_2018 param 2.77558  0.348097 
+ bg3p_p0much_2018 param -12.1372  4.62634 
+ bgexp2_p0much_2018 param 8.28175  0.382901 
+ bg4p_p1much_2018 param -1.9686  2.16793 
+ bgexp2_p1much_2018 param 4.23256  0.0651654 
+ bg3p_p1much_2018 param 9.18796  1.21319 
+ bg4p_p3ech_2018 param -4.90634  1.53314 
+ bg4p_p3much_2018 param -2.97632  0.862703 
+ bg4p_p0ech_2018 param 70.2376  18.3088 
+ bg4p_p1ech_2018 param -11.7604  4.61493 
+ bg4p_p0much_2018 param 31.8671  8.60269 
+ bg4p_p2much_2018 param -4.06863  1.4668 
+ bgexp2_p1ech_2018 param 4.05551  0.0823376 
+ bg4p_p2ech_2018 param -9.88251  3.06372 
+ bg2p_p0much_2018 param 10.1907  1.32537 
+ bg3p_p1ech_2018 param 4.55996  1.87708 
+ bg3p_p2much_2018 param 3.23632  0.662923 
+ bg2p_p0ech_2018 param 12.2243  1.70255 
+ bg3p_p0ech_2018 param 5.41655  7.19521 
+ bg3p_p2ech_2018 param 0.96453  1.0172 
+ bgexp2_p0ech_2018 param 7.41057  0.495229 
+ bg2p_p1much_2018 param 3.2971  0.27163 
  ------------------------------ 
