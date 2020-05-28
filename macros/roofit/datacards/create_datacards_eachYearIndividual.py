@@ -17,7 +17,7 @@ from collections import OrderedDict
 
 berror = False
 
-b_multipdf = True
+b_multipdf = False
 b_signalrate = True
 b_lumiunc = True
 
@@ -55,8 +55,9 @@ rate_unc["2016v3"] = 1.05
 rate_unc["2017v2"] = 1.11
 rate_unc["2018"] = 1.12
 if all_years_eaul:
-    rate_unc["2016v3"] = 1.11
-    rate_unc["2018"] = 1.11
+    rate_unc["2016v3"] = 1.04
+    rate_unc["2018"] = 1.04
+    rate_unc["2017v2"] = 1.04
 
 rate_btag_unc = {}
 rate_btag_unc["2016v3"] = 1.10
@@ -69,8 +70,8 @@ lumi_unc["2016v3"] = 1.025
 lumi_unc["2017v2"] = 1.023
 lumi_unc["2018"] = 1.025
 
-years = {"2016v3","2017v2","2018"}
-#years = {"2016v3"}
+#years = {"2016v3","2017v2","2018"}
+years = {"2016v3"}
 
 number_of_channels = 2 * len(years)
 number_of_backgrounds = "*"

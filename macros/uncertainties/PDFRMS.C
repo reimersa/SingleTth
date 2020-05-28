@@ -26,9 +26,9 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 
 void PDFRMS(){
 
-  TString year = "2016v3";
-  //  TString year = "2017v2";
-   //  TString year = "2018";
+  //    TString year = "2016v3";
+  //    TString year = "2017v2";
+    TString year = "2018";
 
 
   TString prodch = "";
@@ -60,9 +60,9 @@ void PDFRMS(){
   samplemap["VLQ_"+hand+"_1700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1700_"+prodch+year+".root";
   samplemap["VLQ_"+hand+"_1800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1800_"+prodch+year+".root";
 
-  TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/";
-  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/";
-  if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/";
+  TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/SFbtagmujets/";
+  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/SFbtagmujets/";
+  if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtaginc/";
 
   FindRMS(infolder, samplemap, "TTbar_"+year,year);
   FindRMS(infolder, samplemap, "SingleTop_"+year,year);

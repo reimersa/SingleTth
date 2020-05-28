@@ -165,7 +165,7 @@ SingleTthHists::SingleTthHists(Context & ctx, const string & dirname): Hists(ctx
   book<TH1F>("M_Higgs_gen", "M_{H}_gen [GeV]", 300, 0, 300);
   book<TH1F>("DeltaRminH1bjet", "DeltaR(H1,bjet)", 60, 0, 3);
   book<TH1F>("DeltaRminH2bjet", "DeltaR(H2,bjet)", 60, 0, 3);
-  book<TH1F>("M_Toplep_matched", "M_{toplep} [GeV]", 300, 0, 300);
+  book<TH1F>("M_Toplep_matched", "M_{toplep} [GeV]", 400, 0, 400);
 
 }
 

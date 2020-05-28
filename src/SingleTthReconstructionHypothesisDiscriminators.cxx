@@ -44,19 +44,26 @@ SingleTthChi2Discriminator::SingleTthChi2Discriminator(Context & ctx,Year year_,
 bool SingleTthChi2Discriminator::process(uhh2::Event & event){
   auto & hyps = event.get(h_hyps);
 
-  const double mass_tlep = 173.;
-  const double mass_tlep_sigma = 22.;
-  double mass_higgs = 121.9;	
-  double mass_higgs_sigma = 13.5;
+  double mass_tlep = 177.;
+  double mass_tlep_sigma = 30.;
+  double mass_higgs = 122.7;	
+  double mass_higgs_sigma = 13.;
 
   if(year == Year::is2017v2){
-    mass_higgs = 120.4;	
-    mass_higgs_sigma = 14.1;
+    mass_higgs = 121.6;	
+    mass_higgs_sigma = 13;
+
+    mass_tlep = 172.5;
+    mass_tlep_sigma = 27;
   }
 
   if(year == Year::is2018){
-    mass_higgs = 120.7;	
-    mass_higgs_sigma = 14.;
+    mass_higgs = 120.4;	
+    mass_higgs_sigma = 13.;
+
+    mass_tlep = 171.4;
+    mass_tlep_sigma = 28;
+
   }
 
 

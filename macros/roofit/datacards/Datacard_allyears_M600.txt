@@ -1,7 +1,7 @@
 # Version of the 139/pb SingleTth Analysis 
 
 ------------------------------ 
-imax  6 number of channels 
+imax  2 number of channels 
 jmax  * number of backgrounds 
 kmax  * number of nuisance parameters (sources of systematical uncertainties) 
  
@@ -10,54 +10,30 @@ shapes * ech_2016v3 ws_SingleTth_2016v3.root SingleTth:$PROCESS_$CHANNEL
  
 shapes * much_2016v3 ws_SingleTth_2016v3.root SingleTth:$PROCESS_$CHANNEL 
  
-shapes * ech_2017v2 ws_SingleTth_2017v2.root SingleTth:$PROCESS_$CHANNEL 
- 
-shapes * much_2017v2 ws_SingleTth_2017v2.root SingleTth:$PROCESS_$CHANNEL 
- 
-shapes * ech_2018 ws_SingleTth_2018.root SingleTth:$PROCESS_$CHANNEL 
- 
-shapes * much_2018 ws_SingleTth_2018.root SingleTth:$PROCESS_$CHANNEL 
- 
 ------------------------------ 
 # name of channels, and number of observed events (total number of event in Data) 
  
-bin           ech_2016v3   much_2016v3   ech_2017v2   much_2017v2   ech_2018   much_2018    
-observation     -1             -1  -1             -1  -1             -1  
+bin           ech_2016v3   much_2016v3    
+observation     -1             -1  
  
 ------------------------------ 
 # name of the channel you are considering, name of the process (signal,bkg,...),
  # process unique ID (positive number for backgrounds, and zero or negative for signal)
  # expected events for each process (total number of events in MC)
  
-bin           ech_2016v3    ech_2016v3   much_2016v3      much_2016v3   ech_2017v2    ech_2017v2   much_2017v2      much_2017v2   ech_2018    ech_2018   much_2018      much_2018    
-process         roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf 
-process        0   1    0    1   0   1    0    1   0   1    0    1    
-rate           119.035   3084          172.484   4334   166   4230          244.85   7188   236.949   5472          345.365   8656   
+bin           ech_2016v3    ech_2016v3   much_2016v3      much_2016v3    
+process         roomultipdf_MT600   Bkgfunc_Exp2p  roomultipdf_MT600   Bkgfunc_Exp2p 
+process        0   1    0    1    
+rate           119.035   8445          172.484   12341   
  
 ------------------------------ 
 # list of independent sources of uncertainties, and give their effect (syst. error) 
  
-lumi     lnN   1.025       -    1.025       -    1.023       -    1.023       -    1.025       -    1.025       -     
-rate_signal     lnN    1.11       -   1.11       -    1.11       -   1.11       -    1.11       -   1.11       -     
-rate_signal_btag     lnN    -       -    1.1       -    -       -    1.1       -    -       -    1.1       -     
-rate_signal_btag_ech     lnN    1.1       -    -       -    1.1       -    -       -    1.1       -    -       -     
-pdf_index_much_2017v2 discrete 
- pdf_index_ech_2017v2 discrete 
- pdf_index_MT600_much_2017v2 discrete 
- pdf_index_MT600_ech_2017v2 discrete 
- sg_mean_2017v2 param 582.526  1.27399 
- sg_sigma_2017v2 param 59.3872  1.26318 
- sg_JERmeandown_2017v2 param 580.711  0.001 
- sg_JERmeanup_2017v2 param 583.21  0.001 
- sg_JECmeandown_2017v2 param 578.954  0.001 
- sg_JECmeanup_2017v2 param 584.878  0.001 
- sg_JERsigmadown_2017v2 param 59.8038  0.001 
- sg_JERsigmaup_2017v2 param 61.7439  0.001 
- sg_JECsigmadown_2017v2 param 59.9674  0.001 
- sg_JECsigmaup_2017v2 param 62.1371  0.001 
- pdf_index_much_2016v3 discrete 
- pdf_index_ech_2016v3 discrete 
- pdf_index_MT600_much_2016v3 discrete 
+lumi     lnN   1.025       -    1.025       -     
+rate_signal     lnN    1.04       -   1.04       -     
+rate_signal_btag     lnN    -       -    1.1       -     
+rate_signal_btag_ech     lnN    1.1       -    -       -     
+pdf_index_MT600_much_2016v3 discrete 
  pdf_index_MT600_ech_2016v3 discrete 
  sg_mean_2016v3 param 583.611  1.38017 
  sg_sigma_2016v3 param 60.7867  1.35714 
@@ -69,84 +45,8 @@ pdf_index_much_2017v2 discrete
  sg_JERsigmaup_2016v3 param 62.2502  0.001 
  sg_JECsigmadown_2016v3 param 60.1662  0.001 
  sg_JECsigmaup_2016v3 param 62.2219  0.001 
- pdf_index_much_2018 discrete 
- pdf_index_ech_2018 discrete 
- pdf_index_MT600_much_2018 discrete 
- pdf_index_MT600_ech_2018 discrete 
- sg_mean_2018 param 581.761  0.851635 
- sg_sigma_2018 param 59.9571  0.837762 
- sg_JERmeandown_2018 param 580.6  0.001 
- sg_JERmeanup_2018 param 581.448  0.001 
- sg_JECmeandown_2018 param 577.013  0.001 
- sg_JECmeanup_2018 param 584.895  0.001 
- sg_JERsigmadown_2018 param 59.5851  0.001 
- sg_JERsigmaup_2018 param 61.3043  0.001 
- sg_JECsigmadown_2018 param 60.2526  0.001 
- sg_JECsigmaup_2018 param 61.1668  0.001 
- bg2p_p1ech_2018 param 2.76973  0.337945 
- bg4p_p2much_2018 param -2.3962  7.85463 
- bg4p_p1much_2017v2 param 7.67709  0.216766 
- bg4p_p1much_2016v3 param -11.8179  2.98814 
- bg4p_p2ech_2017v2 param 3.26942  3.23966 
- bg2p_p0ech_2017v2 param 9.81514  1.74233 
- bgexp2_p1much_2018 param 4.18739  0.0640205 
- bgexp2_p0much_2018 param 8.21323  0.372102 
- bg2p_p0ech_2016v3 param 9.84606  2.05542 
- bg4p_p1much_2018 param 0.530921  0.00375497 
- bgexp2_p0ech_2017v2 param 7.61548  0.513321 
- bgexp2_p0ech_2018 param 7.32224  0.480555 
- bg4p_p3much_2017v2 param 0.950755  1.18128 
- bg4p_p0much_2016v3 param 69.7732  11.8628 
- bg4p_p3much_2016v3 param -5.13445  1.19209 
- bg3p_p1much_2018 param 9.15818  1.18128 
- bg4p_p2ech_2016v3 param -1.08882  1.78968 
- bg2p_p1much_2016v3 param 3.20276  0.36621 
- bgexp2_p0ech_2016v3 param 7.75934  0.600975 
- bg4p_p3ech_2018 param -4.72791  0.954612 
- bg3p_p1much_2017v2 param 7.96611  1.77571 
- bgexp2_p1much_2016v3 param 4.0745  0.0895668 
- bg4p_p3ech_2016v3 param -1.37117  1.18844 
- bg3p_p2much_2017v2 param 2.94468  0.956566 
- bg4p_p3ech_2017v2 param 1.40269  1.63281 
- bg3p_p0ech_2016v3 param -8.78437  5.48351 
- bg3p_p0much_2016v3 param 3.52107  8.93651 
- bg4p_p0ech_2017v2 param -9.82981  19.2385 
- bg4p_p0ech_2016v3 param 14.5317  10.3887 
- bg4p_p0ech_2018 param 70.0369  8.26703 
- bg2p_p1ech_2016v3 param 3.11464  0.428539 
- bg4p_p1ech_2018 param -11.8114  2.08376 
- bg4p_p0much_2018 param 21.6792  0.000349769 
- bg3p_p2much_2016v3 param 0.902092  1.27673 
- bg3p_p0ech_2017v2 param 8.2192  6.69883 
- bgexp2_p1much_2017v2 param 3.96756  0.0707087 
- bg4p_p1ech_2016v3 param 2.09232  2.61849 
- bgexp2_p1ech_2018 param 4.00547  0.0807458 
- bg3p_p1ech_2017v2 param 3.51432  1.75512 
- bg3p_p2ech_2018 param 0.641353  0.884925 
- bg4p_p2ech_2018 param -9.82934  1.42122 
- bg3p_p0much_2018 param -12.2974  4.49904 
- bg2p_p0much_2017v2 param 12.8434  1.43951 
- bg2p_p0much_2016v3 param 9.77819  1.76405 
- bg3p_p1ech_2018 param 3.95258  1.62116 
- bg2p_p1much_2017v2 param 2.57209  0.294888 
- bg4p_p2much_2016v3 param -10.236  2.01779 
- bgexp2_p0much_2017v2 param 7.0817  0.425253 
- bg4p_p0much_2017v2 param -7.12841  1.49989 
- bg4p_p2much_2017v2 param 3.15317  0.911278 
- bg4p_p1ech_2017v2 param 8.05629  4.84891 
- bg3p_p1ech_2016v3 param 8.04064  1.44123 
- bg2p_p0ech_2018 param 11.934  1.64454 
- bg3p_p2much_2018 param 3.23467  0.647917 
- bgexp2_p0much_2016v3 param 7.88592  0.515581 
- bg3p_p0much_2017v2 param -7.6698  6.79086 
- bg3p_p0ech_2018 param 7.42504  6.21195 
- bg2p_p1ech_2017v2 param 3.09409  0.363919 
- bg3p_p1much_2016v3 param 4.85058  2.34258 
- bg3p_p2ech_2016v3 param 2.7317  0.811178 
- bgexp2_p1ech_2017v2 param 3.97913  0.0899503 
- bg3p_p2ech_2017v2 param 0.229385  0.968078 
- bgexp2_p1ech_2016v3 param 4.01546  0.105431 
- bg4p_p3much_2018 param -2.23857  7.0888 
- bg2p_p1much_2018 param 3.28619  0.26573 
- bg2p_p0much_2018 param 9.9409  1.29026 
+ bgexp2_p1much_2016v3 param 4.47207  0.0378227 
+ bgexp2_p1ech_2016v3 param 4.35768  0.0450837 
+ bgexp2_p0much_2016v3 param 9.34666  0.295264 
+ bgexp2_p0ech_2016v3 param 8.75889  0.359603 
  ------------------------------ 
