@@ -50,7 +50,7 @@ namespace uhh2examples {
 
     Year year;
     unique_ptr<CommonModules> common;
-    unique_ptr<AnalysisModule> SF_muonID, SF_muonIso, SF_eleReco, SF_eleID, SF_btag, scale_variation_module;
+    unique_ptr<AnalysisModule> SF_muonID, SF_muonIso, SF_eleReco, SF_eleID, SF_btag, scale_variation_module, leptonremoval;
     unique_ptr<MuonTriggerWeightsOffical> SF_muonTrigger;
     unique_ptr<ElectronTriggerWeights> SF_eleTrigger;
     // unique_ptr<PDFWeightHandleProducer> pdf_weight_producer;
@@ -185,13 +185,26 @@ namespace uhh2examples {
     JetId DeepjetMedium = BTag(btag_algo, wp_medium);
     JetId DeepjetTight = BTag(btag_algo, wp_tight);
 
+    JetId jet_pfid = JetPFID(JetPFID::WP_TIGHT_CHS);
+    JetId Jet_ID = AndId<Jet>(jet_pfid, PtEtaCut(30.0, 2.4));
+    MuonId MuId;
+    ElectronId EleId;
+    EleId = AndId<Electron>(ElectronID_Fall17_tight, PtEtaCut(30.0, 2.4));
+    if (year == Year::is2016v2) MuId = AndId<Muon>(MuonID(Muon::Tight), PtEtaCut(30.0, 2.4), MuonIso(0.15));
+    else                        MuId = AndId<Muon>(MuonID(Muon::CutBasedIdTight), PtEtaCut(30.0, 2.4), MuonID(Muon::PFIsoTight));
+
+
     common.reset(new CommonModules());
-    common->switch_jetlepcleaner(true);
+    //    common->switch_jetlepcleaner(true);
     common->disable_lumisel();
     common->disable_jersmear();
     common->disable_jec();
+    common->set_electron_id(EleId);
+    common->set_muon_id(MuId);
+    common->set_jet_id(Jet_ID);
     common->init(ctx, sys_pu);
 
+    leptonremoval.reset(new JetLeptonOverlapRemoval(0.4));
     ele_cleaner_2016.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(30.0, 2.4))));
     ele_cleaner_2017.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(40.0, 2.4))));
     ele_cleaner_2018.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Fall17_tight,PtEtaCut(35.0, 2.4))));
@@ -235,6 +248,7 @@ namespace uhh2examples {
     //    if((year == Year::is2016v2) || (year == Year::is2016v3) || (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
       //           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
+           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "mujets"));
       //    }
 
     if(year != Year::is2018){
@@ -283,12 +297,12 @@ namespace uhh2examples {
     trigger1_ech_sel_2018.reset(new TriggerSelection("HLT_Ele32_WPTight_Gsf_v*"));
 
     //    tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
-    tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetLoose));
+    tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetMedium));
     tprime_chi2.reset(new SingleTthChi2Discriminator(ctx,year));
 
     scale_variation_module.reset(new MCScaleVariation(ctx));
 
-    HEMIssue_sel_2018.reset(new HEMIssueSelection(DeepjetLoose));
+    HEMIssue_sel_2018.reset(new HEMIssueSelection(DeepjetMedium));
 
     // 3. Set up Hists classes:
     h_nocuts.reset(new SingleTthHists(ctx, "nocuts"));
@@ -739,6 +753,8 @@ namespace uhh2examples {
     bool pass_common = common->process(event);
     if(!pass_common) return false;
 
+    leptonremoval->process(event);
+
     double eventweight_lumi = event.weight;
     event.set(h_eventweight_lumi, eventweight_lumi);
 
@@ -886,7 +902,7 @@ namespace uhh2examples {
 
     //    if((year == Year::is2016v2) || (year == Year::is2016v3)|| (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
-    //    SF_btag->process(event);
+          SF_btag->process(event);
           //    }
 
     if(is_much){

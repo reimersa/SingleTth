@@ -36,17 +36,17 @@ void FindBiggestDeviations(){
   // TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/";
   // vector<TString> processes = {"TTbar_2016v3","SingleTop_2016v3","VLQ_RH_600_2016v2","VLQ_RH_650_2016v2","VLQ_RH_800_2016v3","VLQ_RH_900_2016v3","VLQ_RH_1000_2016v3","VLQ_RH_1100_2016v3","VLQ_RH_1200_2016v3"};
 
-  // TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/";
-  // vector<TString> processes = {"TTbar_2016v3","SingleTop_2016v3","VLQ_LH_900_2016v3","VLQ_LH_1000_2016v3","VLQ_LH_1100_2016v3","VLQ_LH_1200_2016v3"};
+  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/";
+  vector<TString> processes = {"TTbar_2016v3","SingleTop_2016v3","VLQ_LH_800_B_2016v3","VLQ_LH_900_B_2016v3","VLQ_LH_1000_B_2016v3","VLQ_LH_700_B_2016v3","VLQ_LH_1200_B_2016v3"};
 
 
   // 2017
-  //  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/";
-  // vector<TString> processes = {"TTbar_2017v2","SingleTop_2017v2","VLQ_LH_650_2017v2","VLQ_LH_700_2017v2","VLQ_LH_800_2017v2","VLQ_LH_1000_2017v2","VLQ_LH_1100_2017v2","VLQ_LH_1200_2017v2"};
+   // TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/";
+   // vector<TString> processes = {"TTbar_2017v2","SingleTop_2017v2","VLQ_LH_650_2017v2","VLQ_LH_600_2017v2","VLQ_LH_700_2017v2","VLQ_LH_800_2017v2","VLQ_LH_900_2017v2","VLQ_LH_1000_2017v2","VLQ_LH_1100_2017v2","VLQ_LH_1200_2017v2"};
 
   // 2018
-  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/HEMIssue/";
-  vector<TString> processes = {"TTbar_2018","SingleTop_2018","VLQ_LH_600_2018","VLQ_LH_650_2018","VLQ_LH_700_2018","VLQ_LH_800_2018","VLQ_LH_900_2018","VLQ_LH_1000_2018","VLQ_LH_1100_2018","VLQ_LH_1200_2018"};
+  // TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/";
+  // vector<TString> processes = {"TTbar_2018","SingleTop_2018","VLQ_LH_600_2018","VLQ_LH_650_2018","VLQ_LH_700_2018","VLQ_LH_800_2018","VLQ_LH_900_2018","VLQ_LH_1000_2018","VLQ_LH_1100_2018","VLQ_LH_1200_2018"};
 
   unique_ptr<TFile> f_in;
 

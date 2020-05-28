@@ -26,13 +26,17 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 
 void PDFRMS(){
 
-  //      TString year = "2016v3";
+  TString year = "2016v3";
   //  TString year = "2017v2";
-  TString year = "2018";
+   //  TString year = "2018";
 
 
+  TString prodch = "";
   TString year_lowmass = "";
-  if(year == "2016v3") year_lowmass = "2016v2";
+  if(year == "2016v3") {
+    year_lowmass = "2016v2";
+    prodch = "B_";
+  }
   else year_lowmass = year;
   TString hand = "LH";
   if(year == "2017v2" || year == "2018") hand="LH";
@@ -41,24 +45,24 @@ void PDFRMS(){
   map<TString, TString> samplemap;
   samplemap["TTbar_"+year] = "uhh2.AnalysisModuleRunner.MC.TTbar_"+year+".root";
   samplemap["SingleTop_"+year] = "uhh2.AnalysisModuleRunner.MC.SingleTop_"+year+".root";
-  samplemap["VLQ_"+hand+"_600_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_600_"+year_lowmass+".root";
-  samplemap["VLQ_"+hand+"_650_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_650_"+year_lowmass+".root";
-  samplemap["VLQ_LH_700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_"+year+".root";
-  samplemap["VLQ_"+hand+"_800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_800_"+year+".root";
-  samplemap["VLQ_"+hand+"_900_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_900_"+year+".root";
-  samplemap["VLQ_"+hand+"_1000_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1000_"+year+".root";
-  samplemap["VLQ_"+hand+"_1100_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1100_"+year+".root";
-  samplemap["VLQ_"+hand+"_1200_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1200_"+year+".root";
-  samplemap["VLQ_"+hand+"_1300_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1300_"+year+".root";
-  samplemap["VLQ_"+hand+"_1400_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1400_"+year+".root";
-  samplemap["VLQ_"+hand+"_1500_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1500_"+year+".root";
-  samplemap["VLQ_"+hand+"_1600_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1600_"+year+".root";
-  samplemap["VLQ_"+hand+"_1700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1700_"+year+".root";
-  samplemap["VLQ_"+hand+"_1800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1800_"+year+".root";
+  samplemap["VLQ_"+hand+"_600_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_600_"+prodch+year_lowmass+".root";
+  samplemap["VLQ_"+hand+"_650_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_650_"+prodch+year_lowmass+".root";
+  samplemap["VLQ_LH_700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_800_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_900_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_900_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1000_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1000_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1100_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1100_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1200_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1200_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1300_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1300_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1400_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1400_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1500_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1500_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1600_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1600_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1700_"+prodch+year+".root";
+  samplemap["VLQ_"+hand+"_1800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1800_"+prodch+year+".root";
 
   TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/";
   if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/";
-  if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/HEMIssue/";
+  if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mediumWP/";
 
   FindRMS(infolder, samplemap, "TTbar_"+year,year);
   FindRMS(infolder, samplemap, "SingleTop_"+year,year);

@@ -38,10 +38,10 @@ SingleTthPDFHists::SingleTthPDFHists(Context & ctx, const string & dirname): His
 
   Year year = extract_year(ctx);
   if(year == Year::is2017v1 || year == Year::is2017v2){
-    take_ntupleweights = !(m_oname.Contains("QCD"));
+    take_ntupleweights = !(m_oname.Contains("QCD")|| m_oname.Contains("VLQ"));
   }
   else if(year == Year::is2018){
-    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("Diboson"));
+    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("Diboson")|| m_oname.Contains("VLQ"));
   }
   else{
     take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW"));
@@ -97,7 +97,7 @@ void SingleTthPDFHists::fill(const Event & event){
   if(!is_mc) return;
   // cout << " n genweights: " << event.genInfo->systweights().size() << endl;
   if(event.genInfo->systweights().size() == 0 && take_ntupleweights) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is empty but ntupleweights shall be taken. Is this correct? In this case add exception to take_ntupleweights.");
-  if(event.genInfo->systweights().size() != 0 && (!take_ntupleweights)) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is NOT empty but take_ntupleweights is set to 'false'. Is this correct? In this case Thomas says the genInfo weight should be used. Add this sample to take_ntupleweights");
+  //  if(event.genInfo->systweights().size() != 0 && (!take_ntupleweights)) throw runtime_error("In SingleTthPDFHists.cxx: Systweights in event.genInfo() is NOT empty but take_ntupleweights is set to 'false'. Is this correct? In this case Thomas says the genInfo weight should be used. Add this sample to take_ntupleweights");
 
 
   bool is_tprime_reco = event.get(h_is_tprime_reco);

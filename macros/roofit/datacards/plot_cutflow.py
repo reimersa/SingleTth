@@ -545,27 +545,27 @@ for el in lista_ele:
 
 
 ##################### signal cutflow
-infile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_2016v3.root") 
+infile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_RH_1000_2016v3.root") 
 TH1.AddDirectory(0)    
 
-infile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_2017v2.root") 
+infile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2017v2.root") 
 TH1.AddDirectory(0)    
 
-infile_2018 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_2018.root") 
+infile_2018 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2018.root") 
 TH1.AddDirectory(0)    
 
-preinfile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_2016v3.root") 
+preinfile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_RH_1000_2016v3.root") 
 TH1.AddDirectory(0)    
 
-preinfile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_2017v2.root") 
+preinfile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2017v2.root") 
 TH1.AddDirectory(0)    
 
-preinfile_2018 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2018/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_2018.root") 
+preinfile_2018 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2018/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_2018.root") 
 TH1.AddDirectory(0)    
 
 
-lista_pre = ["cleaner","lepton","jets","met"]
-lista = ["trigger","btag_3m","reco_much_sr"]
+#lista_pre = ["cleaner","lepton","jets","met"]
+#lista = ["trigger","btag_3m","reco_much_sr"]
 
 histname = "sum_event_weights"
 
@@ -896,3 +896,46 @@ leg.Draw()
 #c1.SetLogy()
 c1.SaveAs("SF/cutflow_ele_mu_2016_resp.eps")
 c1.SaveAs("SF/cutflow_ele_mu_2016_resp.pdf")
+
+
+
+################# electron/mu signal comparison for 2016/17/18 respectively
+c1 = TCanvas()
+leg = TLegend(0.2,0.2,0.35,0.5, "","brNDC")
+leg.SetBorderSize(0);	
+leg.SetFillStyle(0);
+leg.SetTextSize(0.035);
+leg.SetTextFont(42);
+
+
+hist_cutflow_signal_2016_resp = hist_cutflow_signal_2016.Clone()
+hist_cutflow_signal_2017_resp = hist_cutflow_signal_2017.Clone()
+hist_cutflow_signal_2018_resp = hist_cutflow_signal_2018.Clone()
+
+
+for bin in range(2,hist_cutflow_signal_2016.GetNbinsX()):
+    hist_cutflow_signal_2016_resp.SetBinContent(bin,hist_cutflow_signal_2016.GetBinContent(bin)/hist_cutflow_signal_2016.GetBinContent(bin-1))
+    hist_cutflow_signal_2017_resp.SetBinContent(bin,hist_cutflow_signal_2017.GetBinContent(bin)/hist_cutflow_signal_2017.GetBinContent(bin-1))
+    hist_cutflow_signal_2018_resp.SetBinContent(bin,hist_cutflow_signal_2018.GetBinContent(bin)/hist_cutflow_signal_2018.GetBinContent(bin-1))
+
+
+
+
+
+hist_cutflow_signal_2016_resp.GetYaxis().SetRangeUser(0.,1.1)
+
+hist_cutflow_signal_2016_resp.Draw("HIST same")
+hist_cutflow_signal_2017_resp.Draw("HIST same")
+hist_cutflow_signal_2018_resp.Draw("HIST same")
+
+
+
+leg.AddEntry(hist_cutflow_signal_2016_resp,"2016","l")
+leg.AddEntry(hist_cutflow_signal_2017_resp,"2017","l")
+leg.AddEntry(hist_cutflow_signal_2018_resp,"2018","l")
+
+leg.Draw()
+
+#c1.SetLogy()
+c1.SaveAs("SF/cutflow_signal_resp.eps")
+c1.SaveAs("SF/cutflow_signal_resp.pdf")

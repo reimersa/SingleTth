@@ -1,10 +1,10 @@
-meanfit param0 	581.434	0.582422
-meanfit param1 	0.958308	0.00253361
-widthfit param0 	61.8105	0.578191
-widthfit param1 	0.0534687	0.00268456
-efficiency estimate  0.00990719
-efffit param0 	0.00990719	9.80714e-05
-efffit param1 	2.02651e-05	9.62648e-07
-efffit param2 	-2.75765e-08	1.64347e-09
-efficiency estimate +1sigma  0.0100053
-efficiency estimate -1sigma  0.00980912
+meanfit param0 	581.518	0.622693
+meanfit param1 	0.958181	0.0025554
+widthfit param0 	61.1505	0.609028
+widthfit param1 	0.0543456	0.00269657
+efficiency estimate  0.00986577
+efffit param0 	0.00986577	0.0001016
+efffit param1 	2.01603e-05	9.6499e-07
+efffit param2 	-2.72198e-08	1.65929e-09
+efficiency estimate +1sigma  0.00996737
+efficiency estimate -1sigma  0.00976417

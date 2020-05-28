@@ -17,7 +17,7 @@ from collections import OrderedDict
 
 berror = False
 
-b_multipdf = False
+b_multipdf = True
 b_signalrate = True
 b_lumiunc = True
 
@@ -52,19 +52,25 @@ all_years_eaul = True
 
 rate_unc = {}
 rate_unc["2016v3"] = 1.05
-rate_unc["2017v2"] = 1.15
+rate_unc["2017v2"] = 1.11
 rate_unc["2018"] = 1.12
 if all_years_eaul:
-    rate_unc["2016v3"] = 1.15
-    rate_unc["2018"] = 1.15
+    rate_unc["2016v3"] = 1.11
+    rate_unc["2018"] = 1.11
+
+rate_btag_unc = {}
+rate_btag_unc["2016v3"] = 1.10
+rate_btag_unc["2017v2"] = 1.10
+rate_btag_unc["2018"] = 1.10
+
 
 lumi_unc = {}
 lumi_unc["2016v3"] = 1.025
 lumi_unc["2017v2"] = 1.023
 lumi_unc["2018"] = 1.025
 
-#years = {"2016v3","2017v2","2018"}
-years = {"2016v3"}
+years = {"2016v3","2017v2","2018"}
+#years = {"2016v3"}
 
 number_of_channels = 2 * len(years)
 number_of_backgrounds = "*"
@@ -149,6 +155,8 @@ for mass in masses:
     rates = "rate           "
     lumi = "lumi     lnN   "
     rate_sig = "rate_signal     lnN    "
+    rate_sig_btag = "rate_signal_btag     lnN    "
+    rate_sig_btag_ech = "rate_signal_btag_ech     lnN    "
 
     for year in sorted(years):
         outputfile.write("shapes * ech_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:$PROCESS_$CHANNEL \n \n")
@@ -170,13 +178,17 @@ for mass in masses:
         rates += str(signal_ech_norm[year+"_"+mass]) + "   "+ str(bkg_ech_norm[year])+"          "+str(signal_much_norm[year+"_"+mass])+"   "+str(bkg_much_norm[year]) + "   "
 
         lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
-        rate_sig += str(rate_unc[year]) + "       -    " + str(rate_unc[year]) + "       -    "
+        rate_sig += str(rate_unc[year]) + "       -   "+str(rate_unc[year]) +"       -    "
+        rate_sig_btag_ech += str(rate_btag_unc[year]) + "       -    -       -    "
+        rate_sig_btag += "-       -    " + str(rate_btag_unc[year]) + "       -    "
 
     process_names += " \n"
     process_bins += " \n"
     rates += "\n \n"
     lumi += " \n"
+    rate_sig_btag += " \n"
     rate_sig += " \n"
+    rate_sig_btag_ech += " \n"
     
     outputfile.write("------------------------------ \n")
     outputfile.write("# name of channels, and number of observed events (total number of event in Data) \n \n")
@@ -203,6 +215,8 @@ for mass in masses:
         outputfile.write(lumi)
     if b_signalrate:
         outputfile.write(rate_sig)
+        outputfile.write(rate_sig_btag)
+        outputfile.write(rate_sig_btag_ech)
 
     for year in years:
         if b_multipdf:
