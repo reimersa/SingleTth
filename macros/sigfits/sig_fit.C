@@ -41,8 +41,8 @@ void sig_fit()
 
   if (!b_test){
 
-    MTs = {700, 800,  900, 1000, 1200};// 2016
-    MTs_backup = {700,800,900, 1000, 1200};// 2016
+    MTs = {700, 900, 1000, 1100, 1200};// 2016
+    MTs_backup = {700, 900, 1000, 1100, 1200};// 2016
 
     if(year.Contains("2018") or year.Contains("2017")){
       MTs = {600, 650, 700, 800, 900, 1000, 1100, 1200};// 2017
@@ -278,7 +278,7 @@ void sig_fit()
       effs_err_fitrange.clear();  
 
       for (int i=0; i<MTs.size(); ++i){
-	fitsignal(ch,  (int) MTs[i], means_fitrange, means_err_fitrange, widths_fitrange, widths_err_fitrange, effs_fitrange, effs_err_fitrange, "",year,sigma_ranges[j],sigma_ranges[j]);
+	      fitsignal(ch,  (int) MTs[i], means_fitrange, means_err_fitrange, widths_fitrange, widths_err_fitrange, effs_fitrange, effs_err_fitrange, "",year,sigma_ranges[j],sigma_ranges[j]);
       }
     TGraphErrors* gmean_fitrange  = new TGraphErrors(MTs.size(), MTs.data(), means_fitrange.data(), zeros.data(), means_err_fitrange.data());  
     TF1* lin = new TF1("meanfit"+TString::Format("%d",j), "[0]+[1]*(x-600)", 550, 1250);
@@ -660,8 +660,8 @@ void sig_fit()
     }
     if(unc.Contains("PDF")){
       infotofile<<"efficiency estimate PDF  "<<lin3->GetParameter(0)<<std::endl;
-      // geff_unc->SetMarkerStyle(24);
-      // geff_unc->SetLineWidth(2);     
+      geff_unc_up->SetMarkerStyle(24);
+      geff_unc_up->SetLineWidth(2);     
       //      geff_unc->Draw("P same");
 
     }
@@ -937,7 +937,7 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 }
 
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3", float factormin=2, float factormax=2.5)
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc, TString year, float factormin, float factormax)
 {
   
   // set fit regions (crude estimate)
