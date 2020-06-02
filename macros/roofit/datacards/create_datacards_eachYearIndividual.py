@@ -48,12 +48,12 @@ bg3p_err = {} # for all years and parameters: key is year_parameter
 masses = []
 
 
-all_years_eaul = True
+all_years_eaul = False
 
 rate_unc = {}
-rate_unc["2016v3"] = 1.05
-rate_unc["2017v2"] = 1.11
-rate_unc["2018"] = 1.12
+rate_unc["2016v3"] = 1.135
+rate_unc["2017v2"] = 1.127
+rate_unc["2018"] = 1.126
 if all_years_eaul:
     rate_unc["2016v3"] = 1.05
     rate_unc["2018"] = 1.05
@@ -70,8 +70,8 @@ lumi_unc["2016v3"] = 1.025
 lumi_unc["2017v2"] = 1.023
 lumi_unc["2018"] = 1.025
 
-#years = {"2016v3","2017v2","2018"}
-years = {"2018"}
+years = {"2016v3","2017v2","2018"}
+#years = {"2016v3"}
 
 number_of_channels = 2 * len(years)
 number_of_backgrounds = "*"
@@ -248,16 +248,16 @@ for mass in masses:
         if b_multipdf:
             outputfile.write("pdf_index_much_"+year+" discrete \n ")
             outputfile.write("pdf_index_ech_"+year+" discrete \n ")
-        if b_signalrate:
-            if "2016" in year:
-                outputfile.write(rate_sig_btag_2016)
-                outputfile.write(rate_sig_btag_ech_2016)
-            if "2017" in year:
-                outputfile.write(rate_sig_btag_2017)
-                outputfile.write(rate_sig_btag_ech_2017)
-            if "2018" in year:
-                outputfile.write(rate_sig_btag_2018)
-                outputfile.write(rate_sig_btag_ech_2018)
+        # if b_signalrate:
+        #     if "2016" in year:
+        #         outputfile.write(rate_sig_btag_2016)
+        #         outputfile.write(rate_sig_btag_ech_2016)
+        #     if "2017" in year:
+        #         outputfile.write(rate_sig_btag_2017)
+        #         outputfile.write(rate_sig_btag_ech_2017)
+        #     if "2018" in year:
+        #         outputfile.write(rate_sig_btag_2018)
+        #         outputfile.write(rate_sig_btag_ech_2018)
 
 
         outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+" discrete \n ")

@@ -12,9 +12,9 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 void sig_fit()
 {
-  TString year =  "2016v3";
+  //  TString year =  "2016v3";
   //TString year =  "2017v2";
-  //   TString year =  "2018";
+  TString year =  "2018";
   // TString year =  "allyears";
 
   //  TString postfix = "_HEMIssue_LH";
@@ -24,9 +24,9 @@ void sig_fit()
 
   std::ofstream infotofile("SignalFitOutput_"+year+postfix+".txt", std::ios::out | std::ios::trunc);
   // decide which channel to do (eEle, eMuon, eComb)
-  Echannel ch = eComb;
-  //   Echannel ch = eEle;
-  //  Echannel ch = eMuon;
+  //  Echannel ch = eComb;
+  Echannel ch = eEle;
+  //    Echannel ch = eMuon;
 
   std::vector<TString> uncertainties ={}; // no syst.
   if(!b_test) {
@@ -899,7 +899,7 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
   TH1F* plotter = new TH1F("plotter", "", 1, xmin, xmax);
   plotter->GetXaxis()->SetRangeUser(xmin,xmax);
-  plotter->GetYaxis()->SetRangeUser(-100,100);  
+  plotter->GetYaxis()->SetRangeUser(-20,20);  
   plotter->GetXaxis()->SetTitleSize(0.05);
   plotter->GetYaxis()->SetTitleSize(0.05);
   plotter->GetXaxis()->SetLabelSize(0.05);
@@ -963,8 +963,13 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   gROOT->SetBatch(kTRUE);
 
   //setOptFit( pcev (default = 0111)) Probability; Chisquare/Number of degrees of freedom; errors ;values of parameters 
-  //gStyle->SetOptFit(1111);
-  gStyle->SetOptStat(0);
+  
+  gStyle->SetStatX(1.0);
+  gStyle->SetStatW(0.24);
+  gStyle->SetStatY(0.95);
+
+  gStyle->SetOptFit(1111);
+  //  gStyle->SetOptStat(0);
 
  
   // -----------------------------------------
@@ -973,12 +978,16 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   TCanvas *can = new TCanvas("sig_c","signal fit",10,10,700,700);
   gPad->SetTickx();
   gPad->SetTicky();
+
+
   can->Clear();
   can->cd();
   can->SetLeftMargin(0.12);
   can->SetRightMargin(0.05);
   can->SetTopMargin(0.10);
   can->SetBottomMargin(0.12);
+
+
 
   // get data or MC
   TH1F* sigh = GetAnalysisOutputSignal(MT, channel,unc, year); 
