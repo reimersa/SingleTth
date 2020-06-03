@@ -18,17 +18,17 @@ JERwfitup param0 	64.1084	0.985018
 JERwfitup param1 	0.049108	0.00418907
 JERwfitdown param0 	61.2354	0.86972
 JERwfitdown param1 	0.0430052	0.00351014
-efficiency estimate  0.00792467
-efffit param0 	0.00792467	0.000122706
-efffit param1 	1.51834e-05	1.18331e-06
-efffit param2 	-1.49912e-08	2.01899e-09
-efficiency estimate +1sigma  0.00804738
-efficiency estimate -1sigma  0.00780197
-efficiency estimate PDF  0.00780197
-efficiency estimate btag_bc  0.00780197
-efficiency estimate eletrigger  0.00780197
-efffit param0 	0.00766756	0.00073246
-efffit param1 	1.69373e-05	4.91203e-06
-efffit param2 	-1.71455e-08	7.31733e-09
-efficiency estimate +1sigma (total) 0.00840002
-efficiency estimate -1sigma (total) 0.0069351
+efficiency estimate  0.00965538
+efffit param0 	0.00965538	0.000896357
+efffit param1 	4.07114e-06	7.8094e-06
+efffit param2 	7.64223e-09	1.28599e-08
+efficiency estimate +1sigma  0.0105517
+efficiency estimate -1sigma  0.00875902
+efficiency estimate PDF  0.00875902
+efficiency estimate btag_bc  0.00875902
+efficiency estimate eletrigger  0.00875902
+efffit param0 	0.00835844	0.000329577
+efffit param1 	1.55659e-05	3.45904e-06
+efffit param2 	-8.68225e-09	6.36269e-09
+efficiency estimate +1sigma (total) 0.00868802
+efficiency estimate -1sigma (total) 0.00802887

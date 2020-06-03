@@ -10,7 +10,7 @@ bool b_test = false;
 std::ofstream Nevttofile("Nevents_test.txt", std::ios::out | std::ios::trunc);
 
 
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3", float factormin=2, float factormax=2.5);
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3", float factormin=2, float factormax=2.5, bool write_Nevet = false);
 void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_dn, TString name);
 
 void sig_fit()
@@ -70,7 +70,7 @@ void sig_fit()
 
   // do the fits, fill results into graph
   for (int i=0; i<MTs.size(); ++i){
-    fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err, effs, effs_err,"",year);
+    fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err, effs, effs_err,"",year,2,2.5,true);
     zeros.push_back(0);
   }
   TGraphErrors* gmean    = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
@@ -607,7 +607,7 @@ void sig_fit()
     effs_unc.clear();  
     effs_err_unc.clear();  
     for (int i=0; i<MTs.size(); ++i){
-      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_up", year);
+      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_up", year,2,2.5,true);
     }
     TGraphErrors* geff_unc_up = new TGraphErrors(MTs.size(), MTs.data(), effs_unc.data(), zeros.data(), effs_err_unc.data());          
 
@@ -618,7 +618,7 @@ void sig_fit()
     effs_unc.clear();  
     effs_err_unc.clear();      
     for (int i=0; i<MTs.size(); ++i){
-      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_down", year);
+      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, unc+"_down", year,2,2.5,true);
     }
 
     TGraphErrors* geff_unc_dn = new TGraphErrors(MTs.size(), MTs.data(), effs_unc.data(), zeros.data(), effs_err_unc.data());          
@@ -907,7 +907,7 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
   plotter->GetXaxis()->SetRangeUser(xmin,xmax);
   plotter->GetYaxis()->SetRangeUser(-20,20);  
   if(name.Contains("btag_bc"))  plotter->GetYaxis()->SetRangeUser(-30,30);  
-  if(name.Contains("scale"))  plotter->GetYaxis()->SetRangeUser(-40,40);  
+  if(name.Contains("scale"))  plotter->GetYaxis()->SetRangeUser(-5,5);  
   plotter->GetXaxis()->SetTitleSize(0.05);
   plotter->GetYaxis()->SetTitleSize(0.05);
   plotter->GetXaxis()->SetLabelSize(0.05);
@@ -945,7 +945,7 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 }
 
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc, TString year, float factormin, float factormax)
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc, TString year, float factormin, float factormax, bool write_Nevet)
 {
   
   // set fit regions (crude estimate)
@@ -1062,16 +1062,26 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   //  c.SaveAs("test.eps");
   // efficiency calculation
-  
+  //Hier
   double Nevents_err; 
-  double Nevents = sigh->IntegralAndError(sigh->GetXaxis()->FindBin(xmin), sigh->GetXaxis()->FindBin(xmax), Nevents_err);
+  //test
+  double Nevents = 0;
+  for(int bin=1;bin < sigh->GetNbinsX()+1;bin++){
+    double bin_cen = sigh->GetBinCenter(bin);
+    double value = fitmodel->Eval(bin_cen);
+    Nevents+=value;
+  }
+
+
+  //  double Nevents = sigh->IntegralAndError(sigh->GetXaxis()->FindBin(xmin), sigh->GetXaxis()->FindBin(xmax), Nevents_err);
+  ///endtest
   double Ntot = sigh->Integral(sigh->GetXaxis()->GetXmin(), sigh->GetXaxis()->GetXmax());
   double efferr;
   double eff = CalcEff(fitmodel, Nevents, Nevents_err, Ntot, MT, efferr, year);
 
   TString unc_name = unc;
   if (unc=="") unc_name = "nominal";
-  Nevttofile <<unc_name<<"  MT  "<<MT<< "  1-(Nevt/Ntot)  "<<1-(Nevents/Ntot)<< "  Ntot  "<< Ntot <<"  Nevt  "<<Nevents <<endl;
+  if(write_Nevet) Nevttofile <<unc_name<<"  MT  "<<MT<< "  1-(Nevt/Ntot)  "<<1-(Nevents/Ntot)<< "  Ntot  "<< Ntot <<"  Nevt  "<<Nevents <<endl;
   cout << "\n" << "Total number of expected events (1pb?) = " << sigh->GetSumOfWeights() << " and within fit range: " << sigh->Integral(sigh->FindBin(xmin), sigh->FindBin(xmax)) << endl << endl;
 
   // store the results

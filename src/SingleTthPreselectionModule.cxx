@@ -193,14 +193,17 @@ namespace uhh2examples {
     ///do scale variation for normalisation
     scale_variation_module->process(event);
     // Loop over scale systematics
+    double weight_nominal = event.weight;
     for(unsigned int j=0; j<systshift_scale.size(); j++){
 
       float systweight = event.get(systweight_scale_handles[j]);
-      event.weight = event.weight * systweight;
+      event.weight = weight_nominal * systweight;
 
       TString tag = "scale_" + systshift_scale[j];
       fill_histograms(event, (string)tag);
     }
+
+    event.weight = weight_nominal;
 
     h_cleaner->fill(event);
     h_jets_cleaner->fill(event);

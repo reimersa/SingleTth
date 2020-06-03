@@ -40,13 +40,13 @@ void FindBiggestDeviations(){
   // vector<TString> processes = {"TTbar_2016v3","SingleTop_2016v3","VLQ_LH_800_B_2016v3","VLQ_LH_900_B_2016v3","VLQ_LH_1000_B_2016v3","VLQ_LH_700_B_2016v3","VLQ_LH_1200_B_2016v3"};
 
 
-  // 2017
-   // TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/SFbtagmujets/";
-   // vector<TString> processes = {"TTbar_2017v2","SingleTop_2017v2","VLQ_LH_650_2017v2","VLQ_LH_600_2017v2","VLQ_LH_700_2017v2","VLQ_LH_800_2017v2","VLQ_LH_900_2017v2","VLQ_LH_1000_2017v2","VLQ_LH_1100_2017v2","VLQ_LH_1200_2017v2"};
+  // //  2017
+   TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/SFbtagmujets/";
+   vector<TString> processes = {"TTbar_2017v2","SingleTop_2017v2","VLQ_LH_650_2017v2","VLQ_LH_600_2017v2","VLQ_LH_700_2017v2","VLQ_LH_800_2017v2","VLQ_LH_900_2017v2","VLQ_LH_1000_2017v2","VLQ_LH_1100_2017v2","VLQ_LH_1200_2017v2"};
 
   // 2018
-  TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtaginc/";
-  vector<TString> processes = {"TTbar_2018","SingleTop_2018","VLQ_LH_600_2018","VLQ_LH_650_2018","VLQ_LH_700_2018","VLQ_LH_800_2018","VLQ_LH_900_2018","VLQ_LH_1000_2018","VLQ_LH_1100_2018","VLQ_LH_1200_2018"};
+  // TString path = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtaginc/";
+  // vector<TString> processes = {"TTbar_2018","SingleTop_2018","VLQ_LH_600_2018","VLQ_LH_650_2018","VLQ_LH_700_2018","VLQ_LH_800_2018","VLQ_LH_900_2018","VLQ_LH_1000_2018","VLQ_LH_1100_2018","VLQ_LH_1200_2018"};
 
   unique_ptr<TFile> f_in;
 
@@ -100,7 +100,27 @@ void FindBiggestDeviations(){
             h_dd.reset((TH1D*)f_in->Get(histfolder + "_scale_downdown/" + histname));
             h_nom.reset((TH1D*)f_in->Get(histfolder + "_nominal/" + histname));
 
-	    //	    if(process.Contains("VLQ"))
+	    if(process.Contains("VLQ")){
+	      TFile * Prefile = new TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/test/uhh2.AnalysisModuleRunner.MC."+process+".root","r");
+	      double int_nom = ((TH1F *)Prefile->Get("Event_cleaner/MET"))->Integral();
+	      double int_uu = ((TH1F *)Prefile->Get("scale_scale_upup/MET"))->Integral();
+	      double int_un = ((TH1F *)Prefile->Get("scale_scale_upnone/MET"))->Integral();
+	      double int_nd = ((TH1F *)Prefile->Get("scale_scale_nonedown/MET"))->Integral();
+	      double int_dn = ((TH1F *)Prefile->Get("scale_scale_downnone/MET"))->Integral();
+	      double int_nu = ((TH1F *)Prefile->Get("scale_scale_noneup/MET"))->Integral();
+	      double int_dd = ((TH1F *)Prefile->Get("scale_scale_downdown/MET"))->Integral();
+	      
+	      // scale hists to same Xsection
+	      h_uu->Scale(int_nom/int_uu);
+	      h_un->Scale(int_nom/int_un);
+	      h_nu->Scale(int_nom/int_nu);
+	      h_nd->Scale(int_nom/int_nd);
+	      h_dn->Scale(int_nom/int_dn);
+	      h_dd->Scale(int_nom/int_dd);
+	      //	      std::cout<<"   int_nom/int_uu  "<<int_nom/int_uu<<std::endl;
+	      Prefile->Close();
+
+	    }
 
 
             const int nbins = h_nom->GetNbinsX();
@@ -117,6 +137,7 @@ void FindBiggestDeviations(){
                 if(entries[jj] < min) {min = entries[jj]; min_error = errors[jj];}
               }
 
+	      //	      if(process.Contains("VLQ"))std::cout<< "  max  " << max <<std::endl;
               min_bins.push_back(min);
               max_bins.push_back(max);
               min_err.push_back(min_error);
