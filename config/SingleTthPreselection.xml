@@ -949,6 +949,8 @@
 
 		<Item Name="jecsmear_direction" Value="nominal" />
 		<Item Name="jersmear_direction" Value="nominal" />
+		<Item Name="ScaleVariationMuR"       Value="none" />
+		<Item Name="ScaleVariationMuF"       Value="none" />
 
 		<!-- Some test configuration; see LQToTopMuModule.cxx for how to access it: -->
 		<Item Name="TestKey" Value="TestKeyValue" />
