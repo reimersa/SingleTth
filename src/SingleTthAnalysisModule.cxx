@@ -249,7 +249,7 @@ namespace uhh2examples {
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
       //           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
            SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "mujets"));
-	   if(year == Year::is2018)            SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "incl"));
+	   if(year == Year::is2018)            SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
       //    }
 
     if(year != Year::is2018){

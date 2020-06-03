@@ -6,6 +6,9 @@
 
 using namespace std;
 bool b_test = false;
+//write out the number of total events vs events in fitrange
+std::ofstream Nevttofile("Nevents_test.txt", std::ios::out | std::ios::trunc);
+
 
 void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,TString unc="", TString year = "2016v3", float factormin=2, float factormax=2.5);
 void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_dn, TString name);
@@ -13,8 +16,8 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 void sig_fit()
 {
   //  TString year =  "2016v3";
-  //TString year =  "2017v2";
-  TString year =  "2018";
+  TString year =  "2017v2";
+  //TString year =  "2018";
   // TString year =  "allyears";
 
   //  TString postfix = "_HEMIssue_LH";
@@ -23,10 +26,13 @@ void sig_fit()
 
 
   std::ofstream infotofile("SignalFitOutput_"+year+postfix+".txt", std::ios::out | std::ios::trunc);
+
   // decide which channel to do (eEle, eMuon, eComb)
-  //  Echannel ch = eComb;
-  Echannel ch = eEle;
+  Echannel ch = eComb;
+  //Echannel ch = eEle;
   //    Echannel ch = eMuon;
+
+
 
   std::vector<TString> uncertainties ={}; // no syst.
   if(!b_test) {
@@ -889,7 +895,7 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
     cout << "MT = " << x << " eff = " << y << " + " << relup*y << " - " << reldn*y << endl;
   }
   cout << "----------------------------------------------------------------\n" << endl;
-
+  gStyle->SetOptStat(0);
   TCanvas* c = new TCanvas("unc_can", "", 800, 600);
   gPad->SetTopMargin(0.05);
   gPad->SetRightMargin(0.05);
@@ -900,6 +906,8 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
   TH1F* plotter = new TH1F("plotter", "", 1, xmin, xmax);
   plotter->GetXaxis()->SetRangeUser(xmin,xmax);
   plotter->GetYaxis()->SetRangeUser(-20,20);  
+  if(name.Contains("btag_bc"))  plotter->GetYaxis()->SetRangeUser(-30,30);  
+  if(name.Contains("scale"))  plotter->GetYaxis()->SetRangeUser(-40,40);  
   plotter->GetXaxis()->SetTitleSize(0.05);
   plotter->GetYaxis()->SetTitleSize(0.05);
   plotter->GetXaxis()->SetLabelSize(0.05);
@@ -1054,12 +1062,16 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   //  c.SaveAs("test.eps");
   // efficiency calculation
+  
   double Nevents_err; 
   double Nevents = sigh->IntegralAndError(sigh->GetXaxis()->FindBin(xmin), sigh->GetXaxis()->FindBin(xmax), Nevents_err);
   double Ntot = sigh->Integral(sigh->GetXaxis()->GetXmin(), sigh->GetXaxis()->GetXmax());
   double efferr;
   double eff = CalcEff(fitmodel, Nevents, Nevents_err, Ntot, MT, efferr, year);
 
+  TString unc_name = unc;
+  if (unc=="") unc_name = "nominal";
+  Nevttofile <<unc_name<<"  MT  "<<MT<< "  1-(Nevt/Ntot)  "<<1-(Nevents/Ntot)<< "  Ntot  "<< Ntot <<"  Nevt  "<<Nevents <<endl;
   cout << "\n" << "Total number of expected events (1pb?) = " << sigh->GetSumOfWeights() << " and within fit range: " << sigh->Integral(sigh->FindBin(xmin), sigh->FindBin(xmax)) << endl << endl;
 
   // store the results

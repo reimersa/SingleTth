@@ -22,17 +22,21 @@
 #include "UHH2/common/include/MCWeight.h"
 #include "UHH2/common/include/AdditionalSelections.h"
 #include "UHH2/SingleTth/include/SingleTthModules.h"
+#include <UHH2/SingleTth/include/ModuleBASE.h>
+#include "UHH2/SingleTth/include/SingleTthHists.h"
 
 using namespace std;
 using namespace uhh2;
 
 namespace uhh2examples {
 
-  class SingleTthPreselectionModule: public AnalysisModule {
+  class SingleTthPreselectionModule: public ModuleBASE {
   public:
 
     explicit SingleTthPreselectionModule(Context & ctx);
     virtual bool process(Event & event) override;
+    void book_histograms(uhh2::Context&, vector<string>);
+    void fill_histograms(uhh2::Event&, string);
 
   private:
 
@@ -54,8 +58,25 @@ namespace uhh2examples {
     JetId Jet_ID;
 
     bool is_mc;
-
+    unique_ptr<AnalysisModule> scale_variation_module;
+    vector<TString>  systshift_scale;
+    vector<string> histogramtags_scale;
+    vector<uhh2::Event::Handle<float>> systweight_scale_handles;
+    uhh2::Event::Handle<bool> h_is_tprime_reco;
   };
+
+  void SingleTthPreselectionModule::book_histograms(uhh2::Context& ctx, vector<string> tags){
+    for(const auto & tag : tags){
+      cout << "booking histograms with tag " << tag << endl;
+      string mytag = "scale_" + tag;
+      book_HFolder(mytag, new EventHists(ctx,mytag));
+    }
+  }
+  void SingleTthPreselectionModule::fill_histograms(uhh2::Event& event, string tag){
+    string mytag = "scale_";
+    mytag += tag;
+    HFolder(mytag)->fill(event);
+  }
 
 
   SingleTthPreselectionModule::SingleTthPreselectionModule(Context & ctx){
@@ -63,6 +84,9 @@ namespace uhh2examples {
     cout << "Hello from SingleTthPreselectionModule!" << endl;
 
     for(auto & kv : ctx.get_all()) cout << " " << kv.first << " = " << kv.second << endl;
+
+
+    scale_variation_module.reset(new MCScaleVariation(ctx));
 
     JetId jet_pfid = JetPFID(JetPFID::WP_TIGHT_CHS);
     EleId = AndId<Electron>(ElectronID_Fall17_tight, PtEtaCut(30.0, 2.4));
@@ -133,12 +157,27 @@ namespace uhh2examples {
     h_topjets_met.reset(new TopJetHists(ctx, "Topjets_met"));
     h_lumi_met.reset(new LuminosityHists(ctx, "Lumi_met"));
 
+    // Scale variation
+    histogramtags_scale = {};
+    systshift_scale = {"upup", "upnone", "noneup", "nonedown", "downnone", "downdown"};
+    for(unsigned int i=0; i<systshift_scale.size(); i++){
+      TString handlename = "weight_murmuf_" + systshift_scale[i];
 
+      uhh2::Event::Handle<float> handle = ctx.declare_event_output<float>((string)handlename);
+      systweight_scale_handles.emplace_back(handle);
+
+      TString histname = "scale_" + systshift_scale[i];
+      histogramtags_scale.emplace_back(histname);
+    }
+
+    book_histograms(ctx, histogramtags_scale);
+    h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
 
   }
 
 
   bool SingleTthPreselectionModule::process(Event & event) {
+    event.set(h_is_tprime_reco, false);
 
     h_nocuts->fill(event);
     h_jets_nocuts->fill(event);
@@ -150,6 +189,18 @@ namespace uhh2examples {
     //    if(!lumi_sel->passes(event)) return false;
     bool pass_common = common->process(event);
     if(!pass_common) return false;
+
+    ///do scale variation for normalisation
+    scale_variation_module->process(event);
+    // Loop over scale systematics
+    for(unsigned int j=0; j<systshift_scale.size(); j++){
+
+      float systweight = event.get(systweight_scale_handles[j]);
+      event.weight = event.weight * systweight;
+
+      TString tag = "scale_" + systshift_scale[j];
+      fill_histograms(event, (string)tag);
+    }
 
     h_cleaner->fill(event);
     h_jets_cleaner->fill(event);
