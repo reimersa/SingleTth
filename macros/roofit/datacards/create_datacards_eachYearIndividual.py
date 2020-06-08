@@ -95,15 +95,15 @@ for year in years:
     for line in f_tot:
         if "total rate unc" not in line: continue
         mass = re.findall(r'\d+\.*\d+', line)[0]
-        unc = re.findall(r'\d+\.*\d+', line)[1]
+        unc = float(re.findall(r'\d+\.*\d+', line)[1])
         if len(years) > 2:
-            unc = math.sqrt(unc*unc + 0.018 * 0.018 )
+            unc = math.sqrt(float(unc)*float(unc) + 0.018 * 0.018 )
         else:
-            unc = math.sqrt(unc*unc + lumi_unc[year] * lumi_unc[year] )
+            unc = math.sqrt(float(unc)*float(unc) + lumi_unc[year] * lumi_unc[year] )
         unc+=1
         tot_rate_unc[year][mass] = unc
 
-    print tot_rate_unc
+    print sorted(tot_rate_unc)
 
 
     # e ch unc 
@@ -112,11 +112,11 @@ for year in years:
     for line in f_ech:
         if "total rate unc" not in line: continue
         mass = re.findall(r'\d+\.*\d+', line)[0]
-        unc = re.findall(r'\d+\.*\d+', line)[1]
+        unc = float(re.findall(r'\d+\.*\d+', line)[1])
         unc+=1
         ech_rate_unc[year][mass] = unc
 
-    print ech_rate_unc
+    print sorted(ech_rate_unc)
 
     # mu ch unc 
     much_rate_unc[year] = {}
@@ -124,11 +124,11 @@ for year in years:
     for line in f_much:
         if "total rate unc" not in line: continue
         mass = re.findall(r'\d+\.*\d+', line)[0]
-        unc = re.findall(r'\d+\.*\d+', line)[1]
+        unc = float(re.findall(r'\d+\.*\d+', line)[1])
         unc+=1
         much_rate_unc[year][mass] = unc
 
-    print much_rate_unc
+    print sorted(much_rate_unc)
 
 
 ###
@@ -155,6 +155,30 @@ for year in years:
                 mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
                 masses.append(mass)
 
+                # extrapolated tot uncertainties between mass points
+                if not much_rate_unc[year].has_key(mass):
+                    lower_mass = 99999999
+                    higher_mass = 9999999
+                    lowest_mass = 999999
+                    highest_mass = 0
+
+                    for mass_rate in sorted(much_rate_unc[year]):
+#                        print mass_rate
+                        if int(mass_rate) < int(lowest_mass): lowest_mass = mass_rate
+                        if int(mass_rate) > int(highest_mass): highest_mass = mass_rate
+                        if (abs(int(mass_rate)- int(mass))) < (abs(int(lower_mass) - int(mass))) and int(mass_rate) < int(mass): lower_mass = mass_rate
+                        if (int(mass_rate) - int(mass)) < (int(higher_mass) - int(mass)) and int(mass_rate) > int(mass): higher_mass = mass_rate
+
+
+                    if int(lower_mass) >  9999999: lower_mass = lowest_mass
+                    if int(higher_mass) > 999999: higher_mass = highest_mass
+                    
+                    much_rate_unc[year][mass] = (much_rate_unc[year][lower_mass] + much_rate_unc[year][higher_mass])/2
+                    ech_rate_unc[year][mass] = (ech_rate_unc[year][lower_mass] + ech_rate_unc[year][higher_mass])/2
+                    tot_rate_unc[year][mass] = (tot_rate_unc[year][lower_mass] + tot_rate_unc[year][higher_mass])/2
+
+#                    print str(lower_mass) + " < "+ str(mass)+" < "+str(higher_mass) + "  unc  "+ str(much_rate_unc[year][mass])
+ 
                 norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
                 signal_much_norm[year+"_"+mass] = norm
                 mean_value[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[2]
@@ -214,12 +238,12 @@ for mass in masses:
     rates = "rate           "
 #    lumi = "lumi     lnN   "
     rate_sig = "rate_signal     lnN    "
-    rate_sig_btag_2016 = "rate_signal_btag_2016v3     lnN    "
-    rate_sig_btag_ech_2016 = "rate_signal_btag_ech_2016v3     lnN    "
-    rate_sig_btag_2017 = "rate_signal_btag_2017v2     lnN    "
-    rate_sig_btag_ech_2017 = "rate_signal_btag_ech_2017v2     lnN    "
-    rate_sig_btag_2018 = "rate_signal_btag_2018     lnN    "
-    rate_sig_btag_ech_2018 = "rate_signal_btag_ech_2018     lnN    "
+    rate_sig_mu_2016 = "rate_signal_mu_2016v3     lnN    "
+    rate_sig_ech_2016 = "rate_signal_ech_2016v3     lnN    "
+    rate_sig_mu_2017 = "rate_signal_mu_2017v2     lnN    "
+    rate_sig_ech_2017 = "rate_signal_ech_2017v2     lnN    "
+    rate_sig_mu_2018 = "rate_signal_mu_2018     lnN    "
+    rate_sig_ech_2018 = "rate_signal_ech_2018     lnN    "
 
 
     for year in sorted(years):
@@ -239,28 +263,28 @@ for mass in masses:
         rates += str(signal_ech_norm[year+"_"+mass]) + "   "+ str(bkg_ech_norm[year])+"          "+str(signal_much_norm[year+"_"+mass])+"   "+str(bkg_much_norm[year]) + "   "
 
 #        lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
-        rate_sig += str(rate_unc[year]) + "       -   "+str(rate_unc[year]) +"       -    "
+        rate_sig += str(tot_rate_unc[year][mass]) + "       -   "+str(tot_rate_unc[year][mass]) +"       -    "
         if("2016" in year):
-            rate_sig_btag_ech_2016 += str(rate_btag_unc[year]) + "       -    -       -    "
-            rate_sig_btag_2016 += "-       -    " + str(rate_btag_unc[year]) + "       -    "
-            rate_sig_btag_ech_2017 +=  "-       -    -       -    "
-            rate_sig_btag_2017 += "-       -    -       -    "
-            rate_sig_btag_ech_2018 +=  "-       -    -       -    "
-            rate_sig_btag_2018 += "-       -    -       -    "
+            rate_sig_ech_2016 += str(ech_rate_unc[year][mass]) + "       -    -       -    "
+            rate_sig_mu_2016 += "-       -    " + str(much_rate_unc[year][mass]) + "       -    "
+            rate_sig_ech_2017 +=  "-       -    -       -    "
+            rate_sig_mu_2017 += "-       -    -       -    "
+            rate_sig_ech_2018 +=  "-       -    -       -    "
+            rate_sig_mu_2018 += "-       -    -       -    "
         if("2017" in year):
-            rate_sig_btag_ech_2017 += str(rate_btag_unc[year]) + "       -    -       -    "
-            rate_sig_btag_2017 += "-       -    " + str(rate_btag_unc[year]) + "       -    "
-            rate_sig_btag_ech_2016 +=  "-       -    -       -    "
-            rate_sig_btag_2016 += "-       -    -       -    "
-            rate_sig_btag_ech_2018 +=  "-       -    -       -    "
-            rate_sig_btag_2018 += "-       -    -       -    "
+            rate_sig_ech_2017 += str(ech_rate_unc[year][mass]) + "       -    -       -    "
+            rate_sig_mu_2017 += "-       -    " + str(much_rate_unc[year][mass]) + "       -    "
+            rate_sig_ech_2016 +=  "-       -    -       -    "
+            rate_sig_mu_2016 += "-       -    -       -    "
+            rate_sig_ech_2018 +=  "-       -    -       -    "
+            rate_sig_mu_2018 += "-       -    -       -    "
         if("2018" in year):
-            rate_sig_btag_ech_2018 += str(rate_btag_unc[year]) + "       -    -       -    "
-            rate_sig_btag_2018 += "-       -    " + str(rate_btag_unc[year]) + "       -    "
-            rate_sig_btag_ech_2016 +=  "-       -    -       -    "
-            rate_sig_btag_2016 += "-       -    -       -    "
-            rate_sig_btag_ech_2017 +=  "-       -    -       -    "
-            rate_sig_btag_2017 += "-       -    -       -    "
+            rate_sig_ech_2018 += str(ech_rate_unc[year][mass]) + "       -    -       -    "
+            rate_sig_mu_2018 += "-       -    " + str(much_rate_unc[year][mass]) + "       -    "
+            rate_sig_ech_2016 +=  "-       -    -       -    "
+            rate_sig_mu_2016 += "-       -    -       -    "
+            rate_sig_ech_2017 +=  "-       -    -       -    "
+            rate_sig_mu_2017 += "-       -    -       -    "
 
 
 
@@ -268,13 +292,13 @@ for mass in masses:
     process_bins += " \n"
     rates += "\n \n"
 #    lumi += " \n"
-    rate_sig_btag_2016 += " \n"
-    rate_sig_btag_2017 += " \n"
-    rate_sig_btag_2018 += " \n"
+    rate_sig_mu_2016 += " \n"
+    rate_sig_mu_2017 += " \n"
+    rate_sig_mu_2018 += " \n"
     rate_sig += " \n"
-    rate_sig_btag_ech_2016 += " \n"
-    rate_sig_btag_ech_2017 += " \n"
-    rate_sig_btag_ech_2018 += " \n"
+    rate_sig_ech_2016 += " \n"
+    rate_sig_ech_2017 += " \n"
+    rate_sig_ech_2018 += " \n"
     
     outputfile.write("------------------------------ \n")
     outputfile.write("# name of channels, and number of observed events (total number of event in Data) \n \n")
@@ -306,16 +330,16 @@ for mass in masses:
         if b_multipdf:
             outputfile.write("pdf_index_much_"+year+" discrete \n ")
             outputfile.write("pdf_index_ech_"+year+" discrete \n ")
-        # if b_signalrate:
-        #     if "2016" in year:
-        #         outputfile.write(rate_sig_btag_2016)
-        #         outputfile.write(rate_sig_btag_ech_2016)
-        #     if "2017" in year:
-        #         outputfile.write(rate_sig_btag_2017)
-        #         outputfile.write(rate_sig_btag_ech_2017)
-        #     if "2018" in year:
-        #         outputfile.write(rate_sig_btag_2018)
-        #         outputfile.write(rate_sig_btag_ech_2018)
+        if b_signalrate:
+            if "2016" in year:
+                outputfile.write(rate_sig_mu_2016)
+                outputfile.write(rate_sig_ech_2016)
+            if "2017" in year:
+                outputfile.write(rate_sig_mu_2017)
+                outputfile.write(rate_sig_ech_2017)
+            if "2018" in year:
+                outputfile.write(rate_sig_mu_2018)
+                outputfile.write(rate_sig_ech_2018)
 
 
         outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+" discrete \n ")

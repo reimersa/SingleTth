@@ -24,27 +24,28 @@ observation     -1             -1
 bin           ech_2017v2    ech_2017v2   much_2017v2      much_2017v2    
 process         roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf 
 process        0   1    0    1    
-rate           131.978   3378          196.739   5720   
+rate           130.933   3378          197.789   5720   
  
 ------------------------------ 
 # list of independent sources of uncertainties, and give their effect (syst. error) 
  
-lumi     lnN   1.023       -    1.023       -     
-rate_signal     lnN    1.127       -   1.127       -     
+rate_signal     lnN    1.23372940342       -   1.23372940342       -     
 pdf_index_much_2017v2 discrete 
  pdf_index_ech_2017v2 discrete 
- pdf_index_MT600_much_2017v2 discrete 
+ rate_signal_mu_2017v2     lnN    -       -    1.0350921       -     
+rate_signal_ech_2017v2     lnN    1.0620389       -    -       -     
+pdf_index_MT600_much_2017v2 discrete 
  pdf_index_MT600_ech_2017v2 discrete 
- sg_mean_2017v2 param 583.816  0.894644 
- sg_sigma_2017v2 param 62.5771  0.919484 
- sg_JERmeandown_2017v2 param 583.155  0.001 
- sg_JERmeanup_2017v2 param 585.384  0.001 
- sg_JECmeandown_2017v2 param 581.666  0.001 
- sg_JECmeanup_2017v2 param 586.95  0.001 
- sg_JERsigmadown_2017v2 param 61.2354  0.001 
- sg_JERsigmaup_2017v2 param 64.1084  0.001 
- sg_JECsigmadown_2017v2 param 62.5507  0.001 
- sg_JECsigmaup_2017v2 param 64.0058  0.001 
+ sg_mean_2017v2 param 584.392  0.872552 
+ sg_sigma_2017v2 param 62.256  0.860221 
+ sg_JERmeandown_2017v2 param 583.717  0.001 
+ sg_JERmeanup_2017v2 param 585.923  0.001 
+ sg_JECmeandown_2017v2 param 582.412  0.001 
+ sg_JECmeanup_2017v2 param 587.673  0.001 
+ sg_JERsigmadown_2017v2 param 60.9663  0.001 
+ sg_JERsigmaup_2017v2 param 63.6758  0.001 
+ sg_JECsigmadown_2017v2 param 61.8517  0.001 
+ sg_JECsigmaup_2017v2 param 63.1871  0.001 
  bg4p_p1much_2017v2 param 8.49269  2.76923 
  bg4p_p2ech_2017v2 param -9.80045  1.83117 
  bg2p_p0ech_2017v2 param 11.7659  2.10862 
