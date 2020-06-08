@@ -7,7 +7,6 @@
 using namespace std;
 bool b_test = false;
 bool b_fitrange = false;
-bool b_totunc_fit = false;
 std::vector<float> sigma_ranges = {1.5,2,2.5};
 
 //write out the number of total events vs events in fitrange
@@ -775,7 +774,7 @@ void sig_fit()
 
     cout << "MT = " << MTs[i] << " stat err = " << y_err_rel << " tot err = " << tot_err_rel << endl;
     if(year.Contains("2016")) tot_err_rel = sqrt(tot_err_rel * tot_err_rel + 0.02*0.02);
-    infotofile<<"total rate unc  "<<"MT = " << MTs[i] << " tot err = " << tot_err_rel << endl;
+    //    infotofile<<"total rate unc  "<<"MT = " << MTs[i] << " tot err = " << tot_err_rel << endl;
     geff_totunc->SetPointError(i, 0, tot_err_rel*y); 
   }  
 
@@ -874,9 +873,6 @@ void sig_fit()
     //cout << "MT = " << x << " eff = " << y << " + " << yerr_up << " - " << yerr_dn << endl;
   }
 
-  // @ANNA: This overwrites the changes I have done. Why is this line here? 
-  // if(!b_totunc_fit) eff_err_tot = (TGraphAsymmErrors*) geff_totunc->Clone();
-
   // now draw the statistical and total uncertainties
   eff_err_tot->SetFillColor(kOrange-4);
   eff_err_tot->Draw("L3 same");
@@ -924,12 +920,18 @@ void sig_fit()
   // lin_stat
   // if we want to have a symmetric uncertainty, 
   // we should just symmetrize: 
-  // y = lin_stat(MT)
-  // yup = eff_tot_up(MT)
-  // ydn = eff_tot_dn(MT)
-  // err_up = fabs( y - yup )
-  // err_dn = fabs( y - ydn )
-  // err = ( err_up + err_dn ) / 2.
+
+  double MT_unc = 550; 
+  while (MT_unc<1250){
+    double y = lin_stat->Eval(MT_unc);
+    double yup = eff_tot_up->Eval(MT_unc);
+    double ydn = eff_tot_dn->Eval(MT_unc);
+    double err_up = fabs( y - yup );
+    double err_dn = fabs( y - ydn );
+    double err = ( err_up + err_dn ) / 2.;
+    infotofile<<"total rate unc  "<<"MT = " << MT_unc << " tot err = " << err/y << endl;
+    MT_unc+=25;
+  }
 
   // draw some info
   info = TString::Format("Signal efficiencies, ");
