@@ -50,31 +50,89 @@ masses = []
 
 all_years_eaul = False
 
-rate_unc = {}
-rate_unc["2016v3"] = 1.135
-rate_unc["2017v2"] = 1.127
-rate_unc["2018"] = 1.126
-if all_years_eaul:
-    rate_unc["2016v3"] = 1.05
-    rate_unc["2018"] = 1.05
-    rate_unc["2017v2"] = 1.05
+####### rate unc: both, ech, much wegschreiben
 
-rate_btag_unc = {}
-rate_btag_unc["2016v3"] = 1.10
-rate_btag_unc["2017v2"] = 1.10
-rate_btag_unc["2018"] = 1.10
+# rate_unc = {}
+# rate_unc["2016v3"] = 1.135
+# rate_unc["2017v2"] = 1.127
+# rate_unc["2018"] = 1.126
+# if all_years_eaul:
+#     rate_unc["2016v3"] = 1.05
+#     rate_unc["2018"] = 1.05
+#     rate_unc["2017v2"] = 1.05
+
+# rate_btag_unc = {}
+# rate_btag_unc["2016v3"] = 1.10
+# rate_btag_unc["2017v2"] = 1.10
+# rate_btag_unc["2018"] = 1.10
 
 
 lumi_unc = {}
-lumi_unc["2016v3"] = 1.025
-lumi_unc["2017v2"] = 1.023
-lumi_unc["2018"] = 1.025
+lumi_unc["2016v3"] = 0.025
+lumi_unc["2017v2"] = 0.023
+lumi_unc["2018"] = 0.025
 
-years = {"2016v3","2017v2","2018"}
-#years = {"2016v3"}
+#years = {"2016v3","2017v2","2018"}
+years = {"2017v2"}
 
 number_of_channels = 2 * len(years)
 number_of_backgrounds = "*"
+
+#### read out rate unc for e, mu and both together
+folder = "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/"
+tot_rate_unc = {}
+ech_rate_unc = {}
+much_rate_unc = {}
+
+for year in years:
+    f_tot = open(folder + "SignalFitOutput_"+year+".txt", "r")
+    f_much = open(folder + "SignalFitOutput_"+year+"_much.txt", "r")
+    f_ech = open(folder + "SignalFitOutput_"+year+"_ech.txt", "r")
+
+    # tot unc for both e and mu
+    tot_rate_unc[year] = {}
+
+    for line in f_tot:
+        if "total rate unc" not in line: continue
+        mass = re.findall(r'\d+\.*\d+', line)[0]
+        unc = re.findall(r'\d+\.*\d+', line)[1]
+        if len(years) > 2:
+            unc = math.sqrt(unc*unc + 0.018 * 0.018 )
+        else:
+            unc = math.sqrt(unc*unc + lumi_unc[year] * lumi_unc[year] )
+        unc+=1
+        tot_rate_unc[year][mass] = unc
+
+    print tot_rate_unc
+
+
+    # e ch unc 
+    ech_rate_unc[year] = {}
+
+    for line in f_ech:
+        if "total rate unc" not in line: continue
+        mass = re.findall(r'\d+\.*\d+', line)[0]
+        unc = re.findall(r'\d+\.*\d+', line)[1]
+        unc+=1
+        ech_rate_unc[year][mass] = unc
+
+    print ech_rate_unc
+
+    # mu ch unc 
+    much_rate_unc[year] = {}
+
+    for line in f_much:
+        if "total rate unc" not in line: continue
+        mass = re.findall(r'\d+\.*\d+', line)[0]
+        unc = re.findall(r'\d+\.*\d+', line)[1]
+        unc+=1
+        much_rate_unc[year][mass] = unc
+
+    print much_rate_unc
+
+
+###
+
 
 
 for year in years:
@@ -154,7 +212,7 @@ for mass in masses:
     process_names = "process        "
     process_bins =  "process        "
     rates = "rate           "
-    lumi = "lumi     lnN   "
+#    lumi = "lumi     lnN   "
     rate_sig = "rate_signal     lnN    "
     rate_sig_btag_2016 = "rate_signal_btag_2016v3     lnN    "
     rate_sig_btag_ech_2016 = "rate_signal_btag_ech_2016v3     lnN    "
@@ -180,7 +238,7 @@ for mass in masses:
 
         rates += str(signal_ech_norm[year+"_"+mass]) + "   "+ str(bkg_ech_norm[year])+"          "+str(signal_much_norm[year+"_"+mass])+"   "+str(bkg_much_norm[year]) + "   "
 
-        lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
+#        lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
         rate_sig += str(rate_unc[year]) + "       -   "+str(rate_unc[year]) +"       -    "
         if("2016" in year):
             rate_sig_btag_ech_2016 += str(rate_btag_unc[year]) + "       -    -       -    "
@@ -209,7 +267,7 @@ for mass in masses:
     process_names += " \n"
     process_bins += " \n"
     rates += "\n \n"
-    lumi += " \n"
+#    lumi += " \n"
     rate_sig_btag_2016 += " \n"
     rate_sig_btag_2017 += " \n"
     rate_sig_btag_2018 += " \n"
@@ -239,8 +297,8 @@ for mass in masses:
     outputfile.write("------------------------------ \n")
     outputfile.write("# list of independent sources of uncertainties, and give their effect (syst. error) \n \n")
     
-    if b_lumiunc:
-        outputfile.write(lumi)
+#    if b_lumiunc:
+#        outputfile.write(lumi)
     if b_signalrate:
         outputfile.write(rate_sig)
 

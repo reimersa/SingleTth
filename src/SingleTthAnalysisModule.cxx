@@ -740,7 +740,11 @@ namespace uhh2examples {
 
     // Now writing handles in any case
     scale_variation_module->process(event);
-
+    // std::cout<<"======================= new event"<<std::endl;
+    //    std::cout<<"  event.genInfo->originalXWGTUP()  "<<event.genInfo->originalXWGTUP()<<std::endl;
+    // for(int i=0;i < event.genInfo->systweights().size();i++){
+    //   std::cout<<"event.genInfo->systweights("<<i<<")  "<< event.genInfo->systweights().at(i)<<std::endl;
+    // }
 
     if(is_much){
       h_nocuts->fill(event);

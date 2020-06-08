@@ -1,10 +1,15 @@
-meanfit param0 	581.518	0.622693
-meanfit param1 	0.958181	0.0025554
-widthfit param0 	61.1505	0.609028
-widthfit param1 	0.0543456	0.00269657
-efficiency estimate  0.00986577
-efffit param0 	0.00986577	0.0001016
-efffit param1 	2.01603e-05	9.6499e-07
-efffit param2 	-2.72198e-08	1.65929e-09
-efficiency estimate +1sigma  0.00996737
-efficiency estimate -1sigma  0.00976417
+meanfit param0 	582.189	0.572031
+meanfit param1 	0.945153	0.00217082
+widthfit param0 	61.6687	0.551645
+widthfit param1 	0.0636092	0.00196073
+eff param0  0.00991636
+eff param1  2.03248e-05
+eff param2  -2.58377e-08
+total rate unc  MT = 600 tot err = 0.0125636
+total rate unc  MT = 650 tot err = 0.0119988
+total rate unc  MT = 700 tot err = 0.0130736
+total rate unc  MT = 800 tot err = 0.0126209
+total rate unc  MT = 900 tot err = 0.0111947
+total rate unc  MT = 1000 tot err = 0.0120695
+total rate unc  MT = 1100 tot err = 0.0121233
+total rate unc  MT = 1200 tot err = 0.0128332

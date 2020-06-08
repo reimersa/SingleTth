@@ -60,7 +60,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
 	//	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/NOMINAL_NoBTagSF/"; 
 	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"; 
       } else if(year.Contains("2018")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagmujets/NOMINAL/"; 
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/"; 
       }else if(year.Contains("andrea")){ 
 	anaoutputfolder = "/nfs/dust/cms/user/amalara/WorkingArea/File/Analysis/2016/SignalRegion/Puppi/muonchannel/";
       }else{
@@ -590,9 +590,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   // eff_ele->SetParameter(1, 1.301e-05);
   // eff_ele->SetParameter(2, -1.737e-08);
 
-  eff_ele->SetParameter(0, 0.00304403);
-  eff_ele->SetParameter(1, 5.31122e-06);
-  eff_ele->SetParameter(2, -4.34584e-09);
+  eff_ele->SetParameter(0, 0.002979);
+  eff_ele->SetParameter(1, 6.1e-06);
+  eff_ele->SetParameter(2, -5.313e-09);
 
   if(year.Contains("2017")){
     // eff_ele->SetParameter(0, 0.00215);
@@ -604,9 +604,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     // eff_ele->SetParameter(1, 9.523e-06);
     // eff_ele->SetParameter(2, -9.442e-09);
 
-    eff_ele->SetParameter(0, 0.0031802);
-    eff_ele->SetParameter(1, 6.60306e-06);
-    eff_ele->SetParameter(2, -5.87991e-09);
+    eff_ele->SetParameter(0, 0.003155);
+    eff_ele->SetParameter(1, 7.258e-06);
+    eff_ele->SetParameter(2, -6.77e-09);
 
   }
   if(year.Contains("2018")){
@@ -615,9 +615,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     // eff_ele->SetParameter(1, 1.258e-05);
     // eff_ele->SetParameter(2, -1.547e-08);
  
-    eff_ele->SetParameter(0, 0.00397452);
-    eff_ele->SetParameter(1, 9.43136e-06);
-    eff_ele->SetParameter(2, -1.20441e-08);
+    eff_ele->SetParameter(0, 0.003725);
+    eff_ele->SetParameter(1, 7.439e-06);
+    eff_ele->SetParameter(2, -8.843e-09);
     
   }
 
@@ -626,9 +626,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   // eff_muon->SetParameter(0, 0.004818);
   // eff_muon->SetParameter(1, 1.25e-05);
   // eff_muon->SetParameter(2, -1.885e-08);
-  eff_muon->SetParameter(0,  0.00411048 );
-  eff_muon->SetParameter(1, 9.88413e-06);
-  eff_muon->SetParameter(2, -1.13525e-08);
+  eff_muon->SetParameter(0,  0.003886 );
+  eff_muon->SetParameter(1, 1.116e-05);
+  eff_muon->SetParameter(2, -1.312e-08);
 
   if(year.Contains("2017")){
     // eff_muon->SetParameter(0, 0.002875);
@@ -640,9 +640,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     // eff_muon->SetParameter(1, 1.217e-05);
     // eff_muon->SetParameter(2, -1.419e-08);
     
-    eff_muon->SetParameter(0, 0.0047407);
-    eff_muon->SetParameter(1, 8.64117e-06);
-    eff_muon->SetParameter(2, -9.26711e-09);
+    eff_muon->SetParameter(0, 0.004766);
+    eff_muon->SetParameter(1, 8.273e-06);
+    eff_muon->SetParameter(2, -8.002e-09);
 
 
   }
@@ -652,9 +652,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     // eff_muon->SetParameter(1, 1.35e-05);
     // eff_muon->SetParameter(2, -1.869e-08);
 
-    eff_muon->SetParameter(0, 0.00582301);
-    eff_muon->SetParameter(1,  1.00638e-05);
-    eff_muon->SetParameter(2, -1.46278e-08);
+    eff_muon->SetParameter(0, 0.005439);
+    eff_muon->SetParameter(1,  8.111e-06);
+    eff_muon->SetParameter(2, -1.108e-08);
 
   }
 

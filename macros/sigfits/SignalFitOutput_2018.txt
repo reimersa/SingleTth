@@ -1,34 +1,31 @@
-meanfit param0 	581.548	1.28707
-meanfit param1 	0.96394	0.00484661
-JECmfitup param0 	585.451	1.31574
-JECmfitup param1 	0.969609	0.00470685
-JECmfitdown param0 	577.826	1.29798
-JECmfitdown param1 	0.959683	0.00496998
-JERmfitup param0 	581.939	1.31527
-JERmfitup param1 	0.964135	0.00503885
-JERmfitdown param0 	581.046	1.29553
-JERmfitdown param1 	0.965106	0.00486864
-widthfit param0 	60.774	1.23679
-widthfit param1 	0.0413222	0.00491608
-JECwfitup param0 	63.089	1.31675
-JECwfitup param1 	0.0363175	0.00487922
-JECwfitdown param0 	58.9765	1.18838
-JECwfitdown param1 	0.0430835	0.00482686
-JERwfitup param0 	60.9127	1.23646
-JERwfitup param1 	0.0453584	0.0050796
-JERwfitdown param0 	60.6243	1.27072
-JERwfitdown param1 	0.0417882	0.00504173
-efficiency estimate  0.00397452
-efffit param0 	0.00397452	9.63303e-05
-efffit param1 	9.43136e-06	9.16877e-07
-efffit param2 	-1.20441e-08	1.53691e-09
-efficiency estimate +1sigma  0.00407085
-efficiency estimate -1sigma  0.00387819
-efficiency estimate PDF  0.00387819
-efficiency estimate btag_bc  0.00387819
-efficiency estimate eletrigger  0.00387819
-efffit param0 	0.00391413	0.000413484
-efffit param1 	9.70219e-06	2.98516e-06
-efffit param2 	-1.23738e-08	4.58917e-09
-efficiency estimate +1sigma (total) 0.00432761
-efficiency estimate -1sigma (total) 0.00350065
+meanfit param0 	582.003	0.815422
+meanfit param1 	0.946251	0.00288502
+JECmfitup param0 	585.662	0.826784
+JECmfitup param1 	0.950903	0.00290943
+JECmfitdown param0 	577.196	0.845034
+JECmfitdown param1 	0.943456	0.00292549
+JERmfitup param0 	581.85	0.843242
+JERmfitup param1 	0.946165	0.00301217
+JERmfitdown param0 	581.452	0.803943
+JERmfitdown param1 	0.946928	0.00284317
+widthfit param0 	60.0426	0.78206
+widthfit param1 	0.0549239	0.00256685
+JECwfitup param0 	61.3336	0.802112
+JECwfitup param1 	0.0533928	0.00258385
+JECwfitdown param0 	59.959	0.788063
+JECwfitdown param1 	0.051648	0.00255318
+JERwfitup param0 	60.8277	0.795379
+JERwfitup param1 	0.0572224	0.00265932
+JERwfitdown param0 	59.4133	0.769203
+JERwfitdown param1 	0.0532906	0.00248376
+eff param0  0.00916602
+eff param1  1.55836e-05
+eff param2  -1.99826e-08
+total rate unc  MT = 600 tot err = 0.0628466
+total rate unc  MT = 650 tot err = 0.060718
+total rate unc  MT = 700 tot err = 0.0647563
+total rate unc  MT = 800 tot err = 0.0577456
+total rate unc  MT = 900 tot err = 0.0599489
+total rate unc  MT = 1000 tot err = 0.0652819
+total rate unc  MT = 1100 tot err = 0.0722391
+total rate unc  MT = 1200 tot err = 0.0744519

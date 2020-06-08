@@ -195,7 +195,7 @@
 		</InputData>
 
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_B_800_2016v3" Cacheable="&b_Cacheable;"> -->
+		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_B_2016v3" Cacheable="&b_Cacheable;"> -->
 			&VLQ_LH_800_B;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
@@ -209,25 +209,25 @@
 
 
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_B_700_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_B_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_700_B;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_B_900_2016v3" Cacheable="&b_Cacheable;"> 
+		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_B_2016v3" Cacheable="&b_Cacheable;"> 
 			&VLQ_LH_900_B;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_B_1000_2016v3" Cacheable="&b_Cacheable;">
+		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_B_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_1000_B;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-		<InputData Lumi="76000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_B_1200_2016v3" Cacheable="&b_Cacheable;"> 
+		<InputData Lumi="76000" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_B_2016v3" Cacheable="&b_Cacheable;"> 
 			&VLQ_LH_1200_B;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />

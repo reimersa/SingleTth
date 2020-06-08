@@ -4,7 +4,7 @@
 
 <!ENTITY TargetLumi      "59740">
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2018/Preselection/JEC_up">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/JEC_up">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/JEC_up">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">

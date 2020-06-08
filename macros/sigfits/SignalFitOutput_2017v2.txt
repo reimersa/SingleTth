@@ -1,31 +1,31 @@
-meanfit param0 	585.68	1.3677
-meanfit param1 	0.960861	0.0052606
-JECmfitup param0 	590.011	1.33395
-JECmfitup param1 	0.961007	0.00517784
-JECmfitdown param0 	583.834	1.37431
-JECmfitdown param1 	0.950452	0.00525817
-JERmfitup param0 	587.921	1.42421
-JERmfitup param1 	0.957298	0.00558656
-JERmfitdown param0 	586.338	1.30615
-JERmfitdown param1 	0.954784	0.00501224
-widthfit param0 	62.3119	1.41817
-widthfit param1 	0.039598	0.00560919
-JECwfitup param0 	62.4807	1.35779
-JECwfitup param1 	0.0451375	0.00557502
-JECwfitdown param0 	62.137	1.38042
-JECwfitdown param1 	0.0369566	0.00530114
-JERwfitup param0 	63.9281	1.50499
-JERwfitup param1 	0.0436443	0.0060921
-JERwfitdown param0 	60.9229	1.31771
-JERwfitdown param1 	0.0392893	0.00520302
-eff param0  0.0031802
-eff param1  6.60306e-06
-eff param2  -5.87991e-09
-total rate unc  MT = 600 tot err = 0.239516
-total rate unc  MT = 650 tot err = 0.255264
-total rate unc  MT = 700 tot err = 0.265533
-total rate unc  MT = 800 tot err = 0.276601
-total rate unc  MT = 900 tot err = 0.293005
-total rate unc  MT = 1000 tot err = 0.296247
-total rate unc  MT = 1100 tot err = 0.304196
-total rate unc  MT = 1200 tot err = 0.305386
+meanfit param0 	584.392	0.872552
+meanfit param1 	0.950213	0.00295198
+JECmfitup param0 	587.673	0.868106
+JECmfitup param1 	0.953791	0.00297552
+JECmfitdown param0 	582.412	0.882523
+JECmfitdown param1 	0.942469	0.00297668
+JERmfitup param0 	585.923	0.908474
+JERmfitup param1 	0.947109	0.00310572
+JERmfitdown param0 	583.717	0.835531
+JERmfitdown param1 	0.950285	0.00281017
+widthfit param0 	62.256	0.860221
+widthfit param1 	0.0542019	0.00271942
+JECwfitup param0 	63.1871	0.854435
+JECwfitup param1 	0.0548189	0.00272645
+JECwfitdown param0 	61.8517	0.862917
+JECwfitdown param1 	0.0523134	0.0027174
+JERwfitup param0 	63.6758	0.901835
+JERwfitup param1 	0.0565551	0.00287847
+JERwfitdown param0 	60.9663	0.809066
+JERwfitdown param1 	0.0517496	0.00252951
+eff param0  0.00792065
+eff param1  1.55648e-05
+eff param2  -1.47848e-08
+total rate unc  MT = 600 tot err = 0.232595
+total rate unc  MT = 650 tot err = 0.24791
+total rate unc  MT = 700 tot err = 0.256073
+total rate unc  MT = 800 tot err = 0.270072
+total rate unc  MT = 900 tot err = 0.282601
+total rate unc  MT = 1000 tot err = 0.289361
+total rate unc  MT = 1100 tot err = 0.297166
+total rate unc  MT = 1200 tot err = 0.300393
