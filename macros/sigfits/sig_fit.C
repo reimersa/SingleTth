@@ -53,8 +53,11 @@ void sig_fit()
 
   if (!b_test){
 
-    MTs = {700,800, 900, 1000, 1200};// 2016
-    MTs_backup = {700,800, 900, 1000, 1200};// 2016
+    //MTs = {700,800, 900, 1000, 1200};// 2016
+    //MTs_backup = {700,800, 900, 1000, 1200};// 2016
+
+    MTs = {700, 900, 1000, 1200};// 2016
+    MTs_backup = {700, 900, 1000, 1200};// 2016
 
     if(year.Contains("2018") or year.Contains("2017")){
       MTs = {600, 650, 700, 800, 900, 1000, 1100, 1200};// 2017
@@ -775,6 +778,42 @@ void sig_fit()
     geff_totunc->SetPointError(i, 0, tot_err_rel*y); 
   }  
 
+  // fill two graphs: one with up- and one with down variation of 
+  // total uncertainty, to determine parametric total uncertainty 
+  TGraphErrors* gtot_up = (TGraphErrors*) geff_totunc->Clone();
+  TGraphErrors* gtot_dn = (TGraphErrors*) geff_totunc->Clone();
+  for (int i=0; i<MTs.size(); ++i)
+  {
+    double x, y; 
+    geff->GetPoint(i, x, y);
+    double y_err = geff->GetErrorY(i);
+
+    double yup = y + geff_totunc->GetErrorY(i);
+    double ydn = y - geff_totunc->GetErrorY(i);
+
+    gtot_up->SetPoint(i, x, yup);
+    gtot_dn->SetPoint(i, x, ydn);
+
+    // set uncertainties to stat only
+    gtot_up->SetPointError(i, 0, y_err);
+    gtot_dn->SetPointError(i, 0, y_err);
+  }  
+
+  // fit the up and down variations to get functions 
+  // parametrizing the total uncertainties
+  TF1* eff_tot_up = new TF1("eff_tot_up", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
+  TF1* eff_tot_dn = new TF1("eff_tot_dn", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
+  double x, y;
+  gtot_up->GetPoint(0, x, y);
+  eff_tot_up->SetParameter(0, y);
+  eff_tot_up->SetParameter(1, 0);   
+  gtot_dn->GetPoint(0, x, y);
+  eff_tot_dn->SetParameter(0, y);
+  eff_tot_dn->SetParameter(1, 0); 
+  gtot_up->Fit(eff_tot_up, "0");
+  gtot_dn->Fit(eff_tot_dn, "0");
+
+
   // fit the efficiency with total uncertainty
   TF1* lin_tot = new TF1("efffit_tot", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
   lin_tot->SetParameter(0, effs[0]);
@@ -790,29 +829,6 @@ void sig_fit()
   //fit_toterr_68->SetFillColor(kOrange-4);
   //fit_toterr_68->Draw("L3 same");
 
-  // use uncertainty in p0 to estimate 1sigma uncertainty
-  int Npoints = 100;
-  double MTmin = 550;
-  double MTmax = 1250; 
-  double MTrange = MTmax - MTmin; 
-  double step = MTrange/Npoints;
-  TGraphErrors* eff_err_tot = new TGraphErrors(Npoints+1);
-  TF1* lin_tot_unc = (TF1*) lin_tot->Clone();
-  lin_tot_unc->SetParameter(0, lin_tot->GetParameter(0)+lin_tot->GetParError(0));
-  for (int i=0; i<Npoints+1; ++i){
-    double x = MTmin + step*i;
-    double y = lin_tot->Eval(x); 
-    double yerr = fabs(y-lin_tot_unc->Eval(x)); 
-    eff_err_tot->SetPoint(i, x, y);
-    eff_err_tot->SetPointError(i, 0, yerr); 
-    //cout << "MT = " << x << " eff = " << y << " +- " << yerr << endl;
-  }
-
-  if(!b_totunc_fit) eff_err_tot = (TGraphErrors*) geff_totunc->Clone();
-
-  eff_err_tot->SetFillColor(kOrange-4);
-  eff_err_tot->Draw("L3 same");
-
 
   // fit the efficiency with statistical uncertainty
   TF1* lin_stat = new TF1("efffit_stat", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 550, 1250);
@@ -823,6 +839,11 @@ void sig_fit()
   TFitResultPtr r6 = geff->Fit(lin_stat, "0");
 
   // use uncertainty in p0 to estimate 1sigma uncertainty
+  int Npoints = 100;
+  double MTmin = 550;
+  double MTmax = 1250; 
+  double MTrange = MTmax - MTmin; 
+  double step = MTrange/Npoints;  
   TGraphErrors* eff_err_stat = new TGraphErrors(Npoints+1);
   TF1* lin_stat_unc = (TF1*) lin_stat->Clone();
   lin_stat_unc->SetParameter(0, lin_stat->GetParameter(0)+lin_stat->GetParError(0));  
@@ -833,6 +854,32 @@ void sig_fit()
     eff_err_stat->SetPoint(i, x, y);
     eff_err_stat->SetPointError(i, 0, yerr); 
   }
+
+
+  // use fits of up and down variations to get the total uncertainty
+  TGraphAsymmErrors* eff_err_tot = new TGraphAsymmErrors(Npoints+1);
+  for (int i=0; i<Npoints+1; ++i){
+    double x = MTmin + step*i;
+    double y = lin_stat->Eval(x);
+    double yup = eff_tot_up->Eval(x); 
+    double ydn = eff_tot_dn->Eval(x); 
+
+    double yerr_up = fabs(yup - y); 
+    double yerr_dn = fabs(y - ydn);
+
+    eff_err_tot->SetPoint(i, x, y);
+    eff_err_tot->SetPointEYhigh(i, yerr_up); 
+    eff_err_tot->SetPointEYlow(i, yerr_dn); 
+    //cout << "MT = " << x << " eff = " << y << " + " << yerr_up << " - " << yerr_dn << endl;
+  }
+
+  // @ANNA: This overwrites the changes I have done. Why is this line here? 
+  // if(!b_totunc_fit) eff_err_tot = (TGraphAsymmErrors*) geff_totunc->Clone();
+
+  // now draw the statistical and total uncertainties
+  eff_err_tot->SetFillColor(kOrange-4);
+  eff_err_tot->Draw("L3 same");
+  //eff_err_tot->Draw("P same");
   eff_err_stat->SetFillColor(kOrange+1);
   eff_err_stat->Draw("L3 same");
 
@@ -850,6 +897,38 @@ void sig_fit()
   geff_totunc->SetLineWidth(2);
   geff_totunc->Draw("PZ same");
 
+  // draw up and down variations to check that it works
+  // gtot_up->SetMarkerStyle(22);
+  // gtot_up->SetLineWidth(2);
+  // gtot_up->SetMarkerColor(kRed+2);
+  // gtot_up->SetLineColor(kRed+2);
+  // gtot_up->Draw("PZ same");
+  // eff_tot_up->SetLineColor(kRed+2);
+  // eff_tot_up->Draw("same");
+
+  // gtot_dn->SetMarkerStyle(22);
+  // gtot_dn->SetLineWidth(2);
+  // gtot_dn->SetMarkerColor(kBlue+2);
+  // gtot_dn->SetLineColor(kBlue+2);
+  // gtot_dn->Draw("PZ same");
+  // eff_tot_dn->SetLineColor(kBlue+2);
+  // eff_tot_dn->Draw("same");
+
+  // @ANNA: now we can use the two functions (with three free parameters): 
+  // eff_tot_up
+  // eff_tot_dn
+  // to have the up-variation on the signal efficiency 
+  // and the down-variation of hte signal efficiency
+  // the central value is obtained from 
+  // lin_stat
+  // if we want to have a symmetric uncertainty, 
+  // we should just symmetrize: 
+  // y = lin_stat(MT)
+  // yup = eff_tot_up(MT)
+  // ydn = eff_tot_dn(MT)
+  // err_up = fabs( y - yup )
+  // err_dn = fabs( y - ydn )
+  // err = ( err_up + err_dn ) / 2.
 
   // draw some info
   info = TString::Format("Signal efficiencies, ");
