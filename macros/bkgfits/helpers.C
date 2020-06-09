@@ -148,17 +148,19 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      cout << "Using NAF setup." << endl;
      
      if(year.Contains("2016")) {
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
+       // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/SFbtagmujets/"; 
+       //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/"; 
        hand = "LH";
        prodch = "_B";
        if ((MT <700) && (val==NULL)) year = "2016v2";
    }
      else if(year.Contains("2017")){
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/"; 
+       // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/"; 
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/SFbtagmujets/"; 
+       //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/"; 
        hand = "LH";
      }
      else if(year.Contains("2018")){

@@ -18,19 +18,19 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 void sig_fit()
 {
-  // TString year =  "2016v3";
-  //TString year =  "2017v2";
-   TString year =  "2018";
-  //TString year =  "allyears";
+  //  TString year =  "2016v3";
+  //  TString year =  "2017v2";
+  //  TString year =  "2018";
+  TString year =  "allyears";
 
   //  TString postfix = "_HEMIssue_LH";
   TString postfix = "";
 
 
   // decide which channel to do (eEle, eMuon, eComb)
-  //Echannel ch = eComb;
+  Echannel ch = eComb;
   // Echannel ch = eEle;
-  Echannel ch = eMuon;
+  //  Echannel ch = eMuon;
 
   TString outfile_name = "SignalFitOutput_"+year+postfix+".txt";
   if(ch==eEle) outfile_name = "SignalFitOutput_"+year+"_ech"+postfix+".txt";
@@ -40,10 +40,10 @@ void sig_fit()
 
   std::vector<TString> uncertainties ={}; // no syst.
   if(!b_test) {
-    uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
+       uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
     if(year.Contains("2017"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2017 
     if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
-    if(year.Contains("allyears")) uncertainties = {};
+    if(year.Contains("allyears")) uncertainties = {"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_udsg","eletrigger","mutrigger","btag_bc","scale"}; // prefiring missing
   }
 
   std::vector<double> MTs = {650};// 2016
@@ -64,8 +64,8 @@ void sig_fit()
       MTs_backup = {600, 650, 700, 800, 900, 1000, 1100, 1200};// 2017
     }
     if(year.Contains("allyears")){
-      MTs = {600,650, 700,800,900, 1000,1100, 1200};// 2017
-      MTs_backup = {600, 650, 700,800,900, 1000,1100, 1200};// 2017
+      MTs = { 700,800,900, 1000, 1200};// 2017
+      MTs_backup = { 700,800,900, 1000, 1200};// 2017
     }
   }
 
@@ -726,13 +726,18 @@ void sig_fit()
   //---------------------------------------------------------
   // Draw efficiencies with fit and total uncertainties
   //---------------------------------------------------------
-  gStyle->SetStatX(0.63);
-  gStyle->SetStatW(0.24);
-  gStyle->SetStatY(0.85);  
-  //gStyle->SetStatX(0);
-  //gStyle->SetStatW(0);
-  //gStyle->SetStatY(0);  
-  gStyle->SetEndErrorSize(4.0);
+  if(year.Contains("allyears")){
+    gStyle->SetStatX(0);
+    gStyle->SetStatW(0);
+    gStyle->SetStatY(0);  
+    gStyle->SetOptFit(0);
+    //    gStyle->SetOptStat(0);
+  }else{
+    gStyle->SetStatX(0.63);
+    gStyle->SetStatW(0.24);
+    gStyle->SetStatY(0.85);  
+    gStyle->SetEndErrorSize(4.0);
+  }
 
 
   TCanvas *can4 = new TCanvas("eff_can_unc","",10,10,700,700);
@@ -742,6 +747,15 @@ void sig_fit()
   can4->SetRightMargin(0.05);
   can4->SetTopMargin(0.10);
   can4->SetBottomMargin(0.12);
+  
+  //legend
+  TLegend *leg_eff = new TLegend(0.2,0.15,0.55,0.45, "","brNDC");
+  leg_eff->SetBorderSize(0);	
+  leg_eff->SetFillStyle(0);
+  leg_eff->SetTextSize(0.035);
+  leg_eff->SetTextFont(42);
+  
+
 
   // cosmetics
   TH1* painter4 = new TH1F("painter", "", 1, 550, 1250);
@@ -753,7 +767,7 @@ void sig_fit()
   painter4->GetXaxis()->SetTitleOffset(1.2);
   painter4->SetTitle("");
   painter4->GetYaxis()->SetRangeUser(0, 0.02);
-  if(year.Contains("allyears"))  painter4->GetYaxis()->SetRangeUser(0.006, 0.02);
+  if(year.Contains("allyears"))  painter4->GetYaxis()->SetRangeUser(0., 0.016);
   painter4->Draw();
   geff->SetMarkerStyle(20);
   geff->SetLineWidth(2);
@@ -838,6 +852,8 @@ void sig_fit()
   // lin_stat->SetParName(1, "Slope");
   TFitResultPtr r6 = geff->Fit(lin_stat, "0");
 
+  //  if (year.Contains("allyears")) {TPaveStats *ps = (TPaveStats *)geff->GetListOfFunctions()->FindObject("stats"); ps->SetX1NDC(0); ps->SetX2NDC(0);}
+
   // use uncertainty in p0 to estimate 1sigma uncertainty
   int Npoints = 100;
   double MTmin = 550;
@@ -875,10 +891,15 @@ void sig_fit()
 
   // now draw the statistical and total uncertainties
   eff_err_tot->SetFillColor(kOrange-4);
+  eff_err_tot->SetLineColor(kOrange-4);
   eff_err_tot->Draw("L3 same");
+  
+
   //eff_err_tot->Draw("P same");
   eff_err_stat->SetFillColor(kOrange+1);
+  eff_err_stat->SetLineColor(kOrange+1);
   eff_err_stat->Draw("L3 same");
+  
 
   //TGraphErrors* fit6_err_68 = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
   //fitter = (TFitter*) TVirtualFitter::GetFitter();
@@ -889,10 +910,11 @@ void sig_fit()
   lin_stat->SetLineColor(kRed+1);
   lin_stat->DrawCopy("same");
   geff->Draw("P same");
-
+  
   geff_totunc->SetMarkerStyle(20);
   geff_totunc->SetLineWidth(2);
   geff_totunc->Draw("PZ same");
+  
 
   // draw up and down variations to check that it works
   // gtot_up->SetMarkerStyle(22);
@@ -936,11 +958,67 @@ void sig_fit()
   // draw some info
   info = TString::Format("Signal efficiencies, ");
   info.Append(info2);
-  //text->DrawLatex(0.16, 0.92, info.Data());
+  //  text->DrawLatex(0.16, 0.92, info.Data());
 
   TString fname4 = "results/signal_eff_values_" + channel_name+"_"+year; 
 
+
+
+  leg_eff->SetHeader(info2);
+  leg_eff->AddEntry(geff_totunc,"Simulated efficiency","PE");
+  TString fitfunc = Form("f(x) = %.2e + %.2e x+ %.2e x^{2}", lin_stat->GetParameter(0),lin_stat->GetParameter(1),lin_stat->GetParameter(2));
+  leg_eff->AddEntry(lin_stat,"Parametrisation","l");
+leg_eff->AddEntry(eff_err_stat,"Stat. uncertainty","f");
+leg_eff->AddEntry(eff_err_tot,"Tot. uncertainty","f");
+
+  leg_eff->Draw();
   can4->RedrawAxis();
+
+  ////// CMS tags
+  TString infotext = "13 TeV";
+  TLatex *text1 = new TLatex(3.5, 24, infotext);
+  text1->SetNDC();
+  text1->SetTextAlign(33);
+  text1->SetX(0.94);
+  text1->SetTextFont(42);
+  text1->SetTextSize(0.045);
+  text1->SetY(.95);
+  text1->Draw();
+  
+  TString cmstext = "CMS";
+  TLatex *text2 = new TLatex(3.5, 24, cmstext);
+  text2->SetNDC();
+  text2->SetTextAlign(13);
+  text2->SetX(0.2);
+  text2->SetTextFont(62);
+  text2->SetTextSize(0.072);
+  text2->SetY(0.87);
+  text2->Draw();
+ 
+  TString simtext = "Simulation";
+  TLatex *text4 = new TLatex(3.5, 24, simtext);
+  text4->SetNDC();
+  text4->SetTextAlign(13);
+  text4->SetX(0.2);
+  text4->SetTextFont(52);
+  text4->SetTextSize(0.05);
+  text4->SetY(0.8);
+  text4->Draw();
+
+
+  TString preltext = "Preliminary";
+  TLatex *text3 = new TLatex(3.5, 24, preltext);
+  text3->SetNDC();
+  text3->SetTextAlign(13);
+  text3->SetX(0.2);
+  text3->SetTextFont(52);
+  text3->SetTextSize(0.05);
+  text3->SetY(0.75);
+  text3->Draw();
+
+
+
+
   can4->SaveAs(fname4+postfix+"_unc.eps");
   can4->SaveAs(fname4+postfix+"_unc.pdf");
 
@@ -1049,8 +1127,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   gStyle->SetStatW(0.24);
   gStyle->SetStatY(0.95);
 
-  gStyle->SetOptFit(1111);
-  //  gStyle->SetOptStat(0);
+  //  gStyle->SetOptFit(1111);
+  gStyle->SetOptStat(0);
 
  
   // -----------------------------------------
@@ -1207,27 +1285,85 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   text->SetNDC();
   text->SetTextColor(kBlack);
   text->SetTextSize(0.035);
-  text->DrawLatex(0.13, 0.96, info.Data());
-  text->DrawLatex(0.13, 0.92, info2.Data());
+  if(!year.Contains("allyears"))  text->DrawLatex(0.13, 0.96, info.Data());
+  if(!year.Contains("allyears"))  text->DrawLatex(0.13, 0.92, info2.Data());
   //text->DrawLatex(0.13, 0.92, info3.Data());
   text->SetTextFont(62);
-  text->DrawLatex(0.17, 0.83, info4.Data());
+  if(!year.Contains("allyears"))text->DrawLatex(0.65, 0.83, info4.Data());
+  else text->DrawLatex(0.65, 0.81, TString::Format("#splitline{%s",info2.Data())+"}{"+TString::Format("M_{T} = %i",(MT))+" GeV}");
   text->SetTextFont(42);
+
+  double xvalue = 0.65;
+  double yoffset = 0.03;
+
   TString info5 = "Fit:";
-  text->DrawLatex(0.17, 0.76, info5.Data());
+  text->DrawLatex(xvalue, 0.76 -yoffset, info5.Data());
   info5 = TString::Format("x_{min} = %3.0f GeV", xmin);
-  text->DrawLatex(0.17, 0.72, info5.Data());
+  text->DrawLatex(xvalue, 0.72-yoffset, info5.Data());
   info5 = TString::Format("x_{max} = %3.0f GeV", xmax);
-  text->DrawLatex(0.17, 0.67, info5.Data());
+  text->DrawLatex(xvalue, 0.67-yoffset, info5.Data());
 
   TString info6 = TString::Format("#varepsilon_{sig} = %4.2f #pm %4.2f", eff*100, efferr*100);
   info6.Append("%");
-  text->DrawLatex(0.17, 0.60, info6.Data());  
+  text->DrawLatex(xvalue, 0.60-yoffset, info6.Data());  
 
   double corr = sigh->Integral(sigh->GetXaxis()->GetXmin(), sigh->GetXaxis()->GetXmax(), "width") / norm;
   cout << "corr = " << corr << endl;
   TString info7 = TString::Format("f_{norm} = %4.3f", sigfuncobj.GetFunc()->GetParameter(0)*corr );
-  text->DrawLatex(0.17, 0.55, info7.Data());  
+  //  text->DrawLatex(xvalue, 0.55, info7.Data());  
+
+  TString info8 = TString::Format("#chi^{2}/ndf = %4.3f", fitmodel->GetChisquare()/fitmodel->GetNDF() );
+  text->DrawLatex(xvalue, 0.53-yoffset, info8.Data());  
+
+  TString info9 = TString::Format("#mu = %4.3f", fitmodel->GetParameter(0) );
+  text->DrawLatex(xvalue, 0.47-yoffset, info9.Data());  
+
+  TString info10 = TString::Format("#sigma = %4.3f",  fitmodel->GetParameter(1));
+  text->DrawLatex(xvalue, 0.42-yoffset, info10.Data());  
+
+
+  ////// CMS tags
+  TString infotext = "13 TeV";
+  TLatex *text1 = new TLatex(3.5, 24, infotext);
+  text1->SetNDC();
+  text1->SetTextAlign(33);
+  text1->SetX(0.94);
+  text1->SetTextFont(42);
+  text1->SetTextSize(0.045);
+  text1->SetY(.95);
+  text1->Draw();
+  
+  TString cmstext = "CMS";
+  TLatex *text2 = new TLatex(3.5, 24, cmstext);
+  text2->SetNDC();
+  text2->SetTextAlign(13);
+  text2->SetX(0.2);
+  text2->SetTextFont(62);
+  text2->SetTextSize(0.072);
+  text2->SetY(0.85);
+  text2->Draw();
+ 
+  TString simtext = "Simulation";
+  TLatex *text4 = new TLatex(3.5, 24, simtext);
+  text4->SetNDC();
+  text4->SetTextAlign(13);
+  text4->SetX(0.2);
+  text4->SetTextFont(52);
+  text4->SetTextSize(0.05);
+  text4->SetY(0.78);
+  text4->Draw();
+
+
+  TString preltext = "Preliminary";
+  TLatex *text3 = new TLatex(3.5, 24, preltext);
+  text3->SetNDC();
+  text3->SetTextAlign(13);
+  text3->SetX(0.2);
+  text3->SetTextFont(52);
+  text3->SetTextSize(0.05);
+  text3->SetY(0.73);
+  text3->Draw();
+
 
   can->RedrawAxis();
 
