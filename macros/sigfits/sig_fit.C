@@ -1109,6 +1109,11 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   double sigma = 61.5+0.06*(MT-600.);
   fit_xmin = mean - factormin*sigma;
   fit_xmax = mean + factormax*sigma;
+  
+  if(year.Contains("allyears")) {
+    fit_xmin = mean - 1.5*sigma;
+  fit_xmax = mean + 2*sigma;
+  }
 
   // if(b_test){
   //   fit_xmin = MT-300.; //600
@@ -1244,6 +1249,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   // draw the result
   //  sigh->GetYaxis()->SetRangeUser(0,100);
+  
   sigh->Draw("PZ");
   //gPad->SetLogy(true);
 
@@ -1312,13 +1318,13 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   TString info7 = TString::Format("f_{norm} = %4.3f", sigfuncobj.GetFunc()->GetParameter(0)*corr );
   //  text->DrawLatex(xvalue, 0.55, info7.Data());  
 
-  TString info8 = TString::Format("#chi^{2}/ndf = %4.3f", fitmodel->GetChisquare()/fitmodel->GetNDF() );
+  TString info8 = TString::Format("#chi^{2}/ndf = %.2f / %i", fitmodel->GetChisquare(),fitmodel->GetNDF() );
   text->DrawLatex(xvalue, 0.53-yoffset, info8.Data());  
 
-  TString info9 = TString::Format("#mu = %4.3f", fitmodel->GetParameter(0) );
+  TString info9 = TString::Format("#mu = %.0f #pm %.0f GeV", fitmodel->GetParameter(0), fitmodel->GetParError(0) );
   text->DrawLatex(xvalue, 0.47-yoffset, info9.Data());  
 
-  TString info10 = TString::Format("#sigma = %4.3f",  fitmodel->GetParameter(1));
+  TString info10 = TString::Format("#sigma = %.0f #pm %.0f GeV",  fitmodel->GetParameter(1), fitmodel->GetParError(1));
   text->DrawLatex(xvalue, 0.42-yoffset, info10.Data());  
 
 
