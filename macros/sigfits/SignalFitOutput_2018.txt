@@ -21,11 +21,31 @@ JERwfitdown param1 	0.0532906	0.00248376
 eff param0  0.00916602
 eff param1  1.55836e-05
 eff param2  -1.99826e-08
-total rate unc  MT = 600 tot err = 0.0628466
-total rate unc  MT = 650 tot err = 0.060718
-total rate unc  MT = 700 tot err = 0.0647563
-total rate unc  MT = 800 tot err = 0.0577456
-total rate unc  MT = 900 tot err = 0.0599489
-total rate unc  MT = 1000 tot err = 0.0652819
-total rate unc  MT = 1100 tot err = 0.0722391
-total rate unc  MT = 1200 tot err = 0.0744519
+total rate unc  MT = 550 tot err = 0.0657559
+total rate unc  MT = 575 tot err = 0.064397
+total rate unc  MT = 600 tot err = 0.0633002
+total rate unc  MT = 625 tot err = 0.062424
+total rate unc  MT = 650 tot err = 0.0617365
+total rate unc  MT = 675 tot err = 0.0612131
+total rate unc  MT = 700 tot err = 0.0608347
+total rate unc  MT = 725 tot err = 0.0605867
+total rate unc  MT = 750 tot err = 0.0604575
+total rate unc  MT = 775 tot err = 0.0604383
+total rate unc  MT = 800 tot err = 0.0605224
+total rate unc  MT = 825 tot err = 0.060705
+total rate unc  MT = 850 tot err = 0.0609828
+total rate unc  MT = 875 tot err = 0.0613539
+total rate unc  MT = 900 tot err = 0.0618177
+total rate unc  MT = 925 tot err = 0.0623747
+total rate unc  MT = 950 tot err = 0.0630265
+total rate unc  MT = 975 tot err = 0.0637759
+total rate unc  MT = 1000 tot err = 0.0646269
+total rate unc  MT = 1025 tot err = 0.0655847
+total rate unc  MT = 1050 tot err = 0.0666557
+total rate unc  MT = 1075 tot err = 0.0678479
+total rate unc  MT = 1100 tot err = 0.0691711
+total rate unc  MT = 1125 tot err = 0.0706368
+total rate unc  MT = 1150 tot err = 0.0722589
+total rate unc  MT = 1175 tot err = 0.0740539
+total rate unc  MT = 1200 tot err = 0.0760417
+total rate unc  MT = 1225 tot err = 0.0782459

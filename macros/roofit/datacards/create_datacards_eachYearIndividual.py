@@ -72,8 +72,8 @@ lumi_unc["2016v3"] = 0.025
 lumi_unc["2017v2"] = 0.023
 lumi_unc["2018"] = 0.025
 
-#years = {"2016v3","2017v2","2018"}
-years = {"2017v2"}
+years = {"2016v3","2017v2","2018"}
+#years = {"2018"}
 
 number_of_channels = 2 * len(years)
 number_of_backgrounds = "*"
@@ -155,27 +155,27 @@ for year in years:
                 mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
                 masses.append(mass)
 
-                # extrapolated tot uncertainties between mass points
-                if not much_rate_unc[year].has_key(mass):
-                    lower_mass = 99999999
-                    higher_mass = 9999999
-                    lowest_mass = 999999
-                    highest_mass = 0
+#                 # extrapolated tot uncertainties between mass points
+#                 if not much_rate_unc[year].has_key(mass):
+#                     lower_mass = 99999999
+#                     higher_mass = 9999999
+#                     lowest_mass = 999999
+#                     highest_mass = 0
 
-                    for mass_rate in sorted(much_rate_unc[year]):
-#                        print mass_rate
-                        if int(mass_rate) < int(lowest_mass): lowest_mass = mass_rate
-                        if int(mass_rate) > int(highest_mass): highest_mass = mass_rate
-                        if (abs(int(mass_rate)- int(mass))) < (abs(int(lower_mass) - int(mass))) and int(mass_rate) < int(mass): lower_mass = mass_rate
-                        if (int(mass_rate) - int(mass)) < (int(higher_mass) - int(mass)) and int(mass_rate) > int(mass): higher_mass = mass_rate
+#                     for mass_rate in sorted(much_rate_unc[year]):
+# #                        print mass_rate
+#                         if int(mass_rate) < int(lowest_mass): lowest_mass = mass_rate
+#                         if int(mass_rate) > int(highest_mass): highest_mass = mass_rate
+#                         if (abs(int(mass_rate)- int(mass))) < (abs(int(lower_mass) - int(mass))) and int(mass_rate) < int(mass): lower_mass = mass_rate
+#                         if (int(mass_rate) - int(mass)) < (int(higher_mass) - int(mass)) and int(mass_rate) > int(mass): higher_mass = mass_rate
 
 
-                    if int(lower_mass) >  9999999: lower_mass = lowest_mass
-                    if int(higher_mass) > 999999: higher_mass = highest_mass
+#                     if int(lower_mass) >  9999999: lower_mass = lowest_mass
+#                     if int(higher_mass) > 999999: higher_mass = highest_mass
                     
-                    much_rate_unc[year][mass] = (much_rate_unc[year][lower_mass] + much_rate_unc[year][higher_mass])/2
-                    ech_rate_unc[year][mass] = (ech_rate_unc[year][lower_mass] + ech_rate_unc[year][higher_mass])/2
-                    tot_rate_unc[year][mass] = (tot_rate_unc[year][lower_mass] + tot_rate_unc[year][higher_mass])/2
+#                     much_rate_unc[year][mass] = (much_rate_unc[year][lower_mass] + much_rate_unc[year][higher_mass])/2
+#                     ech_rate_unc[year][mass] = (ech_rate_unc[year][lower_mass] + ech_rate_unc[year][higher_mass])/2
+#                     tot_rate_unc[year][mass] = (tot_rate_unc[year][lower_mass] + tot_rate_unc[year][higher_mass])/2
 
 #                    print str(lower_mass) + " < "+ str(mass)+" < "+str(higher_mass) + "  unc  "+ str(much_rate_unc[year][mass])
  

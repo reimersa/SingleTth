@@ -18,9 +18,9 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 void sig_fit()
 {
-  TString year =  "2016v3";
+  // TString year =  "2016v3";
   //TString year =  "2017v2";
-  // TString year =  "2018";
+   TString year =  "2018";
   //TString year =  "allyears";
 
   //  TString postfix = "_HEMIssue_LH";
@@ -28,9 +28,9 @@ void sig_fit()
 
 
   // decide which channel to do (eEle, eMuon, eComb)
-  Echannel ch = eComb;
+  //Echannel ch = eComb;
   // Echannel ch = eEle;
-  //  Echannel ch = eMuon;
+  Echannel ch = eMuon;
 
   TString outfile_name = "SignalFitOutput_"+year+postfix+".txt";
   if(ch==eEle) outfile_name = "SignalFitOutput_"+year+"_ech"+postfix+".txt";

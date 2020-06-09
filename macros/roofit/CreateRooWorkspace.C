@@ -328,9 +328,9 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   //create a list with all alt and nominal functions
   RooArgList mypdfs;
   mypdfs.add(*bgfunc);
-  mypdfs.add(*bgfunc_4p);
+  //  mypdfs.add(*bgfunc_4p);
   mypdfs.add(*bgfunc_exp);
-  mypdfs.add(*bgfunc_2p);
+  //  mypdfs.add(*bgfunc_2p);
 
   RooCategory cat("pdf_index_"+ch_name+"_"+year,"Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name+"_"+year,"All Pdfs",cat,mypdfs);
