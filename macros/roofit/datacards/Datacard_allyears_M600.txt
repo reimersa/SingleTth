@@ -32,7 +32,7 @@ observation     -1             -1  -1             -1  -1             -1
 bin           ech_2016v3    ech_2016v3   much_2016v3      much_2016v3   ech_2017v2    ech_2017v2   much_2017v2      much_2017v2   ech_2018    ech_2018   much_2018      much_2018    
 process         roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf 
 process        0   1    0    1   0   1    0    1   0   1    0    1    
-rate           106.648   2690          139.119   3836   130.933   3378          197.789   5720   222.382   5334          324.708   8457   
+rate           106.648   5680          139.119   8261   130.933   7084          197.789   12405   222.382   11295          324.708   18388   
  
 ------------------------------ 
 # list of independent sources of uncertainties, and give their effect (syst. error) 
@@ -86,70 +86,34 @@ pdf_index_MT600_much_2018 discrete
  sg_JERsigmaup_2018 param 60.8277  0.001 
  sg_JECsigmadown_2018 param 59.959  0.001 
  sg_JECsigmaup_2018 param 61.3336  0.001 
- bg2p_p1ech_2018 param 2.77558  0.348097 
- bg4p_p2much_2018 param -4.06863  1.4668 
- bg4p_p1much_2017v2 param 8.49269  2.76923 
- bg4p_p1much_2016v3 param -11.7218  3.25692 
- bg4p_p2ech_2017v2 param -9.80045  1.83117 
- bg2p_p0ech_2017v2 param 11.7659  2.10862 
- bgexp2_p1much_2018 param 4.23256  0.0651654 
- bgexp2_p0much_2018 param 8.28175  0.382901 
- bg2p_p0ech_2016v3 param 10.1208  2.26787 
- bg4p_p1much_2018 param -1.9686  2.16793 
- bgexp2_p0ech_2017v2 param 7.48336  0.613973 
- bgexp2_p0ech_2018 param 7.41057  0.495229 
- bg4p_p3much_2017v2 param 1.01929  1.08751 
- bg4p_p0much_2016v3 param 70.1162  12.9248 
- bg4p_p3much_2016v3 param -4.92592  1.30367 
- bg3p_p1much_2018 param 9.18796  1.21319 
- bg4p_p2ech_2016v3 param 1.52256  0.0186507 
- bg2p_p1much_2016v3 param 3.6226  0.404415 
- bgexp2_p0ech_2016v3 param 8.09601  0.661531 
- bg4p_p3ech_2018 param -4.90634  1.53314 
- bg3p_p1much_2017v2 param 8.26186  2.00004 
- bgexp2_p1much_2016v3 param 4.33457  0.0968234 
- bg4p_p3ech_2016v3 param -0.828945  0.829683 
- bg3p_p2much_2017v2 param 3.06831  1.06845 
- bg4p_p3ech_2017v2 param -4.64903  1.22932 
- bg3p_p0ech_2016v3 param -16.1917  4.55898 
- bg3p_p0much_2016v3 param 4.50223  10.0069 
- bg4p_p0ech_2017v2 param 70.12  10.6521 
- bg4p_p0ech_2016v3 param -2.12175  2.57502 
- bg4p_p0ech_2018 param 70.2376  18.3088 
- bg2p_p1ech_2016v3 param 3.20233  0.468056 
- bg4p_p1ech_2018 param -11.7604  4.61493 
- bg4p_p0much_2018 param 31.8671  8.60269 
- bg3p_p2much_2016v3 param 0.642544  1.41259 
- bg3p_p0ech_2017v2 param 5.46657  7.90244 
- bgexp2_p1much_2017v2 param 4.0939  0.0806787 
- bg4p_p1ech_2016v3 param 6.56883  0.700324 
- bgexp2_p1ech_2018 param 4.05551  0.0823376 
- bg3p_p1ech_2017v2 param 4.49877  2.06317 
- bg3p_p2ech_2018 param 0.96453  1.0172 
- bg4p_p2ech_2018 param -9.88251  3.06372 
- bg3p_p0much_2018 param -12.1372  4.62634 
- bg2p_p0much_2017v2 param 13.593  1.70551 
- bg2p_p0much_2016v3 param 9.01146  1.97288 
- bg3p_p1ech_2018 param 4.55996  1.87708 
- bg2p_p1much_2017v2 param 2.5884  0.344971 
- bg4p_p2much_2016v3 param -10.3331  2.19851 
- bgexp2_p0much_2017v2 param 7.28701  0.499324 
- bg4p_p0much_2017v2 param -9.48928  10.9841 
- bg4p_p2much_2017v2 param 3.60197  1.86745 
- bg4p_p1ech_2017v2 param -11.7894  2.6851 
- bg3p_p1ech_2016v3 param 10.1534  1.19911 
- bg2p_p0ech_2018 param 12.2243  1.70255 
- bg3p_p2much_2018 param 3.23632  0.662923 
- bgexp2_p0much_2016v3 param 8.68785  0.566957 
- bg3p_p0much_2017v2 param -8.04427  7.67226 
- bg3p_p0ech_2018 param 5.41655  7.19521 
- bg2p_p1ech_2017v2 param 2.84709  0.432529 
- bg3p_p1much_2016v3 param 4.80761  2.61674 
- bg3p_p2ech_2016v3 param 3.83153  0.69557 
- bgexp2_p1ech_2017v2 param 4.052  0.103026 
- bg3p_p2ech_2017v2 param 0.893794  1.12657 
- bgexp2_p1ech_2016v3 param 4.14492  0.114309 
- bg4p_p3much_2018 param -2.97632  0.862703 
- bg2p_p1much_2018 param 3.2971  0.27163 
- bg2p_p0much_2018 param 10.1907  1.32537 
+ bg3p_p0much_2018 param -13.4095  0.35862 
+ bgexp2_p0much_2018 param 9.44815  0.240871 
+ bgexp2_p0ech_2017v2 param 8.83039  0.38323 
+ bgexp2_p0ech_2018 param 8.866  0.307532 
+ bgexp2_p1much_2018 param 4.46684  0.0344645 
+ bg3p_p1much_2018 param 9.47036  0.0916694 
+ bg3p_p1much_2017v2 param 0.680016  0.141566 
+ bgexp2_p1much_2016v3 param 4.47586  0.051505 
+ bg3p_p2much_2017v2 param -1.2176  0.063795 
+ bg3p_p0ech_2016v3 param -15.1387  0.503885 
+ bg3p_p1ech_2018 param 2.80407  0.13897 
+ bg3p_p2much_2016v3 param 2.849  0.0361601 
+ bg3p_p0ech_2017v2 param 12.3781  0.687325 
+ bgexp2_p1much_2017v2 param 4.46441  0.0420279 
+ bgexp2_p1ech_2018 param 4.33346  0.0435114 
+ bg3p_p2ech_2018 param -0.141942  0.0633919 
+ bgexp2_p0ech_2016v3 param 8.92278  0.425317 
+ bgexp2_p0much_2017v2 param 9.3066  0.299349 
+ bg3p_p1ech_2017v2 param 2.65761  0.174514 
+ bg3p_p1ech_2016v3 param 9.83174  0.129292 
+ bg3p_p2much_2018 param 2.88995  0.0418949 
+ bgexp2_p0much_2016v3 param 9.41615  0.363387 
+ bg3p_p0much_2017v2 param 20.6596  0.562309 
+ bg3p_p0ech_2018 param 12.0119  0.548155 
+ bg3p_p0much_2016v3 param -12.8307  0.30087 
+ bg3p_p1much_2016v3 param 9.35681  0.0766594 
+ bg3p_p2ech_2016v3 param 3.1841  0.0600821 
+ bgexp2_p1ech_2017v2 param 4.30684  0.054718 
+ bg3p_p2ech_2017v2 param -0.213465  0.079773 
+ bgexp2_p1ech_2016v3 param 4.31759  0.0611697 
  ------------------------------ 

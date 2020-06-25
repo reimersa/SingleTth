@@ -1110,10 +1110,6 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   fit_xmin = mean - factormin*sigma;
   fit_xmax = mean + factormax*sigma;
   
-  if(year.Contains("allyears")) {
-    fit_xmin = mean - 1.5*sigma;
-  fit_xmax = mean + 2*sigma;
-  }
 
   // if(b_test){
   //   fit_xmin = MT-300.; //600
@@ -1319,13 +1315,13 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   //  text->DrawLatex(xvalue, 0.55, info7.Data());  
 
   TString info8 = TString::Format("#chi^{2}/ndf = %.2f / %i", fitmodel->GetChisquare(),fitmodel->GetNDF() );
-  text->DrawLatex(xvalue, 0.53-yoffset, info8.Data());  
+  //  text->DrawLatex(xvalue, 0.53-yoffset, info8.Data());  
 
   TString info9 = TString::Format("#mu = %.0f #pm %.0f GeV", fitmodel->GetParameter(0), fitmodel->GetParError(0) );
-  text->DrawLatex(xvalue, 0.47-yoffset, info9.Data());  
+  text->DrawLatex(xvalue, 0.53-yoffset, info9.Data());  
 
   TString info10 = TString::Format("#sigma = %.0f #pm %.0f GeV",  fitmodel->GetParameter(1), fitmodel->GetParError(1));
-  text->DrawLatex(xvalue, 0.42-yoffset, info10.Data());  
+  text->DrawLatex(xvalue, 0.47-yoffset, info10.Data());  
 
 
   ////// CMS tags

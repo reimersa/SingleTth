@@ -73,7 +73,7 @@ lumi_unc["2017v2"] = 0.023
 lumi_unc["2018"] = 0.025
 
 years = {"2016v3","2017v2","2018"}
-#years = {"2018"}
+#years = {"2017v2"}
 
 number_of_channels = 2 * len(years)
 number_of_backgrounds = "*"
@@ -208,8 +208,13 @@ for year in years:
         if "Bg" in line:
             for j in range(i+1,len(listOfLines)):
                 if "bg" in listOfLines[j]:
-                    value = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[1]
-                    error = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[2]
+                    if len(re.findall(r'[-+]?\d+.\d+',listOfLines[j]))>2:
+                        value = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[1]
+                        error = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[2]
+                    else:
+                        value = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[3]
+                        error = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[4]
+                        
                     key = listOfLines[j].split("  ")[0]
 
                     bg3p_v[key] = value
