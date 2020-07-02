@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mass="1000"
+mass="700"
 datacard="Datacard_allyears_M${mass}.txt"
 #datacard="Datacard_allyears_M${mass}_much.txt"
 #datacard="Datacard_allyears_M${mass}_ech.txt"
@@ -34,10 +34,10 @@ eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param}  --free
 eval "python create_snapshot.py -mass ${mass} -signal 1.0"
 
 
- eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters  ${set_param}  -t 300 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
+ eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters  ${set_param}  -t 1000 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
 
 
-eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n exp2p_r1${postfix}"
+eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n exp2p_r1${postfix}"
 
 
 ####### dijet 3p
@@ -49,16 +49,16 @@ eval "combine $datacard -M FitDiagnostics  --setParameters ${set_param}  --freez
 eval "python create_snapshot.py -mass ${mass} -signal 1.0"
 
 
- eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters ${set_param}  -t 300 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
+ eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters ${set_param}  -t 1000 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
 
 
 ##set_param="pdf_index_much_2016v3=1,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=1,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=1,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=1,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=1,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=1,pdf_index_MT${mass}_ech_2018=0"
 
 
-eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param} --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters ${freeze_param}  --cminDefaultMinimizerStrategy=0 -n dijet3p_r1${postfix}"
+eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param} --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters ${freeze_param}  --cminDefaultMinimizerStrategy=0 -n dijet3p_r1${postfix}"
 
 
-##### r=0
+# ##### r=0
 # set_param="pdf_index_much_2016v3=1,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=1,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=1,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=1,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=1,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=1,pdf_index_MT${mass}_ech_2018=0"
 
 # freeze_param="pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3,pdf_index_much_2017v2,pdf_index_MT${mass}_much_2017v2,pdf_index_ech_2017v2,pdf_index_MT${mass}_ech_2017v2,sg_mean_2017v2,sg_sigma_2017v2,sg_JERmeandown_2017v2,sg_JERmeanup_2017v2,sg_JECmeandown_2017v2,sg_JECmeanup_2017v2,sg_JERsigmadown_2017v2,sg_JERsigmaup_2017v2,sg_JECsigmadown_2017v2,sg_JECsigmaup_2017v2,pdf_index_much_2018,pdf_index_MT${mass}_much_2018,pdf_index_ech_2018,pdf_index_MT${mass}_ech_2018,sg_mean_2018,sg_sigma_2018,sg_JERmeandown_2018,sg_JERmeanup_2018,sg_JECmeandown_2018,sg_JECmeanup_2018,sg_JERsigmadown_2018,sg_JERsigmaup_2018,sg_JECsigmadown_2018,sg_JECsigmaup_2018"

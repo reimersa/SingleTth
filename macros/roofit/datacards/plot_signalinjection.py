@@ -31,10 +31,10 @@ gStyle.SetPaintTextFormat("2.3f")
 
 #signalstrength = {0.0,0.25,0.5,0.75,1.0,1.5,2.0,2.5,3.0}
 signalstrength = {0.0,0.25,0.5,0.75,1.0}
-masses = {600,1000}
+masses = {700}
 
-color = [kBlue,kBlack]
-color_lm = [kBlue,kBlack]
+color = [kBlue,kBlack,kRed]
+color_lm = [kBlue,kBlack,kRed]
 style = [0,5,2]
 style_lm = [3,4]
 marker = [20,21,22]
