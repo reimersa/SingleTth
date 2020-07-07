@@ -175,8 +175,8 @@ namespace uhh2examples {
     sys_pu = ctx.get("sys_pu");
 
 
-    btag_algo = BTag::DEEPJET;
-    //    btag_algo = BTag::DEEPCSV;
+    //btag_algo = BTag::DEEPJET;
+    btag_algo = BTag::DEEPCSV;
     wp_loose = BTag::WP_LOOSE;
     wp_medium = BTag::WP_MEDIUM;
     wp_tight = BTag::WP_TIGHT;
