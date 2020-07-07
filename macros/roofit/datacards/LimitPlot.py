@@ -16,10 +16,10 @@ from collections import OrderedDict
 
 
 berror = False
-#year = "2016v3"
+year = "2016v3"
 #year = "2017v2"
 #year = "2018"
-year = "allyears"
+#year = "allyears"
 
 postfix = "_mediumWP_allyearsunc_exp"
 

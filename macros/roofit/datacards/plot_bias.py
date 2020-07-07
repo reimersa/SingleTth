@@ -307,6 +307,7 @@ histo_exp = gROOT.FindObject("h")
 histo_exp.SetLineColor(kRed)
 histo_exp.SetLineWidth(2)
 mean_exp = histo_exp.GetMean()
+rms_exp = histo_exp.GetRMS()
 
 # 3p vs exp
 infile = TFile("fitDiagnosticsexp2p_r1_fitmin450GeV_MT600GeV.root","r")
@@ -318,6 +319,7 @@ histo_dijet3p.SetLineColor(kBlack)
 histo_dijet3p.SetLineWidth(2)
 histo_dijet3p.SetLineStyle(2)
 mean_dijet3p = histo_dijet3p.GetMean()
+rms_dijet3p = histo_dijet3p.GetRMS()
 
 histo_exp.GetXaxis().SetTitle("(r-1)/#sigma_{r}")
 histo_exp.GetYaxis().SetTitle("Toys")
@@ -443,14 +445,14 @@ text.Draw("same")
 text2 = CMSPlotStyle.draw_info("M_{T} = 600 GeV",0.55,0.8,11)
 text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 leg.SetHeader("Generation and fitting with")
-leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)
@@ -498,14 +500,14 @@ text.Draw("same")
 text2 = CMSPlotStyle.draw_info("M_{T} = 600 GeV",0.55,0.8,11)
 text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 leg.SetHeader("Generation and fitting with")
-leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)
@@ -555,14 +557,14 @@ text.Draw("same")
 text2 = CMSPlotStyle.draw_info("M_{T} = 800 GeV",0.55,0.8,11)
 text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 leg.SetHeader("Generation and fitting with")
-leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)
@@ -610,14 +612,14 @@ text.Draw("same")
 text2 = CMSPlotStyle.draw_info("M_{T} = 800 GeV",0.55,0.8,11)
 text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 leg.SetHeader("Generation and fitting with")
-leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)
@@ -668,14 +670,14 @@ text.Draw("same")
 text2 = CMSPlotStyle.draw_info("M_{T} = 1000 GeV",0.55,0.8,11)
 text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 leg.SetHeader("Generation and fitting with")
-leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)
@@ -723,14 +725,14 @@ text.Draw("same")
 text2 = CMSPlotStyle.draw_info("M_{T} = 1000 GeV",0.55,0.8,11)
 text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 leg.SetHeader("Generation and fitting with")
-leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)
@@ -867,14 +869,14 @@ text.Draw("same")
 text2 = CMSPlotStyle.draw_info("M_{T} = 700 GeV",0.55,0.8,11)
 text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 leg.SetHeader("Generation and fitting with")
-leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)
@@ -923,14 +925,14 @@ text.Draw("same")
 text2 = CMSPlotStyle.draw_info("M_{T} = 700 GeV",0.55,0.8,11)
 text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 leg.SetHeader("Generation and fitting with")
-leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
 leg.Draw()
 
 lumi = CMSPlotStyle.draw_lumi(True)

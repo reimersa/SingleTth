@@ -47,6 +47,8 @@ SingleTthHists::SingleTthHists(Context & ctx, const string & dirname): Hists(ctx
   book<TH1F>("DeepJet_discriminant_jet1", "DeepJet Discriminant: first jet", 100, 0, 1);
   book<TH1F>("DeepJet_discriminant_jet2", "DeepJet Discriminant: second jet", 100, 0, 1);
   book<TH1F>("DeepJet_discriminant_jet3", "DeepJet Discriminant: third jet", 100, 0, 1);
+  eta_phi_map = book<TH2F>("eta_phi_map","eta phi map medium WP",24,-2.4,2.4,31,-3.1,3.1);
+
 
 
   book<TH1F>("N_mu", "N^{#mu}", 11, -0.5, 10.5);
@@ -234,7 +236,10 @@ void SingleTthHists::fill(const Event & event){
     if(Btag_medium(jets->at(i),event)) Nbjets_medium++;
     if(Btag_tight(jets->at(i),event))  Nbjets_tight++;
     if(DeepjetLoose(jets->at(i),event))  Ndeepjet_loose++;
-    if(DeepjetMedium(jets->at(i),event)) Ndeepjet_med++;
+    if(DeepjetMedium(jets->at(i),event)){
+      Ndeepjet_med++;
+      eta_phi_map->Fill(jets->at(i).eta(),jets->at(i).phi(),weight);
+    }
     if(DeepjetTight(jets->at(i),event))  Ndeepjet_tight++;
     if(DeepCSVTight(jets->at(i),event))  Ndeepcsv_tight++;
     hist("DeepJet_discriminant_jet") -> Fill(jets->at(i).btag_DeepJet(),weight);
