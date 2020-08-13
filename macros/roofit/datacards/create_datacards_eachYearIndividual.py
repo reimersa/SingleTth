@@ -26,6 +26,7 @@ bkg_ech_norm = {} # for all years: key is year
 
 signal_much_norm = {} # for all years and mass points: key is year_mass
 signal_ech_norm = {} # for all years and mass points: key is year_mass
+
 mean_value = {} # for all years and mass points: key is year_mass
 mean_value_JEC_up = {} # for all years and mass points: key is year_mass
 mean_value_JEC_down = {} # for all years and mass points: key is year_mass
@@ -38,6 +39,27 @@ sigma_value_JEC_up = {} # for all years and mass points: key is year_mass
 sigma_value_JEC_down = {} # for all years and mass points: key is year_mass
 sigma_value_JER_up = {} # for all years and mass points: key is year_mass
 sigma_value_JER_down = {} # for all years and mass points: key is year_mass
+
+####second gaus
+mean2_value = {} # for all years and mass points: key is year_mass
+mean2_value_JEC_up = {} # for all years and mass points: key is year_mass
+mean2_value_JEC_down = {} # for all years and mass points: key is year_mass
+mean2_value_JER_up = {} # for all years and mass points: key is year_mass
+mean2_value_JER_down = {} # for all years and mass points: key is year_mass
+mean2_error = {} # for all years and mass points: key is year_mass
+sigma2_value = {} # for all years and mass points: key is year_mass
+sigma2_error = {} # for all years and mass points: key is year_mass
+sigma2_value_JEC_up = {} # for all years and mass points: key is year_mass
+sigma2_value_JEC_down = {} # for all years and mass points: key is year_mass
+sigma2_value_JER_up = {} # for all years and mass points: key is year_mass
+sigma2_value_JER_down = {} # for all years and mass points: key is year_mass
+
+fnorm_value = {} # for all years and mass points: key is year_mass
+fnorm_error = {} # for all years and mass points: key is year_mass
+fnorm_value_JEC_up = {} # for all years and mass points: key is year_mass
+fnorm_value_JEC_down = {} # for all years and mass points: key is year_mass
+fnorm_value_JER_up = {} # for all years and mass points: key is year_mass
+fnorm_value_JER_down = {} # for all years and mass points: key is year_mass
 
 
 
@@ -73,7 +95,7 @@ lumi_unc["2017v2"] = 0.023
 lumi_unc["2018"] = 0.025
 
 years = {"2016v3","2017v2","2018"}
-#years = {"2016v3"}
+#years = {"2018"}
 
 number_of_channels = 2 * len(years)
 number_of_backgrounds = "*"
@@ -196,6 +218,29 @@ for year in years:
                 sigma_value_JER_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[9]
                 sigma_value_JEC_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[11]
                 sigma_value_JEC_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[13]
+
+                mean2_value[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[14]
+                mean2_error[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[15]
+
+                sigma2_value[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[16]
+                sigma2_error[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[17]
+
+                mean2_value_JER_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[18]
+                mean2_value_JER_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[19]
+                mean2_value_JEC_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[20]
+                mean2_value_JEC_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[21]
+
+                sigma2_value_JER_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[22]
+                sigma2_value_JER_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[23]
+                sigma2_value_JEC_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[24]
+                sigma2_value_JEC_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[25]
+
+                fnorm_value[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[26]
+                fnorm_error[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[27]
+                fnorm_value_JER_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[28]
+                fnorm_value_JER_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[29]
+                fnorm_value_JEC_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[30]
+                fnorm_value_JEC_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[31]
 
 
 
@@ -365,6 +410,27 @@ for mass in masses:
         outputfile.write("sg_JECsigmadown_"+year+" param "+str(sigma_value_JEC_down[year+"_"+mass])+"  0.001 \n ")
         outputfile.write("sg_JECsigmaup_"+year+" param "+str(sigma_value_JEC_up[year+"_"+mass])+"  0.001 \n ")
 
+        outputfile.write("sg_mean2_"+year+" param "+str(mean2_value[year+"_"+mass])+"  "+str(mean2_error[year+"_"+mass])+" \n ")
+        outputfile.write("sg_sigma2_"+year+" param "+str(sigma2_value[year+"_"+mass])+"  "+str(sigma2_error[year+"_"+mass])+" \n ")
+
+        ##### JER and JEC variations
+        outputfile.write("sg_JERmeandown2_"+year+" param "+str(mean2_value_JER_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JERmeanup2_"+year+" param "+str(mean2_value_JER_up[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECmeandown2_"+year+" param "+str(mean2_value_JEC_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECmeanup2_"+year+" param "+str(mean2_value_JEC_up[year+"_"+mass])+"  0.001 \n ")
+
+
+        outputfile.write("sg_JERsigmadown2_"+year+" param "+str(sigma2_value_JER_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JERsigmaup2_"+year+" param "+str(sigma2_value_JER_up[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECsigmadown2_"+year+" param "+str(sigma2_value_JEC_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECsigmaup2_"+year+" param "+str(sigma2_value_JEC_up[year+"_"+mass])+"  0.001 \n ")
+
+        ############ fnorm
+        outputfile.write("sg_fnorm_"+year+" param "+str(fnorm_value[year+"_"+mass])+"  "+str(fnorm_error[year+"_"+mass])+" \n ")
+        outputfile.write("sg_JERfnormdown_"+year+" param "+str(fnorm_value_JER_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JERfnormup_"+year+" param "+str(fnorm_value_JER_up[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECfnromdown_"+year+" param "+str(fnorm_value_JEC_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECfnormup_"+year+" param "+str(fnorm_value_JEC_up[year+"_"+mass])+"  0.001 \n ")
     
     for key in bg3p_v:
         outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")

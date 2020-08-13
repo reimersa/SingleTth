@@ -29,13 +29,13 @@ gStyle.SetPaintTextFormat("2.3f")
 
 
 
-infile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/CrystalLikelihood/NOMINAL/uhh2.AnalysisModuleRunner.MC.TTbar_2016v3.root") 
+infile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/uhh2.AnalysisModuleRunner.MC.TTbar_2016v3.root") 
 TH1.AddDirectory(0)    
 
-infile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.TTbar_semileptonic_2017v2.root") 
+infile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/uhh2.AnalysisModuleRunner.MC.TTbar_semileptonic_2017v2.root") 
 TH1.AddDirectory(0)    
 
-infile_2018 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.TTbar_semileptonic_2018.root") 
+infile_2018 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/uhh2.AnalysisModuleRunner.MC.TTbar_semileptonic_2018.root") 
 TH1.AddDirectory(0)    
 
 preinfile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Preselection/NOMINAL/uhh2.AnalysisModuleRunner.MC.TTbar_2016v3.root") 
@@ -480,10 +480,10 @@ TH1.AddDirectory(0)
 create_cutflow( preinfile_2016, preinfile_2017,preinfile_2018,infile_2016,infile_2017,infile_2018, "VLQ1000")
 
 ###### VLQ
-infile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_B_2016v3.root") 
+infile_2016 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_B_2016v3.root") 
 TH1.AddDirectory(0)    
 
-infile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_2017v2.root") 
+infile_2017 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_2017v2.root") 
 TH1.AddDirectory(0)    
 
 infile_2018 = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_2018.root") 
@@ -586,43 +586,46 @@ create_cutflow( preinfile_2016, preinfile_2017,preinfile_2018,infile_2016,infile
 ###### print background composition
 histfolder = "chi2h_2_much_sr"
 #histfolder = "chi2h_2_much_cr"
-
+#histname="M_Tprime_rebin2"
 #filepath="/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/CrystalLikelihood/NOMINAL/"
-filepath="/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/"
+filepath="/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"
 
-infile_2016_DY= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.DYJets_2016v3.root") 
-TH1.AddDirectory(0)    
-hist_2016_DY = infile_2016_DY.Get(histfolder+"/"+histname).Integral()
+year = "2017v2"
 
-infile_2016_Wjets= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.WJets_2016v3.root") 
+infile_2016_DY= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.DYJets_"+year+".root") 
 TH1.AddDirectory(0)    
-hist_2016_Wjets = infile_2016_Wjets.Get(histfolder+"/"+histname).Integral()
+hist_2016_DY = infile_2016_DY.Get(histfolder+"/"+histname).Integral(14,21)
 
-infile_2016_QCD= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.QCDMu_2016v3.root") 
+infile_2016_Wjets= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.WJets_"+year+".root") 
 TH1.AddDirectory(0)    
-hist_2016_QCD = infile_2016_QCD.Get(histfolder+"/"+histname).Integral()
+hist_2016_Wjets = infile_2016_Wjets.Get(histfolder+"/"+histname).Integral(14,21)
 
-infile_2016_TTV= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.TTV_2016v3.root") 
+infile_2016_QCD= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.QCDMu_"+year+".root") 
 TH1.AddDirectory(0)    
-hist_2016_TTV = infile_2016_TTV.Get(histfolder+"/"+histname).Integral()
+hist_2016_QCD = infile_2016_QCD.Get(histfolder+"/"+histname).Integral(14,21)
 
-infile_2016_Diboson= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.Diboson_2016v3.root") 
+infile_2016_TTV= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.TTV_"+year+".root") 
 TH1.AddDirectory(0)    
-hist_2016_Diboson = infile_2016_Diboson.Get(histfolder+"/"+histname).Integral()
+hist_2016_TTV = infile_2016_TTV.Get(histfolder+"/"+histname).Integral(14,21)
 
-infile_2016_SingleTop= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.SingleTop_2016v3.root") 
+infile_2016_Diboson= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.Diboson_"+year+".root") 
 TH1.AddDirectory(0)    
-hist_2016_SingleTop = infile_2016_SingleTop.Get(histfolder+"/"+histname).Integral()
+hist_2016_Diboson = infile_2016_Diboson.Get(histfolder+"/"+histname).Integral(14,21)
 
-infile_2016_ttbar = TFile(filepath+"uhh2.AnalysisModuleRunner.MC.TTbar_2016v3.root") 
+infile_2016_SingleTop= TFile(filepath+"uhh2.AnalysisModuleRunner.MC.SingleTop_"+year+".root") 
 TH1.AddDirectory(0)    
-hist_2016_ttbar = infile_2016_ttbar.Get(histfolder+"/"+histname).Integral()
+hist_2016_SingleTop = infile_2016_SingleTop.Get(histfolder+"/"+histname).Integral(14,21)
+
+infile_2016_ttbar = TFile(filepath+"uhh2.AnalysisModuleRunner.MC.TTbar_"+year+".root") 
+TH1.AddDirectory(0)    
+hist_2016_ttbar = infile_2016_ttbar.Get(histfolder+"/"+histname).Integral(14,21)
 
 total_2016 = hist_2016_ttbar+hist_2016_SingleTop+hist_2016_Diboson+hist_2016_TTV+hist_2016_QCD+hist_2016_Wjets+hist_2016_DY
 
-infile_2016_VLQ = TFile(filepath+"uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_B_2016v3.root") 
+#infile_2016_VLQ = TFile(filepath+"uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_B_"+year+".root") 
+infile_2016_VLQ = TFile(filepath+"uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_"+year+".root") 
 TH1.AddDirectory(0)    
-hist_2016_VLQ = infile_2016_VLQ.Get(histfolder+"/"+histname).Integral()
+hist_2016_VLQ = infile_2016_VLQ.Get(histfolder+"/"+histname).Integral(14,21)
 
 print "========== 2016"
 print "ttbar:  %.2f"%(hist_2016_ttbar/total_2016)

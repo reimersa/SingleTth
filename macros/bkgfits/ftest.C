@@ -331,6 +331,203 @@ void ftest()
     // if (exlCL>0.05) usep4++;
     // else usep5++;
 
+	// ------------ SR Data ---------------
+
+
+	cout << endl << "SR Data e+jets, Exp2p vs 3p" << endl;
+	c1 = 45.92;
+	c2 = 44.74;
+	p1 = 2;
+	p2 = 3;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep3d++;
+
+
+	cout << endl << "SR Data e+jets, 3p vs 4p" << endl;
+	c1 = 44.74;
+	c2 = 43.81;
+	p1 = 3;
+	p2 = 4;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) usep3d++;
+
+	cout << endl << "SR Data e+jets, Exp2p vs 4p" << endl;
+	c1 = 45.92;
+	c2 = 43.81;
+	p1 = 2;
+	p2 = 4;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep4d++;
+
+
+
+	cout << endl << "SR Data mu+jets, Exp2 vs 3p" << endl;
+	c1 = 42.22;
+	c2 = 41.90;
+	p1 = 2;
+	p2 = 3;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep3d++;
+
+	cout << endl << "SR Data mu+jets, 3p vs 4p" << endl;
+	c1 = 41.90;
+	c2 = 41.65;
+	p1 = 3;
+	p2 = 4;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) usep3d++;
+
+	cout << endl << "SR Data mu+jets, Exp2 vs 4p" << endl;
+	c1 = 42.22;
+	c2 = 41.65;
+	p1 = 2;
+	p2 = 4;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep4d++;
+
+
+	// ------------ SR Data 2017 ---------------
+    cout<<"============= 2017"<<endl;
+
+	cout << endl << "SR Data e+jets, Exp2p vs 3p" << endl;
+	c1 = 50.58;
+	c2 = 43.42;
+	p1 = 2;
+	p2 = 3;
+	n = 64;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep3d++;
+
+
+	cout << endl << "SR Data e+jets, 3p vs 4p" << endl;
+	c1 = 43.42;
+	c2 = 43.41;
+	p1 = 3;
+	p2 = 4;
+	n = 64;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) usep3d++;
+
+	cout << endl << "SR Data e+jets, Exp2p vs 4p" << endl;
+	c1 = 50.58;
+	c2 = 43.41;
+	p1 = 2;
+	p2 = 4;
+	n = 64;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep4d++;
+
+
+
+	cout << endl << "SR Data mu+jets, Exp2 vs 3p" << endl;
+	c1 = 112.31;
+	c2 = 80.73;
+	p1 = 2;
+	p2 = 3;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep3d++;
+
+	cout << endl << "SR Data mu+jets, 3p vs 4p" << endl;
+	c1 = 80.73;
+	c2 = 79.61;
+	p1 = 3;
+	p2 = 4;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) usep3d++;
+
+	cout << endl << "SR Data mu+jets, Exp2 vs 4p" << endl;
+	c1 = 112.31;
+	c2 = 79.61;
+	p1 = 2;
+	p2 = 4;
+	n = 65;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep4d++;
+
+
+
+	// ------------ SR Data 2018 ---------------
+    cout<<"============= 2018"<<endl;
+
+	cout << endl << "SR Data e+jets, Exp2p vs 3p" << endl;
+	c1 = 68.12;
+	c2 = 50.50;
+	p1 = 2;
+	p2 = 3;
+	n = 69;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep3d++;
+
+
+	cout << endl << "SR Data e+jets, 3p vs 4p" << endl;
+	c1 = 50.50;
+	c2 = 50.41;
+	p1 = 3;
+	p2 = 4;
+	n = 69;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) usep3d++;
+
+	cout << endl << "SR Data e+jets, Exp2p vs 4p" << endl;
+	c1 = 68.12;
+	c2 = 50.41;
+	p1 = 2;
+	p2 = 4;
+	n = 69;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep4d++;
+
+
+
+	cout << endl << "SR Data mu+jets, Exp2 vs 3p" << endl;
+	c1 = 94.01;
+	c2 = 73.59;
+	p1 = 2;
+	p2 = 3;
+	n = 74;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep3d++;
+
+	cout << endl << "SR Data mu+jets, 3p vs 4p" << endl;
+	c1 = 73.59;
+	c2 = 73.01;
+	p1 = 3;
+	p2 = 4;
+	n = 74;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) usep3d++;
+
+	cout << endl << "SR Data mu+jets, Exp2 vs 4p" << endl;
+	c1 = 94.01;
+	c2 = 73.01;
+	p1 = 2;
+	p2 = 4;
+	n = 74;
+    exlCL = DoFTest(c1, c2, p1, p2, n);
+    if (exlCL>0.05) useexpp2d++;
+    else usep4d++;
+
+
+
 
     cout << "\n----------- SUMMARY -----------" << endl;
     cout << "Use 2-par fit: " << usep2+usep2d << endl;
@@ -338,7 +535,7 @@ void ftest()
     cout << "Use 3-par fit: " << usep3+usep3d << endl;
     cout << "Use 4-par fit: " << usep4+usep4d << endl;
     cout << "Use 5-par fit: " << usep5+usep5d << endl;
-    cout << "Tests on Data in CRs only:" << endl;
+    cout << "Tests on Data:" << endl;
     cout << "Use 2-par fit: " << usep2d << endl;
     cout << "Use EXP2-par fit: " << useexpp2d << endl;
     cout << "Use 3-par fit: " << usep3d << endl;

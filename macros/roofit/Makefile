@@ -20,8 +20,8 @@ SRC3= CreateRooWorkspace.o create_roo_2018.o
 SRC4= CreateRooWorkspace.o create_roo_CR.o
 SRC5= CreateRooWorkspace.o create_roo_2017_CR.o
 SRC6= CreateRooWorkspace.o create_roo_2018_CR.o
-SL_HEADERS= BkgPdfExp2.h BkgPdf3p.h BkgPdf4p.h RooMultiPdf.h BkgPdf2p.h SignalDoubleGauss_M600.h SignalDoubleGauss_M1000.h
-SL_SOURCES= BkgPdfExp2.C BkgPdf3p.C BkgPdf4p.C RooMultiPdf.C BkgPdf2p.C SignalDoubleGauss_M600.C SignalDoubleGauss_M1000.C
+SL_HEADERS= BkgPdfExp2.h BkgPdf3p.h BkgPdf4p.h RooMultiPdf.h BkgPdf2p.h SignalDoubleGauss_M600.h SignalDoubleGauss_M1000.h SignalDoubleGauss.h
+SL_SOURCES= BkgPdfExp2.C BkgPdf3p.C BkgPdf4p.C RooMultiPdf.C BkgPdf2p.C SignalDoubleGauss_M600.C SignalDoubleGauss_M1000.C SignalDoubleGauss.C
 
 default: all
 

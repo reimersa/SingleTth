@@ -26,9 +26,9 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 
 void PDFRMS(){
 
-  //     TString year = "2016v3";
-  //    TString year = "2017v2";
-     TString year = "2018";
+  TString year = "2016v3";
+  //TString year = "2017v2";
+  //       TString year = "2018";
 
 
   TString prodch = "";
@@ -44,6 +44,10 @@ void PDFRMS(){
 
   map<TString, TString> samplemap;
   samplemap["TTbar_"+year] = "uhh2.AnalysisModuleRunner.MC.TTbar_"+year+".root";
+  samplemap["WJets_"+year] = "uhh2.AnalysisModuleRunner.MC.WJets_"+year+".root";
+  samplemap["Diboson_"+year] = "uhh2.AnalysisModuleRunner.MC.Diboson_"+year+".root";
+  samplemap["TTV_"+year] = "uhh2.AnalysisModuleRunner.MC.TTV_"+year+".root";
+  samplemap["DYJets_"+year] = "uhh2.AnalysisModuleRunner.MC.DYJets_"+year+".root";
   samplemap["SingleTop_"+year] = "uhh2.AnalysisModuleRunner.MC.SingleTop_"+year+".root";
   samplemap["VLQ_"+hand+"_600_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_600_"+prodch+year_lowmass+".root";
   samplemap["VLQ_"+hand+"_650_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_650_"+prodch+year_lowmass+".root";
@@ -65,6 +69,10 @@ void PDFRMS(){
   if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtagcomb/";
 
   FindRMS(infolder, samplemap, "TTbar_"+year,year);
+  FindRMS(infolder, samplemap, "WJets_"+year,year);
+  FindRMS(infolder, samplemap, "Diboson_"+year,year);
+  FindRMS(infolder, samplemap, "TTV_"+year,year);
+  FindRMS(infolder, samplemap, "DYJets_"+year,year);
   FindRMS(infolder, samplemap, "SingleTop_"+year,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_600_"+year_lowmass,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_650_"+year_lowmass,year);

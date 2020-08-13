@@ -941,3 +941,232 @@ lumi.Draw("same")
 
 c3.SaveAs("bias_r0_fitmin450GeV_MT700GeV.eps")
 c3.SaveAs("bias_r0_fitmin450GeV_MT700GeV.pdf")
+
+
+
+######## r=1 exp vs dijet 700 GeV doublegauss
+c2 = TCanvas()
+
+# exp vs exp
+infile = TFile("fitDiagnosticsexp2p_r1_bugfix_doublegauss_MT700GeV.root","r")
+TH1.AddDirectory(0)
+tree_fit_sb_exp = infile.Get("tree_fit_sb")
+tree_fit_sb_exp.Draw("(r-1)/rErr>>h(50,-4,6.5)")
+histo_exp = gROOT.FindObject("h")
+histo_exp.SetLineColor(kRed)
+histo_exp.SetLineWidth(2)
+mean_exp = histo_exp.GetMean()
+rms_exp = histo_exp.GetRMS()
+print rms_exp
+
+# 3p vs exp
+infile = TFile("fitDiagnosticsdijet3p_r1_bugfix_doublegauss_MT700GeV.root","r")
+TH1.AddDirectory(0)
+tree_fit_sb_dijet3p = infile.Get("tree_fit_sb")
+tree_fit_sb_dijet3p.Draw("(r-1)/rErr>>h3p(50,-4,6.5)")
+histo_dijet3p = gROOT.FindObject("h3p")
+histo_dijet3p.SetLineColor(kBlack)
+histo_dijet3p.SetLineWidth(2)
+histo_dijet3p.SetLineStyle(2)
+mean_dijet3p = histo_dijet3p.GetMean()
+rms_dijet3p = histo_dijet3p.GetRMS()
+print rms_dijet3p
+
+histo_exp.GetXaxis().SetTitle("(r-1)/#sigma_{r}")
+histo_exp.GetYaxis().SetTitle("Toys")
+histo_exp.SetMaximum(120)
+histo_exp.Draw("HIST")
+histo_dijet3p.Draw("same")
+
+text = CMSPlotStyle.draw_info("Bias test: r=1",0.55,0.85,11)
+text.Draw("same")
+
+text2 = CMSPlotStyle.draw_info("M_{T} = 700 GeV",0.55,0.8,11)
+text2.Draw("same")
+
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
+leg.SetBorderSize(0);	
+leg.SetFillStyle(0);
+leg.SetTextSize(0.035);
+leg.SetTextFont(42);
+leg.SetHeader("Generation and fitting with")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
+leg.Draw()
+
+lumi = CMSPlotStyle.draw_lumi(True)
+lumi.Draw("same")
+
+c2.SaveAs("bias_r1_bugfix_doublegauss_MT700GeV.eps")
+c2.SaveAs("bias_r1_bugfix_doublegauss_MT700GeV.pdf")
+
+
+######## r=1 exp vs dijet 600 GeV bugfix_doublegauss
+c2 = TCanvas()
+
+# exp vs exp
+infile = TFile("fitDiagnosticsexp2p_r1_bugfix_doublegauss_MT600GeV.root","r")
+TH1.AddDirectory(0)
+tree_fit_sb_exp = infile.Get("tree_fit_sb")
+tree_fit_sb_exp.Draw("(r-1)/rErr>>h(50,-4,6.5)")
+histo_exp = gROOT.FindObject("h")
+histo_exp.SetLineColor(kRed)
+histo_exp.SetLineWidth(2)
+mean_exp = histo_exp.GetMean()
+rms_exp = histo_exp.GetRMS()
+print rms_exp
+
+# 3p vs exp
+infile = TFile("fitDiagnosticsdijet3p_r1_bugfix_doublegauss_MT600GeV.root","r")
+TH1.AddDirectory(0)
+tree_fit_sb_dijet3p = infile.Get("tree_fit_sb")
+tree_fit_sb_dijet3p.Draw("(r-1)/rErr>>h3p(50,-4,6.5)")
+histo_dijet3p = gROOT.FindObject("h3p")
+histo_dijet3p.SetLineColor(kBlack)
+histo_dijet3p.SetLineWidth(2)
+histo_dijet3p.SetLineStyle(2)
+mean_dijet3p = histo_dijet3p.GetMean()
+rms_dijet3p = histo_dijet3p.GetRMS()
+print rms_dijet3p
+
+histo_exp.GetXaxis().SetTitle("(r-1)/#sigma_{r}")
+histo_exp.GetYaxis().SetTitle("Toys")
+histo_exp.SetMaximum(120)
+histo_exp.Draw("HIST")
+histo_dijet3p.Draw("same")
+
+text = CMSPlotStyle.draw_info("Bias test: r=1",0.55,0.85,11)
+text.Draw("same")
+
+text2 = CMSPlotStyle.draw_info("M_{T} = 600 GeV",0.55,0.8,11)
+text2.Draw("same")
+
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
+leg.SetBorderSize(0);	
+leg.SetFillStyle(0);
+leg.SetTextSize(0.035);
+leg.SetTextFont(42);
+leg.SetHeader("Generation and fitting with")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
+leg.Draw()
+
+lumi = CMSPlotStyle.draw_lumi(True)
+lumi.Draw("same")
+
+c2.SaveAs("bias_r1_bugfix_doublegauss_MT600GeV.eps")
+c2.SaveAs("bias_r1_bugfix_doublegauss_MT600GeV.pdf")
+
+######## r=0 exp vs dijet 600 GeV bugfix_doublegauss
+c2 = TCanvas()
+
+# exp vs exp
+infile = TFile("fitDiagnosticsexp2p_r0_bugfix_doublegauss_MT600GeV.root","r")
+TH1.AddDirectory(0)
+tree_fit_sb_exp = infile.Get("tree_fit_sb")
+tree_fit_sb_exp.Draw("(r)/rErr>>h(50,-4,6.5)")
+histo_exp = gROOT.FindObject("h")
+histo_exp.SetLineColor(kRed)
+histo_exp.SetLineWidth(2)
+mean_exp = histo_exp.GetMean()
+rms_exp = histo_exp.GetRMS()
+print rms_exp
+
+# 3p vs exp
+infile = TFile("fitDiagnosticsdijet3p_r0_bugfix_doublegauss_MT600GeV.root","r")
+TH1.AddDirectory(0)
+tree_fit_sb_dijet3p = infile.Get("tree_fit_sb")
+tree_fit_sb_dijet3p.Draw("(r)/rErr>>h3p(50,-4,6.5)")
+histo_dijet3p = gROOT.FindObject("h3p")
+histo_dijet3p.SetLineColor(kBlack)
+histo_dijet3p.SetLineWidth(2)
+histo_dijet3p.SetLineStyle(2)
+mean_dijet3p = histo_dijet3p.GetMean()
+rms_dijet3p = histo_dijet3p.GetRMS()
+print rms_dijet3p
+
+histo_exp.GetXaxis().SetTitle("r/#sigma_{r}")
+histo_exp.GetYaxis().SetTitle("Toys")
+histo_exp.SetMaximum(120)
+histo_exp.Draw("HIST")
+histo_dijet3p.Draw("same")
+
+text = CMSPlotStyle.draw_info("Bias test: r=0",0.55,0.85,11)
+text.Draw("same")
+
+text2 = CMSPlotStyle.draw_info("M_{T} = 600 GeV",0.55,0.8,11)
+text2.Draw("same")
+
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
+leg.SetBorderSize(0);	
+leg.SetFillStyle(0);
+leg.SetTextSize(0.035);
+leg.SetTextFont(42);
+leg.SetHeader("Generation and fitting with")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
+leg.Draw()
+
+lumi = CMSPlotStyle.draw_lumi(True)
+lumi.Draw("same")
+
+c2.SaveAs("bias_r0_bugfix_doublegauss_MT600GeV.eps")
+c2.SaveAs("bias_r0_bugfix_doublegauss_MT600GeV.pdf")
+
+
+######## r=0 exp vs dijet 700 GeV bugfix_doublegauss
+c2 = TCanvas()
+
+# exp vs exp
+infile = TFile("fitDiagnosticsexp2p_r0_bugfix_doublegauss_MT700GeV.root","r")
+TH1.AddDirectory(0)
+tree_fit_sb_exp = infile.Get("tree_fit_sb")
+tree_fit_sb_exp.Draw("r/rErr>>h(50,-4,6.5)")
+histo_exp = gROOT.FindObject("h")
+histo_exp.SetLineColor(kRed)
+histo_exp.SetLineWidth(2)
+mean_exp = histo_exp.GetMean()
+rms_exp = histo_exp.GetRMS()
+print rms_exp
+
+# 3p vs exp
+infile = TFile("fitDiagnosticsdijet3p_r0_bugfix_doublegauss_MT700GeV.root","r")
+TH1.AddDirectory(0)
+tree_fit_sb_dijet3p = infile.Get("tree_fit_sb")
+tree_fit_sb_dijet3p.Draw("r/rErr>>h3p(50,-4,6.5)")
+histo_dijet3p = gROOT.FindObject("h3p")
+histo_dijet3p.SetLineColor(kBlack)
+histo_dijet3p.SetLineWidth(2)
+histo_dijet3p.SetLineStyle(2)
+mean_dijet3p = histo_dijet3p.GetMean()
+rms_dijet3p = histo_dijet3p.GetRMS()
+print rms_dijet3p
+
+histo_exp.GetXaxis().SetTitle("r/#sigma_{r}")
+histo_exp.GetYaxis().SetTitle("Toys")
+histo_exp.SetMaximum(120)
+histo_exp.Draw("HIST")
+histo_dijet3p.Draw("same")
+
+text = CMSPlotStyle.draw_info("Bias test: r=0",0.55,0.85,11)
+text.Draw("same")
+
+text2 = CMSPlotStyle.draw_info("M_{T} = 700 GeV",0.55,0.8,11)
+text2.Draw("same")
+
+leg = TLegend(0.55,0.5,0.85,0.79, "","brNDC")
+leg.SetBorderSize(0);	
+leg.SetFillStyle(0);
+leg.SetTextSize(0.035);
+leg.SetTextFont(42);
+leg.SetHeader("Generation and fitting with")
+leg.AddEntry(histo_exp,"#splitline{exp. (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_exp,rms_exp),"l")
+leg.AddEntry(histo_dijet3p,"#splitline{dijet 3p (<r/#sigma_{r}> = %.2f)}{width = %.2f}"%(mean_dijet3p,rms_dijet3p),"l")
+leg.Draw()
+
+lumi = CMSPlotStyle.draw_lumi(True)
+lumi.Draw("same")
+
+c2.SaveAs("bias_r0_bugfix_doublegauss_MT700GeV.eps")
+c2.SaveAs("bias_r0_bugfix_doublegauss_MT700GeV.pdf")
+

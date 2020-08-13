@@ -1,21 +1,14 @@
 #!/bin/bash
 
 years="2016v3"
-masses=(600)
-mass=600
-set_params="pdf_index_much_2016v3=1,pdf_index_ech_2016v3=1,pdf_index_much_2017v2=1,pdf_index_ech_2017v2=1,pdf_index_much_2018=1,pdf_index_ech_2018=1,pdf_index_MT${mass}_much_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_MT${mass}_much_2017v2=0,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_MT${mass}_much_2018=0,pdf_index_MT${mass}_ech_2018=0"
+masses=(1000)
+mass=1000
 
-#set_params="pdf_index_much_${years}=2,pdf_index_ech_${years}=2,pdf_index_MT${mass}_much_${years}=0,pdf_index_MT${mass}_ech_${years}=0"
-#set_params="pdf_index_much_${years}=1,pdf_index_ech_${years}=1,pdf_index_MT${mass}_much_${years}=0,pdf_index_MT${mass}_ech_${years}=0"
-set_params_sig="pdf_index_MT${mass}_much_${years}=0,pdf_index_MT${mass}_ech_${years}=0"
+functionused=1
 
-freeze_params="pdf_index_much_2016v3,pdf_index_ech_2016v3,pdf_index_much_2017v2,pdf_index_ech_2017v2,pdf_index_much_2018,pdf_index_ech_2018,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3,,sg_JERmeandown_2017v2,sg_JERmeanup_2017v2,sg_JECmeandown_2017v2,sg_JECmeanup_2017v2,sg_JERsigmadown_2017v2,sg_JERsigmaup_2017v2,sg_JECsigmadown_2017v2,sg_JECsigmaup_2017v2,sg_JERmeandown_2018,sg_JERmeanup_2018,sg_JECmeandown_2018,sg_JECmeanup_2018,sg_JERsigmadown_2018,sg_JERsigmaup_2018,sg_JECsigmadown_2018,sg_JECsigmaup_2018,pdf_index_MT${mass}_much_2016v3,pdf_index_MT${mass}_ech_2016v3,pdf_index_MT${mass}_much_2017v2,pdf_index_MT${mass}_ech_2017v2,pdf_index_MT${mass}_much_2018,pdf_index_MT${mass}_ech_2018"
+set_params="pdf_index_much_2016v3=${functionused},pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=${functionused},pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=${functionused},pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=${functionused},pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=${functionused},pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=${functionused},pdf_index_MT${mass}_ech_2018=0"
 
-#freeze_params="pdf_index_much_${years},pdf_index_ech_${years},sg_JERmeandown_${years},sg_JERmeanup_${years},sg_JECmeandown_${years},sg_JECmeanup_${years},sg_JERsigmadown_${years},sg_JERsigmaup_${years},sg_JECsigmadown_${years},sg_JECsigmaup_${years},pdf_index_MT${mass}_much_${years},pdf_index_MT${mass}_ech_${years}"
-
-#freeze_params="sg_JERmeandown_${years},sg_JERmeanup_${years},sg_JECmeandown_${years},sg_JECmeanup_${years},sg_JERsigmadown_${years},sg_JERsigmaup_${years},sg_JECsigmadown_${years},sg_JECsigmaup_${years}"
-
-freeze_params_sig="pdf_index_MT${mass}_much_${years},pdf_index_MT${mass}_ech_${years}"
+freeze_params="pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3,pdf_index_much_2017v2,pdf_index_MT${mass}_much_2017v2,pdf_index_ech_2017v2,pdf_index_MT${mass}_ech_2017v2,sg_mean_2017v2,sg_sigma_2017v2,sg_JERmeandown_2017v2,sg_JERmeanup_2017v2,sg_JECmeandown_2017v2,sg_JECmeanup_2017v2,sg_JERsigmadown_2017v2,sg_JERsigmaup_2017v2,sg_JECsigmadown_2017v2,sg_JECsigmaup_2017v2,pdf_index_much_2018,pdf_index_MT${mass}_much_2018,pdf_index_ech_2018,pdf_index_MT${mass}_ech_2018,sg_mean_2018,sg_sigma_2018,sg_JERmeandown_2018,sg_JERmeanup_2018,sg_JECmeandown_2018,sg_JECmeanup_2018,sg_JERsigmadown_2018,sg_JERsigmaup_2018,sg_JECsigmadown_2018,sg_JECsigmaup_2018,sg_JERmeandown2_2018,sg_JERmeanup2_2018,sg_JECmeandown2_2018,sg_JECmeanup2_2018,sg_JERsigmadown2_2018,sg_JERsigmaup2_2018,sg_JECsigmadown2_2018,sg_JECsigmaup2_2018,sg_JERmeandown2_2017v2,sg_JERmeanup2_2017v2,sg_JECmeandown2_2017v2,sg_JECmeanup2_2017v2,sg_JERsigmadown2_2017v2,sg_JERsigmaup2_2017v2,sg_JECsigmadown2_2017v2,sg_JECsigmaup2_2017v2,sg_JERmeandown2_2016v3,sg_JERmeanup2_2016v3,sg_JECmeandown2_2016v3,sg_JECmeanup2_2016v3,sg_JERsigmadown2_2016v3,sg_JERsigmaup2_2016v3,sg_JECsigmadown2_2016v3,sg_JECsigmaup2_2016v3,sg_mean2_2016v3,sg_sigma2_2016v3,sg_mean2_2017v2,sg_sigma2_2017v2,sg_mean2_2018,sg_sigma2_2018,sg_fnorm_2018,sg_fnorm_2017v2,sg_fnorm_2016v3"
 
 
 

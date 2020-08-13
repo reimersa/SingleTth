@@ -6,7 +6,7 @@
 #for mass in {1000,800}
 #for mass in {800,600}
 #do
-mass=600
+mass=700
 #datacard="Datacard_allyears_M${mass}_much.txt"
 datacard="Datacard_allyears_M${mass}.txt"
 

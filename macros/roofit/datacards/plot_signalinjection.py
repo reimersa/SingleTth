@@ -109,7 +109,7 @@ for mass in masses:
         hist_doublegaussian.GetYaxis().SetRangeUser(0,3.5)
         f.SetLineStyle(style_lm[ii])
         hist_doublegaussian.Fit(f,"R")
-        hist_to_draw[str(i)+"M_{T} = "+str(mass)+" (low mass tail)"]  = hist_doublegaussian.Clone()
+#        hist_to_draw[str(i)+"M_{T} = "+str(mass)+" (low mass tail)"]  = hist_doublegaussian.Clone()
         ii+=1
     
     i+=1
@@ -158,5 +158,5 @@ lumi = CMSPlotStyle.draw_lumi(True)
 lumi.Draw("same")
 
 
-c1.Print("signalinjection.eps")
-c1.Print("signalinjection.pdf")
+c1.Print("signalinjection_"+str(mass)+".eps")
+c1.Print("signalinjection_"+str(mass)+".pdf")

@@ -43,6 +43,7 @@ SingleTthHists::SingleTthHists(Context & ctx, const string & dirname): Hists(ctx
   book<TH1F>("N_deepjet_med", "N_{jets}^{DeepJet medium}", 11, -0.5, 10.5);
   book<TH1F>("N_deepjet_tight", "N_{jets}^{DeepJet tight}", 11, -0.5, 10.5);
   book<TH1F>("N_deepCSV_tight", "N_{jets}^{DeepCSV tight}", 11, -0.5, 10.5);
+  book<TH1F>("N_deepCSV_medium", "N_{jets}^{DeepCSV medium}", 11, -0.5, 10.5);
   book<TH1F>("DeepJet_discriminant_jet", "DeepJet Discriminant", 100, 0, 1);
   book<TH1F>("DeepJet_discriminant_jet1", "DeepJet Discriminant: first jet", 100, 0, 1);
   book<TH1F>("DeepJet_discriminant_jet2", "DeepJet Discriminant: second jet", 100, 0, 1);
@@ -221,7 +222,7 @@ void SingleTthHists::fill(const Event & event){
   }
 
   int Nbjets_loose = 0, Nbjets_medium = 0, Nbjets_tight = 0;
-  int Ndeepjet_loose = 0, Ndeepjet_med = 0, Ndeepjet_tight = 0, Ndeepcsv_tight = 0;
+  int Ndeepjet_loose = 0, Ndeepjet_med = 0, Ndeepjet_tight = 0, Ndeepcsv_tight = 0, Ndeepcsv_medium = 0;
   CSVBTag Btag_loose = CSVBTag(CSVBTag::WP_LOOSE);
   CSVBTag Btag_medium = CSVBTag(CSVBTag::WP_MEDIUM);
   CSVBTag Btag_tight = CSVBTag(CSVBTag::WP_TIGHT);
@@ -230,6 +231,7 @@ void SingleTthHists::fill(const Event & event){
   JetId DeepjetMedium = BTag(BTag::DEEPJET, BTag::WP_MEDIUM);
   JetId DeepjetTight = BTag(BTag::DEEPJET, BTag::WP_TIGHT);
   JetId DeepCSVTight = BTag(BTag::DEEPCSV, BTag::WP_TIGHT);
+  JetId DeepCSVMedium = BTag(BTag::DEEPCSV, BTag::WP_MEDIUM);
 
   for (unsigned int i =0; i<jets->size(); i++) {
     if(Btag_loose(jets->at(i),event))  Nbjets_loose++;
@@ -242,6 +244,7 @@ void SingleTthHists::fill(const Event & event){
     }
     if(DeepjetTight(jets->at(i),event))  Ndeepjet_tight++;
     if(DeepCSVTight(jets->at(i),event))  Ndeepcsv_tight++;
+    if(DeepCSVMedium(jets->at(i),event))  Ndeepcsv_medium++;
     hist("DeepJet_discriminant_jet") -> Fill(jets->at(i).btag_DeepJet(),weight);
   }
 
@@ -252,6 +255,7 @@ void SingleTthHists::fill(const Event & event){
   hist("N_deepjet_med")->Fill(Ndeepjet_med,weight);
   hist("N_deepjet_tight")->Fill(Ndeepjet_tight,weight);
   hist("N_deepCSV_tight")->Fill(Ndeepcsv_tight,weight);
+  hist("N_deepCSV_medium")->Fill(Ndeepcsv_medium,weight);
 
   hist("DeepJet_discriminant_jet1") -> Fill(jets->at(0).btag_DeepJet(),weight);
   if(jets->size()>1) hist("DeepJet_discriminant_jet2") -> Fill(jets->at(1).btag_DeepJet(),weight);
