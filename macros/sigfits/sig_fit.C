@@ -5,7 +5,7 @@
 #include "../bkgfits/helpers.C"
 
 using namespace std;
-bool b_test = false;
+bool b_test = true;
 bool b_fitrange = false;
 std::vector<float> sigma_ranges = {1.5,2,2.5};
 
@@ -53,12 +53,12 @@ void sig_fit()
 
   if (!b_test){
 
-    MTs = {700,800, 900, 1000, 1200};// 2016
-    MTs_backup = {700,800, 900, 1000, 1200};// 2016
+    //MTs = {700,800, 900, 1000, 1200};// 2016
+    //MTs_backup = {700,800, 900, 1000, 1200};// 2016
 
     // Roman's setup
-    //MTs = {700, 900, 1000, 1200};// 2016
-    //MTs_backup = {700, 900, 1000, 1200};// 2016
+    MTs = {700, 900, 1000, 1200};// 2016
+    MTs_backup = {700, 900, 1000, 1200};// 2016
 
     if(year.Contains("2018") or year.Contains("2017")){
       MTs = {600, 650, 700, 800, 900, 1000, 1100, 1200};// 2017
@@ -91,6 +91,7 @@ void sig_fit()
   // do the fits, fill results into graph
   for (int i=0; i<MTs.size(); ++i){
     fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err, effs, effs_err, means2, means2_err, widths2, widths2_err, fnorm, fnorm_err,"",year,2,2.5,true);
+
     zeros.push_back(0);
   }
   TGraphErrors* gmean    = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
@@ -1456,8 +1457,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   //setOptFit( pcev (default = 0111)) Probability; Chisquare/Number of degrees of freedom; errors ;values of parameters 
   
-  gStyle->SetStatX(1.0);
-  gStyle->SetStatW(0.24);
+  gStyle->SetStatX(0.98);
+  gStyle->SetStatW(0.20);
   gStyle->SetStatY(0.95);
 
   //  gStyle->SetOptFit(1111);
@@ -1483,6 +1484,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   // get data or MC
   TH1F* sigh = GetAnalysisOutputSignal(MT, channel,unc, year); 
+  sigh->SetTitle("");
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
@@ -1525,14 +1527,21 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   fitmodel ->SetParameter(3,sigma);
   fitmodel ->SetParameter(4,0.15);
   
+  fitmodel->SetNpx(200); 
 
   fitmodel->SetParName(0,"#mu");
   fitmodel->SetParName(1,"#sigma");
+  fitmodel->SetParName(2, "n");  
+  fitmodel->SetParName(3, "#alpha");
+
   Int_t linecol = kRed+2; 
   Int_t col68 = kOrange; 
   Int_t col95 = kOrange+7;
-  TString fdesc = "Gaussian PDF, 2 pars";
-  TString ffile = TString::Format("gaus_MT%d", MT);
+  //TString fdesc = "Gaussian PDF, 2 pars";
+  //TString ffile = TString::Format("gaus_MT%d", MT);
+
+  TString fdesc = "CB PDF, 4 pars";
+  TString ffile = TString::Format("cb_MT%d", MT);
 
   cout << "Norm in function = " << fitmodel->Integral(xmin, xmax, 1e-3) << endl;
 
