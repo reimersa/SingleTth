@@ -32,7 +32,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/"; 
 
      else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"; 
-     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/"; 
+          else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/"; 
      else if(year.Contains("allyears"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/NOMINAL/"; 
      else throw runtime_error("Year not possible.");
   }
@@ -148,17 +148,23 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      cout << "Using NAF setup." << endl;
      
      if(year.Contains("2016")) {
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
+       // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/SFbtagmujets/"; 
+       //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/"; 
        hand = "LH";
        prodch = "_B";
        if ((MT <700) && (val==NULL)) year = "2016v2";
    }
      else if(year.Contains("2017")){
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/"; 
+       // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/"; 
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/SFbtagmujets/"; 
+
+       // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/DeepCSV/"; 
+       // systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/DeepCSV/"; 
+
+       //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/"; 
        hand = "LH";
      }
      else if(year.Contains("2018")){
@@ -255,7 +261,8 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   sigh->SetLineColor(kBlack);
   sigh->SetMarkerColor(kBlack);
   sigh->GetYaxis()->SetRangeUser(0.01, sigh->GetMaximum()*1.3);
-  sigh->GetXaxis()->SetRangeUser(MT-400, MT+400);
+  //  sigh->GetXaxis()->SetRangeUser(MT-400, MT+400);
+  sigh->GetXaxis()->SetRangeUser(MT-600, MT+600);
   //sigh->Draw("E1");
 
   // zero out bins with little MC stats 
@@ -299,7 +306,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
        hand = "LH";
      }
      else if (year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/"; 
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
        hand = "LH";
      }

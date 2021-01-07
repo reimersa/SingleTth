@@ -21,7 +21,7 @@ namespace uhh2examples {
     uhh2::Event::Handle<bool> h_is_tprime_reco;
     bool is_mc;
     bool is_signal_sample;
-
+    TH2F* eta_phi_map;
     virtual ~SingleTthHists();
   };
 

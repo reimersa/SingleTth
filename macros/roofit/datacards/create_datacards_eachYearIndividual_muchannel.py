@@ -19,12 +19,14 @@ berror = False
 
 b_multipdf = True
 b_signalrate = True
+b_lumiunc = True
 
 bkg_much_norm = {} # for all years: key is year
 bkg_ech_norm = {} # for all years: key is year
 
 signal_much_norm = {} # for all years and mass points: key is year_mass
 signal_ech_norm = {} # for all years and mass points: key is year_mass
+
 mean_value = {} # for all years and mass points: key is year_mass
 mean_value_JEC_up = {} # for all years and mass points: key is year_mass
 mean_value_JEC_down = {} # for all years and mass points: key is year_mass
@@ -38,6 +40,27 @@ sigma_value_JEC_down = {} # for all years and mass points: key is year_mass
 sigma_value_JER_up = {} # for all years and mass points: key is year_mass
 sigma_value_JER_down = {} # for all years and mass points: key is year_mass
 
+####second gaus
+mean2_value = {} # for all years and mass points: key is year_mass
+mean2_value_JEC_up = {} # for all years and mass points: key is year_mass
+mean2_value_JEC_down = {} # for all years and mass points: key is year_mass
+mean2_value_JER_up = {} # for all years and mass points: key is year_mass
+mean2_value_JER_down = {} # for all years and mass points: key is year_mass
+mean2_error = {} # for all years and mass points: key is year_mass
+sigma2_value = {} # for all years and mass points: key is year_mass
+sigma2_error = {} # for all years and mass points: key is year_mass
+sigma2_value_JEC_up = {} # for all years and mass points: key is year_mass
+sigma2_value_JEC_down = {} # for all years and mass points: key is year_mass
+sigma2_value_JER_up = {} # for all years and mass points: key is year_mass
+sigma2_value_JER_down = {} # for all years and mass points: key is year_mass
+
+fnorm_value = {} # for all years and mass points: key is year_mass
+fnorm_error = {} # for all years and mass points: key is year_mass
+fnorm_value_JEC_up = {} # for all years and mass points: key is year_mass
+fnorm_value_JEC_down = {} # for all years and mass points: key is year_mass
+fnorm_value_JER_up = {} # for all years and mass points: key is year_mass
+fnorm_value_JER_down = {} # for all years and mass points: key is year_mass
+
 
 
 bg3p_v = {} # for all years and parameters: key is year_parameter
@@ -47,26 +70,91 @@ bg3p_err = {} # for all years and parameters: key is year_parameter
 masses = []
 
 
-all_years_eaul = True
+all_years_eaul = False
 
-rate_unc = {}
-rate_unc["2016v3"] = 1.05
-rate_unc["2017v2"] = 1.15
-rate_unc["2018"] = 1.12
-if all_years_eaul:
-    rate_unc["2016v3"] = 1.15
-    rate_unc["2018"] = 1.15
+####### rate unc: both, ech, much wegschreiben
+
+# rate_unc = {}
+# rate_unc["2016v3"] = 1.135
+# rate_unc["2017v2"] = 1.127
+# rate_unc["2018"] = 1.126
+# if all_years_eaul:
+#     rate_unc["2016v3"] = 1.05
+#     rate_unc["2018"] = 1.05
+#     rate_unc["2017v2"] = 1.05
+
+# rate_btag_unc = {}
+# rate_btag_unc["2016v3"] = 1.10
+# rate_btag_unc["2017v2"] = 1.10
+# rate_btag_unc["2018"] = 1.10
+
 
 lumi_unc = {}
-lumi_unc["2016v3"] = 1.025
-lumi_unc["2017v2"] = 1.023
-lumi_unc["2018"] = 1.025
+lumi_unc["2016v3"] = 0.025
+lumi_unc["2017v2"] = 0.023
+lumi_unc["2018"] = 0.025
 
 #years = {"2016v3","2017v2","2018"}
-years = {"2016v3"}
+years = {"2018"}
 
 number_of_channels =  len(years)
 number_of_backgrounds = "*"
+
+#### read out rate unc for e, mu and both together
+folder = "/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/"
+tot_rate_unc = {}
+ech_rate_unc = {}
+much_rate_unc = {}
+
+for year in years:
+    f_tot = open(folder + "SignalFitOutput_"+year+".txt", "r")
+    f_much = open(folder + "SignalFitOutput_"+year+"_much.txt", "r")
+    f_ech = open(folder + "SignalFitOutput_"+year+"_ech.txt", "r")
+
+    # tot unc for both e and mu
+    tot_rate_unc[year] = {}
+
+    for line in f_tot:
+        if "total rate unc" not in line: continue
+        mass = re.findall(r'\d+\.*\d+', line)[0]
+        unc = float(re.findall(r'\d+\.*\d+', line)[1])
+        if len(years) > 2:
+            unc = math.sqrt(float(unc)*float(unc) + 0.018 * 0.018 )
+        else:
+            unc = math.sqrt(float(unc)*float(unc) + lumi_unc[year] * lumi_unc[year] )
+        unc+=1
+        tot_rate_unc[year][mass] = unc
+
+    print sorted(tot_rate_unc)
+
+
+    # e ch unc 
+    ech_rate_unc[year] = {}
+
+    for line in f_ech:
+        if "total rate unc" not in line: continue
+        mass = re.findall(r'\d+\.*\d+', line)[0]
+        unc = float(re.findall(r'\d+\.*\d+', line)[1])
+        unc+=1
+        ech_rate_unc[year][mass] = unc
+
+    print sorted(ech_rate_unc)
+
+    # mu ch unc 
+    much_rate_unc[year] = {}
+
+    for line in f_much:
+        if "total rate unc" not in line: continue
+        mass = re.findall(r'\d+\.*\d+', line)[0]
+        unc = float(re.findall(r'\d+\.*\d+', line)[1])
+        unc+=1
+        much_rate_unc[year][mass] = unc
+
+    print sorted(much_rate_unc)
+
+
+###
+
 
 
 for year in years:
@@ -89,6 +177,30 @@ for year in years:
                 mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
                 masses.append(mass)
 
+#                 # extrapolated tot uncertainties between mass points
+#                 if not much_rate_unc[year].has_key(mass):
+#                     lower_mass = 99999999
+#                     higher_mass = 9999999
+#                     lowest_mass = 999999
+#                     highest_mass = 0
+
+#                     for mass_rate in sorted(much_rate_unc[year]):
+# #                        print mass_rate
+#                         if int(mass_rate) < int(lowest_mass): lowest_mass = mass_rate
+#                         if int(mass_rate) > int(highest_mass): highest_mass = mass_rate
+#                         if (abs(int(mass_rate)- int(mass))) < (abs(int(lower_mass) - int(mass))) and int(mass_rate) < int(mass): lower_mass = mass_rate
+#                         if (int(mass_rate) - int(mass)) < (int(higher_mass) - int(mass)) and int(mass_rate) > int(mass): higher_mass = mass_rate
+
+
+#                     if int(lower_mass) >  9999999: lower_mass = lowest_mass
+#                     if int(higher_mass) > 999999: higher_mass = highest_mass
+                    
+#                     much_rate_unc[year][mass] = (much_rate_unc[year][lower_mass] + much_rate_unc[year][higher_mass])/2
+#                     ech_rate_unc[year][mass] = (ech_rate_unc[year][lower_mass] + ech_rate_unc[year][higher_mass])/2
+#                     tot_rate_unc[year][mass] = (tot_rate_unc[year][lower_mass] + tot_rate_unc[year][higher_mass])/2
+
+#                    print str(lower_mass) + " < "+ str(mass)+" < "+str(higher_mass) + "  unc  "+ str(much_rate_unc[year][mass])
+ 
                 norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
                 signal_much_norm[year+"_"+mass] = norm
                 mean_value[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[2]
@@ -107,6 +219,29 @@ for year in years:
                 sigma_value_JEC_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[11]
                 sigma_value_JEC_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[13]
 
+                mean2_value[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[14]
+                mean2_error[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[15]
+
+                sigma2_value[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[16]
+                sigma2_error[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[17]
+
+                mean2_value_JER_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[18]
+                mean2_value_JER_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[19]
+                mean2_value_JEC_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[20]
+                mean2_value_JEC_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[21]
+
+                sigma2_value_JER_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[22]
+                sigma2_value_JER_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[23]
+                sigma2_value_JEC_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[24]
+                sigma2_value_JEC_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[25]
+
+                fnorm_value[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[26]
+                fnorm_error[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[27]
+                fnorm_value_JER_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[28]
+                fnorm_value_JER_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[29]
+                fnorm_value_JEC_up[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[30]
+                fnorm_value_JEC_down[year+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[31]
+
 
 
         if "Electron" in line and "Signal" in line:
@@ -118,8 +253,13 @@ for year in years:
         if "Bg" in line:
             for j in range(i+1,len(listOfLines)):
                 if "bg" in listOfLines[j]:
-                    value = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[1]
-                    error = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[2]
+                    if len(re.findall(r'[-+]?\d+.\d+',listOfLines[j]))>2:
+                        value = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[1]
+                        error = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[2]
+                    else:
+                        value = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[3]
+                        error = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[4]
+                        
                     key = listOfLines[j].split("  ")[0]
 
                     bg3p_v[key] = value
@@ -146,30 +286,51 @@ for mass in masses:
     process_names = "process        "
     process_bins =  "process        "
     rates = "rate           "
-    lumi = "lumi     lnN   "
+#    lumi = "lumi     lnN   "
     rate_sig = "rate_signal     lnN    "
+    rate_sig_mu_2016 = "rate_signal_mu_2016v3     lnN    "
+    rate_sig_mu_2017 = "rate_signal_mu_2017v2     lnN    "
+    rate_sig_mu_2018 = "rate_signal_mu_2018     lnN    "
+
 
     for year in sorted(years):
         outputfile.write("shapes * much_"+year+" ws_SingleTth_"+str(year)+".root SingleTth:$PROCESS_$CHANNEL \n \n")
 
         bins +=  "   much_"+year+"   "
-        double_bins += "   much_"+year+"   "+"   much_"+year+"   "
-        obs +=    "            -1 "
+        double_bins +=  "   much_"+year+"   "+"   much_"+year+"   "
+        obs +=    "           -1 "
         if b_multipdf:
             process_names += "  roomultipdf_MT"+str(mass)+"   roomultipdf"
         else:
             process_names += "  roomultipdf_MT"+str(mass)+"   Bkgfunc_Exp2p"
-        process_bins += "    0    1   "
+        
+        process_bins += "   0    1   "
 
         rates += str(signal_much_norm[year+"_"+mass])+"   "+str(bkg_much_norm[year]) + "   "
 
-        lumi += str(lumi_unc[year]) + "       -    "
-        rate_sig +=  str(rate_unc[year]) + "       -    "
+        rate_sig += str(tot_rate_unc[year][mass]) +"       -    "
+        if("2016" in year):
+            rate_sig_mu_2016 += str(much_rate_unc[year][mass]) + "       -    "
+            rate_sig_mu_2017 += "   -       -    "
+            rate_sig_mu_2018 += "   -       -    "
+        if("2017" in year):
+            rate_sig_mu_2017 += str(much_rate_unc[year][mass]) + "       -    "
+            rate_sig_mu_2016 += "    -       -    "
+            rate_sig_mu_2018 += "   -       -    "
+        if("2018" in year):
+            rate_sig_mu_2018 += str(much_rate_unc[year][mass]) + "       -    "
+            rate_sig_mu_2016 += "    -       -    "
+            rate_sig_mu_2017 += "   -       -    "
+
+
 
     process_names += " \n"
     process_bins += " \n"
     rates += "\n \n"
-    lumi += " \n"
+#    lumi += " \n"
+    rate_sig_mu_2016 += " \n"
+    rate_sig_mu_2017 += " \n"
+    rate_sig_mu_2018 += " \n"
     rate_sig += " \n"
     
     outputfile.write("------------------------------ \n")
@@ -192,19 +353,26 @@ for mass in masses:
 
     outputfile.write("------------------------------ \n")
     outputfile.write("# list of independent sources of uncertainties, and give their effect (syst. error) \n \n")
-
-    outputfile.write(lumi)
+    
+#    if b_lumiunc:
+#        outputfile.write(lumi)
     if b_signalrate:
         outputfile.write(rate_sig)
 
     for year in years:
         if b_multipdf:
             outputfile.write("pdf_index_much_"+year+" discrete \n ")
+        if b_signalrate:
+            if "2016" in year:
+                outputfile.write(rate_sig_mu_2016)
+            if "2017" in year:
+                outputfile.write(rate_sig_mu_2017)
+            if "2018" in year:
+                outputfile.write(rate_sig_mu_2018)
 
 
         outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+" discrete \n ")
 
-    #### hier weiter jec und jer nciht auch setzten in nominal
         outputfile.write("sg_mean_"+year+" param "+str(mean_value[year+"_"+mass])+"  "+str(mean_error[year+"_"+mass])+" \n ")
         outputfile.write("sg_sigma_"+year+" param "+str(sigma_value[year+"_"+mass])+"  "+str(sigma_error[year+"_"+mass])+" \n ")
 
@@ -220,6 +388,27 @@ for mass in masses:
         outputfile.write("sg_JECsigmadown_"+year+" param "+str(sigma_value_JEC_down[year+"_"+mass])+"  0.001 \n ")
         outputfile.write("sg_JECsigmaup_"+year+" param "+str(sigma_value_JEC_up[year+"_"+mass])+"  0.001 \n ")
 
+        outputfile.write("sg_mean2_"+year+" param "+str(mean2_value[year+"_"+mass])+"  "+str(mean2_error[year+"_"+mass])+" \n ")
+        outputfile.write("sg_sigma2_"+year+" param "+str(sigma2_value[year+"_"+mass])+"  "+str(sigma2_error[year+"_"+mass])+" \n ")
+
+        ##### JER and JEC variations
+        outputfile.write("sg_JERmeandown2_"+year+" param "+str(mean2_value_JER_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JERmeanup2_"+year+" param "+str(mean2_value_JER_up[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECmeandown2_"+year+" param "+str(mean2_value_JEC_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECmeanup2_"+year+" param "+str(mean2_value_JEC_up[year+"_"+mass])+"  0.001 \n ")
+
+
+        outputfile.write("sg_JERsigmadown2_"+year+" param "+str(sigma2_value_JER_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JERsigmaup2_"+year+" param "+str(sigma2_value_JER_up[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECsigmadown2_"+year+" param "+str(sigma2_value_JEC_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECsigmaup2_"+year+" param "+str(sigma2_value_JEC_up[year+"_"+mass])+"  0.001 \n ")
+
+        ############ fnorm
+        outputfile.write("sg_fnorm_"+year+" param "+str(fnorm_value[year+"_"+mass])+"  "+str(fnorm_error[year+"_"+mass])+" \n ")
+        outputfile.write("sg_JERfnormdown_"+year+" param "+str(fnorm_value_JER_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JERfnormup_"+year+" param "+str(fnorm_value_JER_up[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECfnromdown_"+year+" param "+str(fnorm_value_JEC_down[year+"_"+mass])+"  0.001 \n ")
+        outputfile.write("sg_JECfnormup_"+year+" param "+str(fnorm_value_JEC_up[year+"_"+mass])+"  0.001 \n ")
     
     for key in bg3p_v:
         outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")

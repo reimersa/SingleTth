@@ -2,11 +2,11 @@
 
 
 
-for mass in {600,1000}
+#for mass in {600,1000}
 #for mass in {1000,800}
 #for mass in {800,600}
-do
-#mass=1000
+#do
+mass=700
 #datacard="Datacard_allyears_M${mass}_much.txt"
 datacard="Datacard_allyears_M${mass}.txt"
 
@@ -51,22 +51,27 @@ echo ""
 ## NOMINAL
 ##
 #######
+set_params="pdf_index_much_2016v3=1,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=1,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=1,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=1,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=1,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=1,pdf_index_MT${mass}_ech_2018=0"
 
-eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_much_2016v3=0,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0  --freezeParameters  pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3 --cminDefaultMinimizerStrategy=0 -n initial_signal${signal}_${mass} --saveWorkspace" 
+
+freeze_params="pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3,pdf_index_much_2017v2,pdf_index_MT${mass}_much_2017v2,pdf_index_ech_2017v2,pdf_index_MT${mass}_ech_2017v2,sg_mean_2017v2,sg_sigma_2017v2,sg_JERmeandown_2017v2,sg_JERmeanup_2017v2,sg_JECmeandown_2017v2,sg_JECmeanup_2017v2,sg_JERsigmadown_2017v2,sg_JERsigmaup_2017v2,sg_JECsigmadown_2017v2,sg_JECsigmaup_2017v2,pdf_index_much_2018,pdf_index_MT${mass}_much_2018,pdf_index_ech_2018,pdf_index_MT${mass}_ech_2018,sg_mean_2018,sg_sigma_2018,sg_JERmeandown_2018,sg_JERmeanup_2018,sg_JECmeandown_2018,sg_JECmeanup_2018,sg_JERsigmadown_2018,sg_JERsigmaup_2018,sg_JECsigmadown_2018,sg_JECsigmaup_2018"
+
+
+eval "combine $datacard -M FitDiagnostics  --setParameters ${set_params}   --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=0 -n initial_signal${signal}_${mass} --saveWorkspace" 
 
 eval "python create_snapshot.py -mass ${mass} -signal ${signal}"
 
-eval "combine -M GenerateOnly -d initialFitWorkspace.root --snapshotName initialFit --expectSignal ${signal} --toysFrequentist --bypassFrequentistFit --setParameters pdf_index_much_2016v3=0,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0 --saveToys -m 125  --freezeParameters pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3 -n ${mass} --seed 123123 -t 1000"
+eval "combine -M GenerateOnly -d initialFitWorkspace.root --snapshotName initialFit --expectSignal ${signal} --toysFrequentist --bypassFrequentistFit --setParameters ${set_params} --saveToys -m 125  --freezeParameters ${freeze_params} -n ${mass} -t 1000"
 
 #eval "combine $datacard -M GenerateOnly --setParameters pdf_index_much_2016v3=0,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0 --toysFrequentist -t 1000 --expectSignal ${signal} --saveToys -m 125  --freezeParameters pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3 -n ${mass} --seed 123123"--> old version
 
 
-eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_much_2016v3=0,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0 --toysFile higgsCombine${mass}.GenerateOnly.mH125.123123.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3 --cminDefaultMinimizerStrategy=0 -n signal${signal}_${mass}"
+eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${mass}.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=0 -n signal${signal}_${mass}"
 
 
 
 
-done
+#done
 # echo "python plot_signalstrength.py 0 0.25 0.5 0.75 1 1.5 2 2.5 3 --name \"MuEch_signal_M${mass}_2016\" --mass ${mass}"
 # eval "python plot_signalstrength.py 0 0.25 0.5 0.75 1 1.5 2 2.5 3 --name \"MuEch_signal_M${mass}_2016\" --mass ${mass}"
 done

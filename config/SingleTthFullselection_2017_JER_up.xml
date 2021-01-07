@@ -4,7 +4,7 @@
 
 <!ENTITY TargetLumi      "41530">
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/JER_up">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/JER_up">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/DeepCSV/JER_up">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -639,8 +639,8 @@
 		<Item Name="pileup_directory_data" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram2017.root" />
 
 
-		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2017/BTagMCEfficiencyHists_mediumwp.root" />
-		<Item Name="BTagCalibration" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/DeepFlavour_94XSF_WP_V3_B_F.csv" />
+		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2017/BTagMCEfficiencyHists_DeepCSVmed.root" />
+		<Item Name="BTagCalibration" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/DeepCSV_94XSF_WP_V4_B_F.csv" />
 
 		<!-- <Item Name="PDFWeightPath" Value="/nfs/dust/cms/user/reimersa/" /> -->
 

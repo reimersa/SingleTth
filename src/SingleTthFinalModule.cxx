@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <memory>
 
@@ -118,7 +119,8 @@ namespace uhh2examples {
     dataset_version = ctx.get("dataset_version");
     year = extract_year(ctx);
 
-    JetId DeepjetTight = BTag(BTag::DEEPJET, BTag::WP_MEDIUM);
+    //    JetId DeepjetTight = BTag(BTag::DEEPJET, BTag::WP_MEDIUM);
+    JetId DeepjetTight = BTag(BTag::DEEPCSV, BTag::WP_MEDIUM);
     tprime_reco.reset(new HighMassSingleTthReconstruction(ctx, SingleTthNeutrinoReconstruction, DeepjetTight));
     tprime_chi2.reset(new SingleTthChi2Discriminator(ctx,year));
     h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
@@ -232,6 +234,7 @@ namespace uhh2examples {
 
     // SR or CR?
     bool is_sr = chi2 < 10. && chi2h < 2.;
+    //    is_sr = true;
 
     // Read out nominal eventweight
     float weight_nominal = event.get(eventweight_nominal);

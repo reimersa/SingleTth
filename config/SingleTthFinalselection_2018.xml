@@ -3,8 +3,8 @@
 
 
 <!ENTITY TargetLumi      "59740">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtagcomb/NOMINAL">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/DeepCSV/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/DeepCSV/NOMINAL">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">

@@ -31,10 +31,10 @@ gStyle.SetPaintTextFormat("2.3f")
 
 #signalstrength = {0.0,0.25,0.5,0.75,1.0,1.5,2.0,2.5,3.0}
 signalstrength = {0.0,0.25,0.5,0.75,1.0}
-masses = {600,1000}
+masses = {700}
 
-color = [kBlue,kBlack]
-color_lm = [kBlue,kBlack]
+color = [kBlue,kBlack,kRed]
+color_lm = [kBlue,kBlack,kRed]
 style = [0,5,2]
 style_lm = [3,4]
 marker = [20,21,22]
@@ -109,7 +109,7 @@ for mass in masses:
         hist_doublegaussian.GetYaxis().SetRangeUser(0,3.5)
         f.SetLineStyle(style_lm[ii])
         hist_doublegaussian.Fit(f,"R")
-        hist_to_draw[str(i)+"M_{T} = "+str(mass)+" (low mass tail)"]  = hist_doublegaussian.Clone()
+#        hist_to_draw[str(i)+"M_{T} = "+str(mass)+" (low mass tail)"]  = hist_doublegaussian.Clone()
         ii+=1
     
     i+=1
@@ -158,5 +158,5 @@ lumi = CMSPlotStyle.draw_lumi(True)
 lumi.Draw("same")
 
 
-c1.Print("signalinjection.eps")
-c1.Print("signalinjection.pdf")
+c1.Print("signalinjection_"+str(mass)+".eps")
+c1.Print("signalinjection_"+str(mass)+".pdf")

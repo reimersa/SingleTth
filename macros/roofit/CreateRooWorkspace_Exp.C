@@ -190,7 +190,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   double fit_xmin = 0;
   double fit_xmax = 0;  
   if (region==defs::eSR){
-    fit_xmin = 400;
+    fit_xmin = 500;
     fit_xmax = 2000;    
 
       } else {

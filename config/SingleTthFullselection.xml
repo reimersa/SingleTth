@@ -4,7 +4,7 @@
 
 <!ENTITY TargetLumi      "35920">
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2016/Preselection/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/CrystalLikelihood/NOMINAL">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -167,83 +167,83 @@
 
 
 
-	    	<InputData Lumi="289587.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_600_2016v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_600;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="289587.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_600_2016v2" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_600;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="293981.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_650_2016v2" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_650;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="293981.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_650_2016v2" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_650;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_800_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_800;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_800_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_800;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_900_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_900;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_900_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_900;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1000_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1000;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1000_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1000;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1100_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1100;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1100_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1100;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1200_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1200;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1200_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1200;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1300_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1300;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1300_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1300;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1400_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1400;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1400_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1400;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1500_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1500;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1500_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1500;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1600_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1600;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1600_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1600;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1700_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1700;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1700_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1700;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
-	    	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1800_2016v3" Cacheable="&b_Cacheable;">
-	    <In FileName="&VLQ_RH_1800;" Lumi="0.0"/>
-	    		<InputTree Name="AnalysisTree" />
-	    		<OutputTree Name="AnalysisTree" />
-	    	</InputData>
+	    <!-- 	<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1800_2016v3" Cacheable="&b_Cacheable;"> -->
+	    <!-- <In FileName="&VLQ_RH_1800;" Lumi="0.0"/> -->
+	    <!-- 		<InputTree Name="AnalysisTree" /> -->
+	    <!-- 		<OutputTree Name="AnalysisTree" /> -->
+	    <!-- 	</InputData> -->
 
 
 

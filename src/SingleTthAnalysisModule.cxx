@@ -175,8 +175,8 @@ namespace uhh2examples {
     sys_pu = ctx.get("sys_pu");
 
 
-    btag_algo = BTag::DEEPJET;
-    //    btag_algo = BTag::DEEPCSV;
+    //btag_algo = BTag::DEEPJET;
+    btag_algo = BTag::DEEPCSV;
     wp_loose = BTag::WP_LOOSE;
     wp_medium = BTag::WP_MEDIUM;
     wp_tight = BTag::WP_TIGHT;
@@ -247,9 +247,9 @@ namespace uhh2examples {
 
     //    if((year == Year::is2016v2) || (year == Year::is2016v3) || (year == Year::is2017v2)){
 	 //    if((year == Year::is2016v2) || (year == Year::is2016v3)){
-      //           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
-           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "mujets"));
-	   if(year == Year::is2018)            SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
+      SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
+      //           SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "mujets"));
+      if(year == Year::is2018)            SF_btag.reset(new MCBTagScaleFactor(ctx, btag_algo, wp_medium, "jets", sys_btag, "comb"));
       //    }
 
     if(year != Year::is2018){

@@ -41,7 +41,7 @@ signalstrength = args.integer
 c1 = TCanvas()
 infile = TFile("higgsCombineTest.GoodnessOfFit.mH120.123456.root","r")
 tree_fit_sb = infile.Get("limit")
-tree_fit_sb.Draw("limit>>h(40,50,150)")
+tree_fit_sb.Draw("limit>>h(50,50,180)")
 
 histo = gROOT.FindObject("h")
 histo.GetXaxis().SetTitle("Saturated test statistic")

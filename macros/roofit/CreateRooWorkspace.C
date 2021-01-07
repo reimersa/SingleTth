@@ -3,6 +3,7 @@
 #include "BkgPdf3p.h" 
 #include "BkgPdf2p.h" 
 #include "BkgPdf4p.h" 
+#include "SignalDoubleGauss.h" 
 
 
 #include "RooRealVar.h"
@@ -195,7 +196,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
     //    fit_xmin = 400;
     // fit_xmax = 2000;    
-    fit_xmin = 550;
+    fit_xmin = 450;
+    //    fit_xmin = 550;
     fit_xmax = 2000;    
 
     //    if(year.Contains("2017")) fit_xmin = 500;
@@ -241,36 +243,22 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", xmin, xmax);
-  x->setBins(81);
-  RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), h_data);
+  x->setBins(Nbins);
+  RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name+"_"+year, "data_obs_"+ch_name+"_"+year, RooArgList(*x), h_data);
+  //RooDataHist* dataSR = new RooDataHist("data_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), h_data);
 
 
   // control plots
   RooPlot *plotter=x->frame();
 
-  // 2 parameter function for nominal result
-  RooRealVar* bg2p_p0 = new RooRealVar("bg2p_p0"+ch_name+"_"+year, "bg2p_p0"+ch_name, 7.74, -100,  100);
-  RooRealVar* bg2p_p1 = new RooRealVar("bg2p_p1"+ch_name+"_"+year, "bg2p_p1"+ch_name,   1.99, -100,  100);
-
-  BkgPdf2p* bgfunc_2p = new BkgPdf2p("Bkgfunc_2p_"+ch_name+"_"+year,"Bkgfunc_2p_"+ch_name, *x, *bg2p_p0, *bg2p_p1);
-
 
   // 3 parameter function for nominal result
-  RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year, "bg3p_p0"+ch_name, -13.2, -1000,  1000);
-  RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year, "bg3p_p1"+ch_name,   9.1, -1000,  1000);
+  RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year, "bg3p_p0"+ch_name, -13.2, -100,  100);
+  RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year, "bg3p_p1"+ch_name,   9.1, -100,  100);
   RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year, "bg3p_p2"+ch_name,   2.5, -100,   100 );
 
 
   BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name+"_"+year,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
-
-  // 4 parameter function for systematics
-  RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0"+ch_name+"_"+year, "bg4p_p0"+ch_name, 66.45, -1000,  1000);
-  RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1"+ch_name+"_"+year, "bg4p_p1"+ch_name, -12.6, -1000,  1000);
-  RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2"+ch_name+"_"+year, "bg4p_p2"+ch_name,  -9.6, -100,   100 );
-  RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3"+ch_name+"_"+year, "bg4p_p3"+ch_name,  -5.3, -100,   100 );
-
-
-  BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name+"_"+year,"Bkfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
   // 2 parameter exponential function 
   RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name+"_"+year, "bgexp2_p0"+ch_name, 8.2, -100, 100);
@@ -286,103 +274,54 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   bg3p_p2->Print(); 
 
   infotofile << "---------  Bg3p  "+ch_name+"  ---------"<<std::endl;
-  infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"  " << bg3p_p0->getValV() <<"  error  "<< bg3p_p0->getError()<<std::endl;
-  infotofile << "bg3p_p1"<<ch_name<<"_"<<year<<"   " << bg3p_p1->getValV() <<"  error  "<< bg3p_p1->getError()<<std::endl;
-  infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"   " << bg3p_p2->getValV() <<"  error  "<< bg3p_p2->getError()<<std::endl;
+  infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"  " << bg3p_p0->getValV() <<"  error  "<<   bg3p_p0->getError()<<std::endl;
+  infotofile << "bg3p_p1"<<ch_name<<"_"<<year<<"   " << bg3p_p1->getValV() <<"  error  "<<    bg3p_p1->getError()<<std::endl;
+  infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"   " << bg3p_p2->getValV() <<"  error  "<<   bg3p_p2->getError()<<std::endl;
 
 
-
-  // systematic fit
-  RooFitResult *r_bg_4p = bgfunc_4p->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
-  std::cout << "Testing BKG systematic variation (4p) values postfit" << '\n';
-  bg4p_p0->Print(); 
-  bg4p_p1->Print();
-  bg4p_p2->Print(); 
-  bg4p_p3->Print(); 
-
-  infotofile << "---------  Bg4p  "+ch_name+"  - ---------"<<std::endl;
-  infotofile << "bg4p_p0"<<ch_name<<"_"<<year<<"   " << bg4p_p0->getValV() <<"  error  "<< bg4p_p0->getError()<<std::endl;
-  infotofile << "bg4p_p1"<<ch_name<<"_"<<year<<"   " << bg4p_p1->getValV() <<"  error  "<< bg4p_p1->getError()<<std::endl;
-  infotofile << "bg4p_p2"<<ch_name<<"_"<<year<<"   " << bg4p_p2->getValV() <<"  error  "<< bg4p_p2->getError()<<std::endl;
-  infotofile << "bg4p_p3"<<ch_name<<"_"<<year<<"   " << bg4p_p3->getValV() <<"  error  "<< bg4p_p3->getError()<<std::endl;
-
-  // nominal fit
-  RooFitResult *r_bg_2p = bgfunc_2p->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
-  std::cout << "Testing BKG values postfit" << '\n';
-  bg2p_p0->Print(); 
-  bg2p_p1->Print();
-
-
-  infotofile << "---------  Bg2p  "+ch_name+"  ---------"<<std::endl;
-  infotofile << "bg2p_p0"<<ch_name<<"_"<<year<<"  " << bg2p_p0->getValV() <<"  error  "<< bg2p_p0->getError()<<std::endl;
-  infotofile << "bg2p_p1"<<ch_name<<"_"<<year<<"   " << bg2p_p1->getValV() <<"  error  "<< bg2p_p1->getError()<<std::endl;
-
-
-  RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  RooFitResult *r_bg_exp1 = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
 
   infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
-  infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"   " << bgexp2_p0->getValV() <<"  error  "<< bgexp2_p0->getError()<<std::endl;
-  infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"   " << bgexp2_p1->getValV() <<"  error  "<< bgexp2_p1->getError()<<std::endl;
+  infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"   " << bgexp2_p0->getValV() <<"  error  "<<   bgexp2_p0->getError()<<std::endl;
+  infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"   " << bgexp2_p1->getValV() <<"  error  "<<   bgexp2_p1->getError()<<std::endl;
   
 
   //create a list with all alt and nominal functions
   RooArgList mypdfs;
   mypdfs.add(*bgfunc);
-  mypdfs.add(*bgfunc_4p);
+  //  mypdfs.add(*bgfunc_4p);
   mypdfs.add(*bgfunc_exp);
-  mypdfs.add(*bgfunc_2p);
+  //  mypdfs.add(*bgfunc_2p);
 
   RooCategory cat("pdf_index_"+ch_name+"_"+year,"Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name+"_"+year,"All Pdfs",cat,mypdfs);
   RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_norm","Number of background events",12014,0,1000000);
 
-  // //  converting function into hist to debug
-  // RooDataSet* data1 = bgfunc->generate(RooArgSet(*x), 1000000);
-  // RooDataHist *hist1 = data1->binnedClone();
-  // TH1* myhist = dataSR->createHistogram("myhist",*x);
-  // TH1* myhist2 =  hist1->createHistogram("myhist2",*x);
 
+  // convert exp function to pseudo data:
+  RooDataSet* data1 = bgfunc_exp->generate(RooArgSet(*x),5000);
+  RooDataHist *hist1 = data1->binnedClone();
+  TH1* myhist2 =  hist1->createHistogram("myhist2",*x);
+  TH1* myhist = dataSR->createHistogram("myhist",*x);
+  myhist2->Scale(myhist->Integral()/myhist2->Integral());
 
+  //   RooDataHist* dataSR_generated = new RooDataHist("data_obs_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), myhist2);
+ 
+  // RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR_generated, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  // infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
+  // infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"   " << bgexp2_p0->getValV() <<"  error  "<< 100* bgexp2_p0->getError()<<std::endl;
+  // infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"   " << bgexp2_p1->getValV() <<"  error  "<< 100*bgexp2_p1->getError()<<std::endl;
 
-  // if(ch_name.Contains("much")){
-  //   //    myhist->Scale(2268/myhist->Integral());
-  //   myhist->SetName("data_obs_much");
-  //   myhist->SetLineColor(kRed);
-  //   myhist2->Scale(myhist->Integral()/myhist2->Integral());
-  //   myhist2->SetName("background_much");
+  //  RooFitResult *r_bg = bgfunc->fitTo(*dataSR_generated, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+  // infotofile << "---------  Bg3p  "+ch_name+"  ---------"<<std::endl;
+  // infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"  " << bg3p_p0->getValV() <<"  error  "<< 100*bg3p_p0->getError()<<std::endl;
+  // infotofile << "bg3p_p1"<<ch_name<<"_"<<year<<"   " << bg3p_p1->getValV() <<"  error  "<< 100*bg3p_p1->getError()<<std::endl;
+  // infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"   " << bg3p_p2->getValV() <<"  error  "<< 100*bg3p_p2->getError()<<std::endl;
 
-  // }else{
-  //   myhist->Scale(1548/myhist->Integral());
-  //   myhist->SetName("data_obs_ech");
-  //   myhist2->Scale(1548/myhist2->Integral());
-  //   myhist2->SetName("background_ech");
-  // }
-
-  // TCanvas *test_c = new TCanvas("test_c","test fit",10,10,700,700); 
-  // myhist->Draw();
-  // myhist2->Draw("same");
-  // test_c->SaveAs("test_hist"+ch_name+".eps");
-  // debug_histos->cd();
-  // myhist->Write();
-  // myhist2->Write();
-
-
-  // dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
-  // bgfunc->plotOn(plotter);
-  // bgfunc_4p->plotOn(plotter);
-  // plotter->getAttLine()->SetLineColor(kRed);
-  // plotter->getAttLine()->SetLineStyle(kDotted);  
-  // //  hist1->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));  
-  // cout << "chi^2 = " << plotter->chiSquare() << endl;
-
-  // TCanvas *background_c = new TCanvas("background_c","background fit",10,10,700,700);
-  // background_c->cd();
-  // //gPad->SetLogy();
-  // plotter->Draw();
-  // background_c->SaveAs("plots/nominal_bkg_3pfit_"+ch_name+"_"+year+".pdf");
 
   // save the data to the workspace
-  fWS->import(*dataSR);
+    fWS->import(*dataSR);
+  //    fWS->import(*dataSR_generated);
 
   // save the bkg fit to the workspace
   //fWS->import(*bgfunc);
@@ -407,15 +346,26 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   infotofile << "In interval: xmin = " << xmin << " xmax = " << xmax << "  ";
   infotofile << "N = " << Ntot << endl << endl;
 
+  //  RooPlot *plotter=x->frame();
+  //  dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
+  bgfunc->plotOn(plotter);
+  plotter->getAttLine()->SetLineColor(kRed);
+  plotter->getAttLine()->SetLineStyle(kDotted);  
+  bgfunc_exp->plotOn(plotter);
+
+  TCanvas *background_c = new TCanvas("background_c","background fit",10,10,700,700);
+  background_c->cd();
+  gPad->SetLogy();
+  plotter->Draw();
+  background_c->SaveAs("plots/nominal_bkg_3pfit_"+ch_name+"_"+year+".pdf");
+
+
   // clean up
   delete x; delete dataSR; 
    delete plotter;
   delete bgfunc;
-  delete bgfunc_2p;
-  delete bgfunc_4p;  
   delete bgfunc_exp;
   delete bg3p_p0; delete bg3p_p1; delete bg3p_p2; 
-  delete bg4p_p0; delete bg4p_p1; delete bg4p_p2; delete bg4p_p3; 
   delete r_bg;
   //  delete background_c;
 
@@ -434,25 +384,28 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   }
 
   std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+".txt");
+  std::ifstream infile_allyears("/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_allyears_"+ch_name+".txt");
+
   std::string line;
 
   string fitname, paramname;
   double param0_mean_value,param0_mean_error,param1_mean_value,param1_mean_error,param0_sigma_value,param0_sigma_error,param1_sigma_value,param1_sigma_error,param0_eff_value,param1_eff_value,param2_eff_value;
-  double param0_JECmeanup_value,param1_JECmeanup_value,param0_JECsigmaup_value,param1_JECsigmaup_value;
-  double param0_JERmeanup_value,param1_JERmeanup_value,param0_JERsigmaup_value,param1_JERsigmaup_value;
+  double param0_mean2_value,param0_mean2_error,param1_mean2_value,param1_mean2_error,param0_sigma2_value,param0_sigma2_error,param1_sigma2_value,param1_sigma2_error,param0_fnorm_value,param1_fnorm_value,param0_fnorm_error,param1_fnorm_error;
+  double param0_JECmeanup_value,param1_JECmeanup_value,param0_JECsigmaup_value,param1_JECsigmaup_value,param0_JECmeanup2_value,param1_JECmeanup2_value,param0_JECsigmaup2_value,param1_JECsigmaup2_value,param0_JECfnormup_value,param1_JECfnormup_value;
+  double param0_JERmeanup_value,param1_JERmeanup_value,param0_JERsigmaup_value,param1_JERsigmaup_value,param0_JERmeanup2_value,param1_JERmeanup2_value,param0_JERsigmaup2_value,param1_JERsigmaup2_value,param0_JERfnormup_value,param1_JERfnormup_value;
 
-  double param0_JECmeandown_value,param1_JECmeandown_value,param0_JECsigmadown_value,param1_JECsigmadown_value;
-  double param0_JERmeandown_value,param1_JERmeandown_value,param0_JERsigmadown_value,param1_JERsigmadown_value;
+  double param0_JECmeandown_value,param1_JECmeandown_value,param0_JECsigmadown_value,param1_JECsigmadown_value,param0_JECmeandown2_value,param1_JECmeandown2_value,param0_JECsigmadown2_value,param1_JECsigmadown2_value,param0_JECfnormdown_value,param1_JECfnormdown_value;
+  double param0_JERmeandown_value,param1_JERmeandown_value,param0_JERsigmadown_value,param1_JERsigmadown_value,param0_JERmeandown2_value,param1_JERmeandown2_value,param0_JERsigmadown2_value,param1_JERsigmadown2_value,param0_JERfnormdown_value,param1_JERfnormdown_value;
 
   while (infile)
     {
       string c,d;
       infile>>fitname>>paramname>>c>>d;
-      if((fitname.find("mean")!=std::string::npos) && (paramname.find("param0")!=std::string::npos)) {
+      if((fitname.find("meanfit")!=std::string::npos) && (paramname.find("param0")!=std::string::npos)) {
 	param0_mean_value = std::stod(c); 
 	param0_mean_error = std::stod(d);
       }
-      if(fitname.find("mean")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
+      if(fitname.find("meanfit")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
 	param1_mean_value = std::stod(c); 
 	param1_mean_error = std::stod(d);
       }
@@ -480,11 +433,11 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
       if(fitname.find("mfitdown")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
 	param1_JERmeandown_value = std::stod(c); 
       }
-      if(fitname.find("width")!=std::string::npos && paramname.find("param0")!=std::string::npos) {
+      if(fitname.find("widthfit")!=std::string::npos && paramname.find("param0")!=std::string::npos) {
 	param0_sigma_value = std::stod(c); 
 	param0_sigma_error = std::stod(d);
       }
-      if(fitname.find("width")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
+      if(fitname.find("widthfit")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
 	param1_sigma_value = std::stod(c); 
 	param1_sigma_error = std::stod(d);
       }
@@ -523,6 +476,110 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
       // }
 
     }
+  while (infile_allyears)
+    {
+      string c,d;
+      infile_allyears>>fitname>>paramname>>c>>d;
+      //      std::cout<<"fitname  " << fitname << "  paramname  "<< paramname <<"  c  "<<c<<"  d  "<<d<<std::endl;
+
+      if((fitname.find("mean2fit")!=std::string::npos) && (paramname.find("param0")!=std::string::npos)) {
+	param0_mean2_value = std::stod(c); 
+	param0_mean2_error = std::stod(d);
+      }
+      if(fitname.find("mean2fit")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
+	param1_mean2_value = std::stod(c); 
+	param1_mean2_error = std::stod(d);
+      }
+      if((fitname.find("mfitup")!=std::string::npos) && (paramname.find("param2")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECmeanup2_value = std::stod(c); 
+      }
+      if(fitname.find("mfitup")!=std::string::npos && paramname.find("param3")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECmeanup2_value = std::stod(c); 
+      }
+      if((fitname.find("mfitup")!=std::string::npos) && (paramname.find("param2")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERmeanup2_value = std::stod(c); 
+      }
+      if(fitname.find("mfitup")!=std::string::npos && paramname.find("param3")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERmeanup2_value = std::stod(c); 
+      }
+      if((fitname.find("mfitdown")!=std::string::npos) && (paramname.find("param2")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECmeandown2_value = std::stod(c); 
+      }
+      if(fitname.find("mfitdown")!=std::string::npos && paramname.find("param3")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECmeandown2_value = std::stod(c); 
+      }
+      if((fitname.find("mfitdown")!=std::string::npos) && (paramname.find("param2")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERmeandown2_value = std::stod(c); 
+      }
+      if(fitname.find("mfitdown")!=std::string::npos && paramname.find("param3")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERmeandown2_value = std::stod(c); 
+      }
+      if(fitname.find("width2fit")!=std::string::npos && paramname.find("param0")!=std::string::npos) {
+	param0_sigma2_value = std::stod(c); 
+	param0_sigma2_error = std::stod(d);
+      }
+      if(fitname.find("width2fit")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
+	param1_sigma2_value = std::stod(c); 
+	param1_sigma2_error = std::stod(d);
+      }
+      if((fitname.find("wfitup")!=std::string::npos) && (paramname.find("param2")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECsigmaup2_value = std::stod(c); 
+      }
+      if(fitname.find("wfitup")!=std::string::npos && paramname.find("param3")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECsigmaup2_value = std::stod(c); 
+      }
+      if((fitname.find("wfitup")!=std::string::npos) && (paramname.find("param2")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERsigmaup2_value = std::stod(c); 
+      }
+      if(fitname.find("wfitup")!=std::string::npos && paramname.find("param3")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERsigmaup2_value = std::stod(c); 
+      }
+      if((fitname.find("wfitdown")!=std::string::npos) && (paramname.find("param2")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECsigmadown2_value = std::stod(c); 
+      }
+      if(fitname.find("wfitdown")!=std::string::npos && paramname.find("param3")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECsigmadown2_value = std::stod(c); 
+      }
+      if((fitname.find("wfitdown")!=std::string::npos) && (paramname.find("param2")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERsigmadown2_value = std::stod(c); 
+      }
+      if(fitname.find("wfitdown")!=std::string::npos && paramname.find("param3")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERsigmadown2_value = std::stod(c); 
+      }
+      if(fitname.find("fnormfit")!=std::string::npos && paramname.find("param0")!=std::string::npos) {
+	param0_fnorm_value = std::stod(c); 
+	param0_fnorm_error = std::stod(d);
+      }
+      if(fitname.find("fnormfit")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
+	param1_fnorm_value = std::stod(c); 
+	param1_fnorm_error = std::stod(d);
+      }
+      if((fitname.find("ffitup")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECfnormup_value = std::stod(c); 
+      }
+      if(fitname.find("ffitup")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECfnormup_value = std::stod(c); 
+      }
+      if((fitname.find("ffitup")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERfnormup_value = std::stod(c); 
+      }
+      if(fitname.find("ffitup")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERfnormup_value = std::stod(c); 
+      }
+      if((fitname.find("ffitdown")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
+	param0_JECfnormdown_value = std::stod(c); 
+      }
+      if(fitname.find("ffitdown")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JEC")!=std::string::npos)) {
+	param1_JECfnormdown_value = std::stod(c); 
+      }
+      if((fitname.find("ffitdown")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JER")!=std::string::npos)) {
+	param0_JERfnormdown_value = std::stod(c); 
+      }
+      if(fitname.find("ffitdown")!=std::string::npos && paramname.find("param1")!=std::string::npos&& (fitname.find("JER")!=std::string::npos)) {
+	param1_JERfnormdown_value = std::stod(c); 
+      }
+
+    }
 
 
   // from the fit to signals: get mean and width from combined fit (higher stats)
@@ -555,6 +612,36 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   JERmeandown_error->SetParameter(0, param0_JERmeandown_value);
   JERmeandown_error->SetParameter(1, param1_JERmeandown_value);
 
+  ////////second mean
+  TF1* mean2 = new TF1("mean2fit", "[0]+[1]*(x-600)", 500, 1250);
+  // mean2->SetParameter(0, 584.9);
+  // mean2->SetParameter(1, 0.9755);
+  mean2->SetParameter(0, param0_mean2_value);
+  mean2->SetParameter(1, param1_mean2_value);
+
+  TF1* mean2_error = new TF1("mean2fit_error", "[0]+[1]*(x-600)", 500, 1250);
+  //mean2_error->SetParameter(0, param0_mean2_value+2*param0_mean2_error);
+  //  mean2_error->SetParameter(1, param1_mean2_value+2*0.5 *param1_mean2_error);
+  mean2_error->SetParameter(0, param0_mean2_value+param0_mean2_error);
+  mean2_error->SetParameter(1, param1_mean2_value+0.5 *param1_mean2_error);
+
+
+  TF1* JECmeanup2_error = new TF1("JECmean2fit_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECmeanup2_error->SetParameter(0, param0_JECmeanup2_value);
+  JECmeanup2_error->SetParameter(1, param1_JECmeanup2_value);
+
+  TF1* JERmeanup2_error = new TF1("JERmean2fitup_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERmeanup2_error->SetParameter(0, param0_JERmeanup2_value);
+  JERmeanup2_error->SetParameter(1, param1_JERmeanup2_value);
+
+  TF1* JECmeandown2_error = new TF1("JECmean2fit_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECmeandown2_error->SetParameter(0, param0_JECmeandown2_value);
+  JECmeandown2_error->SetParameter(1, param1_JECmeandown2_value);
+
+  TF1* JERmeandown2_error = new TF1("JERmean2fitdown_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERmeandown2_error->SetParameter(0, param0_JERmeandown2_value);
+  JERmeandown2_error->SetParameter(1, param1_JERmeandown2_value);
+
 
   TF1* sigma = new TF1("sigmafit", "[0]+[1]*(x-600)", 500, 1250);
   // sigma->SetParameter(0, 59.04);
@@ -584,77 +671,94 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   JERsigmadown_error->SetParameter(0, param0_JERsigmadown_value);
   JERsigmadown_error->SetParameter(1, param1_JERsigmadown_value);
 
+  /////////second sigma
+  TF1* sigma2 = new TF1("sigma2fit", "[0]+[1]*(x-600)", 500, 1250);
+  sigma2->SetParameter(0, param0_sigma2_value);
+  sigma2->SetParameter(1, param1_sigma2_value);
+
+  TF1* sigma2_error = new TF1("sigma2fit_error", "[0]+[1]*(x-600)", 500, 1250);
+  sigma2_error->SetParameter(0, param0_sigma2_value+param0_sigma2_error);
+  sigma2_error->SetParameter(1, param1_sigma2_value+0.5*param1_sigma2_error);
+
+  TF1* JECsigmaup2_error = new TF1("JECsigma2fitup_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECsigmaup2_error->SetParameter(0, param0_JECsigmaup2_value);
+  JECsigmaup2_error->SetParameter(1, param1_JECsigmaup2_value);
+
+
+  TF1* JERsigmaup2_error = new TF1("JERsigma2fitup_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERsigmaup2_error->SetParameter(0, param0_JERsigmaup2_value);
+  JERsigmaup2_error->SetParameter(1, param1_JERsigmaup2_value);
+
+  TF1* JECsigmadown2_error = new TF1("JECsigma2fitdown_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECsigmadown2_error->SetParameter(0, param0_JECsigmadown2_value);
+  JECsigmadown2_error->SetParameter(1, param1_JECsigmadown2_value);
+
+
+  TF1* JERsigmadown2_error = new TF1("JERsigma2fitdown_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERsigmadown2_error->SetParameter(0, param0_JERsigmadown2_value);
+  JERsigmadown2_error->SetParameter(1, param1_JERsigmadown2_value);
+
+  /////////second fnorm
+  TF1* fnorm = new TF1("fnormfit", "[0]+[1]*(x-600)", 500, 1250);
+  fnorm->SetParameter(0, param0_fnorm_value);
+  fnorm->SetParameter(1, param1_fnorm_value);
+
+  TF1* fnorm_error = new TF1("fnormfit_error", "[0]+[1]*(x-600)", 500, 1250);
+  fnorm_error->SetParameter(0, param0_fnorm_value+param0_fnorm_error);
+  fnorm_error->SetParameter(1, param1_fnorm_value+0.5*param1_fnorm_error);
+
+  TF1* JECfnormup_error = new TF1("JECfnormfitup_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECfnormup_error->SetParameter(0, param0_JECfnormup_value);
+  JECfnormup_error->SetParameter(1, param1_JECfnormup_value);
+
+
+  TF1* JERfnormup_error = new TF1("JERfnormfitup_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERfnormup_error->SetParameter(0, param0_JERfnormup_value);
+  JERfnormup_error->SetParameter(1, param1_JERfnormup_value);
+
+  TF1* JECfnormdown_error = new TF1("JECfnormfitdown_error", "[0]+[1]*(x-600)", 500, 1250);
+  JECfnormdown_error->SetParameter(0, param0_JECfnormdown_value);
+  JECfnormdown_error->SetParameter(1, param1_JECfnormdown_value);
+
+
+  TF1* JERfnormdown_error = new TF1("JERfnormfitdown_error", "[0]+[1]*(x-600)", 500, 1250);
+  JERfnormdown_error->SetParameter(0, param0_JERfnormdown_value);
+  JERfnormdown_error->SetParameter(1, param1_JERfnormdown_value);
+
 
   TF1* eff_ele = new TF1("eff_ele", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
-  // eff_ele->SetParameter(0, 0.003325);
-  // eff_ele->SetParameter(1, 1.301e-05);
-  // eff_ele->SetParameter(2, -1.737e-08);
-
-  eff_ele->SetParameter(0, 0.002979);
-  eff_ele->SetParameter(1, 6.1e-06);
-  eff_ele->SetParameter(2, -5.313e-09);
+  eff_ele->SetParameter(0, 0.00266047);
+  eff_ele->SetParameter(1, 1.03871e-05);
+  eff_ele->SetParameter(2, -1.18081e-08);
 
   if(year.Contains("2017")){
-    // eff_ele->SetParameter(0, 0.00215);
-    // eff_ele->SetParameter(1, 4.938e-06);
-    // eff_ele->SetParameter(2, -5.968e-09);
-    
-    //medium WP
-    // eff_ele->SetParameter(0, 0.0040);
-    // eff_ele->SetParameter(1, 9.523e-06);
-    // eff_ele->SetParameter(2, -9.442e-09);
-
-    eff_ele->SetParameter(0, 0.003155);
-    eff_ele->SetParameter(1, 7.258e-06);
-    eff_ele->SetParameter(2, -6.77e-09);
+    eff_ele->SetParameter(0, 0.00330729);
+    eff_ele->SetParameter(1, 7.20724e-06);
+    eff_ele->SetParameter(2, -6.42313e-09);
 
   }
-  if(year.Contains("2018")){
-    //mediumWP
-    // eff_ele->SetParameter(0, 0.003825);
-    // eff_ele->SetParameter(1, 1.258e-05);
-    // eff_ele->SetParameter(2, -1.547e-08);
- 
-    eff_ele->SetParameter(0, 0.003725);
-    eff_ele->SetParameter(1, 7.439e-06);
-    eff_ele->SetParameter(2, -8.843e-09);
+  if(year.Contains("2018")){ 
+    eff_ele->SetParameter(0, 0.00387224);
+    eff_ele->SetParameter(1, 7.31594e-06);
+    eff_ele->SetParameter(2, -8.14789e-09);
     
   }
 
 
   TF1* eff_muon = new TF1("eff_muon", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
-  // eff_muon->SetParameter(0, 0.004818);
-  // eff_muon->SetParameter(1, 1.25e-05);
-  // eff_muon->SetParameter(2, -1.885e-08);
-  eff_muon->SetParameter(0,  0.003886 );
-  eff_muon->SetParameter(1, 1.116e-05);
-  eff_muon->SetParameter(2, -1.312e-08);
+  eff_muon->SetParameter(0,  0.00409465 );
+  eff_muon->SetParameter(1, 1.22991e-05);
+  eff_muon->SetParameter(2, -1.41367e-08);
 
   if(year.Contains("2017")){
-    // eff_muon->SetParameter(0, 0.002875);
-    // eff_muon->SetParameter(1, 5.804e-06);
-    // eff_muon->SetParameter(2, -7.862e-09);
-
-    //medium WP
-    // eff_muon->SetParameter(0, 0.0059);
-    // eff_muon->SetParameter(1, 1.217e-05);
-    // eff_muon->SetParameter(2, -1.419e-08);
-    
-    eff_muon->SetParameter(0, 0.004766);
-    eff_muon->SetParameter(1, 8.273e-06);
-    eff_muon->SetParameter(2, -8.002e-09);
-
-
+    eff_muon->SetParameter(0, 0.00512448);
+    eff_muon->SetParameter(1, 7.09486e-06);
+    eff_muon->SetParameter(2, -5.60323e-09);
   }
   if(year.Contains("2018")){
-    // // mediumWP
-    // eff_muon->SetParameter(0, 0.005623);
-    // eff_muon->SetParameter(1, 1.35e-05);
-    // eff_muon->SetParameter(2, -1.869e-08);
-
-    eff_muon->SetParameter(0, 0.005439);
-    eff_muon->SetParameter(1,  8.111e-06);
-    eff_muon->SetParameter(2, -1.108e-08);
+    eff_muon->SetParameter(0, 0.00571333);
+    eff_muon->SetParameter(1,  7.82543e-06);
+    eff_muon->SetParameter(2, -1.02954e-08);
 
   }
 
@@ -666,6 +770,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
   double MT = 550; 
   //  double MT = 800; 
   RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", 200, 2000);
+
   while (MT<1250)
       //  while (MT<810)
   {
@@ -678,28 +783,43 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
 
     RooRealVar* sg_mean_variation  =new RooRealVar("sg_mean_variation",  "sg_mean_variation",  mean_error->Eval(MT));
 
+    RooRealVar* sg_mean2  =new RooRealVar("sg_mean2_"+year,  "sg_mean2",  mean2->Eval(MT));
+
     //    RooConstVar* sg_sigma =new RooConstVar("sg_sigma", "sg_sigma", sigma->Eval(MT));
-     RooRealVar* sg_sigma =new RooRealVar("sg_sigma_"+year, "sg_sigma", sigma->Eval(MT));
+    RooRealVar* sg_sigma =new RooRealVar("sg_sigma_"+year, "sg_sigma", sigma->Eval(MT));
+    RooRealVar* sg_sigma2 =new RooRealVar("sg_sigma2_"+year, "sg_sigma2", sigma2->Eval(MT));
+    
+    RooRealVar* sg_fnorm =new RooRealVar("sg_fnorm_"+year, "sg_fnorm", fnorm->Eval(MT));
 
     RooConstVar* sg_JECmeanup  =new RooConstVar("sg_JECmeanup_"+year,  "sg_JECmeanup",  JECmeanup_error->Eval(MT));
     RooConstVar* sg_JECsigmaup =new RooConstVar("sg_JECsigmaup_"+year, "sg_JECsigmaup", JECsigmaup_error->Eval(MT));
+    RooConstVar* sg_JECmeanup2  =new RooConstVar("sg_JECmeanup2_"+year,  "sg_JECmeanup2",  JECmeanup2_error->Eval(MT));
+    RooConstVar* sg_JECsigmaup2 =new RooConstVar("sg_JECsigmaup2_"+year, "sg_JECsigmaup2", JECsigmaup2_error->Eval(MT));
+    RooConstVar* sg_JECfnormup  =new RooConstVar("sg_JECfnormup_"+year,  "sg_JECfnormup",  JECfnormup_error->Eval(MT));
 
     RooConstVar* sg_JERmeanup  =new RooConstVar("sg_JERmeanup_"+year,  "sg_JERmeanup",  JERmeanup_error->Eval(MT));
     RooConstVar* sg_JERsigmaup =new RooConstVar("sg_JERsigmaup_"+year, "sg_JERsigmaup", JERsigmaup_error->Eval(MT));
+    RooConstVar* sg_JERmeanup2  =new RooConstVar("sg_JERmeanup2_"+year,  "sg_JERmeanup2",  JERmeanup2_error->Eval(MT));
+    RooConstVar* sg_JERsigmaup2 =new RooConstVar("sg_JERsigmaup2_"+year, "sg_JERsigmaup2", JERsigmaup2_error->Eval(MT));
+    RooConstVar* sg_JERfnormup  =new RooConstVar("sg_JERfnormup_"+year,  "sg_JERfnormup",  JERfnormup_error->Eval(MT));
 
     RooConstVar* sg_JECmeandown  =new RooConstVar("sg_JECmeandown_"+year,  "sg_JECmeandown",  JECmeandown_error->Eval(MT));
     RooConstVar* sg_JECsigmadown =new RooConstVar("sg_JECsigmadown_"+year, "sg_JECsigmadown", JECsigmadown_error->Eval(MT));
+    RooConstVar* sg_JECmeandown2  =new RooConstVar("sg_JECmeandown2_"+year,  "sg_JECmeandown2",  JECmeandown2_error->Eval(MT));
+    RooConstVar* sg_JECsigmadown2 =new RooConstVar("sg_JECsigmadown2_"+year, "sg_JECsigmadown2", JECsigmadown2_error->Eval(MT));
+    RooConstVar* sg_JECfnormdown  =new RooConstVar("sg_JECfnormdown_"+year,  "sg_JECfnormdown",  JECfnormdown_error->Eval(MT));
 
     RooConstVar* sg_JERmeandown  =new RooConstVar("sg_JERmeandown_"+year,  "sg_JERmeandown",  JERmeandown_error->Eval(MT));
     RooConstVar* sg_JERsigmadown =new RooConstVar("sg_JERsigmadown_"+year, "sg_JERsigmadown", JERsigmadown_error->Eval(MT));
+    RooConstVar* sg_JERmeandown2  =new RooConstVar("sg_JERmeandown2_"+year,  "sg_JERmeandown2",  JERmeandown2_error->Eval(MT));
+    RooConstVar* sg_JERsigmadown2 =new RooConstVar("sg_JERsigmadown2_"+year, "sg_JERsigmadown2", JERsigmadown2_error->Eval(MT));
+    RooConstVar* sg_JERfnormdown  =new RooConstVar("sg_JERfnormdown_"+year,  "sg_JERfnormdown",  JERfnormdown_error->Eval(MT));
 
-
-    RooGaussian* ModelSg_Gauss = new RooGaussian(SgName, SgName, *x, *sg_mean, *sg_sigma);
-    RooGaussian* ModelSg_Gauss_variation = new RooGaussian(SgName, SgName, *x, *sg_mean_variation, *sg_sigma);
-    RooGaussian* ModelSg_JECup_Gauss = new RooGaussian(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup);
-    RooGaussian* ModelSg_JERup_Gauss = new RooGaussian(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup);
-    RooGaussian* ModelSg_JECdown_Gauss = new RooGaussian(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown);
-    RooGaussian* ModelSg_JERdown_Gauss = new RooGaussian(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown);
+    SignalDoubleGauss* ModelSg_Gauss = new SignalDoubleGauss(SgName, SgName, *x, *sg_mean, *sg_sigma,*sg_mean2,*sg_sigma2,*sg_fnorm);
+    SignalDoubleGauss* ModelSg_JECup_Gauss = new SignalDoubleGauss(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup,*sg_JECmeanup2, *sg_JECsigmaup2, *sg_JECfnormup);
+    SignalDoubleGauss* ModelSg_JERup_Gauss = new SignalDoubleGauss(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup,*sg_JERmeanup2, *sg_JERsigmaup2, *sg_JERfnormup);
+    SignalDoubleGauss* ModelSg_JECdown_Gauss = new SignalDoubleGauss(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown,*sg_JECmeandown2, *sg_JECsigmadown2, *sg_JECfnormdown);
+    SignalDoubleGauss* ModelSg_JERdown_Gauss = new SignalDoubleGauss(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2, *sg_JERfnormdown);
 
 
     // converting function into hist to debug
@@ -744,7 +864,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year)
     if(year.Contains("2018")) Nevts = 59700*eff;
     //    infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<mean_error->Eval(MT)-mean->Eval(MT)<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT)<< std::endl;
     infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<(mean_error->Eval(MT)-mean->Eval(MT))<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT);
-    infotofile << "  JERupmean   "<<JERmeanup_error->Eval(MT)<<"   JERsigmaup   "<<JERsigmaup_error->Eval(MT)<<"  JERdownmean   "<<JERmeandown_error->Eval(MT)<<"   JERsigmadown   "<<JERsigmadown_error->Eval(MT)<< "  JECupmean   "<<JECmeanup_error->Eval(MT)<<"   JECsigmaup   "<<JECsigmaup_error->Eval(MT)<<"  JECdownmean   "<<JECmeandown_error->Eval(MT)<<"   JECsigmadown   "<<JECsigmadown_error->Eval(MT)<<std::endl;
+    infotofile << "  JERupmean   "<<JERmeanup_error->Eval(MT)<<"   JERsigmaup   "<<JERsigmaup_error->Eval(MT)<<"  JERdownmean   "<<JERmeandown_error->Eval(MT)<<"   JERsigmadown   "<<JERsigmadown_error->Eval(MT)<< "  JECupmean   "<<JECmeanup_error->Eval(MT)<<"   JECsigmaup   "<<JECsigmaup_error->Eval(MT)<<"  JECdownmean   "<<JECmeandown_error->Eval(MT)<<"   JECsigmadown   "<<JECsigmadown_error->Eval(MT)<<" ,  Mean2  "<< mean2->Eval(MT)<<"  , Mean2 Error  "<<(mean2_error->Eval(MT)-mean2->Eval(MT))<<"  Sigma2  "<<sigma2->Eval(MT)<<"  Sigma2 Error "<<sigma2_error->Eval(MT)-sigma2->Eval(MT);
+    infotofile << "  JERupmean2   "<<JERmeanup2_error->Eval(MT)<<"   JERsigmaup2   "<<JERsigmaup2_error->Eval(MT)<<"  JERdownmean2   "<<JERmeandown2_error->Eval(MT)<<"   JERsigmadown2   "<<JERsigmadown2_error->Eval(MT)<< "  JECupmean2   "<<JECmeanup2_error->Eval(MT)<<"   JECsigmaup2   "<<JECsigmaup2_error->Eval(MT)<<"  JECdownmean2   "<<JECmeandown2_error->Eval(MT)<<"   JECsigmadown2   "<<JECsigmadown2_error->Eval(MT)<<" ,  Fnorm  "<< fnorm->Eval(MT)<<"  , fnorm Error  "<<(fnorm_error->Eval(MT)-fnorm->Eval(MT));
+    infotofile << "  JERupfnorm   "<<JERfnormup_error->Eval(MT)<<"  JERdownfnorm   "<<JERfnormdown_error->Eval(MT)<< "  JECupfnorn   "<<JECfnormup_error->Eval(MT)<<"  JECdownfnorm   "<<JECfnormdown_error->Eval(MT)<<std::endl;
 
 
     //add uncertainties as special shape

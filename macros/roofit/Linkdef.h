@@ -6,6 +6,7 @@
 #pragma link C++ class BkgPdfExp2;
 #pragma link C++ class SignalDoubleGauss_M600;
 #pragma link C++ class SignalDoubleGauss_M1000;
+#pragma link C++ class SignalDoubleGauss;
 #pragma link C++ class RooMultiPdf;
 
 #endif

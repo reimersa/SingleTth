@@ -21,7 +21,7 @@ berror = False
 #year = "2018"
 year = "allyears"
 
-postfix = "_mediumWP_allyearsunc_exp"
+postfix = "_mediumWP_allyearsunc_exp_doublegauss_both1"
 
 masses = []
 
@@ -41,9 +41,10 @@ for line in listOfLines:
     i+=1
 
 print masses
-#masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '800', '825', '875', '925', '950', '1000','1025', '1050', '1075', '1100', '1125', '1150', '1175', '1200', '1225']
+#masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '850','900', '925', '950','975' ,'1000','1025', '1050', '1075', '1100', '1125', '1175', '1200', '1225']
 
 outputfile = open("Limits_combine_"+year+postfix+".txt","w")
+outputfile_obs = open("Limits_combine_obs_"+year+postfix+".txt","w")
 for mass in masses:
     if "550" in mass or "575" in mass: continue
     print mass
@@ -54,9 +55,11 @@ for mass in masses:
         limits.append(event.limit)
 
     outputfile.write(mass+"\t"+str(limits[2])+"\t"+str(limits[0])+"\t"+str(limits[4])+"\t"+str(limits[1])+"\t"+str(limits[3])+"\t")
+    outputfile_obs.write(mass+"\t"+str(limits[5])+"\t")
 
 
 outputfile.close()
+outputfile_obs.close()
 
 
 x = open("Limits_combine_"+year+postfix+".txt").read()
