@@ -8,6 +8,7 @@ SHLIBFILE=libLHE_NtupleWriter.so
 LINKLIBSIN = $(shell root-config --libs)
 CXX = $(shell root-config --cxx)
 LD = $(shell root-config --ld)
+LDFLAGS = $(shell root-config --ldflags)
 CXXFLAGS = $(shell root-config --cflags)
 INAME = -install_name libLHE_NtupleWriter.so 
 
@@ -37,7 +38,7 @@ $(OBJDIR)/$(DICTOBJ): $(DICTFILE)
 $(SHLIBFILE): $(OBJDIR)/LHE_NtupleWriter.o $(OBJDIR)/$(DICTOBJ)
 	@echo "Making shared library: $(SHLIBFILE)"
 	@rm -f $(SHLIBFILE)
-	@$(LD) -shared `root-config --ldflags` $(CXXFLAGS)  $^ -o $(SHLIBFILE) $(LINKLIBSIN) $(INAME) 
+	@$(LD) -shared $(LDFLAGS) $(CXXFLAGS)  $^ -o $(SHLIBFILE) $(LINKLIBSIN) $(INAME) 
 
 create_ntuple: obj/create_ntuple.o $(SHLIBFILE)
 	@echo "Making executable create_ntuple"
