@@ -48,12 +48,16 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   bool isRealData=false;
   float rho=0;
   std::vector<GenParticle> genps;
+  std::vector<std::string> trignames;
+  trignames.push_back("Jet");
+  trignames.push_back("HT");
 
   tr->Branch("run",&run);
   tr->Branch("event",&event);
   tr->Branch("luminosityBlock",&luminosityBlock);
   tr->Branch("isRealData",&isRealData);
   tr->Branch("rho",&rho);
+  tr->Branch("triggerNames",&trignames);
 
   tr->Branch("GenParticles","std::vector<GenParticle>", &genps);
 

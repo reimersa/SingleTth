@@ -14,8 +14,10 @@ CXXFLAGS = $(shell root-config --cflags)
 OS := $(shell uname -s)
 ifeq ($(OS), Darwin)
 INAME = -install_name libLHE_NtupleWriter.so 
+FPIC = 
 else
 INAME = 
+FPIC = -fPIC
 endif
 
 DICTHLIST = Objects/Particle.h Objects/GenParticle.h Objects/FlavorParticle.h Objects/LinkDef.h
@@ -26,7 +28,7 @@ default: create_ntuple
 $(OBJDIR)/%.o : %.C
 	@echo "Compiling $<"
 	@mkdir -p $(OBJDIR)
-	@$(CXX) $(CXXFLAGS) -g -c $< -o $(OBJDIR)/$(notdir $@) $(INCLUDES)
+	@$(CXX) $(CXXFLAGS) -g -c $(FPIC) $< -o $(OBJDIR)/$(notdir $@) $(INCLUDES)
 
 # Rule to make the dictionary
 $(DICTFILE):  $(DICTHLIST) $(DICTLDEF)
@@ -38,7 +40,7 @@ $(DICTFILE):  $(DICTHLIST) $(DICTLDEF)
 $(OBJDIR)/$(DICTOBJ): $(DICTFILE)
 	@echo "Compiling $<"
 	@mkdir -p $(OBJDIR)
-	@$(CXX) $(CXXFLAGS) -g -c $(INCLUDES) -o $@ $<
+	@$(CXX) $(CXXFLAGS) -g -c $(FPIC) $(INCLUDES) -o $@ $<
 
 # Rule to combine objects into a unix shared library
 $(SHLIBFILE): $(OBJDIR)/LHE_NtupleWriter.o $(OBJDIR)/$(DICTOBJ)
