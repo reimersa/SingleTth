@@ -55,6 +55,9 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   bx = 0; by = 0; bz = 0;
   GenInfo gi; 
   gi.set_alphaQCD(0.118);
+  int passecal = 1;
+  float pref, prefu, prefd;
+  pref = 1; prefu = 1; prefd = 1;
 
   tr->Branch("run",&run);
   tr->Branch("event",&event);
@@ -68,6 +71,10 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
 
   tr->Branch("triggerNames",&trignames);
   tr->Branch("genInfo", "GenInfo", &gi);
+  tr->Branch("passEcalBadCalib", &passecal);
+  tr->Branch("prefiringWeight", &pref);
+  tr->Branch("prefiringWeightUp", &prefu);
+  tr->Branch("prefiringWeightDown", &prefd);
 
   tr->Branch("GenParticles","std::vector<GenParticle>", &genps);
 
