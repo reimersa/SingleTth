@@ -53,6 +53,8 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   trignames.push_back("HT");
   float bx, by, bz;
   bx = 0; by = 0; bz = 0;
+  GenInfo gi; 
+  gi.set_alphaQCD(0.118);
 
   tr->Branch("run",&run);
   tr->Branch("event",&event);
@@ -65,6 +67,7 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   tr->Branch("beamspot_z0",&bz);
 
   tr->Branch("triggerNames",&trignames);
+  tr->Branch("genInfo", "GenInfo", &gi);
 
   tr->Branch("GenParticles","std::vector<GenParticle>", &genps);
 
