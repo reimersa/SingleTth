@@ -9,7 +9,7 @@ LINKLIBSIN = `root-config --libs`
 CXX = `root-config --cxx`
 LD = `root-config --ld`
 CXXFLAGS = `root-config --cflags`
-INAME = -install_name libLHE_NtupleWriter.so 
+INAME =  libLHE_NtupleWriter.so 
 
 DICTHLIST = Objects/Particle.h Objects/GenParticle.h Objects/FlavorParticle.h Objects/LinkDef.h
 
