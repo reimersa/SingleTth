@@ -5,10 +5,10 @@ DICTFILE=DictObjs.C
 DICTOBJ=DictObjs.o
 SHLIBFILE=libLHE_NtupleWriter.so
 
-LINKLIBSIN = `root-config --libs`
-CXX = `root-config --cxx`
-LD = `root-config --ld`
-CXXFLAGS = `root-config --cflags`
+LINKLIBSIN = $(shell root-config --libs)
+CXX = $(shell root-config --cxx)
+LD = $(shell root-config --ld)
+CXXFLAGS = $(shell root-config --cflags)
 INAME = -install_name libLHE_NtupleWriter.so 
 
 DICTHLIST = Objects/Particle.h Objects/GenParticle.h Objects/FlavorParticle.h Objects/LinkDef.h
