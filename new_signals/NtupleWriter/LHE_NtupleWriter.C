@@ -46,6 +46,7 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   int luminosityBlock=1;
   int event=0;
   bool isRealData=false;
+  int year = 2021;
   float rho=0;
   std::vector<GenParticle> genps;
   std::vector<std::string> trignames;
@@ -55,7 +56,7 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   std::vector<int> trigprescales;
   std::vector<int> trigprescalesl1min;
   std::vector<int> trigprescalesl1max;
-  trigresults.push_back(1);
+  trigresults.push_back(true);
   trigprescales.push_back(1);
   trigprescalesl1min.push_back(1);
   trigprescalesl1max.push_back(1);
@@ -72,6 +73,7 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   tr->Branch("event",&event);
   tr->Branch("luminosityBlock",&luminosityBlock);
   tr->Branch("isRealData",&isRealData);
+  tr->Branch("year", &year);
   tr->Branch("rho",&rho);
   tr->Branch("triggerNames",&trignames);
   tr->Branch("triggerResults", &trigresults);
