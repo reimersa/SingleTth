@@ -46,7 +46,7 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   int luminosityBlock=1;
   int event=0;
   bool isRealData=false;
-  int year = 2021;
+  std::string year = "2021";
   float rho=0;
   std::vector<GenParticle> genps;
   std::vector<std::string> trignames;
