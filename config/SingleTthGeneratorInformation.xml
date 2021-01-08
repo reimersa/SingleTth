@@ -3,7 +3,7 @@
 
 
 <!ENTITY TargetLumi      "35920">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/ntuples/">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/new_signals/ntuples/">
 <!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/GenInfo/">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
