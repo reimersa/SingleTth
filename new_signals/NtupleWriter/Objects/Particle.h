@@ -1,35 +1,13 @@
-#ifndef Particle_H
-#define Particle_H
+#pragma once
 
-#include <vector>
-#include "Math/LorentzVector.h"
-#include "Math/PtEtaPhiE4D.h"
-#include "TObject.h"
+#include "LorentzVector.h"
 
-#include <cmath>
-
-#define PI M_PI
-
-typedef ROOT::Math::LorentzVector< ROOT::Math::PtEtaPhiE4D< Double32_t > > LorentzVector;
-
-/**
- *  @short generic particle class
- *  @author Thomas Peiffer
- */
 
 class Particle{
- public:
-  /// Default constructor
-  Particle(){
-    m_charge=0;
-    m_pt=0; 
-    m_eta=0; 
-    m_phi=0; 
-    m_energy=0; 
-  };
-  /// Default destructor
-  ~Particle(){
-  };
+public:
+
+   Particle(): m_charge(0), m_pt(0), m_eta(0), m_phi(0), m_energy(0){
+   }
 
   /// four-momentum
   LorentzVector v4() const{
@@ -39,10 +17,10 @@ class Particle{
     v4.SetPhi(m_phi);
     v4.SetE(m_energy);
     return v4;
-  };
-  
+  }
+
   /// charge
-  float charge() const{return m_charge;}
+  short charge() const{return m_charge;}
   /// transverse momentum
   float pt() const {return m_pt;}
   /// pseudo-rapidity
@@ -53,9 +31,9 @@ class Particle{
   float energy() const{return m_energy;}
 
   /// set charge
-  void set_charge(float charge){m_charge=charge;}
+  void set_charge(short charge){m_charge=charge;}
   /// set transverse momentum
-  void set_pt(float pt){m_pt=pt;}  
+  void set_pt(float pt){m_pt=pt;}
   /// set pseudo-rapidity
   void set_eta(float eta){m_eta=eta;}
   /// set phi
@@ -71,27 +49,15 @@ class Particle{
     set_energy(v4.E());
   }
 
-  /// distance in phi to particle p2
-  double deltaPhi(const Particle & p2) const{
-    double deltaphi = fabs(this->phi() - p2.phi());
-    if(deltaphi > M_PI) deltaphi = 2* M_PI - deltaphi;
-    return deltaphi;
-  }
-  /// distance in eta-phi plane to particle p2
-  double deltaR(const Particle & p2) const{
-    double deltaeta = m_eta - p2.m_eta;
-    double dphi = deltaPhi(p2);
-    return sqrt(deltaeta * deltaeta + dphi * dphi);
-  }
+private:
 
- private:
-
-  float m_charge;
-  float m_pt; 
-  float m_eta; 
-  float m_phi; 
-  float m_energy; 
-
+  short m_charge;
+  float m_pt;
+  float m_eta;
+  float m_phi;
+  float m_energy;
 };
 
-#endif
+inline bool operator==(const Particle& lhs, const Particle& rhs) {
+  return (lhs.v4() == rhs.v4());
+}
