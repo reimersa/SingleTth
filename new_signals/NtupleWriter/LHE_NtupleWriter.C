@@ -51,6 +51,15 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   std::vector<std::string> trignames;
   trignames.push_back("Jet");
   trignames.push_back("HT");
+  std::vector<bool> trigresults;
+  std::vector<int> trigprescales;
+  std::vector<int> trigprescalesl1min;
+  std::vector<int> trigprescalesl1max;
+  trigresults.push_back(1);
+  trigprescales.push_back(1);
+  trigprescalesl1min.push_back(1);
+  trigprescalesl1max.push_back(1);
+
   float bx, by, bz;
   bx = 0; by = 0; bz = 0;
   GenInfo gi; 
@@ -65,11 +74,14 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   tr->Branch("isRealData",&isRealData);
   tr->Branch("rho",&rho);
   tr->Branch("triggerNames",&trignames);
+  tr->Branch("triggerResults", &trigresults);
+  tr->Branch("triggerPrescales", &trigprescales);
+  tr->Branch("triggerPrescalesL1min", &trigprescalesl1min);
+  tr->Branch("triggerPrescalesL1max", &trigprescalesl1max);
   tr->Branch("beamspot_x0",&bx);
   tr->Branch("beamspot_y0",&by);
   tr->Branch("beamspot_z0",&bz);
 
-  tr->Branch("triggerNames",&trignames);
   tr->Branch("genInfo", "GenInfo", &gi);
   tr->Branch("passEcalBadCalib", &passecal);
   tr->Branch("prefiringWeight", &pref);
