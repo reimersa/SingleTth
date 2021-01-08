@@ -11,7 +11,7 @@ void LHE_NtupleWriter(TString infilename, TString outfilename);
 int main(int argc, char *argv[])
 {
 
-  void *dir = gSystem->OpenDirectory("../files");
+  void *dir = gSystem->OpenDirectory("/nfs/dust/cms/user/reimersa/SingleTth/new_signals/lhe/");
 
   for (int i=0; i<1000; ++i){
     const char* filename = gSystem->GetDirEntry(dir);
@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
 
     TString out(filename);
     out.ReplaceAll(".lhe", ".root");
-    in.Prepend("../files/");
-    out.Prepend("../ntuples/");
+    in.Prepend("/nfs/dust/cms/user/reimersa/SingleTth/new_signals/lhe/");
+    out.Prepend("/nfs/dust/cms/user/reimersa/SingleTth/new_signals/ntuples/");
     std::cout << "in file = " << in << std::endl;
     std::cout << "out file = " << out << std::endl;
 
