@@ -10,7 +10,13 @@ CXX = $(shell root-config --cxx)
 LD = $(shell root-config --ld)
 LDFLAGS = $(shell root-config --ldflags)
 CXXFLAGS = $(shell root-config --cflags)
+
+OS := $(shell uname -s)
+ifeq ($(OS), Darwin)
 INAME = -install_name libLHE_NtupleWriter.so 
+else
+INAME = 
+endif
 
 DICTHLIST = Objects/Particle.h Objects/GenParticle.h Objects/FlavorParticle.h Objects/LinkDef.h
 
