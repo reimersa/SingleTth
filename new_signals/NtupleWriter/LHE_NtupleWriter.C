@@ -64,6 +64,7 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
   float bx, by, bz;
   bx = 0; by = 0; bz = 0;
   GenInfo gi; 
+  gi.add_weight(1);
   gi.set_alphaQCD(0.118);
   bool passecal = 1;
   float pref, prefu, prefd;

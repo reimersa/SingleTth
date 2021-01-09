@@ -20,7 +20,7 @@ INAME =
 FPIC = -fPIC
 endif
 
-DICTHLIST = Objects/GenInfo.h Objects/Particle.h Objects/GenParticle.h Objects/FlavorParticle.h Objects/LinkDef.h
+DICTHLIST = Objects/GenInfo.h Objects/Particle.h Objects/GenParticle.h Objects/FlavorParticle.h Objects/LorentzVector.h Objects/LinkDef.h
 
 default: create_ntuple
 

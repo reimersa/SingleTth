@@ -40,18 +40,20 @@ namespace uhh2examples {
     cout << "Hello from SingleTthGenInfoModule!" << endl;
 
     // Set up Printer:
-    printer.reset(new GenParticlesPrinter(ctx));
+  printer.reset(new GenParticlesPrinter(ctx));
 
     // Set up Hists classes:
-    h_GenInfo.reset(new SingleTthGenInfoHists(ctx, "GenInfo"));
+  h_GenInfo.reset(new SingleTthGenInfoHists(ctx, "GenInfo"));
   }
 
 
   bool SingleTthGenInfoModule::process(Event & event) {
 
-    printer->process(event);
+  cout << "Hello from SingleTthGenInfoModule process!" << endl;
 
-    h_GenInfo->fill(event);
+  printer->process(event);
+
+  h_GenInfo->fill(event);
 
     return true;
   }

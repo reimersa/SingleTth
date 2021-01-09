@@ -7,5 +7,6 @@
 #pragma link C++ class std::vector<GenParticle>+;
 #pragma link C++ class FlavorParticle+;
 #pragma link C++ class std::vector<FlavorParticle>+;
+#pragma link C++ class LorentzVector+;
 
 #endif
