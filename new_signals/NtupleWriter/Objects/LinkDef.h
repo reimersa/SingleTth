@@ -1,5 +1,6 @@
 #ifdef __CINT__
 
+#pragma link C++ class LorentzVector+;
 #pragma link C++ class GenInfo+;
 #pragma link C++ class Particle+;
 #pragma link C++ class std::vector<Particle>+;
