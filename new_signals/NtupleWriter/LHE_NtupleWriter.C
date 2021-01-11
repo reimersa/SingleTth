@@ -222,26 +222,28 @@ void LHE_NtupleWriter(TString infilename, TString outfilename){
 	
 	  genp.set_mother1(particles[j].mo_1);
 	  genp.set_mother2(particles[j].mo_2);
-	  genp.set_daughter1(-1);
-	  genp.set_daughter2(-1);
+	  genp.set_daughter1(9999);
+	  genp.set_daughter2(9999);
 
 	  //cout << "genparticle j: pt = " << genp.pt() << endl;
 
 	  for(size_t k=j+1; k<particles.size(); ++k){
-	    if(particles[k].mo_1==j+1 && genp.daughter1()<0) {
+	    if(particles[k].mo_1==j+1 && genp.daughter1()==9999) {
 	      genp.set_daughter1(k+1);
 	    }
-	    else if(particles[k].mo_1==j+1 && genp.daughter2()<0) {
+	    else if(particles[k].mo_1==j+1 && genp.daughter2()==9999) {
 	      genp.set_daughter2(k+1);
 	    }
-	    if(particles[k].mo_2==j+1 && particles[k].mo_2!=particles[k].mo_1 && genp.daughter1()<0) {
+	    if(particles[k].mo_2==j+1 && particles[k].mo_2!=particles[k].mo_1 && genp.daughter1()==9999) {
 	      genp.set_daughter1(k+1);
 	    } 
-	    else if(particles[k].mo_2==j+1 && particles[k].mo_2!=particles[k].mo_1 && genp.daughter2()<0) {
+	    else if(particles[k].mo_2==j+1 && particles[k].mo_2!=particles[k].mo_1 && genp.daughter2()==9999) {
 	      genp.set_daughter2(k+1);
 	    }
-	    if(genp.daughter1()>=0 && genp.daughter2()>=0) break;
+	    if(genp.daughter1()<9999 && genp.daughter2()<9999) break;
 	  }
+
+
 	  genps.push_back(genp);
 
     }
