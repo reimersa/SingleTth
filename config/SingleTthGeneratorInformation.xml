@@ -9,7 +9,24 @@
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
 
-<!ENTITY VLQ_LH_700_MH25  "&PRESELdir;/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH25  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH25/unweighted_events.root">
+
+<!ENTITY VLQ_LH_700_MH50  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH50/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH75  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH75/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH100  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH100/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH125  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH125/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH150  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH150/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH200  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH200/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH250  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH250/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH300  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH300/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH400  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH400/unweighted_events.root">
+<!ENTITY VLQ_LH_700_MH500  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT700_MH500/unweighted_events.root">
+<!ENTITY VLQ_LH_600_MH300  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT600_MH300/unweighted_events.root">
+<!ENTITY VLQ_LH_800_MH300  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT800_MH300/unweighted_events.root">
+<!ENTITY VLQ_LH_900_MH300  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT900_MH300/unweighted_events.root">
+<!ENTITY VLQ_LH_1000_MH300  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT1000_MH300/unweighted_events.root">
+<!ENTITY VLQ_LH_1100_MH300  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT1100_MH300/unweighted_events.root">
+<!ENTITY VLQ_LH_1200_MH300  "&PRESELdir;/tH_b_topWdecay_LH_narrow_MT1200_MH300/unweighted_events.root">
 
 ]>
 
@@ -34,6 +51,135 @@
 	    		<InputTree Name="AnalysisTree" />
 	    		<OutputTree Name="AnalysisTree" />
 	    	</InputData>
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH50" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH50;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH75" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH75;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH100" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH100;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH125" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH125;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH150" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH150;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH200" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH200;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH250" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH250;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH300" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH300;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH400" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH400;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_MH500" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_700_MH500;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_MH300" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_600_MH300;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_MH300" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_800_MH300;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_MH300" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_900_MH300;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_MH300" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_1000_MH300;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_MH300" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_1100_MH300;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+	    	<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_MH300" Cacheable="&b_Cacheable;">
+	    <In FileName="&VLQ_LH_1200_MH300;" Lumi="0.0"/>
+	    		<InputTree Name="AnalysisTree" />
+	    		<OutputTree Name="AnalysisTree" />
+	    	</InputData>
+
+
+
+
+
+
+
+
 <UserConfig>
 	<!-- define which collections to read from the input. Only specify what you need to save I/O time -->
 	<!-- <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices" /> -->
