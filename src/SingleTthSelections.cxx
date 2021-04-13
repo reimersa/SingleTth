@@ -70,3 +70,27 @@ bool JetLeptonOverlapRemoval::process(Event & event){
    
    return true;
 }
+
+
+LowestChi2Value::LowestChi2Value(Context & ctx,std::vector<double> chi2_values_):chi2_values(chi2_values_) {
+  h_lowest_chi2= ctx.declare_event_output< double > ("lowest_Chi2");
+  h_lowest_chi2_index= ctx.declare_event_output< int > ("lowest_Chi2_index");
+}
+
+bool LowestChi2Value::process(Event & event){
+  double lowest_chi2 = 9999;
+  double index = 9999;
+
+  for(int i = 0; i<chi2_values.size(); i++){
+    std::cout<<"chi2 value "<< chi2_values.at(i) <<std::endl;
+    std::cout<<"index "<< i <<std::endl;
+    if(chi2_values.at(i) < lowest_chi2) {
+      lowest_chi2 = chi2_values.at(i);
+      index = i;
+    }
+  }
+  /// set handle with lowest chi2 and index of lowest chi2
+  event.set(h_lowest_chi2,lowest_chi2);
+  event.set(h_lowest_chi2_index,index);
+  return true;
+}

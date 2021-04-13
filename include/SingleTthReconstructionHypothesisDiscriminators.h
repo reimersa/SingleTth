@@ -17,8 +17,9 @@ public:
         cfg(): discriminator_label("Chi2"){}
     };
 
-    SingleTthChi2Discriminator(uhh2::Context & ctx, Year year_, const cfg & config = cfg());
+    SingleTthChi2Discriminator(uhh2::Context & ctx, Year year_,  const cfg & config = cfg());
     virtual bool process(uhh2::Event & event) override;
+
 
 private:
     uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;

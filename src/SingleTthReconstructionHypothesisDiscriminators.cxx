@@ -35,7 +35,7 @@ const SingleTthReconstructionHypothesis * get_best_hypothesis(const std::vector<
   }
 }
 
-SingleTthChi2Discriminator::SingleTthChi2Discriminator(Context & ctx,Year year_, const cfg & config_): config(config_){
+SingleTthChi2Discriminator::SingleTthChi2Discriminator(Context & ctx,Year year_ ,const cfg & config_): config(config_){
   h_hyps = ctx.get_handle<vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
   year= year_;
 }
@@ -48,6 +48,21 @@ bool SingleTthChi2Discriminator::process(uhh2::Event & event){
   double mass_tlep_sigma = 30.;
   double mass_higgs = 122.7;	
   double mass_higgs_sigma = 13.;
+
+  double mass_higgs_ma60 = 60.;	
+  double mass_higgs_sigma_ma60 = 6.;
+
+  double mass_higgs_ma90 = 90.;	
+  double mass_higgs_sigma_ma90 = 9.;
+
+  double mass_higgs_ma175 = 175.;	
+  double mass_higgs_sigma_ma175 = 17.5;
+
+  double mass_higgs_ma300 = 300.;	
+  double mass_higgs_sigma_ma300 = 30.;
+
+
+
 
   if(year == Year::is2017v2){
     mass_higgs = 121.6;	
@@ -152,6 +167,11 @@ bool SingleTthChi2Discriminator::process(uhh2::Event & event){
     double chi2_top = pow((mass_tlep_rec - mass_tlep)/(mass_tlep_sigma),2); //original chi2
     double chi2_higgs = pow((mass_higgs_rec - mass_higgs)/(mass_higgs_sigma),2); //original chi2
 
+    double chi2_higgs_ma60 = pow((mass_higgs_rec - mass_higgs_ma60)/(mass_higgs_sigma_ma60),2); 
+    double chi2_higgs_ma90 = pow((mass_higgs_rec - mass_higgs_ma90)/(mass_higgs_sigma_ma90),2); 
+    double chi2_higgs_ma175 = pow((mass_higgs_rec - mass_higgs_ma175)/(mass_higgs_sigma_ma175),2); 
+    double chi2_higgs_ma300 = pow((mass_higgs_rec - mass_higgs_ma300)/(mass_higgs_sigma_ma300),2); 
+
     // if(mass_tlep_rec > xmax_top )mass_tlep_rec = xmax_top;
     // if(mass_tlep_rec < xmin_top) mass_tlep_rec = xmin_top;
     // if(mass_higgs_rec > xmax_higgs) mass_higgs_rec = xmax_higgs;
@@ -168,6 +188,16 @@ bool SingleTthChi2Discriminator::process(uhh2::Event & event){
 
     hyp.set_discriminator(config.discriminator_label + "_top", chi2_top);
     hyp.set_discriminator(config.discriminator_label + "_higgs", chi2_higgs);
+    hyp.set_discriminator(config.discriminator_label + "_ma60", chi2_higgs_ma60);
+    hyp.set_discriminator(config.discriminator_label + "_ma90", chi2_higgs_ma90);
+    hyp.set_discriminator(config.discriminator_label + "_ma175", chi2_higgs_ma175);
+    hyp.set_discriminator(config.discriminator_label + "_ma300", chi2_higgs_ma300);
+
+    hyp.set_discriminator(config.discriminator_label + "_top+ma60", chi2_higgs_ma60 + chi2_top);
+    hyp.set_discriminator(config.discriminator_label + "_top+ma90", chi2_higgs_ma90 + chi2_top);
+    hyp.set_discriminator(config.discriminator_label + "_top+ma175", chi2_higgs_ma175 + chi2_top);
+    hyp.set_discriminator(config.discriminator_label + "_top+ma300", chi2_higgs_ma300 + chi2_top);
+
     hyp.set_discriminator(config.discriminator_label, chi2_higgs + chi2_top);  //original chi2
     //hyp.set_discriminator(config.discriminator_label, chi2_total); 
   }

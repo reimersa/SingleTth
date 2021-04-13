@@ -59,7 +59,7 @@ void SingleTthGenInfoHists::fill(const Event & event){
   int Ngenp = genp->size();
 
   for(auto gen:*genp){
-    if(abs(gen.pdgId()) == 8000001) {
+    if(abs(gen.pdgId()) == 8000001 || abs(gen.pdgId()) == 6000006 ) {
       hist("Tprime_mass") -> Fill((gen.v4()).M(),weight);
       int  daughter1 = gen.daughter1();
       int daughter2 = gen.daughter2();

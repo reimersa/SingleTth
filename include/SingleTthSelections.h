@@ -36,5 +36,15 @@ class JetLeptonOverlapRemoval: public uhh2::AnalysisModule {
       double deltaRmin_;
  };
 
+ class LowestChi2Value: public uhh2::AnalysisModule{
+ public:
+   explicit LowestChi2Value(uhh2::Context & ctx,std::vector<double> chi2_values_);
+   virtual bool process(uhh2::Event & event) override;
+
+ private:
+   std::vector<double> chi2_values;
+   uhh2::Event::Handle< double > h_lowest_chi2;
+   uhh2::Event::Handle< int > h_lowest_chi2_index;
+ };
 }
 

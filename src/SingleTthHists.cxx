@@ -155,6 +155,7 @@ SingleTthHists::SingleTthHists(Context & ctx, const string & dirname): Hists(ctx
 
   //For MLQ reconstruction
   h_hyps           = ctx.get_handle<std::vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
+  h_best_cat           = ctx.get_handle<TString>("Best_cat");
   h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
   is_mc = ctx.get("dataset_type") == "MC";
 
@@ -402,11 +403,20 @@ void SingleTthHists::fill(const Event & event){
 
   bool is_tprime_reco = event.get(h_is_tprime_reco);
   if(is_tprime_reco){
+    TString best_cat = "Chi2";
+    if(event.is_valid( h_best_cat)) best_cat = event.get(h_best_cat);
+    
     std::vector<SingleTthReconstructionHypothesis> hyps = event.get(h_hyps);
-    const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, "Chi2" );
-    double chi2 = hyp->discriminator("Chi2");
+    const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, best_cat.Data() );
+    double chi2 = hyp->discriminator(best_cat.Data());
     double chi2_top = hyp->discriminator("Chi2_top");
-    double chi2_higgs = hyp->discriminator("Chi2_higgs");
+    TString chi_higgs = "Chi2_higgs";
+    if(best_cat=="Chi2_ma60") chi_higgs = "Chi2_ma60";
+    if(best_cat=="Chi2_ma90") chi_higgs = "Chi2_ma90";
+    if(best_cat=="Chi2_ma175") chi_higgs = "Chi2_ma175";
+    if(best_cat=="Chi2_ma300") chi_higgs = "Chi2_ma300";
+    double chi2_higgs = hyp->discriminator(chi_higgs.Data());
+
     hist("chi2")->Fill(chi2,weight);
     hist("chi2_rebin")->Fill(chi2,weight);
     hist("chi2_rebin2")->Fill(chi2,weight);

@@ -96,6 +96,7 @@ ymax_dict["baurkjet_pt"] = 0.2
 ymax_dict["Higgs_bquark_pt"] = 0.18
 ymax_dict["Higgs_antibquark_pt"] = 0.18
 ymax_dict["DeltaR_bantib_Higgs"] = 0.7
+ymax_dict["invMass_Ht"] = 1.1
 
 
 
@@ -104,7 +105,7 @@ beps = True
 
 infiles = {}
 
-infolder = "/nfs/dust/cms/user/reimersa/SingleTth/GenInfo/"
+infolder = "/nfs/dust/cms/user/reimersa/SingleTth/GenInfo/LHEevents_VLQ_v4_4FNS_UFO/"
 
 folder = infolder + "plots/"
 

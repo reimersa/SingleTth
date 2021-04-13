@@ -86,7 +86,15 @@ namespace uhh2examples {
     unique_ptr<Hists> h_chi2h_5_much_cr, h_jets_chi2h_5_much_cr, h_ele_chi2h_5_much_cr, h_mu_chi2h_5_much_cr, h_event_chi2h_5_much_cr, h_lumi_chi2h_5_much_cr;
     unique_ptr<Hists> h_chi2h_5_ech_cr, h_jets_chi2h_5_ech_cr, h_ele_chi2h_5_ech_cr, h_mu_chi2h_5_ech_cr, h_event_chi2h_5_ech_cr, h_lumi_chi2h_5_ech_cr;
     unique_ptr<Hists> h_chi2h_2_much_sr, h_jets_chi2h_2_much_sr, h_ele_chi2h_2_much_sr, h_mu_chi2h_2_much_sr, h_event_chi2h_2_much_sr, h_lumi_chi2h_2_much_sr;
+    unique_ptr<Hists> h_catma60_much_sr, h_jets_catma60_much_sr, h_ele_catma60_much_sr, h_mu_catma60_much_sr, h_event_catma60_much_sr, h_lumi_catma60_much_sr;
+    unique_ptr<Hists> h_catma90_much_sr, h_jets_catma90_much_sr, h_ele_catma90_much_sr, h_mu_catma90_much_sr, h_event_catma90_much_sr, h_lumi_catma90_much_sr;
+    unique_ptr<Hists> h_catma175_much_sr, h_jets_catma175_much_sr, h_ele_catma175_much_sr, h_mu_catma175_much_sr, h_event_catma175_much_sr, h_lumi_catma175_much_sr;
+    unique_ptr<Hists> h_catma300_much_sr, h_jets_catma300_much_sr, h_ele_catma300_much_sr, h_mu_catma300_much_sr, h_event_catma300_much_sr, h_lumi_catma300_much_sr;
     unique_ptr<Hists> h_chi2h_2_ech_sr, h_jets_chi2h_2_ech_sr, h_ele_chi2h_2_ech_sr, h_mu_chi2h_2_ech_sr, h_event_chi2h_2_ech_sr, h_lumi_chi2h_2_ech_sr;
+    unique_ptr<Hists> h_catma60_ech_sr, h_jets_catma60_ech_sr, h_ele_catma60_ech_sr, h_mu_catma60_ech_sr, h_event_catma60_ech_sr, h_lumi_catma60_ech_sr;
+    unique_ptr<Hists> h_catma90_ech_sr, h_jets_catma90_ech_sr, h_ele_catma90_ech_sr, h_mu_catma90_ech_sr, h_event_catma90_ech_sr, h_lumi_catma90_ech_sr;
+    unique_ptr<Hists> h_catma175_ech_sr, h_jets_catma175_ech_sr, h_ele_catma175_ech_sr, h_mu_catma175_ech_sr, h_event_catma175_ech_sr, h_lumi_catma175_ech_sr;
+    unique_ptr<Hists> h_catma300_ech_sr, h_jets_catma300_ech_sr, h_ele_catma300_ech_sr, h_mu_catma300_ech_sr, h_event_catma300_ech_sr, h_lumi_catma300_ech_sr;
     unique_ptr<Hists> h_chi2h_2_much_cr, h_jets_chi2h_2_much_cr, h_ele_chi2h_2_much_cr, h_mu_chi2h_2_much_cr, h_event_chi2h_2_much_cr, h_lumi_chi2h_2_much_cr;
     unique_ptr<Hists> h_chi2h_2_ech_cr, h_jets_chi2h_2_ech_cr, h_ele_chi2h_2_ech_cr, h_mu_chi2h_2_ech_cr, h_event_chi2h_2_ech_cr, h_lumi_chi2h_2_ech_cr;
     unique_ptr<Hists> h_reco_lowchi2_much_sr, h_jets_reco_lowchi2_much_sr, h_ele_reco_lowchi2_much_sr, h_mu_reco_lowchi2_much_sr, h_event_reco_lowchi2_much_sr, h_lumi_reco_lowchi2_much_sr;
@@ -149,7 +157,10 @@ namespace uhh2examples {
     uhh2::Event::Handle<float> h_eventweight_lumi, h_eventweight_final;
 
     uhh2::Event::Handle<bool> h_is_tprime_reco;
-    uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;
+    uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;    
+    uhh2::Event::Handle<TString> h_best_cat;    
+    
+
   };
 
 
@@ -273,6 +284,7 @@ namespace uhh2examples {
 
     h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
     h_hyps = ctx.get_handle<vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
+    h_best_cat = ctx.get_handle<TString>("Best_cat");
 
     // 2. set up selections
     //Selection
@@ -548,12 +560,74 @@ namespace uhh2examples {
     h_event_chi2h_2_much_sr.reset(new EventHists(ctx, "Event_chi2h_2_much_sr"));
     h_lumi_chi2h_2_much_sr.reset(new LuminosityHists(ctx, "Lumi_chi2h_2_much_sr"));
 
+    h_catma60_much_sr.reset(new SingleTthHists(ctx, "catma60_much_sr"));
+    h_jets_catma60_much_sr.reset(new JetHists(ctx, "Jets_catma60_much_sr"));
+    h_ele_catma60_much_sr.reset(new ElectronHists(ctx, "Ele_catma60_much_sr"));
+    h_mu_catma60_much_sr.reset(new MuonHists(ctx, "Mu_catma60_much_sr"));
+    h_event_catma60_much_sr.reset(new EventHists(ctx, "Event_catma60_much_sr"));
+    h_lumi_catma60_much_sr.reset(new LuminosityHists(ctx, "Lumi_catma60_much_sr"));
+
+
+    h_catma90_much_sr.reset(new SingleTthHists(ctx, "catma90_much_sr"));
+    h_jets_catma90_much_sr.reset(new JetHists(ctx, "Jets_catma90_much_sr"));
+    h_ele_catma90_much_sr.reset(new ElectronHists(ctx, "Ele_catma90_much_sr"));
+    h_mu_catma90_much_sr.reset(new MuonHists(ctx, "Mu_catma90_much_sr"));
+    h_event_catma90_much_sr.reset(new EventHists(ctx, "Event_catma90_much_sr"));
+    h_lumi_catma90_much_sr.reset(new LuminosityHists(ctx, "Lumi_catma90_much_sr"));
+
+
+    h_catma175_much_sr.reset(new SingleTthHists(ctx, "catma175_much_sr"));
+    h_jets_catma175_much_sr.reset(new JetHists(ctx, "Jets_catma175_much_sr"));
+    h_ele_catma175_much_sr.reset(new ElectronHists(ctx, "Ele_catma175_much_sr"));
+    h_mu_catma175_much_sr.reset(new MuonHists(ctx, "Mu_catma175_much_sr"));
+    h_event_catma175_much_sr.reset(new EventHists(ctx, "Event_catma175_much_sr"));
+    h_lumi_catma175_much_sr.reset(new LuminosityHists(ctx, "Lumi_catma175_much_sr"));
+
+
+    h_catma300_much_sr.reset(new SingleTthHists(ctx, "catma300_much_sr"));
+    h_jets_catma300_much_sr.reset(new JetHists(ctx, "Jets_catma300_much_sr"));
+    h_ele_catma300_much_sr.reset(new ElectronHists(ctx, "Ele_catma300_much_sr"));
+    h_mu_catma300_much_sr.reset(new MuonHists(ctx, "Mu_catma300_much_sr"));
+    h_event_catma300_much_sr.reset(new EventHists(ctx, "Event_catma300_much_sr"));
+    h_lumi_catma300_much_sr.reset(new LuminosityHists(ctx, "Lumi_catma300_much_sr"));
+
+
     h_chi2h_2_ech_sr.reset(new SingleTthHists(ctx, "chi2h_2_ech_sr"));
     h_jets_chi2h_2_ech_sr.reset(new JetHists(ctx, "Jets_chi2h_2_ech_sr"));
     h_ele_chi2h_2_ech_sr.reset(new ElectronHists(ctx, "Ele_chi2h_2_ech_sr"));
     h_mu_chi2h_2_ech_sr.reset(new MuonHists(ctx, "Mu_chi2h_2_ech_sr"));
     h_event_chi2h_2_ech_sr.reset(new EventHists(ctx, "Event_chi2h_2_ech_sr"));
     h_lumi_chi2h_2_ech_sr.reset(new LuminosityHists(ctx, "Lumi_chi2h_2_ech_sr"));
+
+
+    h_catma60_ech_sr.reset(new SingleTthHists(ctx, "catma60_ech_sr"));
+    h_jets_catma60_ech_sr.reset(new JetHists(ctx, "Jets_catma60_ech_sr"));
+    h_ele_catma60_ech_sr.reset(new ElectronHists(ctx, "Ele_catma60_ech_sr"));
+    h_mu_catma60_ech_sr.reset(new MuonHists(ctx, "Mu_catma60_ech_sr"));
+    h_event_catma60_ech_sr.reset(new EventHists(ctx, "Event_catma60_ech_sr"));
+    h_lumi_catma60_ech_sr.reset(new LuminosityHists(ctx, "Lumi_catma60_ech_sr"));
+
+    h_catma90_ech_sr.reset(new SingleTthHists(ctx, "catma90_ech_sr"));
+    h_jets_catma90_ech_sr.reset(new JetHists(ctx, "Jets_catma90_ech_sr"));
+    h_ele_catma90_ech_sr.reset(new ElectronHists(ctx, "Ele_catma90_ech_sr"));
+    h_mu_catma90_ech_sr.reset(new MuonHists(ctx, "Mu_catma90_ech_sr"));
+    h_event_catma90_ech_sr.reset(new EventHists(ctx, "Event_catma90_ech_sr"));
+    h_lumi_catma90_ech_sr.reset(new LuminosityHists(ctx, "Lumi_catma90_ech_sr"));
+
+    h_catma175_ech_sr.reset(new SingleTthHists(ctx, "catma175_ech_sr"));
+    h_jets_catma175_ech_sr.reset(new JetHists(ctx, "Jets_catma175_ech_sr"));
+    h_ele_catma175_ech_sr.reset(new ElectronHists(ctx, "Ele_catma175_ech_sr"));
+    h_mu_catma175_ech_sr.reset(new MuonHists(ctx, "Mu_catma175_ech_sr"));
+    h_event_catma175_ech_sr.reset(new EventHists(ctx, "Event_catma175_ech_sr"));
+    h_lumi_catma175_ech_sr.reset(new LuminosityHists(ctx, "Lumi_catma175_ech_sr"));
+
+    h_catma300_ech_sr.reset(new SingleTthHists(ctx, "catma300_ech_sr"));
+    h_jets_catma300_ech_sr.reset(new JetHists(ctx, "Jets_catma300_ech_sr"));
+    h_ele_catma300_ech_sr.reset(new ElectronHists(ctx, "Ele_catma300_ech_sr"));
+    h_mu_catma300_ech_sr.reset(new MuonHists(ctx, "Mu_catma300_ech_sr"));
+    h_event_catma300_ech_sr.reset(new EventHists(ctx, "Event_catma300_ech_sr"));
+    h_lumi_catma300_ech_sr.reset(new LuminosityHists(ctx, "Lumi_catma300_ech_sr"));
+
 
     h_chi2h_2_much_cr.reset(new SingleTthHists(ctx, "chi2h_2_much_cr"));
     h_jets_chi2h_2_much_cr.reset(new JetHists(ctx, "Jets_chi2h_2_much_cr"));
@@ -1009,6 +1083,7 @@ namespace uhh2examples {
     //TODO what about SR/CR? This happens already at chi2 cuts, but probably we don't want to check for chi2 every time we apply a new cut? (once for SR, once for CR)
     tprime_reco->process(event);
     tprime_chi2->process(event);
+
     bool is_tprime_reco = event.get(h_is_tprime_reco);
     if(!is_tprime_reco) throw runtime_error("After reconstruction, the T still isn't reconstructed. How?");
 
@@ -1046,6 +1121,36 @@ namespace uhh2examples {
     std::vector<SingleTthReconstructionHypothesis> hyps = event.get(h_hyps);
     const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, "Chi2" );
 
+    const SingleTthReconstructionHypothesis* hyp_catma60 = get_best_hypothesis( hyps, "Chi2_top+ma60" );
+
+    const SingleTthReconstructionHypothesis* hyp_catma90 = get_best_hypothesis( hyps, "Chi2_top+ma90" );
+
+    const SingleTthReconstructionHypothesis* hyp_catma175 = get_best_hypothesis( hyps, "Chi2_top+ma175" );
+
+    const SingleTthReconstructionHypothesis* hyp_catma300 = get_best_hypothesis( hyps, "Chi2_top+ma300" );
+
+    std::map<TString,const SingleTthReconstructionHypothesis*> hyp_catmap;
+    hyp_catmap["Chi2_top+ma60"] = hyp_catma60;
+    hyp_catmap["Chi2_top+ma90"] = hyp_catma90;
+    hyp_catmap["Chi2"] = hyp;
+    hyp_catmap["Chi2_top+ma175"] = hyp_catma175;
+    hyp_catmap["Chi2_top+ma300"] = hyp_catma300;
+
+    /// find smallest hypothesis
+    float smallest_chi2 = 99999;
+    TString smallest_cat = "";
+    for(auto index:hyp_catmap){
+      float current_chi2 = index.second->discriminator((std::string)index.first);
+      if(current_chi2 < smallest_chi2){
+	smallest_chi2 = current_chi2;
+	smallest_cat = index.first;
+      }
+    }
+    
+    event.set(h_best_cat,smallest_cat);
+    //    std::cout<<"smallest_chi2  "<<smallest_chi2<<"  smallest_cat  "<<smallest_cat <<std::endl;
+
+
     float chi2 = hyp->discriminator("Chi2");
     float chi2h = hyp->discriminator("Chi2_higgs");
     float dR_bH_bH = deltaR(hyp->higgs_jets().at(0),hyp->higgs_jets().at(1));
@@ -1053,165 +1158,242 @@ namespace uhh2examples {
     float dR_bt_Wt = deltaR(W, hyp->toplep_jets().at(0));
     float dR_t_H = deltaR(hyp->toplep_v4(), hyp->higgs_v4());
 
-    if(chi2h < 0.75){
-      if(is_much){
-        h_reco_lowchi2_much_sr->fill(event);
-        h_jets_reco_lowchi2_much_sr->fill(event);
-        h_ele_reco_lowchi2_much_sr->fill(event);
-        h_mu_reco_lowchi2_much_sr->fill(event);
-        h_event_reco_lowchi2_much_sr->fill(event);
-        h_lumi_reco_lowchi2_much_sr->fill(event);
+    if(smallest_cat=="Chi2_top+ma60"){
+	if(is_much){
+	  h_catma60_much_sr->fill(event);
+	  h_jets_catma60_much_sr->fill(event);
+	  h_ele_catma60_much_sr->fill(event);
+	  h_mu_catma60_much_sr->fill(event);
+	  h_event_catma60_much_sr->fill(event);
+	  h_lumi_catma60_much_sr->fill(event);
+	}
+	else{
+	  h_catma60_ech_sr->fill(event);
+	  h_jets_catma60_ech_sr->fill(event);
+	  h_ele_catma60_ech_sr->fill(event);
+	  h_mu_catma60_ech_sr->fill(event);
+	  h_event_catma60_ech_sr->fill(event);
+	  h_lumi_catma60_ech_sr->fill(event);
+	}
+
+    }else if(smallest_cat=="Chi2_top+ma90"){
+	if(is_much){
+	  h_catma90_much_sr->fill(event);
+	  h_jets_catma90_much_sr->fill(event);
+	  h_ele_catma90_much_sr->fill(event);
+	  h_mu_catma90_much_sr->fill(event);
+	  h_event_catma90_much_sr->fill(event);
+	  h_lumi_catma90_much_sr->fill(event);
+	}
+	else{
+	  h_catma90_ech_sr->fill(event);
+	  h_jets_catma90_ech_sr->fill(event);
+	  h_ele_catma90_ech_sr->fill(event);
+	  h_mu_catma90_ech_sr->fill(event);
+	  h_event_catma90_ech_sr->fill(event);
+	  h_lumi_catma90_ech_sr->fill(event);
+	}
+
+    }else if(smallest_cat=="Chi2_top+ma175"){
+	if(is_much){
+	  h_catma175_much_sr->fill(event);
+	  h_jets_catma175_much_sr->fill(event);
+	  h_ele_catma175_much_sr->fill(event);
+	  h_mu_catma175_much_sr->fill(event);
+	  h_event_catma175_much_sr->fill(event);
+	  h_lumi_catma175_much_sr->fill(event);
+	}
+	else{
+	  h_catma175_ech_sr->fill(event);
+	  h_jets_catma175_ech_sr->fill(event);
+	  h_ele_catma175_ech_sr->fill(event);
+	  h_mu_catma175_ech_sr->fill(event);
+	  h_event_catma175_ech_sr->fill(event);
+	  h_lumi_catma175_ech_sr->fill(event);
+	}
+
+    }else if(smallest_cat=="Chi2_top+ma300"){
+
+	if(is_much){
+	  h_catma300_much_sr->fill(event);
+	  h_jets_catma300_much_sr->fill(event);
+	  h_ele_catma300_much_sr->fill(event);
+	  h_mu_catma300_much_sr->fill(event);
+	  h_event_catma300_much_sr->fill(event);
+	  h_lumi_catma300_much_sr->fill(event);
+	}
+	else{
+	  h_catma300_ech_sr->fill(event);
+	  h_jets_catma300_ech_sr->fill(event);
+	  h_ele_catma300_ech_sr->fill(event);
+	  h_mu_catma300_ech_sr->fill(event);
+	  h_event_catma300_ech_sr->fill(event);
+	  h_lumi_catma300_ech_sr->fill(event);
+	}
+
+    }else if(smallest_cat=="Chi2"){
+
+
+      // if(chi2h < 0.75){
+      // 	if(is_much){
+      // 	  h_reco_lowchi2_much_sr->fill(event);
+      // 	  h_jets_reco_lowchi2_much_sr->fill(event);
+      // 	  h_ele_reco_lowchi2_much_sr->fill(event);
+      // 	  h_mu_reco_lowchi2_much_sr->fill(event);
+      // 	  h_event_reco_lowchi2_much_sr->fill(event);
+      // 	  h_lumi_reco_lowchi2_much_sr->fill(event);
+      // 	}
+      // 	else{
+      // 	  h_reco_lowchi2_ech_sr->fill(event);
+      // 	  h_jets_reco_lowchi2_ech_sr->fill(event);
+      // 	  h_ele_reco_lowchi2_ech_sr->fill(event);
+      // 	  h_mu_reco_lowchi2_ech_sr->fill(event);
+      // 	  h_event_reco_lowchi2_ech_sr->fill(event);
+      // 	  h_lumi_reco_lowchi2_ech_sr->fill(event);
+      // 	}
+      // }
+      // else if(chi2h < 2.){
+      // 	if(is_much){
+      // 	  h_reco_highchi2_much_sr->fill(event);
+      // 	  h_jets_reco_highchi2_much_sr->fill(event);
+      // 	  h_ele_reco_highchi2_much_sr->fill(event);
+      // 	  h_mu_reco_highchi2_much_sr->fill(event);
+      // 	  h_event_reco_highchi2_much_sr->fill(event);
+      // 	  h_lumi_reco_highchi2_much_sr->fill(event);
+      // 	}
+      // 	else{
+      // 	  h_reco_highchi2_ech_sr->fill(event);
+      // 	  h_jets_reco_highchi2_ech_sr->fill(event);
+      // 	  h_ele_reco_highchi2_ech_sr->fill(event);
+      // 	  h_mu_reco_highchi2_ech_sr->fill(event);
+      // 	  h_event_reco_highchi2_ech_sr->fill(event);
+      // 	  h_lumi_reco_highchi2_ech_sr->fill(event);
+      // 	}
+      // }
+
+      bool chi2_10_sr = (chi2 < 10.);
+      bool chi2h_05_sr = (chi2h < 5.);
+      bool chi2h_02_sr = (chi2h < 2.);
+      
+      // if(chi2_10_sr){
+      // 	if(is_much){
+      // 	  h_chi2_10_much_sr->fill(event);
+      // 	  h_jets_chi2_10_much_sr->fill(event);
+      // 	  h_ele_chi2_10_much_sr->fill(event);
+      // 	  h_mu_chi2_10_much_sr->fill(event);
+      // 	  h_event_chi2_10_much_sr->fill(event);
+      // 	  h_lumi_chi2_10_much_sr->fill(event);
+      // 	}
+      // 	else{
+      // 	  h_chi2_10_ech_sr->fill(event);
+      // 	  h_jets_chi2_10_ech_sr->fill(event);
+      // 	  h_ele_chi2_10_ech_sr->fill(event);
+      // 	  h_mu_chi2_10_ech_sr->fill(event);
+      // 	  h_event_chi2_10_ech_sr->fill(event);
+      // 	  h_lumi_chi2_10_ech_sr->fill(event);
+      // 	}
+      // }
+      // else{
+      // 	if(is_much){
+      // 	  h_chi2_10_much_cr->fill(event);
+      // 	  h_jets_chi2_10_much_cr->fill(event);
+      // 	  h_ele_chi2_10_much_cr->fill(event);
+      // 	  h_mu_chi2_10_much_cr->fill(event);
+      // 	  h_event_chi2_10_much_cr->fill(event);
+      // 	  h_lumi_chi2_10_much_cr->fill(event);
+      // 	}
+      // 	else{
+      // 	  h_chi2_10_ech_cr->fill(event);
+      // 	  h_jets_chi2_10_ech_cr->fill(event);
+      // 	  h_ele_chi2_10_ech_cr->fill(event);
+      // 	  h_mu_chi2_10_ech_cr->fill(event);
+      // 	  h_event_chi2_10_ech_cr->fill(event);
+      // 	  h_lumi_chi2_10_ech_cr->fill(event);
+      // 	}
+      // }
+
+      // if(chi2_10_sr && chi2h_05_sr){
+      // 	if(is_much){
+      // 	  h_chi2h_5_much_sr->fill(event);
+      // 	  h_jets_chi2h_5_much_sr->fill(event);
+      // 	  h_ele_chi2h_5_much_sr->fill(event);
+      // 	  h_mu_chi2h_5_much_sr->fill(event);
+      // 	  h_event_chi2h_5_much_sr->fill(event);
+      // 	  h_lumi_chi2h_5_much_sr->fill(event);
+      // 	}
+      // 	else{
+      // 	  h_chi2h_5_ech_sr->fill(event);
+      // 	  h_jets_chi2h_5_ech_sr->fill(event);
+      // 	  h_ele_chi2h_5_ech_sr->fill(event);
+      // 	  h_mu_chi2h_5_ech_sr->fill(event);
+      // 	  h_event_chi2h_5_ech_sr->fill(event);
+      // 	  h_lumi_chi2h_5_ech_sr->fill(event);
+      // 	}
+      // }
+      // else{
+      // 	if(is_much){
+      // 	  h_chi2h_5_much_cr->fill(event);
+      // 	  h_jets_chi2h_5_much_cr->fill(event);
+      // 	  h_ele_chi2h_5_much_cr->fill(event);
+      // 	  h_mu_chi2h_5_much_cr->fill(event);
+      // 	  h_event_chi2h_5_much_cr->fill(event);
+      // 	  h_lumi_chi2h_5_much_cr->fill(event);
+      // 	}
+      // 	else{
+      // 	  h_chi2h_5_ech_cr->fill(event);
+      // 	  h_jets_chi2h_5_ech_cr->fill(event);
+      // 	  h_ele_chi2h_5_ech_cr->fill(event);
+      // 	  h_mu_chi2h_5_ech_cr->fill(event);
+      // 	  h_event_chi2h_5_ech_cr->fill(event);
+      // 	  h_lumi_chi2h_5_ech_cr->fill(event);
+      // 	}
+	
+      // }
+
+
+      if(chi2_10_sr && chi2h_02_sr){
+	if(is_much){
+	  h_chi2h_2_much_sr->fill(event);
+	  h_jets_chi2h_2_much_sr->fill(event);
+	  h_ele_chi2h_2_much_sr->fill(event);
+	  h_mu_chi2h_2_much_sr->fill(event);
+	  h_event_chi2h_2_much_sr->fill(event);
+	  h_lumi_chi2h_2_much_sr->fill(event);
+	  // h_PDF_variations_much_sr->fill(event);
+	}
+	else{
+	  h_chi2h_2_ech_sr->fill(event);
+	  h_jets_chi2h_2_ech_sr->fill(event);
+	  h_ele_chi2h_2_ech_sr->fill(event);
+	  h_mu_chi2h_2_ech_sr->fill(event);
+	  h_event_chi2h_2_ech_sr->fill(event);
+	  h_lumi_chi2h_2_ech_sr->fill(event);
+	  // h_PDF_variations_ech_sr->fill(event);
+	}
       }
       else{
-        h_reco_lowchi2_ech_sr->fill(event);
-        h_jets_reco_lowchi2_ech_sr->fill(event);
-        h_ele_reco_lowchi2_ech_sr->fill(event);
-        h_mu_reco_lowchi2_ech_sr->fill(event);
-        h_event_reco_lowchi2_ech_sr->fill(event);
-        h_lumi_reco_lowchi2_ech_sr->fill(event);
-      }
-    }
-    else if(chi2h < 2.){
-      if(is_much){
-        h_reco_highchi2_much_sr->fill(event);
-        h_jets_reco_highchi2_much_sr->fill(event);
-        h_ele_reco_highchi2_much_sr->fill(event);
-        h_mu_reco_highchi2_much_sr->fill(event);
-        h_event_reco_highchi2_much_sr->fill(event);
-        h_lumi_reco_highchi2_much_sr->fill(event);
-      }
-      else{
-        h_reco_highchi2_ech_sr->fill(event);
-        h_jets_reco_highchi2_ech_sr->fill(event);
-        h_ele_reco_highchi2_ech_sr->fill(event);
-        h_mu_reco_highchi2_ech_sr->fill(event);
-        h_event_reco_highchi2_ech_sr->fill(event);
-        h_lumi_reco_highchi2_ech_sr->fill(event);
+	if(is_much){
+	  h_chi2h_2_much_cr->fill(event);
+	  h_jets_chi2h_2_much_cr->fill(event);
+	  h_ele_chi2h_2_much_cr->fill(event);
+	  h_mu_chi2h_2_much_cr->fill(event);
+	  h_event_chi2h_2_much_cr->fill(event);
+	  h_lumi_chi2h_2_much_cr->fill(event);
+	  // h_PDF_variations_much_cr->fill(event);
+	}
+	else{
+	  h_chi2h_2_ech_cr->fill(event);
+	  h_jets_chi2h_2_ech_cr->fill(event);
+	  h_ele_chi2h_2_ech_cr->fill(event);
+	  h_mu_chi2h_2_ech_cr->fill(event);
+	  h_event_chi2h_2_ech_cr->fill(event);
+	  h_lumi_chi2h_2_ech_cr->fill(event);
+	  // h_PDF_variations_ech_cr->fill(event);
+	}
       }
     }
 
-    bool chi2_10_sr = (chi2 < 10.);
-    bool chi2h_05_sr = (chi2h < 5.);
-    bool chi2h_02_sr = (chi2h < 2.);
-
-    if(chi2_10_sr){
-      if(is_much){
-        h_chi2_10_much_sr->fill(event);
-        h_jets_chi2_10_much_sr->fill(event);
-        h_ele_chi2_10_much_sr->fill(event);
-        h_mu_chi2_10_much_sr->fill(event);
-        h_event_chi2_10_much_sr->fill(event);
-        h_lumi_chi2_10_much_sr->fill(event);
-      }
-      else{
-        h_chi2_10_ech_sr->fill(event);
-        h_jets_chi2_10_ech_sr->fill(event);
-        h_ele_chi2_10_ech_sr->fill(event);
-        h_mu_chi2_10_ech_sr->fill(event);
-        h_event_chi2_10_ech_sr->fill(event);
-        h_lumi_chi2_10_ech_sr->fill(event);
-      }
-    }
-    else{
-      if(is_much){
-        h_chi2_10_much_cr->fill(event);
-        h_jets_chi2_10_much_cr->fill(event);
-        h_ele_chi2_10_much_cr->fill(event);
-        h_mu_chi2_10_much_cr->fill(event);
-        h_event_chi2_10_much_cr->fill(event);
-        h_lumi_chi2_10_much_cr->fill(event);
-      }
-      else{
-        h_chi2_10_ech_cr->fill(event);
-        h_jets_chi2_10_ech_cr->fill(event);
-        h_ele_chi2_10_ech_cr->fill(event);
-        h_mu_chi2_10_ech_cr->fill(event);
-        h_event_chi2_10_ech_cr->fill(event);
-        h_lumi_chi2_10_ech_cr->fill(event);
-      }
-    }
-
-    if(chi2_10_sr && chi2h_05_sr){
-      if(is_much){
-        h_chi2h_5_much_sr->fill(event);
-        h_jets_chi2h_5_much_sr->fill(event);
-        h_ele_chi2h_5_much_sr->fill(event);
-        h_mu_chi2h_5_much_sr->fill(event);
-        h_event_chi2h_5_much_sr->fill(event);
-        h_lumi_chi2h_5_much_sr->fill(event);
-      }
-      else{
-        h_chi2h_5_ech_sr->fill(event);
-        h_jets_chi2h_5_ech_sr->fill(event);
-        h_ele_chi2h_5_ech_sr->fill(event);
-        h_mu_chi2h_5_ech_sr->fill(event);
-        h_event_chi2h_5_ech_sr->fill(event);
-        h_lumi_chi2h_5_ech_sr->fill(event);
-      }
-    }
-    else{
-      if(is_much){
-        h_chi2h_5_much_cr->fill(event);
-        h_jets_chi2h_5_much_cr->fill(event);
-        h_ele_chi2h_5_much_cr->fill(event);
-        h_mu_chi2h_5_much_cr->fill(event);
-        h_event_chi2h_5_much_cr->fill(event);
-        h_lumi_chi2h_5_much_cr->fill(event);
-      }
-      else{
-        h_chi2h_5_ech_cr->fill(event);
-        h_jets_chi2h_5_ech_cr->fill(event);
-        h_ele_chi2h_5_ech_cr->fill(event);
-        h_mu_chi2h_5_ech_cr->fill(event);
-        h_event_chi2h_5_ech_cr->fill(event);
-        h_lumi_chi2h_5_ech_cr->fill(event);
-      }
-
-    }
-
-
-    if(chi2_10_sr && chi2h_02_sr){
-      if(is_much){
-        h_chi2h_2_much_sr->fill(event);
-        h_jets_chi2h_2_much_sr->fill(event);
-        h_ele_chi2h_2_much_sr->fill(event);
-        h_mu_chi2h_2_much_sr->fill(event);
-        h_event_chi2h_2_much_sr->fill(event);
-        h_lumi_chi2h_2_much_sr->fill(event);
-        // h_PDF_variations_much_sr->fill(event);
-      }
-      else{
-        h_chi2h_2_ech_sr->fill(event);
-        h_jets_chi2h_2_ech_sr->fill(event);
-        h_ele_chi2h_2_ech_sr->fill(event);
-        h_mu_chi2h_2_ech_sr->fill(event);
-        h_event_chi2h_2_ech_sr->fill(event);
-        h_lumi_chi2h_2_ech_sr->fill(event);
-        // h_PDF_variations_ech_sr->fill(event);
-      }
-    }
-    else{
-      if(is_much){
-        h_chi2h_2_much_cr->fill(event);
-        h_jets_chi2h_2_much_cr->fill(event);
-        h_ele_chi2h_2_much_cr->fill(event);
-        h_mu_chi2h_2_much_cr->fill(event);
-        h_event_chi2h_2_much_cr->fill(event);
-        h_lumi_chi2h_2_much_cr->fill(event);
-        // h_PDF_variations_much_cr->fill(event);
-      }
-      else{
-        h_chi2h_2_ech_cr->fill(event);
-        h_jets_chi2h_2_ech_cr->fill(event);
-        h_ele_chi2h_2_ech_cr->fill(event);
-        h_mu_chi2h_2_ech_cr->fill(event);
-        h_event_chi2h_2_ech_cr->fill(event);
-        h_lumi_chi2h_2_ech_cr->fill(event);
-        // h_PDF_variations_ech_cr->fill(event);
-      }
-    }
-
-    bool is_sr = chi2_10_sr && chi2h_02_sr;
+    //    bool is_sr = chi2_10_sr && chi2h_02_sr;
 
     //
     // if(!(dR_bH_bH < 1.5)) return false;

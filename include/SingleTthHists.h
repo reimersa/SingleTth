@@ -19,6 +19,7 @@ namespace uhh2examples {
   protected:
     uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;
     uhh2::Event::Handle<bool> h_is_tprime_reco;
+    uhh2::Event::Handle<TString> h_best_cat;
     bool is_mc;
     bool is_signal_sample;
     TH2F* eta_phi_map;
