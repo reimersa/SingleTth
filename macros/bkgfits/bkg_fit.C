@@ -10,8 +10,8 @@ void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
 //EFitFunction FitFunc = eFunc3p;
-EFitFunction FitFunc = eFunc4p;
-//EFitFunction FitFunc = eFuncExp2;
+//EFitFunction FitFunc = eFunc4p;
+EFitFunction FitFunc = eFuncExp2;
 
 // EFitFunction FitFunc = eFunc2p;
 //EFitFunction FitFunc = eFuncAlt3p;

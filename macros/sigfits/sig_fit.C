@@ -19,18 +19,18 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 void sig_fit()
 {
   //TString year =  "2016v3";
-  //TString year =  "2017v2";
+  TString year =  "2017v2";
   //TString year =  "2018";
-  TString year =  "allyears";
+  //TString year =  "allyears";
 
   //  TString postfix = "_HEMIssue_LH";
   TString postfix = "";
 
 
   // decide which channel to do (eEle, eMuon, eComb)
-  //Echannel ch = eComb;
-  Echannel ch = eEle;
-  //  Echannel ch = eMuon;
+  //  Echannel ch = eComb;
+  //  Echannel ch = eEle;
+  Echannel ch = eMuon;
 
   TString outfile_name = "SignalFitOutput_"+year+postfix+".txt";
   if(ch==eEle) outfile_name = "SignalFitOutput_"+year+"_ech"+postfix+".txt";
@@ -49,6 +49,9 @@ void sig_fit()
 
   std::vector<double> MTs = {600};// 2016
   std::vector<double> MTs_backup = {600};// 2016
+  //hier
+  MTs = {600, 650, 700, 800, 900, 1000, 1100, 1200};// 2017
+  MTs_backup = {600, 650, 700, 800, 900, 1000, 1100, 1200};// 2017
 
 
   if (!b_test){
@@ -201,7 +204,7 @@ void sig_fit()
   text->DrawLatex(0.16, 0.92, info.Data());
 
   can->RedrawAxis();
-  can->SaveAs(fname+postfix+".eps");
+  //  can->SaveAs(fname+postfix+".eps");
   can->SaveAs(fname+postfix+".pdf");
 
   ////////second gauss
@@ -277,7 +280,7 @@ void sig_fit()
   text->DrawLatex(0.16, 0.92, info.Data());
 
   can_mean2->RedrawAxis();
-  can_mean2->SaveAs(fname+postfix+".eps");
+  //  can_mean2->SaveAs(fname+postfix+".eps");
   can_mean2->SaveAs(fname+postfix+".pdf");
 
   ////// add uncertainties
@@ -383,7 +386,7 @@ void sig_fit()
 
   can->cd();
   leg->Draw();
-  can->SaveAs(fname+postfix+"_unc.eps");
+  //  can->SaveAs(fname+postfix+"_unc.eps");
   can->SaveAs(fname+postfix+"_unc.pdf");
 
 
@@ -514,7 +517,7 @@ void sig_fit()
   text->DrawLatex(0.16, 0.92, info.Data());
 
   can2->RedrawAxis();
-  can2->SaveAs(fname2+postfix + ".eps");
+  //  can2->SaveAs(fname2+postfix + ".eps");
   can2->SaveAs(fname2+postfix + ".pdf");
 
   ///////second gauss
@@ -591,7 +594,7 @@ void sig_fit()
   text->DrawLatex(0.16, 0.92, info.Data());
 
   can2_width->RedrawAxis();
-  can2_width->SaveAs(fname2+postfix + ".eps");
+  //  can2_width->SaveAs(fname2+postfix + ".eps");
   can2_width->SaveAs(fname2+postfix + ".pdf");
 
 
@@ -692,7 +695,7 @@ void sig_fit()
 
   can2->cd();
   leg2->Draw();
-  can2->SaveAs(fname2+postfix+"_unc.eps");
+  //  can2->SaveAs(fname2+postfix+"_unc.eps");
   can2->SaveAs(fname2+postfix+"_unc.pdf");
 
 
@@ -818,7 +821,7 @@ void sig_fit()
   TString fname3 = "results/signal_eff_values_" + channel_name+"_"+year; 
 
   can3->RedrawAxis();
-  can3->SaveAs(fname3+postfix+ ".eps");
+  //  can3->SaveAs(fname3+postfix+ ".eps");
   can3->SaveAs(fname3+postfix+ ".pdf");
 
   ///// second gauss
@@ -901,7 +904,7 @@ void sig_fit()
   fname3 = "results/signal_fnorm_values_" + channel_name+"_"+year; 
 
   can3_fnorm->RedrawAxis();
-  can3_fnorm->SaveAs(fname3+postfix+ ".eps");
+  //  can3_fnorm->SaveAs(fname3+postfix+ ".eps");
   can3_fnorm->SaveAs(fname3+postfix+ ".pdf");
 
 
@@ -1350,7 +1353,7 @@ leg_eff->AddEntry(eff_err_tot,"Tot. uncertainty","f");
 
 
 
-  can4->SaveAs(fname4+postfix+"_unc.eps");
+  //  can4->SaveAs(fname4+postfix+"_unc.eps");
   can4->SaveAs(fname4+postfix+"_unc.pdf");
 
 

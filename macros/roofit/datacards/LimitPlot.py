@@ -21,12 +21,12 @@ berror = False
 #year = "2018"
 year = "allyears"
 
-postfix = "_mediumWP_allyearsunc_exp_doublegauss_both1"
+postfix = "_mavariable_cat125only"
 
 masses = []
 
 if "allyears" in year:
-    inputfile = open("AnalysisOutput_2016v3.txt","r")
+    inputfile = open("AnalysisOutput_2017v2.txt","r")
 else:
     inputfile = open("AnalysisOutput_"+year+".txt","r")
 
