@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
   bool all_bkgds = true;
 
 
-  std::vector<TString> categories = {"chi2h_2","catma60", "catma90","catma175","catma300"};
+  std::vector<TString> categories = {"chi2h_2", "catma90","catma175","catma300"};
   //  std::vector<TString> categories = {"chi2h_2"};
   for(unsigned int icat = 0; icat < categories.size(); icat++){
     TString cat = categories[icat];
