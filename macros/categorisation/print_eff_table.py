@@ -147,7 +147,7 @@ def creat_eff_plot_per_cat(folder, signal_list = []):
     c.SaveAs("catma125.eps")
     c.SaveAs("catma125.pdf")
 
-def creat_eff_plot_per_sig(folder, signal_list = []):
+def creat_eff_plot_per_sig(folder, signal_list = [],ma = False):
     #when signal list is empty look for all samples
     if not len(signal_list):
         signal_list = list_of_signal(folder)
@@ -155,16 +155,19 @@ def creat_eff_plot_per_sig(folder, signal_list = []):
     #loop over all samples and calculate percentage
     sample_dict = {}
     for el in signal_list:
+        if (not ma) and "_ma" in el: continue
+        elif ma and (not "_ma" in el): continue
         mass = int(re.findall(r'\d+', el)[1])
+        if ma: mass = int(re.findall(r'\d+', el)[2])
         sample_dict[mass] =  calculate_percentage_per_category(folder, el)
-        calculate_percentage_per_category(folder, el, False)
+#        calculate_percentage_per_category(folder, el, False)
 
     print sample_dict
     
     hist_to_draw = {}
-    dic_list = {"chi2h_2_much_sr","catma60_much_sr","catma90_much_sr","catma175_much_sr","catma300_much_sr",}
+    dic_list = {"chi2h_2_much_sr","catma60_much_sr","catma90_much_sr","catma175_much_sr","catma300_much_sr"}
     for dic in dic_list:
-        hist = TH1F("hist","eff in cat ma 125",len(signal_list),0,len(signal_list))
+        hist = TH1F("hist","eff in cat ma 125",len(sample_dict),0,len(sample_dict))
         bin = 1
         for el in sorted(sample_dict):
             print el
@@ -191,7 +194,8 @@ def creat_eff_plot_per_sig(folder, signal_list = []):
         hist = hist_to_draw[el]
         hist.GetYaxis().SetTitle("[%]")
         hist.GetXaxis().SetTitle("M_{T} [GeV]")
-        hist.GetYaxis().SetRangeUser(0,0.6)
+        if ma:         hist.GetXaxis().SetTitle("M_{a} [GeV]")
+        hist.GetYaxis().SetRangeUser(0,0.8)
 
         hist.SetLineWidth(2)
         if prop.has_key(dic):
@@ -204,13 +208,21 @@ def creat_eff_plot_per_sig(folder, signal_list = []):
         leg.AddEntry(hist, prop[el][1])
 
     leg.Draw()
-    text = CMSPlotStyle.draw_info("Signal: M_{a} = 125 GeV, #mu+jets",0.15,0.945,11)
+    if ma:
+        text = CMSPlotStyle.draw_info("Signal: M_{T} = 700 GeV, #mu+jets",0.15,0.945,11)
+    else:
+        text = CMSPlotStyle.draw_info("Signal: M_{a} = 125 GeV, #mu+jets",0.15,0.945,11)
     text.Draw("same")
 
-    c.SaveAs("sigma125.eps")
-    c.SaveAs("sigma125.pdf")
+    if not ma:
+        c.SaveAs("sigma125.eps")
+        c.SaveAs("sigma125.pdf")
+    else:
+        c.SaveAs("sigmT700.eps")
+        c.SaveAs("sigmT700.pdf")
 
 
 create_eff_table("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 #creat_eff_plot_per_cat("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True)

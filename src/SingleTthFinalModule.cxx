@@ -47,9 +47,9 @@ namespace uhh2examples {
 
     explicit SingleTthFinalModule(Context & ctx);
     virtual bool process(Event & event) override;
-    void book_histograms(uhh2::Context&, vector<string>);
-    void book_pdf_histograms(uhh2::Context&, vector<string>);
-    void fill_histograms(uhh2::Event&, string, bool, bool);
+    void book_histograms(uhh2::Context&, vector<string>, TString);
+    void book_pdf_histograms(uhh2::Context&, vector<string>, TString);
+    void fill_histograms(uhh2::Event&, string, bool, bool, TString);
 
   private:
     unique_ptr<HighMassSingleTthReconstruction> tprime_reco;
@@ -68,38 +68,40 @@ namespace uhh2examples {
 
     uhh2::Event::Handle<bool> h_is_tprime_reco;
     uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;
+    uhh2::Event::Handle<TString> h_best_cat;
+    std::map<TString,TString> best_catmap;
   };
 
-  void SingleTthFinalModule::book_histograms(uhh2::Context& ctx, vector<string> tags){
+  void SingleTthFinalModule::book_histograms(uhh2::Context& ctx, vector<string> tags, TString cat="chi2h_2"){
     for(const auto & tag : tags){
       cout << "booking histograms with tag " << tag << endl;
-      string mytag = "chi2h_2_ech_sr_" + tag;
+      string mytag = (string)cat+"_ech_sr_" + tag;
       book_HFolder(mytag, new SingleTthHists(ctx,mytag));
-      mytag = "chi2h_2_much_sr_" + tag;
+      mytag = (string)cat+"_much_sr_" + tag;
       book_HFolder(mytag, new SingleTthHists(ctx,mytag));
-      mytag = "chi2h_2_ech_cr_" + tag;
+      mytag = (string)cat+"_ech_cr_" + tag;
       book_HFolder(mytag, new SingleTthHists(ctx,mytag));
-      mytag = "chi2h_2_much_cr_" + tag;
+      mytag = (string)cat+"_much_cr_" + tag;
       book_HFolder(mytag, new SingleTthHists(ctx,mytag));
     }
   }
 
-  void SingleTthFinalModule::book_pdf_histograms(uhh2::Context& ctx, vector<string> tags){
+  void SingleTthFinalModule::book_pdf_histograms(uhh2::Context& ctx, vector<string> tags, TString cat = "chi2h_2"){
     for(const auto & tag : tags){
       cout << "booking histograms with tag " << tag << endl;
-      string mytag = "chi2h_2_ech_sr_" + tag;
+      string mytag = (string)cat+"_ech_sr_" + tag;
       book_HFolder(mytag, new SingleTthPDFHists(ctx,mytag));
-      mytag = "chi2h_2_much_sr_" + tag;
+      mytag = (string)cat+"_much_sr_" + tag;
       book_HFolder(mytag, new SingleTthPDFHists(ctx,mytag));
-      mytag = "chi2h_2_ech_cr_" + tag;
+      mytag = (string)cat+"_ech_cr_" + tag;
       book_HFolder(mytag, new SingleTthPDFHists(ctx,mytag));
-      mytag = "chi2h_2_much_cr_" + tag;
+      mytag = (string)cat+"_much_cr_" + tag;
       book_HFolder(mytag, new SingleTthPDFHists(ctx,mytag));
     }
   }
 
-  void SingleTthFinalModule::fill_histograms(uhh2::Event& event, string tag, bool is_sr, bool is_much){
-    string mytag = "chi2h_2_";
+  void SingleTthFinalModule::fill_histograms(uhh2::Event& event, string tag, bool is_sr, bool is_much, TString cat){
+    string mytag = (string)cat + "_";
     if(is_much) mytag += "much_";
     else        mytag += "ech_";
 
@@ -125,6 +127,7 @@ namespace uhh2examples {
     tprime_chi2.reset(new SingleTthChi2Discriminator(ctx,year));
     h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
     h_hyps = ctx.get_handle<vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
+    h_best_cat = ctx.get_handle<TString>("Best_cat");
 
     eventweight_nominal = ctx.get_handle<float>("eventweight_final");
 
@@ -185,7 +188,11 @@ namespace uhh2examples {
     histogramtags.emplace_back("nominal");
 
     //book all the histogram folders
-    book_histograms(ctx, histogramtags);
+    std::vector<TString> categories={"chi2h_2","catma60","catma90","catma175","catma300"};
+    for(unsigned int icat = 0;icat < categories.size();icat++){
+      TString cat = categories[icat];
+      book_histograms(ctx, histogramtags, cat);
+    }
 
 
 
@@ -203,14 +210,23 @@ namespace uhh2examples {
       TString histname = "scale_" + systshift_scale[i];
       histogramtags_scale.emplace_back(histname);
     }
-
-    book_histograms(ctx, histogramtags_scale);
-
+    for(unsigned int icat = 0;icat < categories.size();icat++){
+      TString cat = categories[icat];
+      book_histograms(ctx, histogramtags_scale,cat);
+    }
 
     // Separately book one set of PDF hists (each contains the 100 variations for M_Tprime)
-    book_pdf_histograms(ctx, {"pdf"});
+    for(unsigned int icat = 0;icat < categories.size();icat++){
+      TString cat = categories[icat];
+      book_pdf_histograms(ctx, {"pdf"},cat);
+    }
 
-
+    best_catmap["Chi2"] = "chi2h_2";
+    best_catmap["Chi2_top+ma60"] = "catma60";
+    best_catmap["Chi2_top+ma90"] = "catma90";
+    best_catmap["Chi2_top+ma175"] = "catma175";
+    best_catmap["Chi2_top+ma300"] = "catma300";
+    
 
   }
 
@@ -228,12 +244,14 @@ namespace uhh2examples {
     bool is_tprime_reco = event.get(h_is_tprime_reco);
     if(!is_tprime_reco) throw runtime_error("After reconstruction, the T still isn't reconstructed. How?");
     std::vector<SingleTthReconstructionHypothesis> hyps = event.get(h_hyps);
-    const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, "Chi2" );
-    float chi2 = hyp->discriminator("Chi2");
+    TString best_cat = event.get(h_best_cat);
+    const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, (string)best_cat );
+    float chi2 = hyp->discriminator((string)best_cat);
     float chi2h = hyp->discriminator("Chi2_higgs");
 
     // SR or CR?
-    bool is_sr = chi2 < 10. && chi2h < 2.;
+    bool is_sr = chi2 < 10.;
+    if(best_cat == "Chi2") is_sr = (is_sr && chi2h < 2.);
     //    is_sr = true;
 
     // Read out nominal eventweight
@@ -242,7 +260,7 @@ namespace uhh2examples {
     // Fill histograms once with nominal weights
     event.weight = weight_nominal;
     // cout << "weight nominal: " << weight_nominal << endl;
-    fill_histograms(event, "nominal", is_sr, is_much);
+    fill_histograms(event, "nominal", is_sr, is_much, best_catmap[best_cat]);
 
     // Loop over easy systematics
     for(unsigned int i=0; i<systnames.size(); i++){
@@ -257,7 +275,7 @@ namespace uhh2examples {
 	//	cout << "idx: " << idx << ", systweight/sfweight: " << systweight/sfweight << endl;
 
         TString tag = systnames[i] + "_" + systshift[j];
-        fill_histograms(event, (string)tag, is_sr, is_much);
+        fill_histograms(event, (string)tag, is_sr, is_much, best_catmap[best_cat]);
       }
     }
 
@@ -268,12 +286,12 @@ namespace uhh2examples {
       event.weight = weight_nominal * systweight;
 
       TString tag = "scale_" + systshift_scale[j];
-      fill_histograms(event, (string)tag, is_sr, is_much);
+      fill_histograms(event, (string)tag, is_sr, is_much, best_catmap[best_cat]);
     }
 
     // Fill PDF histograms
     event.weight = weight_nominal;
-    fill_histograms(event, "pdf", is_sr, is_much);
+    fill_histograms(event, "pdf", is_sr, is_much, best_catmap[best_cat]);
 
     return true;
   }

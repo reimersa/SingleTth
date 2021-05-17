@@ -13,7 +13,7 @@ enum Echannel {eMuon, eEle, eComb};
 // folder where the analysis output files are 
 // TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
 
-TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString year = "2016v3")
+TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString year = "2016v3", TString cat ="chi2h_2")
 {
 
   // folder where the analysis output files are 
@@ -32,7 +32,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/"; 
 
      else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
-     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/"; 
+     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
      else if(year.Contains("allyears"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/NOMINAL/"; 
      else throw runtime_error("Year not possible.");
   }
@@ -67,7 +67,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
   } else {
   	region_name = "sr";
   }
-  TString hist_name = "chi2h_2_" + channel_name + "_" + region_name + "/M_Tprime";
+  TString hist_name = cat+"_" + channel_name + "_" + region_name + "/M_Tprime";
   TH1F* data = (TH1F*)data_f->Get(hist_name);
   TH1F* ttbar = (TH1F*)ttbar_f->Get(hist_name);
   TH1F* singlet = (TH1F*)singlet_f->Get(hist_name);
@@ -128,7 +128,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
 
 }
 
-TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString year = "2016v3")
+TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString year = "2016v3", TString cat="chi2h_2", TString MA = "99999")
 {
 
   // folder where the analysis output files are 
@@ -169,7 +169,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      }
      else if(year.Contains("2018")){
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/"; 
        systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtagcomb/"; 
        hand = "LH";
      }
@@ -194,20 +194,28 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
 
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");
+  if(!MA.Contains("9999")) sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_ma"+MA+"_" + year + ".root", "READ");
 
   if(unc!=""){
     TString subfolder = "NOMINAL/";
     //    if(year.Contains("2017")|| year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
     //    if(year.Contains("2018")) subfolder = "NOMINAL_NoBTagSF/";
-    sig_f = new TFile(systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");
+    TString  sysfilename = systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root";
+
+    if(!MA.Contains("9999"))     sysfilename = systfolder+subfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_ma"+MA+"_" + year + ".root";
+
+
+
     if(unc.Contains("PDF")) {
       subfolder = "pdf/";
-      sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_" + year + ".root", "READ");
+      sysfilename =systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + "_" + year + ".root";
+      if(!MA.Contains("9999"))         sysfilename = systfolder+subfolder+"VLQ_"+hand+"_" + MT_name+"_ma"+MA + "_" + year + ".root";
     }
 
     if(unc.Contains("scale")) {
       subfolder = "scale/";
-      sig_f = new TFile(systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");
+      sysfilename =systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root";
+      if(!MA.Contains("9999")) sysfilename =systfolder+subfolder+"VLQ_"+hand+"_" + MT_name + prodch+"_ma"+MA +"_" + year + ".root";
     }
 
 
@@ -215,21 +223,28 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
       TString extention = "";
       //      if((year.Contains("2017")||year.Contains("2018"))) extention = "_NoBTagSF"; 
       //if((year.Contains("2018"))) extention = "_NoBTagSF"; 
-      sig_f = new TFile(anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");
+
+      sysfilename =anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root";
+      if(!MA.Contains("9999"))  sysfilename = anaoutputfolder+unc+extention+"/uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_ma"+MA+"_" + year + ".root";
     }
+
+    std::cout<<" filename "<< sysfilename <<std::endl;
+    sig_f = new TFile(sysfilename, "READ");
+
+
   }  
 
   TString region_name = "sr";
-  TString ech_name  = "chi2h_2_ech_"  + region_name + "/M_Tprime";
-  TString much_name = "chi2h_2_much_" + region_name + "/M_Tprime";
+  TString ech_name  = cat+"_ech_"  + region_name + "/M_Tprime";
+  TString much_name = cat+"_much_" + region_name + "/M_Tprime";
 
   if(unc!=""){
     if(unc.Contains("PDF")) unc.ReplaceAll("PDF","pdf");
-    ech_name  = "chi2h_2_ech_"  + region_name +"_"+unc +"/M_Tprime";
-    much_name = "chi2h_2_much_" + region_name +"_"+unc + "/M_Tprime";
+    ech_name  = cat+"_ech_"  + region_name +"_"+unc +"/M_Tprime";
+    much_name = cat+"_much_" + region_name +"_"+unc + "/M_Tprime";
     if(unc.Contains("JEC") || unc.Contains("JER")){
-      ech_name  = "chi2h_2_ech_"  + region_name +"/M_Tprime";
-      much_name = "chi2h_2_much_" + region_name +"/M_Tprime";
+      ech_name  = cat+"_ech_"  + region_name +"/M_Tprime";
+      much_name = cat+"_much_" + region_name +"/M_Tprime";
     }
   }
 
@@ -306,7 +321,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
        hand = "LH";
      }
      else if (year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/"; 
+       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
        hand = "LH";
      }
@@ -562,7 +577,7 @@ TH1F* ComputeHistWithCL(TF1* f, TFitResultPtr fr, TH1F* h, double cl)
 }
 
 
-void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString funcdesc, TString funcfilename, TString year = "2016v3")
+void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString funcdesc, TString funcfilename, TString year = "2016v3", TString cat = "chi2h_2")
 {
   static int i = 0;
   ++i;
@@ -680,6 +695,13 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
   text->DrawLatex(0.665, 0.905, lumiText.Data());
 
   TString info4 = funcdesc;
+  TString mamass = "125";
+  if(cat.Contains("catma")) {
+    mamass = cat;
+    mamass.ReplaceAll("catma", "");
+  }
+  info4 +=", Cat: M_{a} = "+mamass+" GeV";
+
   text->SetTextSize(0.04);
   text->SetTextAlign(32);
   text->SetTextFont(62);
@@ -789,13 +811,13 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
     region_name = "sr";
   }  
   if (dodata){
-    c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_data_fit_" + funcfilename + "_"+ year+".pdf");
+    c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_data_fit_" + funcfilename + "_"+ year+"_"+cat+".pdf");
   } else {
 
     if (all_bkgds){
-      c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_allbkgds_fit_" + funcfilename + "_"+ year+".pdf");
+      c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_allbkgds_fit_" + funcfilename + "_"+ year+"_"+cat+".pdf");
     } else {
-      c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_ttbar_fit_" + funcfilename + "_"+ year+".pdf");
+      c1->Print(folder + "/ratio_" + region_name + "_" + channel_name + "_ttbar_fit_" + funcfilename + "_"+ year+"_"+cat+".pdf");
     }
 
   }

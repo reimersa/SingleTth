@@ -26,8 +26,8 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 
 void PDFRMS(){
 
-  TString year = "2016v3";
-  //TString year = "2017v2";
+  //  TString year = "2016v3";
+  TString year = "2017v2";
   //       TString year = "2018";
 
 
@@ -42,6 +42,9 @@ void PDFRMS(){
   if(year == "2017v2" || year == "2018") hand="LH";
 
 
+  std::vector<TString> mas = {"_ma75","_ma125","_ma175","_ma250","_ma350","_ma450"};
+
+
   map<TString, TString> samplemap;
   samplemap["TTbar_"+year] = "uhh2.AnalysisModuleRunner.MC.TTbar_"+year+".root";
   samplemap["WJets_"+year] = "uhh2.AnalysisModuleRunner.MC.WJets_"+year+".root";
@@ -51,7 +54,7 @@ void PDFRMS(){
   samplemap["SingleTop_"+year] = "uhh2.AnalysisModuleRunner.MC.SingleTop_"+year+".root";
   samplemap["VLQ_"+hand+"_600_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_600_"+prodch+year_lowmass+".root";
   samplemap["VLQ_"+hand+"_650_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_650_"+prodch+year_lowmass+".root";
-  samplemap["VLQ_LH_700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_"+prodch+year+".root";
+
   samplemap["VLQ_"+hand+"_800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_800_"+prodch+year+".root";
   samplemap["VLQ_"+hand+"_900_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_900_"+prodch+year+".root";
   samplemap["VLQ_"+hand+"_1000_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1000_"+prodch+year+".root";
@@ -64,8 +67,9 @@ void PDFRMS(){
   samplemap["VLQ_"+hand+"_1700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1700_"+prodch+year+".root";
   samplemap["VLQ_"+hand+"_1800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1800_"+prodch+year+".root";
 
+
   TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/SFbtagmujets/";
-  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/SFbtagmujets/";
+  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/";
   if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtagcomb/";
 
   FindRMS(infolder, samplemap, "TTbar_"+year,year);
@@ -76,7 +80,7 @@ void PDFRMS(){
   FindRMS(infolder, samplemap, "SingleTop_"+year,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_600_"+year_lowmass,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_650_"+year_lowmass,year);
-  FindRMS(infolder, samplemap, "VLQ_LH_700_"+year,year);
+
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_800_"+year,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_900_"+year,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_1000_"+year,year);
@@ -89,6 +93,11 @@ void PDFRMS(){
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_1700_"+year,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_1800_"+year,year);
 
+  for(unsigned int ima = 0; ima < mas.size(); ima++){
+    TString ma = mas[ima];
+    samplemap["VLQ_LH_700"+ma+"_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_700"+prodch+ma+"_"+year+".root";
+    FindRMS(infolder, samplemap, "VLQ_LH_700"+ma+"_"+year,year);
+  }
 }
 
 

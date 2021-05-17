@@ -33,3 +33,5 @@ macros/roofit/*.eps
 macros/sigfits/*.txt
 macros/sigfits/results/
 macros/sigfits/*.eps
+macros/categorisation/*.eps
+macros/categorisation/*.pdf

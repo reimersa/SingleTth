@@ -190,8 +190,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   double fit_xmin = 0;
   double fit_xmax = 0;  
   if (region==defs::eSR){
-    //    fit_xmin = 450;
-    fit_xmin = 500;
+    fit_xmin = 450;
     fit_xmax = 2000;    
 
     if(cat.Contains("catma300")) fit_xmin = 560;
@@ -903,10 +902,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     RooArgList mypdfs;
     mypdfs.add(*ModelSg_Gauss);
     //mypdfs.add(*ModelSg_Gauss_variation);
-    // mypdfs.add(*ModelSg_JECup_Gauss);
-    // mypdfs.add(*ModelSg_JERup_Gauss);
-    // mypdfs.add(*ModelSg_JECdown_Gauss);
-    // mypdfs.add(*ModelSg_JERdown_Gauss);
+    mypdfs.add(*ModelSg_JECup_Gauss);
+    mypdfs.add(*ModelSg_JERup_Gauss);
+    mypdfs.add(*ModelSg_JECdown_Gauss);
+    mypdfs.add(*ModelSg_JERdown_Gauss);
 
     RooCategory category("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"Index of Pdf which is active");
     RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"All Pdfs",category,mypdfs);

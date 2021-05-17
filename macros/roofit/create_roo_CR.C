@@ -7,26 +7,30 @@ int main(int argc, char *argv[])
   bool dodata = true;
   bool all_bkgds = true;
 
-  // create the workspace
-  CreateRooWorkspace prod;
+  std::vector<TString> categories = {"chi2h_2"};
+  for(unsigned int icat = 0; icat < categories.size(); icat++){
+    TString cat = categories[icat];
 
-  // muon channel: save data hist and bkg fit to the workspace
-  prod.SaveDataAndBkgFunc(defs::eCR, defs::eMuon, dodata, all_bkgds);
+    // create the workspace
+    CreateRooWorkspace prod("2016v3",cat);
 
-  // electron channel: save data hist and bkg fit to the workspace
-  prod.SaveDataAndBkgFunc(defs::eCR, defs::eEle, dodata, all_bkgds);
 
-  //  std::cout<<"Hier"<<std::endl;
-  // now produce the signals
-  prod.SaveSignals(defs::eMuon);
+    // muon channel: save data hist and bkg fit to the workspace
+    prod.SaveDataAndBkgFunc(defs::eCR, defs::eMuon, dodata, all_bkgds,"2016v3",cat);
 
-  // now produce the signals
-  prod.SaveSignals(defs::eEle);  
-  //  std::cout<<"Hier2"<<std::endl;
-  prod.PrintWorkspace();
+    // electron channel: save data hist and bkg fit to the workspace
+    prod.SaveDataAndBkgFunc(defs::eCR, defs::eEle, dodata, all_bkgds, "2016v3", cat);
 
-  prod.StoreWorkspace();
+    // now produce the signals
+    prod.SaveSignals(defs::eMuon, "2016v3", cat);
 
+    // now produce the signals
+    prod.SaveSignals(defs::eEle,"2016v3", cat);  
+  
+    prod.PrintWorkspace();
+    
+    prod.StoreWorkspace("2016v3",cat);
+  }
 	return 0;
 
 }

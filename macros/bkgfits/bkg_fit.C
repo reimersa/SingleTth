@@ -4,7 +4,7 @@
 #include "helpers.C"
 
 using namespace std;
-TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95, TString year = "2016v3");
+TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95, TString year = "2016v3",TString cat = "chi2h_2");
 void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString name);
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
@@ -21,61 +21,70 @@ void bkg_fit()
 {
 
   //  TString year = "2016v3";
-    TString year = "2017v2";
-  //  TString year = "2018";
+  //  TString year = "2017v2";
+    TString year = "2018";
   //  TString year = "allyears";
-  TH1F* cl68 = NULL; 
-  TH1F* cl95 = NULL;
-  TH1F* dum = NULL; 
+  
+  std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175", "catma300"};
+  for (unsigned int icat=0;icat < categories.size();icat++){
 
-  // ------------ Control Region --------------
+    TString cat = categories[icat];
 
-  TF1* cr_mc_ele = one_fit(eCR, eEle, false, true, dum, dum,year);
-  TF1* cr_mc_muo = one_fit(eCR, eMuon, false, true, dum, dum,year);
+    TH1F* cl68 = NULL; 
+    TH1F* cl95 = NULL;
+    TH1F* dum = NULL; 
+    std::vector<TF1*> funcs; 
 
-  TF1* cr_data_ele = one_fit(eCR, eEle, true, true, cl68, cl95,year);  
-  TF1* cr_data_muo = one_fit(eCR, eMuon, true, true, dum, dum,year);  
+    // ------------ Control Region --------------
+    if(!cat.Contains("cat")){
+      TF1* cr_mc_ele = one_fit(eCR, eEle, false, true, dum, dum,year,cat);
+      TF1* cr_mc_muo = one_fit(eCR, eMuon, false, true, dum, dum,year,cat);
 
-  cr_mc_ele->SetLineStyle(kDashed);
-  cr_mc_muo->SetLineStyle(kDashed);
-  std::vector<TF1*> funcs; 
-  funcs.push_back(cr_mc_ele);
-  funcs.push_back(cr_mc_muo);
-  funcs.push_back(cr_data_ele);
-  funcs.push_back(cr_data_muo);
+      TF1* cr_data_ele = one_fit(eCR, eEle, true, true, cl68, cl95,year,cat);  
+      TF1* cr_data_muo = one_fit(eCR, eMuon, true, true, dum, dum,year,cat);  
 
-  // plot comparison of fit functions
-  PlotFuncComparison(funcs, cl68, cl95, "CR_fitcomparison");
+      cr_mc_ele->SetLineStyle(kDashed);
+      cr_mc_muo->SetLineStyle(kDashed);
 
-  // ------------ Signal Region --------------
+      funcs.push_back(cr_mc_ele);
+      funcs.push_back(cr_mc_muo);
+      funcs.push_back(cr_data_ele);
+      funcs.push_back(cr_data_muo);
 
-  TF1* sr_mc_ele = one_fit(eSR, eEle, false, true, cl68, cl95,year);
-  TF1* sr_mc_muo = one_fit(eSR, eMuon, false, true, dum, dum,year);
+      // plot comparison of fit functions
+      PlotFuncComparison(funcs, cl68, cl95, "CR_fitcomparison");
+    }
+    // ------------ Signal Region --------------
 
-  funcs.clear();
-  funcs.push_back(sr_mc_ele);
-  funcs.push_back(sr_mc_muo);
+    TF1* sr_mc_ele = one_fit(eSR, eEle, false, true, cl68, cl95,year,cat);
+    TF1* sr_mc_muo = one_fit(eSR, eMuon, false, true, dum, dum,year,cat);
 
-  PlotFuncComparison(funcs, cl68, cl95, "SR_MC_fitcomparison");
+    funcs.clear();
+    funcs.push_back(sr_mc_ele);
+    funcs.push_back(sr_mc_muo);
+
+    PlotFuncComparison(funcs, cl68, cl95, "SR_MC_fitcomparison");
 
 
-  // BLINDED:
-  one_fit(eSR, eEle, true, true, dum, dum,year);  
-  one_fit(eSR, eMuon, true, true, dum, dum,year);  
-
+    // BLINDED:
+    one_fit(eSR, eEle, true, true, dum, dum,year,cat);  
+    one_fit(eSR, eMuon, true, true, dum, dum,year,cat);  
+  }
 }
 
-TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95, TString year)
+TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95, TString year, TString cat)
 {
   
   // set fit regions
   double fit_xmin = 0;
   double fit_xmax = 0;  
   if (region==eSR){
-    fit_xmin = 400;
+    fit_xmin = 450;
     fit_xmax = 2000;    
-    //    if(FitFunc == eFuncExp2 or FitFunc == eFuncAlt4p)fit_xmin =380;
-
+    if(cat.Contains("ma300"))fit_xmin = 550;
+    if(cat.Contains("chi2h_2"))fit_xmin = 520;
+    if(cat.Contains("ma175"))fit_xmin = 590;
+    if(cat.Contains("ma90") && channel==eEle) fit_xmax = 1999;
   } else {
     fit_xmin = 560;
     fit_xmax = 2000;       
@@ -102,7 +111,7 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   background_c->SetBottomMargin(0.12);
 
   // get data or MC
-  TH1F* back = GetAnalysisOutput(region, channel, dodata, all_bkgds,year); 
+  TH1F* back = GetAnalysisOutput(region, channel, dodata, all_bkgds,year, cat); 
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
@@ -324,13 +333,13 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     region_name = "sr";
   }  
   if (dodata){
-    background_c->Print(folder + "/" + region_name + "_" + channel_name + "_data_fit_" + ffile +"_"+year+ ".pdf");
+    background_c->Print(folder + "/" + region_name + "_" + channel_name + "_data_fit_" + ffile +"_"+year+ "_"+cat+".pdf");
   } else {
 
     if (all_bkgds){
-      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_allbkgds_fit_" + ffile + "_"+year+".pdf");
+      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_allbkgds_fit_" + ffile + "_"+year+"_"+cat+".pdf");
     } else {
-      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_ttbar_fit_" + ffile + "_"+year+".pdf");
+      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_ttbar_fit_" + ffile + "_"+year+"_"+cat+".pdf");
     }
 
   }
@@ -339,7 +348,7 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   std::vector<TH1F*> err_hists;
   err_hists.push_back(clhist);
   err_hists.push_back(clhist2);  
-  plot_ratio(back, fitmodel, err_hists, region, channel, dodata, all_bkgds, fdesc, ffile,year);
+  plot_ratio(back, fitmodel, err_hists, region, channel, dodata, all_bkgds, fdesc, ffile,year,cat);
 
   return fitmodel;
 

@@ -20,7 +20,7 @@ berror = False
 b_multipdf = True
 b_signalrate = True
 b_lumiunc = True
-cat = "chi2h_2"
+#cat = "chi2h_2"
 
 bkg_much_norm = {} # for all years: key is year
 bkg_ech_norm = {} # for all years: key is year
@@ -99,7 +99,10 @@ lumi_unc["2018"] = 0.025
 years = {"2017v2"}
 ma_mass = "99999"
 
-number_of_channels = 2 * len(years)
+#categories = ["chi2h_2", "catma60","catma90","catma175", "catma300"]
+categories = ["chi2h_2" , "catma90", "catma175"] 
+
+number_of_channels = 2 * len(years) * len(categories)
 number_of_backgrounds = "*"
 
 #### read out rate unc for e, mu and both together
@@ -108,7 +111,7 @@ tot_rate_unc = {}
 ech_rate_unc = {}
 much_rate_unc = {}
 
-categories = ["chi2h_2", "catma60","catma90","catma175", "catma300"]
+
 
 
 print "Start to collect normalisations"
@@ -247,8 +250,8 @@ for icat in categories:
                 for j in range(i+1,len(listOfLines)):
                     if "bg" in listOfLines[j]:
                         if len(re.findall(r'[-+]?\d+.\d+',listOfLines[j]))>2:
-                            value = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[1]
-                            error = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[2]
+                            value = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[len(re.findall(r'[-+]?\d+.\d+',listOfLines[j]))-2]
+                            error = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[len(re.findall(r'[-+]?\d+.\d+',listOfLines[j]))-1]
                         else:
                             value = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[3]
                             error = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[4]
@@ -289,47 +292,49 @@ for mass in masses:
     rate_sig_ech_2018 = "rate_signal_ech_2018     lnN    "
 
 
-    for year in sorted(years):
-        outputfile.write("shapes * ech_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+".root SingleTth:$PROCESS_$CHANNEL \n \n")
-        outputfile.write("shapes * much_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+".root SingleTth:$PROCESS_$CHANNEL \n \n")
-
-        bins +=  "ech_"+year+"_"+cat+"   much_"+year+"_"+cat+"   "
-        double_bins +=  "ech_"+year+"_"+cat+"    ech_"+year+"_"+cat+"   much_"+year+"_"+cat+"   "+"   much_"+year+"_"+cat+"   "
-        obs +=    " -1             -1 "
-        if b_multipdf:
-            process_names += " roomultipdf_MT"+str(mass)+"   roomultipdf  roomultipdf_MT"+str(mass)+"   roomultipdf"
-        else:
-            process_names += " roomultipdf_MT"+str(mass)+"   Bkgfunc_Exp2p  roomultipdf_MT"+str(mass)+"   Bkgfunc_Exp2p"
-        
-        process_bins += "0   1    0    1   "
-
-        rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(bkg_ech_norm[cat][year])+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(bkg_much_norm[cat][year]) + "   "
-
-#        lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
-        rate_sig += str(tot_rate_unc[cat][year][mass]) + "       -   "+str(tot_rate_unc[cat][year][mass]) +"       -    "
-        if("2016" in year):
-            rate_sig_ech_2016 += str(ech_rate_unc[cat][year][mass]) + "       -    -       -    "
-            rate_sig_mu_2016 += "-       -    " + str(much_rate_unc[cat][year][mass]) + "       -    "
-            rate_sig_ech_2017 +=  "-       -    -       -    "
-            rate_sig_mu_2017 += "-       -    -       -    "
-            rate_sig_ech_2018 +=  "-       -    -       -    "
-            rate_sig_mu_2018 += "-       -    -       -    "
-        if("2017" in year):
-            rate_sig_ech_2017 += str(ech_rate_unc[cat][year][mass]) + "       -    -       -    "
-            rate_sig_mu_2017 += "-       -    " + str(much_rate_unc[cat][year][mass]) + "       -    "
-            rate_sig_ech_2016 +=  "-       -    -       -    "
-            rate_sig_mu_2016 += "-       -    -       -    "
-            rate_sig_ech_2018 +=  "-       -    -       -    "
-            rate_sig_mu_2018 += "-       -    -       -    "
-        if("2018" in year):
-            rate_sig_ech_2018 += str(ech_rate_unc[cat][year][mass]) + "       -    -       -    "
-            rate_sig_mu_2018 += "-       -    " + str(much_rate_unc[cat][year][mass]) + "       -    "
-            rate_sig_ech_2016 +=  "-       -    -       -    "
-            rate_sig_mu_2016 += "-       -    -       -    "
-            rate_sig_ech_2017 +=  "-       -    -       -    "
-            rate_sig_mu_2017 += "-       -    -       -    "
-
-
+    
+    for cat in categories:
+	    for year in sorted(years):
+	        outputfile.write("shapes * ech_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+".root SingleTth:$PROCESS_$CHANNEL \n \n")
+	        outputfile.write("shapes * much_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+".root SingleTth:$PROCESS_$CHANNEL \n \n")
+	
+	        bins +=  "ech_"+year+"_"+cat+"   much_"+year+"_"+cat+"   "
+	        double_bins +=  "ech_"+year+"_"+cat+"    ech_"+year+"_"+cat+"   much_"+year+"_"+cat+"   "+"   much_"+year+"_"+cat+"   "
+	        obs +=    " -1             -1 "
+	        if b_multipdf:
+	            process_names += " roomultipdf_MT"+str(mass)+"   roomultipdf  roomultipdf_MT"+str(mass)+"   roomultipdf"
+	        else:
+	            process_names += " roomultipdf_MT"+str(mass)+"   Bkgfunc_Exp2p  roomultipdf_MT"+str(mass)+"   Bkgfunc_Exp2p"
+	        
+	        process_bins += "0   1    0    1   "
+	
+	        rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(bkg_ech_norm[cat][year])+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(bkg_much_norm[cat][year]) + "   "
+	
+	#        lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
+	        rate_sig += str(tot_rate_unc[cat][year][mass]) + "       -   "+str(tot_rate_unc[cat][year][mass]) +"       -    "
+	        if("2016" in year):
+	            rate_sig_ech_2016 += str(ech_rate_unc[cat][year][mass]) + "       -    -       -    "
+	            rate_sig_mu_2016 += "-       -    " + str(much_rate_unc[cat][year][mass]) + "       -    "
+	            rate_sig_ech_2017 +=  "-       -    -       -    "
+	            rate_sig_mu_2017 += "-       -    -       -    "
+	            rate_sig_ech_2018 +=  "-       -    -       -    "
+	            rate_sig_mu_2018 += "-       -    -       -    "
+	        if("2017" in year):
+	            rate_sig_ech_2017 += str(ech_rate_unc[cat][year][mass]) + "       -    -       -    "
+	            rate_sig_mu_2017 += "-       -    " + str(much_rate_unc[cat][year][mass]) + "       -    "
+	            rate_sig_ech_2016 +=  "-       -    -       -    "
+	            rate_sig_mu_2016 += "-       -    -       -    "
+	            rate_sig_ech_2018 +=  "-       -    -       -    "
+	            rate_sig_mu_2018 += "-       -    -       -    "
+	        if("2018" in year):
+	            rate_sig_ech_2018 += str(ech_rate_unc[cat][year][mass]) + "       -    -       -    "
+	            rate_sig_mu_2018 += "-       -    " + str(much_rate_unc[cat][year][mass]) + "       -    "
+	            rate_sig_ech_2016 +=  "-       -    -       -    "
+	            rate_sig_mu_2016 += "-       -    -       -    "
+	            rate_sig_ech_2017 +=  "-       -    -       -    "
+	            rate_sig_mu_2017 += "-       -    -       -    "
+	
+	
 
     process_names += " \n"
     process_bins += " \n"
@@ -369,66 +374,67 @@ for mass in masses:
     if b_signalrate:
         outputfile.write(rate_sig)
 
-    for year in years:
-        if b_multipdf:
-            outputfile.write("pdf_index_much_"+year+"_"+cat+" discrete \n ")
-            outputfile.write("pdf_index_ech_"+year+"_"+cat+" discrete \n ")
-        if b_signalrate:
-            if "2016" in year:
-                outputfile.write(rate_sig_mu_2016)
-                outputfile.write(rate_sig_ech_2016)
-            if "2017" in year:
-                outputfile.write(rate_sig_mu_2017)
-                outputfile.write(rate_sig_ech_2017)
-            if "2018" in year:
-                outputfile.write(rate_sig_mu_2018)
-                outputfile.write(rate_sig_ech_2018)
-
-
-        outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+"_"+cat+" discrete \n ")
-        outputfile.write("pdf_index_MT"+str(mass)+"_ech_"+year+"_"+cat+" discrete \n ")
-
-        outputfile.write("sg_mean_"+year+"_"+cat+" param "+str(mean_value[year+"_"+cat+"_"+mass])+"  "+str(mean_error[year+"_"+cat+"_"+mass])+" \n ")
-        outputfile.write("sg_sigma_"+year+"_"+cat+" param "+str(sigma_value[year+"_"+cat+"_"+mass])+"  "+str(sigma_error[year+"_"+cat+"_"+mass])+" \n ")
-
-        ##### JER and JEC variations
-        outputfile.write("sg_JERmeandown_"+year+"_"+cat+" param "+str(mean_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JERmeanup_"+year+"_"+cat+" param "+str(mean_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECmeandown_"+year+"_"+cat+" param "+str(mean_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECmeanup_"+year+"_"+cat+" param "+str(mean_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-
-
-        outputfile.write("sg_JERsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JERsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-
-        outputfile.write("sg_mean2_"+year+"_"+cat+" param "+str(mean2_value[year+"_"+cat+"_"+mass])+"  "+str(mean2_error[year+"_"+cat+"_"+mass])+" \n ")
-        outputfile.write("sg_sigma2_"+year+"_"+cat+" param "+str(sigma2_value[year+"_"+cat+"_"+mass])+"  "+str(sigma2_error[year+"_"+cat+"_"+mass])+" \n ")
-
-        ##### JER and JEC variations
-        outputfile.write("sg_JERmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JERmeanup2_"+year+"_"+cat+" param "+str(mean2_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECmeanup2_"+year+"_"+cat+" param "+str(mean2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-
-
-        outputfile.write("sg_JERsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JERsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-
-        ############ fnorm
-        outputfile.write("sg_fnorm_"+year+"_"+cat+" param "+str(fnorm_value[year+"_"+cat+"_"+mass])+"  "+str(fnorm_error[year+"_"+cat+"_"+mass])+" \n ")
-        outputfile.write("sg_JERfnormdown_"+year+"_"+cat+" param "+str(fnorm_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JERfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECfnromdown_"+year+"_"+cat+" param "+str(fnorm_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-        outputfile.write("sg_JECfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-    
-    for key in bg3p_v:
-        if cat not in key: continue
-        outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")
-    outputfile.write("------------------------------ \n")
+    for cat in categories:
+	    for year in years:
+	        if b_multipdf:
+	            outputfile.write("pdf_index_much_"+year+"_"+cat+" discrete \n ")
+	            outputfile.write("pdf_index_ech_"+year+"_"+cat+" discrete \n ")
+	        if b_signalrate:
+	            if "2016" in year:
+	                outputfile.write(rate_sig_mu_2016)
+	                outputfile.write(rate_sig_ech_2016)
+	            if "2017" in year:
+	                outputfile.write(rate_sig_mu_2017)
+	                outputfile.write(rate_sig_ech_2017)
+	            if "2018" in year:
+	                outputfile.write(rate_sig_mu_2018)
+	                outputfile.write(rate_sig_ech_2018)
+	
+	
+	        outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+"_"+cat+" discrete \n ")
+	        outputfile.write("pdf_index_MT"+str(mass)+"_ech_"+year+"_"+cat+" discrete \n ")
+	
+	        outputfile.write("sg_mean_"+year+"_"+cat+" param "+str(mean_value[year+"_"+cat+"_"+mass])+"  "+str(mean_error[year+"_"+cat+"_"+mass])+" \n ")
+	        outputfile.write("sg_sigma_"+year+"_"+cat+" param "+str(sigma_value[year+"_"+cat+"_"+mass])+"  "+str(sigma_error[year+"_"+cat+"_"+mass])+" \n ")
+	
+	        ##### JER and JEC variations
+	        outputfile.write("sg_JERmeandown_"+year+"_"+cat+" param "+str(mean_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JERmeanup_"+year+"_"+cat+" param "+str(mean_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECmeandown_"+year+"_"+cat+" param "+str(mean_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECmeanup_"+year+"_"+cat+" param "+str(mean_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	
+	
+	        outputfile.write("sg_JERsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JERsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	
+	        outputfile.write("sg_mean2_"+year+"_"+cat+" param "+str(mean2_value[year+"_"+cat+"_"+mass])+"  "+str(mean2_error[year+"_"+cat+"_"+mass])+" \n ")
+	        outputfile.write("sg_sigma2_"+year+"_"+cat+" param "+str(sigma2_value[year+"_"+cat+"_"+mass])+"  "+str(sigma2_error[year+"_"+cat+"_"+mass])+" \n ")
+	
+	        ##### JER and JEC variations
+	        outputfile.write("sg_JERmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JERmeanup2_"+year+"_"+cat+" param "+str(mean2_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECmeanup2_"+year+"_"+cat+" param "+str(mean2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	
+	
+	        outputfile.write("sg_JERsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JERsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	
+	        ############ fnorm
+	        outputfile.write("sg_fnorm_"+year+"_"+cat+" param "+str(fnorm_value[year+"_"+cat+"_"+mass])+"  "+str(fnorm_error[year+"_"+cat+"_"+mass])+" \n ")
+	        outputfile.write("sg_JERfnormdown_"+year+"_"+cat+" param "+str(fnorm_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JERfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECfnromdown_"+year+"_"+cat+" param "+str(fnorm_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	        outputfile.write("sg_JECfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+	    
+	    for key in bg3p_v:
+	        if cat not in key: continue
+	        outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")
+	    outputfile.write("------------------------------ \n")
 
 
 

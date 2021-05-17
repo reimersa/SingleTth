@@ -284,7 +284,7 @@ namespace uhh2examples {
 
     h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
     h_hyps = ctx.get_handle<vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
-    h_best_cat = ctx.get_handle<TString>("Best_cat");
+    h_best_cat = ctx.declare_event_output<TString>("Best_cat");
 
     // 2. set up selections
     //Selection
@@ -1139,11 +1139,14 @@ namespace uhh2examples {
     /// find smallest hypothesis
     float smallest_chi2 = 99999;
     TString smallest_cat = "";
+    float smallest_dR = 999999;
+
     for(auto index:hyp_catmap){
       float current_chi2 = index.second->discriminator((std::string)index.first);
       if(current_chi2 < smallest_chi2){
 	smallest_chi2 = current_chi2;
 	smallest_cat = index.first;
+	smallest_dR = deltaR(index.second->higgs_jets().at(0),index.second->higgs_jets().at(1));
       }
     }
     
@@ -1158,7 +1161,7 @@ namespace uhh2examples {
     float dR_bt_Wt = deltaR(W, hyp->toplep_jets().at(0));
     float dR_t_H = deltaR(hyp->toplep_v4(), hyp->higgs_v4());
 
-    if(smallest_cat=="Chi2_top+ma60"){
+    if(smallest_cat=="Chi2_top+ma60" && smallest_chi2 < 10 && smallest_dR < 1.7){
 	if(is_much){
 	  h_catma60_much_sr->fill(event);
 	  h_jets_catma60_much_sr->fill(event);
@@ -1176,7 +1179,7 @@ namespace uhh2examples {
 	  h_lumi_catma60_ech_sr->fill(event);
 	}
 
-    }else if(smallest_cat=="Chi2_top+ma90"){
+    }else if(smallest_cat=="Chi2_top+ma90" && smallest_chi2 < 10 && smallest_dR < 1.7){
 	if(is_much){
 	  h_catma90_much_sr->fill(event);
 	  h_jets_catma90_much_sr->fill(event);
@@ -1194,7 +1197,7 @@ namespace uhh2examples {
 	  h_lumi_catma90_ech_sr->fill(event);
 	}
 
-    }else if(smallest_cat=="Chi2_top+ma175"){
+    }else if(smallest_cat=="Chi2_top+ma175" && smallest_chi2 < 10 && smallest_dR < 1.7){
 	if(is_much){
 	  h_catma175_much_sr->fill(event);
 	  h_jets_catma175_much_sr->fill(event);
@@ -1212,7 +1215,7 @@ namespace uhh2examples {
 	  h_lumi_catma175_ech_sr->fill(event);
 	}
 
-    }else if(smallest_cat=="Chi2_top+ma300"){
+    }else if(smallest_cat=="Chi2_top+ma300" && smallest_chi2 < 10){
 
 	if(is_much){
 	  h_catma300_much_sr->fill(event);
@@ -1231,127 +1234,14 @@ namespace uhh2examples {
 	  h_lumi_catma300_ech_sr->fill(event);
 	}
 
-    }else if(smallest_cat=="Chi2"){
+    }else if(smallest_cat=="Chi2"  && smallest_chi2 < 10 && chi2h<2 && smallest_dR < 1.7){
 
-
-      // if(chi2h < 0.75){
-      // 	if(is_much){
-      // 	  h_reco_lowchi2_much_sr->fill(event);
-      // 	  h_jets_reco_lowchi2_much_sr->fill(event);
-      // 	  h_ele_reco_lowchi2_much_sr->fill(event);
-      // 	  h_mu_reco_lowchi2_much_sr->fill(event);
-      // 	  h_event_reco_lowchi2_much_sr->fill(event);
-      // 	  h_lumi_reco_lowchi2_much_sr->fill(event);
-      // 	}
-      // 	else{
-      // 	  h_reco_lowchi2_ech_sr->fill(event);
-      // 	  h_jets_reco_lowchi2_ech_sr->fill(event);
-      // 	  h_ele_reco_lowchi2_ech_sr->fill(event);
-      // 	  h_mu_reco_lowchi2_ech_sr->fill(event);
-      // 	  h_event_reco_lowchi2_ech_sr->fill(event);
-      // 	  h_lumi_reco_lowchi2_ech_sr->fill(event);
-      // 	}
-      // }
-      // else if(chi2h < 2.){
-      // 	if(is_much){
-      // 	  h_reco_highchi2_much_sr->fill(event);
-      // 	  h_jets_reco_highchi2_much_sr->fill(event);
-      // 	  h_ele_reco_highchi2_much_sr->fill(event);
-      // 	  h_mu_reco_highchi2_much_sr->fill(event);
-      // 	  h_event_reco_highchi2_much_sr->fill(event);
-      // 	  h_lumi_reco_highchi2_much_sr->fill(event);
-      // 	}
-      // 	else{
-      // 	  h_reco_highchi2_ech_sr->fill(event);
-      // 	  h_jets_reco_highchi2_ech_sr->fill(event);
-      // 	  h_ele_reco_highchi2_ech_sr->fill(event);
-      // 	  h_mu_reco_highchi2_ech_sr->fill(event);
-      // 	  h_event_reco_highchi2_ech_sr->fill(event);
-      // 	  h_lumi_reco_highchi2_ech_sr->fill(event);
-      // 	}
-      // }
 
       bool chi2_10_sr = (chi2 < 10.);
       bool chi2h_05_sr = (chi2h < 5.);
       bool chi2h_02_sr = (chi2h < 2.);
       
-      // if(chi2_10_sr){
-      // 	if(is_much){
-      // 	  h_chi2_10_much_sr->fill(event);
-      // 	  h_jets_chi2_10_much_sr->fill(event);
-      // 	  h_ele_chi2_10_much_sr->fill(event);
-      // 	  h_mu_chi2_10_much_sr->fill(event);
-      // 	  h_event_chi2_10_much_sr->fill(event);
-      // 	  h_lumi_chi2_10_much_sr->fill(event);
-      // 	}
-      // 	else{
-      // 	  h_chi2_10_ech_sr->fill(event);
-      // 	  h_jets_chi2_10_ech_sr->fill(event);
-      // 	  h_ele_chi2_10_ech_sr->fill(event);
-      // 	  h_mu_chi2_10_ech_sr->fill(event);
-      // 	  h_event_chi2_10_ech_sr->fill(event);
-      // 	  h_lumi_chi2_10_ech_sr->fill(event);
-      // 	}
-      // }
-      // else{
-      // 	if(is_much){
-      // 	  h_chi2_10_much_cr->fill(event);
-      // 	  h_jets_chi2_10_much_cr->fill(event);
-      // 	  h_ele_chi2_10_much_cr->fill(event);
-      // 	  h_mu_chi2_10_much_cr->fill(event);
-      // 	  h_event_chi2_10_much_cr->fill(event);
-      // 	  h_lumi_chi2_10_much_cr->fill(event);
-      // 	}
-      // 	else{
-      // 	  h_chi2_10_ech_cr->fill(event);
-      // 	  h_jets_chi2_10_ech_cr->fill(event);
-      // 	  h_ele_chi2_10_ech_cr->fill(event);
-      // 	  h_mu_chi2_10_ech_cr->fill(event);
-      // 	  h_event_chi2_10_ech_cr->fill(event);
-      // 	  h_lumi_chi2_10_ech_cr->fill(event);
-      // 	}
-      // }
-
-      // if(chi2_10_sr && chi2h_05_sr){
-      // 	if(is_much){
-      // 	  h_chi2h_5_much_sr->fill(event);
-      // 	  h_jets_chi2h_5_much_sr->fill(event);
-      // 	  h_ele_chi2h_5_much_sr->fill(event);
-      // 	  h_mu_chi2h_5_much_sr->fill(event);
-      // 	  h_event_chi2h_5_much_sr->fill(event);
-      // 	  h_lumi_chi2h_5_much_sr->fill(event);
-      // 	}
-      // 	else{
-      // 	  h_chi2h_5_ech_sr->fill(event);
-      // 	  h_jets_chi2h_5_ech_sr->fill(event);
-      // 	  h_ele_chi2h_5_ech_sr->fill(event);
-      // 	  h_mu_chi2h_5_ech_sr->fill(event);
-      // 	  h_event_chi2h_5_ech_sr->fill(event);
-      // 	  h_lumi_chi2h_5_ech_sr->fill(event);
-      // 	}
-      // }
-      // else{
-      // 	if(is_much){
-      // 	  h_chi2h_5_much_cr->fill(event);
-      // 	  h_jets_chi2h_5_much_cr->fill(event);
-      // 	  h_ele_chi2h_5_much_cr->fill(event);
-      // 	  h_mu_chi2h_5_much_cr->fill(event);
-      // 	  h_event_chi2h_5_much_cr->fill(event);
-      // 	  h_lumi_chi2h_5_much_cr->fill(event);
-      // 	}
-      // 	else{
-      // 	  h_chi2h_5_ech_cr->fill(event);
-      // 	  h_jets_chi2h_5_ech_cr->fill(event);
-      // 	  h_ele_chi2h_5_ech_cr->fill(event);
-      // 	  h_mu_chi2h_5_ech_cr->fill(event);
-      // 	  h_event_chi2h_5_ech_cr->fill(event);
-      // 	  h_lumi_chi2h_5_ech_cr->fill(event);
-      // 	}
-	
-      // }
-
-
-      if(chi2_10_sr && chi2h_02_sr){
+      //      if(chi2_10_sr && chi2h_02_sr){
 	if(is_much){
 	  h_chi2h_2_much_sr->fill(event);
 	  h_jets_chi2h_2_much_sr->fill(event);
@@ -1370,29 +1260,30 @@ namespace uhh2examples {
 	  h_lumi_chi2h_2_ech_sr->fill(event);
 	  // h_PDF_variations_ech_sr->fill(event);
 	}
+	//      }
+    //      else{
+    //  }
+    }else{
+      if(is_much){
+	h_chi2h_2_much_cr->fill(event);
+	h_jets_chi2h_2_much_cr->fill(event);
+	h_ele_chi2h_2_much_cr->fill(event);
+	h_mu_chi2h_2_much_cr->fill(event);
+	h_event_chi2h_2_much_cr->fill(event);
+	h_lumi_chi2h_2_much_cr->fill(event);
+	// h_PDF_variations_much_cr->fill(event);
       }
       else{
-	if(is_much){
-	  h_chi2h_2_much_cr->fill(event);
-	  h_jets_chi2h_2_much_cr->fill(event);
-	  h_ele_chi2h_2_much_cr->fill(event);
-	  h_mu_chi2h_2_much_cr->fill(event);
-	  h_event_chi2h_2_much_cr->fill(event);
-	  h_lumi_chi2h_2_much_cr->fill(event);
-	  // h_PDF_variations_much_cr->fill(event);
-	}
-	else{
-	  h_chi2h_2_ech_cr->fill(event);
-	  h_jets_chi2h_2_ech_cr->fill(event);
-	  h_ele_chi2h_2_ech_cr->fill(event);
-	  h_mu_chi2h_2_ech_cr->fill(event);
-	  h_event_chi2h_2_ech_cr->fill(event);
-	  h_lumi_chi2h_2_ech_cr->fill(event);
-	  // h_PDF_variations_ech_cr->fill(event);
-	}
+	h_chi2h_2_ech_cr->fill(event);
+	h_jets_chi2h_2_ech_cr->fill(event);
+	h_ele_chi2h_2_ech_cr->fill(event);
+	h_mu_chi2h_2_ech_cr->fill(event);
+	h_event_chi2h_2_ech_cr->fill(event);
+	h_lumi_chi2h_2_ech_cr->fill(event);
+	// h_PDF_variations_ech_cr->fill(event);
       }
     }
-
+    
     //    bool is_sr = chi2_10_sr && chi2h_02_sr;
 
     //
