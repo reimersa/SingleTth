@@ -15,7 +15,7 @@ TF1 * sigma_param = new TF1("sigma_param","[0]+[1]*(x-600)",550,1250);
 TF1 * n_param = new TF1("n_param","[0]+[1]*(x-600)",550,1250);
 //TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600)",550,1250);
 TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600) + [2]*(x-600)**2",550,1250);
-bool debug = true;
+bool debug = false;
 
 //write out the number of total events vs events in fitrange
 std::ofstream Nevttofile("Nevents_test.txt", std::ios::out | std::ios::trunc);
@@ -50,7 +50,7 @@ void sig_fit()
     TString MA = MAs[ima];
 
     ///// run over all channels
-    //std::vector<Echannel> channels = {eComb,eEle,eMuon};
+    //    std::vector<Echannel> channels = {eComb,eEle,eMuon};
     std::vector<Echannel> channels = {eComb};
     for(unsigned int ich = 0; ich < channels.size();ich++){
     
@@ -58,8 +58,8 @@ void sig_fit()
   
       ///// run over all cat
       //  std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175","catma300"};
-      //std::vector<TString> categories = {"chi2h_2","catma90","catma175"};
-      std::vector<TString> categories = {"catma300"};
+      std::vector<TString> categories = {"chi2h_2","catma90","catma175","catma300"};
+      //      std::vector<TString> categories = {"catma175"};
       for(unsigned int icat=0;icat < categories.size();icat++){
 
 	TString cat = categories[icat];
@@ -150,8 +150,8 @@ void sig_fit()
 	  MTs_backup = {700, 900, 1000, 1200};// 2016
       
 	  if(year.Contains("2018") or year.Contains("2017")){
-	    MTs = {600, 700, 800, 900, 1000, 1100};// 2017
-	    MTs_backup = {600, 700, 800, 900, 1000, 1100};// 2017
+	    MTs = {600, 700, 800, 900, 1000, 1100,1200};// 2017
+	    MTs_backup = {600, 700, 800, 900, 1000, 1100,1200};// 2017
 	
 	    // MTs = {600};// 2017
 	    // MTs_backup = {600};// 2017
@@ -169,8 +169,8 @@ void sig_fit()
 	}
 
 	if( cat.Contains("catma175")) {
-	  MTs = { 700,800,900, 1000,1100};// 2017
-	  MTs_backup = { 700,800,900, 1000,1100};// 2017
+	  MTs = { 700,800,900, 1000,1100,1200};// 2017
+	  MTs_backup = { 700,800,900, 1000,1100,1200};// 2017
 
 	}
 
@@ -354,6 +354,7 @@ void sig_fit()
 	gStyle->SetStatW(0.24);
 	gStyle->SetStatY(0.85);  
 	lin = new TF1("meanfit", "[0]+[1]*(x-600)", 550, 1250);
+	if(cat.Contains("ma300"))lin->SetParLimits(0,0,999999999);
 	lin->SetParName(0, "#mu at 600 GeV");
 	lin->SetParName(1, "Slope");
 	r = gmean2->Fit(lin, "0");
@@ -709,7 +710,7 @@ void sig_fit()
 
 	infotofile<< "width2fit param0 \t"<<lin2->GetParameter(0)<<"\t"<<lin2->GetParError(0)<<std::endl;
 	infotofile<< "width2fit param1 \t"<<lin2->GetParameter(1)<<"\t"<<lin2->GetParError(1)<<std::endl;
-	if(func.Contains("cb")&&cat.Contains("catma90"))	infotofile<< "width2fit param2 \t"<<lin2->GetParameter(2)<<"\t"<<lin2->GetParError(2)<<std::endl;
+	if(func.Contains("cb"))	infotofile<< "width2fit param2 \t"<<lin2->GetParameter(2)<<"\t"<<lin2->GetParError(2)<<std::endl;
 
 
 	lin2->SetParameter(0,lin2->GetParameter(0)+lin2->GetParError(0));
@@ -1668,6 +1669,11 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
       if(MT==900 ){
 	fit_xmax = 1400;
 	fit_xmin = 500;
+      }
+
+      if(MT==1200 ){
+	fit_xmax = 1600;
+	fit_xmin = 400;
       }
     }
   }
