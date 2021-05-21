@@ -248,7 +248,7 @@ namespace uhh2examples {
     const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, (string)best_cat );
     float chi2 = hyp->discriminator((string)best_cat);
     float chi2h = hyp->discriminator("Chi2_higgs");
-    float dR = (hyp->higgs_jets().at(0),hyp->higgs_jets().at(1));
+    float dR = deltaR(hyp->higgs_jets().at(0),hyp->higgs_jets().at(1));
 
     // SR or CR?
     bool is_sr = chi2 < 10. && dR < 1.7;
