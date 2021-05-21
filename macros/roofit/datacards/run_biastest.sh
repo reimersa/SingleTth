@@ -5,29 +5,39 @@ datacard="Datacard_allyears_M${mass}.txt"
 #datacard="Datacard_allyears_M${mass}_much.txt"
 #datacard="Datacard_allyears_M${mass}_ech.txt"
 
-year="2016v3"
 signal=0.0
 function_param=0
 #name="exp2p_r1"
 name="dijet3p_r0"
-postfix="_bugfix_doublegauss_MT${mass}GeV"
-# ####### one year specific
-
-#eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_much_${year}=${function_param},pdf_index_MT${mass}_much_${year}=0,pdf_index_ech_${year}=${function_param},pdf_index_MT${mass}_ech_${year}=0  --freezeParameters  pdf_index_much_${year},pdf_index_MT${mass}_much_${year},pdf_index_ech_${year},pdf_index_MT${mass}_ech_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year} --cminDefaultMinimizerStrategy=0 -n initial_signal${signal}_${mass}${postfix} --saveWorkspace --saveShapes" 
-
-# eval "python create_snapshot.py -mass ${mass} -signal ${signal}"
+postfix="_mavariable_cb_MT${mass}GeV"
 
 
-#  eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters pdf_index_much_${year}=${function_param},pdf_index_ech_${year}=${function_param},pdf_index_MT${mass}_much_${year}=0,pdf_index_MT${mass}_ech_${year}=0  -t 1000 --expectSignal ${signal} --saveToys -m 125  --freezeParameters pdf_index_much_${year},pdf_index_ech_${year},pdf_index_MT${mass}_much_${year},pdf_index_MT${mass}_ech_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year}"
+years=("2017v2")
+categories=("chi2h_2" "catma90" "catma175" "catma300")
+freeze_param=""
+set_param=""
+
+for cat in "${categories[@]}" ; do
+for year in "${years[@]}"; do
+freeze_param="${freeze_param}sg_JERmeandown_"$year"_"$cat",sg_JERmeanup_"$year"_"$cat",sg_JECmeandown_"$year"_"$cat",sg_JECmeanup_"$year"_"$cat",sg_JERsigmadown_"$year"_"$cat",sg_JERsigmaup_"$year"_"$cat",sg_JECsigmadown_"$year"_"$cat",sg_JECsigmaup_"$year"_"$cat",sg_JERmeandown2_"$year"_"$cat",sg_JERmeanup2_"$year"_"$cat",sg_JECmeandown2_"$year"_"$cat",sg_JECmeanup2_"$year"_"$cat",sg_JERsigmadown2_"$year"_"$cat",sg_JERsigmaup2_"$year"_"$cat",sg_JECsigmadown2_"$year"_"$cat",sg_JECsigmaup2_"$year"_"$cat",pdf_index_MT${mass}_much_"$year"_"$cat",pdf_index_MT${mass}_ech_"$year"_"$cat",pdf_index_much_"$year"_"$cat",pdf_index_ech_"$year"_"$cat",sg_mean_"$year"_"$cat",sg_sigma_"$year"_"$cat",sg_mean2_"$year"_"$cat",sg_sigma2_"$year"_"$cat","
+
+#set_param="${set_param}pdf_index_much_"$year"_"$cat"=${funct},pdf_index_ech_"$year"_"$cat"=${funct},pdf_index_MT${mass}_much_"$year"_"$cat"=0,pdf_index_MT${mass}_ech_"$year"_"$cat"=0,"
+done
+done
+
+freeze_param="${freeze_param: : -1}"
+#set_param="${set_param: : -1}"
 
 
-# eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_much_${year}=${function_param},pdf_index_ech_${year}=${function_param},pdf_index_MT${mass}_much_${year}=0,pdf_index_MT${mass}_ech_${year}=0 --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters  pdf_index_much_${year},pdf_index_ech_${year},pdf_index_MT${mass}_much_${year},pdf_index_MT${mass}_ech_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year} --cminDefaultMinimizerStrategy=0 -n ${name}"
-
-
-#####  alll trhee years r=1
-set_param="pdf_index_much_2016v3=1,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=1,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=1,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=1,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=1,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=1,pdf_index_MT${mass}_ech_2018=0"
-
-freeze_param="pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3,pdf_index_much_2017v2,pdf_index_MT${mass}_much_2017v2,pdf_index_ech_2017v2,pdf_index_MT${mass}_ech_2017v2,sg_mean_2017v2,sg_sigma_2017v2,sg_JERmeandown_2017v2,sg_JERmeanup_2017v2,sg_JECmeandown_2017v2,sg_JECmeanup_2017v2,sg_JERsigmadown_2017v2,sg_JERsigmaup_2017v2,sg_JECsigmadown_2017v2,sg_JECsigmaup_2017v2,pdf_index_much_2018,pdf_index_MT${mass}_much_2018,pdf_index_ech_2018,pdf_index_MT${mass}_ech_2018,sg_mean_2018,sg_sigma_2018,sg_JERmeandown_2018,sg_JERmeanup_2018,sg_JECmeandown_2018,sg_JECmeanup_2018,sg_JERsigmadown_2018,sg_JERsigmaup_2018,sg_JECsigmadown_2018,sg_JECsigmaup_2018,sg_JERmeandown2_2018,sg_JERmeanup2_2018,sg_JECmeandown2_2018,sg_JECmeanup2_2018,sg_JERsigmadown2_2018,sg_JERsigmaup2_2018,sg_JECsigmadown2_2018,sg_JECsigmaup2_2018,sg_JERmeandown2_2017v2,sg_JERmeanup2_2017v2,sg_JECmeandown2_2017v2,sg_JECmeanup2_2017v2,sg_JERsigmadown2_2017v2,sg_JERsigmaup2_2017v2,sg_JECsigmadown2_2017v2,sg_JECsigmaup2_2017v2,sg_JERmeandown2_2016v3,sg_JERmeanup2_2016v3,sg_JECmeandown2_2016v3,sg_JECmeanup2_2016v3,sg_JERsigmadown2_2016v3,sg_JERsigmaup2_2016v3,sg_JECsigmadown2_2016v3,sg_JECsigmaup2_2016v3,sg_mean2_2016v3,sg_sigma2_2016v3,sg_mean2_2017v2,sg_sigma2_2017v2,sg_mean2_2018,sg_sigma2_2018,sg_fnorm_2018,sg_fnorm_2017v2,sg_fnorm_2016v3"
+#####  all trhee years r=1
+funct="1"
+set_param=""
+for cat in "${categories[@]}" ; do
+for year in "${years[@]}"; do
+set_param="${set_param}pdf_index_much_"$year"_"$cat"=${funct},pdf_index_ech_"$year"_"$cat"=${funct},pdf_index_MT${mass}_much_"$year"_"$cat"=0,pdf_index_MT${mass}_ech_"$year"_"$cat"=0,"
+done
+done
+set_param="${set_param: : -1}"
 
 
 eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param}  --freezeParameters ${freeze_param}  --cminDefaultMinimizerStrategy=0 -n initial_signal1.0_${mass} --saveWorkspace" 
@@ -41,9 +51,15 @@ eval "python create_snapshot.py -mass ${mass} -signal 1.0"
 eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n exp2p_r1${postfix}"
 
 
-####### dijet 3p
-
-set_param="pdf_index_much_2016v3=0,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=0,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=0,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=0,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=0,pdf_index_MT${mass}_ech_2018=0"
+# ####### dijet 3p
+funct="0"
+set_param=""
+for cat in "${categories[@]}" ; do
+for year in "${years[@]}"; do
+set_param="${set_param}pdf_index_much_"$year"_"$cat"=${funct},pdf_index_ech_"$year"_"$cat"=${funct},pdf_index_MT${mass}_much_"$year"_"$cat"=0,pdf_index_MT${mass}_ech_"$year"_"$cat"=0,"
+done
+done
+set_param="${set_param: : -1}"
 
 eval "combine $datacard -M FitDiagnostics  --setParameters ${set_param}  --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n initial_signal1.0_${mass} --saveWorkspace" 
 
@@ -53,17 +69,19 @@ eval "python create_snapshot.py -mass ${mass} -signal 1.0"
  eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters ${set_param}  -t 1000 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
 
 
-##set_param="pdf_index_much_2016v3=1,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=1,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=1,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=1,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=1,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=1,pdf_index_MT${mass}_ech_2018=0"
-
 
 eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param} --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters ${freeze_param}  --cminDefaultMinimizerStrategy=0 -n dijet3p_r1${postfix}"
 
 
-# ##### r=0
-set_param="pdf_index_much_2016v3=1,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=1,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=1,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=1,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=1,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=1,pdf_index_MT${mass}_ech_2018=0"
-
-freeze_param="pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3,pdf_index_much_2017v2,pdf_index_MT${mass}_much_2017v2,pdf_index_ech_2017v2,pdf_index_MT${mass}_ech_2017v2,sg_mean_2017v2,sg_sigma_2017v2,sg_JERmeandown_2017v2,sg_JERmeanup_2017v2,sg_JECmeandown_2017v2,sg_JECmeanup_2017v2,sg_JERsigmadown_2017v2,sg_JERsigmaup_2017v2,sg_JECsigmadown_2017v2,sg_JECsigmaup_2017v2,pdf_index_much_2018,pdf_index_MT${mass}_much_2018,pdf_index_ech_2018,pdf_index_MT${mass}_ech_2018,sg_mean_2018,sg_sigma_2018,sg_JERmeandown_2018,sg_JERmeanup_2018,sg_JECmeandown_2018,sg_JECmeanup_2018,sg_JERsigmadown_2018,sg_JERsigmaup_2018,sg_JECsigmadown_2018,sg_JECsigmaup_2018,sg_JERmeandown2_2018,sg_JERmeanup2_2018,sg_JECmeandown2_2018,sg_JECmeanup2_2018,sg_JERsigmadown2_2018,sg_JERsigmaup2_2018,sg_JECsigmadown2_2018,sg_JECsigmaup2_2018,sg_JERmeandown2_2017v2,sg_JERmeanup2_2017v2,sg_JECmeandown2_2017v2,sg_JECmeanup2_2017v2,sg_JERsigmadown2_2017v2,sg_JERsigmaup2_2017v2,sg_JECsigmadown2_2017v2,sg_JECsigmaup2_2017v2,sg_JERmeandown2_2016v3,sg_JERmeanup2_2016v3,sg_JECmeandown2_2016v3,sg_JECmeanup2_2016v3,sg_JERsigmadown2_2016v3,sg_JERsigmaup2_2016v3,sg_JECsigmadown2_2016v3,sg_JECsigmaup2_2016v3,sg_mean2_2016v3,sg_sigma2_2016v3,sg_mean2_2017v2,sg_sigma2_2017v2,sg_mean2_2018,sg_sigma2_2018,sg_fnorm_2018,sg_fnorm_2017v2,sg_fnorm_2016v3"
-
+# # ##### r=0
+funct="1"
+set_param=""
+for cat in "${categories[@]}" ; do
+for year in "${years[@]}"; do
+set_param="${set_param}pdf_index_much_"$year"_"$cat"=${funct},pdf_index_ech_"$year"_"$cat"=${funct},pdf_index_MT${mass}_much_"$year"_"$cat"=0,pdf_index_MT${mass}_ech_"$year"_"$cat"=0,"
+done
+done
+set_param="${set_param: : -1}"
 
 eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param}  --freezeParameters ${freeze_param}  --cminDefaultMinimizerStrategy=0 -n initial_signal0.0_${mass} --saveWorkspace" 
 
@@ -78,9 +96,15 @@ eval "python create_snapshot.py -mass ${mass} -signal 0.0"
 eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n exp2p_r0${postfix}"
 
 
-########dijet 3p
-
-set_param="pdf_index_much_2016v3=0,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=0,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=0,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=0,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=0,pdf_index_MT${mass}_ech_2018=0"
+# ########dijet 3p
+funct=0
+set_param=""
+for cat in "${categories[@]}" ; do
+for year in "${years[@]}"; do
+set_param="${set_param}pdf_index_much_"$year"_"$cat"=${funct},pdf_index_ech_"$year"_"$cat"=${funct},pdf_index_MT${mass}_much_"$year"_"$cat"=0,pdf_index_MT${mass}_ech_"$year"_"$cat"=0,"
+done
+done
+set_param="${set_param: : -1}"
 
 eval "combine $datacard -M FitDiagnostics  --setParameters ${set_param}  --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n initial_signal0.0_${mass} --saveWorkspace" 
 
@@ -89,47 +113,8 @@ eval "python create_snapshot.py -mass ${mass} -signal 0.0"
 
  eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters ${set_param}  -t 1000 --expectSignal 0.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
 
-## eval "combine $datacard -M GenerateOnly  --toysFrequentist --bypassFrequentistFit --setParameters ${set_param}  -t 100 --expectSignal 0.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
-
-
-##set_param="pdf_index_much_2016v3=1,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=1,pdf_index_MT${mass}_ech_2016v3=0,pdf_index_much_2017v2=1,pdf_index_MT${mass}_much_2017v2=0,pdf_index_ech_2017v2=1,pdf_index_MT${mass}_ech_2017v2=0,pdf_index_much_2018=1,pdf_index_MT${mass}_much_2018=0,pdf_index_ech_2018=1,pdf_index_MT${mass}_ech_2018=0"
-
 
 eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param} --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters ${freeze_param}  --cminDefaultMinimizerStrategy=0 -n dijet3p_r0${postfix}"
-
-
-
-
-####
-
-
-
-#eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_much_${year}=0,pdf_index_ech_${year}=0,pdf_index_MT${mass}_much_${year}=0,pdf_index_MT${mass}_ech_${year}=0 --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1 --rMin -3 --rMax 3 --freezeParameters  pdf_index_much_${year},pdf_index_ech_${year},pdf_index_MT${mass}_much_${year},pdf_index_MT${mass}_ech_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year} --cminDefaultMinimizerStrategy=0 --saveShapes --saveNormalizations" ## with shapes
-
-
-###### Muon Channel Only
-
-# eval "combine $datacard -M GenerateOnly --setParameters pdf_index_much_${year}=2,pdf_index_MT${mass}_much_${year}=0 --toysFrequentist -t 1000 --expectSignal 1 --saveToys -m 125  --freezeParameters pdf_index_much_${year},pdf_index_MT${mass}_much_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year}"
-
-
-# eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_much_${year}=2,pdf_index_MT${mass}_much_${year}=0 --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 500 --rMin -3 --rMax 3 --freezeParameters  pdf_index_much_${year},pdf_index_MT${mass}_much_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year} --cminDefaultMinimizerStrategy=0"
-
-
-# eval "combine $datacard -M GenerateOnly --setParameters pdf_index_much_${year}=0,pdf_index_MT${mass}_much_${year}=0 --toysFrequentist -t 100 --expectSignal 1 --saveToys -m 125  --freezeParameters pdf_index_much_${year},pdf_index_MT${mass}_much_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year},bg3p_p2much_${year},bg3p_p0much_${year},bg3p_p1much_${year}"
-
-
-# eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_much_${year}=0,pdf_index_MT${mass}_much_${year}=0 --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 100 --rMin -3 --rMax 3 --freezeParameters  pdf_index_much_${year},pdf_index_MT${mass}_much_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year},bg3p_p2much_${year},bg3p_p0much_${year},bg3p_p1much_${year} --cminDefaultMinimizerStrategy=0"
-
-
-
-#eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_much_${year}=0,pdf_index_ech_${year}=0,pdf_index_MT${mass}_much_${year}=0,pdf_index_MT${mass}_ech_${year}=0 --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1 --rMin -3 --rMax 3 --freezeParameters  pdf_index_much_${year},pdf_index_ech_${year},pdf_index_MT${mass}_much_${year},pdf_index_MT${mass}_ech_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year} --cminDefaultMinimizerStrategy=0 --saveShapes --saveNormalizations" ## with shapes
-
-
-############  nur exp ohne andere
-# eval "combine $datacard -M GenerateOnly --setParameters pdf_index_MT${mass}_much_${year}=0,pdf_index_MT${mass}_ech_${year}=0 --toysFrequentist -t 1000 --expectSignal 1 --saveToys -m 125  --freezeParameters pdf_index_MT${mass}_much_${year},pdf_index_MT${mass}_ech_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year}"
-
-
-# eval "combine $datacard -M FitDiagnostics  --setParameters  pdf_index_MT${mass}_much_${year}=0,pdf_index_MT${mass}_ech_${year}=0 --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -3 --rMax 3 --freezeParameters  pdf_index_MT${mass}_much_${year},pdf_index_MT${mass}_ech_${year},sg_mean_${year},sg_sigma_${year},sg_JERmeandown_${year},sg_JERmeanup_${year},sg_JECmeandown_${year},sg_JECmeanup_${year},sg_JERsigmadown_${year},sg_JERsigmaup_${year},sg_JECsigmadown_${year},sg_JECsigmaup_${year} --cminDefaultMinimizerStrategy=0"
 
 
 

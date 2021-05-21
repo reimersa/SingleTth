@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 
 
   std::vector<TString> categories = {"chi2h_2", "catma90","catma175","catma300"};
-  //  std::vector<TString> categories = {"chi2h_2"};
+  //  std::vector<TString> categories = {"chi2h_2","catma90"};
   for(unsigned int icat = 0; icat < categories.size(); icat++){
     TString cat = categories[icat];
 

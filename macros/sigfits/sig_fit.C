@@ -50,8 +50,8 @@ void sig_fit()
     TString MA = MAs[ima];
 
     ///// run over all channels
-    //    std::vector<Echannel> channels = {eComb,eEle,eMuon};
-    std::vector<Echannel> channels = {eComb};
+    std::vector<Echannel> channels = {eComb,eEle,eMuon};
+    //    std::vector<Echannel> channels = {eComb};
     for(unsigned int ich = 0; ich < channels.size();ich++){
     
       Echannel ch =channels[ich];

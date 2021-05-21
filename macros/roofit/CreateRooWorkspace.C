@@ -35,7 +35,7 @@
 
 CreateRooWorkspace::CreateRooWorkspace(TString year, TString cat) : infotofile("datacards/AnalysisOutput_"+year+"_"+cat+".txt", std::ios::out | std::ios::trunc)
 {
-   fWS = new RooWorkspace("SingleTth");
+   fWS = new RooWorkspace("SingleTth"+cat);
    gSystem->Exec("mkdir -p datacards");
    debug_histos = new TFile("debug_histos.root","RECREATE");
 }
@@ -238,7 +238,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 
   //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
-  RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", xmin, xmax);
+  RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", xmin, xmax);
   x->setBins(Nbins);
   RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name+"_"+year+"_"+cat, "data_obs_"+ch_name+"_"+year+"_"+cat, RooArgList(*x), h_data);
   //RooDataHist* dataSR = new RooDataHist("data_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), h_data);
@@ -805,9 +805,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
 
   // loop over mass points, create PDFs and store them
   double MT = 550; 
-  if(cat.Contains("ma300")) MT = 700;
+    if(cat.Contains("ma300")) MT = 700;
   if(cat.Contains("ma175")) MT = 700;
-  RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", 200, 2000);
+  RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", 200, 2000);
 
   while (MT<1250)
       //  while (MT<810)

@@ -12,7 +12,7 @@ year_nt="allyears"
 cat="chi2h_2"
 
 years=("2017v2")
-categories=("chi2h_2" "catma90" "catma175")
+categories=("chi2h_2" "catma90" "catma175" "catma300")
 freeze_param=""
 set_param=""
 
