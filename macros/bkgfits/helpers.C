@@ -29,7 +29,7 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
-     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/"; 
+     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/NOMINAL/"; 
 
      else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
      else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
@@ -170,7 +170,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      else if(year.Contains("2018")){
        //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtagcomb/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable/"; 
        hand = "LH";
      }
      else if(year.Contains("allyears")){
