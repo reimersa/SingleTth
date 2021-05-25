@@ -3,8 +3,8 @@
 
 
 <!ENTITY TargetLumi      "35920">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/SFbtagmujets/NOMINAL">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mavariable/NOMINAL">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -60,7 +60,7 @@
 <!ENTITY DATA_Electron_G "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Electron_G_2016v3.root">
 <!ENTITY DATA_Electron_H "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Electron_H_2016v3.root">
 
-<!ENTITY DATA_Photon_B "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_B_2016v3.root">
+<!-- <!ENTITY DATA_Photon_B "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_B_2016v3.root"> -->
 <!ENTITY DATA_Photon_B_ver2 "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_B_2016v3_ver2.root">
 <!ENTITY DATA_Photon_C "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_C_2016v3.root">
 <!ENTITY DATA_Photon_D "&PRESELdir;/uhh2.AnalysisModuleRunner.DATA.DATA_Photon_D_2016v3.root">
@@ -194,70 +194,70 @@
 	    		<OutputTree Name="AnalysisTree" />
 	    	</InputData>
 
-		<InputData Lumi="289587.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_600_2016v2" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_600;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="289587.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_600_2016v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_600;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="293981.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_650_2016v2" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_650;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="293981.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_650_2016v2" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_650;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_800_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_800;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_800_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_800;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_900_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_900;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_900_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_900;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1000_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1000;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1000_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1000;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1100_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1100;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1100_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1100;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1200_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1200;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1200_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1200;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1300_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1300;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1300_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1300;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1400_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1400;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1400_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1400;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1500_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1500;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1500_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1500;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1600_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1600;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1600_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1600;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1700_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1700;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1700_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1700;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1800_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&VLQ_RH_1800;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="VLQ_RH_1800_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&VLQ_RH_1800;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
 
 
@@ -370,10 +370,10 @@
 			<InputTree Name="AnalysisTree" />
 		</InputData>
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_B_2016v3" Cacheable="&b_Cacheable;">
-			<In FileName="&DATA_Photon_B;" Lumi="0.0"/>
-			<InputTree Name="AnalysisTree" />
-		</InputData>
+		<!-- <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_B_2016v3" Cacheable="&b_Cacheable;"> -->
+		<!-- 	<In FileName="&DATA_Photon_B;" Lumi="0.0"/> -->
+		<!-- 	<InputTree Name="AnalysisTree" /> -->
+		<!-- </InputData> -->
 
 		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_Photon_B_2016v3_ver2" Cacheable="&b_Cacheable;">
 			<In FileName="&DATA_Photon_B_ver2;" Lumi="0.0"/>
@@ -619,134 +619,134 @@
 
 
 
-<InputData Lumi="1.084219166" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-15to20_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_Mu_Pt-15to20;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="1.084219166" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-15to20_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_Mu_Pt-15to20;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="10.76912277" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-20to30_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_Mu_Pt-20to30;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="10.76912277" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-20to30_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_Mu_Pt-20to30;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="18.03933848" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-30to50_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_Mu_Pt-30to50;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="18.03933848" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-30to50_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_Mu_Pt-30to50;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="44.94169312" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-50to80_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_Mu_Pt-50to80;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="44.94169312" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-50to80_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_Mu_Pt-50to80;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="222.1998272" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-80to120_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_Mu_Pt-80to120;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="222.1998272" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-80to120_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_Mu_Pt-80to120;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="786.4055931" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-120to170_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_Mu_Pt-120to170;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="786.4055931" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-120to170_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_Mu_Pt-120to170;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="2004.765698" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-170to300_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_Mu_Pt-170to300;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="2004.765698" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-170to300_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_Mu_Pt-170to300;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="57642.52956" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-300to470_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_Mu_Pt-300to470;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="57642.52956" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-300to470_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_Mu_Pt-300to470;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="246619.9731" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-470to600_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_Mu_Pt-470to600;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="246619.9731" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-470to600_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_Mu_Pt-470to600;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="793364.5" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-600to800_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_Mu_Pt-600to800;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="793364.5" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-600to800_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_Mu_Pt-600to800;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="4236071.165" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-800to1000_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_Mu_Pt-800to1000;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="4236071.165" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-800to1000_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_Mu_Pt-800to1000;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="2430398.987" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-1000toInf_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_Mu_Pt-1000toInf;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
-
-
-
-<InputData Lumi="1.726427995" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-20to30_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_EM_PT20to30;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
-
-<InputData Lumi="1.159230661" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-30to50_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_EM_PT30to50;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
-
-<InputData Lumi="15.83958039" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-50to80_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_EM_PT50to80;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
-
-<InputData Lumi="184.0118354" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-80to120_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_EM_PT80to120;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
-
-<InputData Lumi="968.7935399" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-120to170_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_EM_PT120to170;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
-
-<InputData Lumi="613.5121212" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-170to300_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_EM_PT170to300;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
-
-<InputData Lumi="5060.386667" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-300toInf_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_EM_PT300toInf;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="2430398.987" NEventsMax="&NEVT;" Type="MC" Version="QCD_Mu_Pt-1000toInf_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_Mu_Pt-1000toInf;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
 
 
-<InputData Lumi="10.54848466" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-15to20_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_bcE_PT15to20;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="1.726427995" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-20to30_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_EM_PT20to30;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="33.3980223" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-20to30_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_bcE_PT20to30;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="1.159230661" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-30to50_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_EM_PT30to50;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="37.82519204" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-30to80_2016v3" Cacheable="&b_Cacheable;">
-<In FileName="&QCD_bcE_PT30to80;" Lumi="0.0"/>
-<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="15.83958039" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-50to80_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_EM_PT50to80;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="389.770612" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-80to170_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_bcE_PT80to170;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="184.0118354" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-80to120_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_EM_PT80to120;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="3722.566741" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-170to250_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_bcE_PT170to250;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="968.7935399" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-120to170_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_EM_PT120to170;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
-<InputData Lumi="7423.191354" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-250toInf_2016v3" Cacheable="&b_Cacheable;">
-	<In FileName="&QCD_bcE_PT250toInf;" Lumi="0.0"/>
-	<InputTree Name="AnalysisTree" />
-</InputData>
+<!-- <InputData Lumi="613.5121212" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-170to300_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_EM_PT170to300;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
+
+<!-- <InputData Lumi="5060.386667" NEventsMax="&NEVT;" Type="MC" Version="QCD_EM_Pt-300toInf_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_EM_PT300toInf;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
+
+
+
+<!-- <InputData Lumi="10.54848466" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-15to20_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_bcE_PT15to20;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
+
+<!-- <InputData Lumi="33.3980223" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-20to30_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_bcE_PT20to30;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
+
+<!-- <InputData Lumi="37.82519204" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-30to80_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- <In FileName="&QCD_bcE_PT30to80;" Lumi="0.0"/> -->
+<!-- <InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
+
+<!-- <InputData Lumi="389.770612" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-80to170_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_bcE_PT80to170;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
+
+<!-- <InputData Lumi="3722.566741" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-170to250_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_bcE_PT170to250;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
+
+<!-- <InputData Lumi="7423.191354" NEventsMax="&NEVT;" Type="MC" Version="QCD_bcE_Pt-250toInf_2016v3" Cacheable="&b_Cacheable;"> -->
+<!-- 	<In FileName="&QCD_bcE_PT250toInf;" Lumi="0.0"/> -->
+<!-- 	<InputTree Name="AnalysisTree" /> -->
+<!-- </InputData> -->
 
 
 
@@ -775,7 +775,7 @@
 	<Item Name="GenJetCollection" Value="slimmedGenJets" />
 	<Item Name="GenParticleCollection" Value="GenParticles" />
 	<Item Name="GenInfoName" Value="genInfo" />
-	<Item Name="additionalBranches"      Value="eventweight_final weight_sfmu_id_up weight_sfmu_id_down weight_sfmu_id weight_pu weight_pu_up weight_pu_down weight_sfelec_id weight_sfelec_id_up weight_sfelec_id_down weight_sfelec_reco weight_sfelec_reco_up weight_sfelec_reco_down weight_sfelec_trigger weight_sfelec_trigger_up weight_sfelec_trigger_down weight_sfmu_iso weight_sfmu_iso_up weight_sfmu_iso_down weight_sfmu_trigger weight_sfmu_trigger_up weight_sfmu_trigger_down weight_btag weight_btag_bc_up weight_btag_bc_down weight_btag_udsg_up weight_btag_udsg_down weight_murmuf_upup weight_murmuf_upnone weight_murmuf_noneup weight_murmuf_nonedown weight_murmuf_downnone weight_murmuf_downdown weight_sfL1prefiring weight_sfL1prefiring_up weight_sfL1prefiring_down" />
+	<Item Name="additionalBranches"      Value="eventweight_final weight_sfmu_id_up weight_sfmu_id_down weight_sfmu_id weight_pu weight_pu_up weight_pu_down weight_sfelec_id weight_sfelec_id_up weight_sfelec_id_down weight_sfelec_reco weight_sfelec_reco_up weight_sfelec_reco_down weight_sfelec_trigger weight_sfelec_trigger_up weight_sfelec_trigger_down weight_sfmu_iso weight_sfmu_iso_up weight_sfmu_iso_down weight_sfmu_trigger weight_sfmu_trigger_up weight_sfmu_trigger_down weight_btag weight_btag_bc_up weight_btag_bc_down weight_btag_udsg_up weight_btag_udsg_down weight_murmuf_upup weight_murmuf_upnone weight_murmuf_noneup weight_murmuf_nonedown weight_murmuf_downnone weight_murmuf_downdown weight_sfL1prefiring weight_sfL1prefiring_up weight_sfL1prefiring_down Best_cat" />
 
 	<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.root" />
 	<Item Name="lumihists_lumi_per_bin" Value="1000."/>
