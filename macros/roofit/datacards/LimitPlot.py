@@ -21,7 +21,7 @@ berror = False
 #year = "2018"
 year = "allyears"
 
-postfix = "_mavariable_cat125cat90cat175cat300_cb_withfix"
+postfix = "_mavariable_cat125cat90cat175cat300_cb_fullunc"
 
 masses = []
 

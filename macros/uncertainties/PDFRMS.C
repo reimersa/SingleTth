@@ -54,7 +54,7 @@ void PDFRMS(){
   samplemap["SingleTop_"+year] = "uhh2.AnalysisModuleRunner.MC.SingleTop_"+year+".root";
   samplemap["VLQ_"+hand+"_600_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_600_"+prodch+year_lowmass+".root";
   samplemap["VLQ_"+hand+"_650_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_650_"+prodch+year_lowmass+".root";
-
+  samplemap["VLQ_"+hand+"_700_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_700_"+prodch+year_lowmass+".root";
   samplemap["VLQ_"+hand+"_800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_800_"+prodch+year+".root";
   samplemap["VLQ_"+hand+"_900_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_900_"+prodch+year+".root";
   samplemap["VLQ_"+hand+"_1000_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1000_"+prodch+year+".root";
@@ -80,6 +80,7 @@ void PDFRMS(){
   FindRMS(infolder, samplemap, "SingleTop_"+year,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_600_"+year_lowmass,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_650_"+year_lowmass,year);
+  FindRMS(infolder, samplemap, "VLQ_"+hand+"_700_"+year_lowmass,year);
 
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_800_"+year,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_900_"+year,year);
@@ -131,7 +132,7 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
   // ===========================================================================================================================
 
   // get list of foldernames: The PDF folders have "_PDF" in their name
-  vector<TString> histfolders = {"chi2h_2"};
+  vector<TString> histfolders = {"chi2h_2","catma90","catma175","catma300"};
   vector<TString> channel_tags = {"ech", "much"};
   vector<TString> region_tags = {"sr", "cr"};
 

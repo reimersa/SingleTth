@@ -190,7 +190,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   //All files are read in
   bool b_error=true;
 
-  std::cout<<"MT  "<< TString::Format("%d", MT)<<"   unc   "<<unc<<std::endl;
+  std::cout<<"MT  "<< TString::Format("%d", MT)<<"   unc   "<<unc<<"  cat: "<<cat<<std::endl;
 
   TString MT_name = TString::Format("%d", MT);
   TFile * sig_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_" + MT_name + prodch+"_" + year + ".root", "READ");

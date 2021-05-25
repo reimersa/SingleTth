@@ -16,6 +16,7 @@ TF1 * n_param = new TF1("n_param","[0]+[1]*(x-600)",550,1250);
 //TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600)",550,1250);
 TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600) + [2]*(x-600)**2",550,1250);
 bool debug = false;
+bool b_test_param = false;
 
 //write out the number of total events vs events in fitrange
 std::ofstream Nevttofile("Nevents_test.txt", std::ios::out | std::ios::trunc);
@@ -126,8 +127,8 @@ void sig_fit()
 	std::vector<TString> uncertainties ={}; // no syst.
 	if(!b_test) {
 	  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
-	  //	  if(year.Contains("2017"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2017 
-	  if(year.Contains("2017"))  uncertainties ={"JEC","JER"}; // 2017 
+	  if(year.Contains("2017"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2017 
+	  //if(year.Contains("2017"))  uncertainties ={"JEC","JER"}; // 2017 
 	  if(year.Contains("2018"))  uncertainties ={};
 	  //  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
 	  //    if(year.Contains("allyears")) uncertainties = {"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_udsg","eletrigger","mutrigger","btag_bc","scale"}; // prefiring missing
@@ -2057,7 +2058,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     fitmodel_param->SetLineColor(kBlue);
     fitmodel_param->SetLineWidth(2);
     sigh->Fit(fitmodel_param,"RS");
-    fitmodel_param->DrawClone("same");
+    if(b_test_param) fitmodel_param->DrawClone("same");
   }
 
   // some information

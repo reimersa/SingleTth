@@ -60,7 +60,7 @@ void FindBiggestDeviations(){
     // unique_ptr<TH1F> mufmur_up, muf_up, mur_up, nominal, mufmur_down, muf_down, mur_down;
     // mufmur_up.reset(f_in.Get())
 
-    vector<TString> histfolders = {"chi2h_2"};
+    vector<TString> histfolders = {"chi2h_2","catma90","catma175","catma300"};
     vector<TString> channel_tags = {"ech", "much"};
     vector<TString> region_tags = {"sr", "cr"};
 

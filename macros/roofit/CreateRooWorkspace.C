@@ -859,10 +859,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     std::cout<<"Cat:  "<< cat <<"  MT "<<MT<< "  sg_mean  "<<sg_mean->getValV()<<"  sg_sigma  "<<sg_sigma->getValV()<<"  sg_mean2  "<<sg_mean2->getValV()<<"  sg_sigma2  "<<sg_sigma2->getValV()<<std::endl;
     //Hier
     RooCBShape* ModelSg_Gauss = new RooCBShape(SgName, SgName, *x, *sg_mean, *sg_sigma,*sg_sigma2,*sg_mean2);
-    // SignalDoubleGauss* ModelSg_JECup_Gauss = new SignalDoubleGauss(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup,*sg_JECmeanup2, *sg_JECsigmaup2, *sg_JECfnormup);
-    // SignalDoubleGauss* ModelSg_JERup_Gauss = new SignalDoubleGauss(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup,*sg_JERmeanup2, *sg_JERsigmaup2, *sg_JERfnormup);
-    // SignalDoubleGauss* ModelSg_JECdown_Gauss = new SignalDoubleGauss(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown,*sg_JECmeandown2, *sg_JECsigmadown2, *sg_JECfnormdown);
-    // SignalDoubleGauss* ModelSg_JERdown_Gauss = new SignalDoubleGauss(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2, *sg_JERfnormdown);
+    SignalDoubleGauss* ModelSg_JECup_Gauss = new SignalDoubleGauss(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup,*sg_JECmeanup2, *sg_JECsigmaup2, *sg_JECfnormup);
+    SignalDoubleGauss* ModelSg_JERup_Gauss = new SignalDoubleGauss(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup,*sg_JERmeanup2, *sg_JERsigmaup2, *sg_JERfnormup);
+    SignalDoubleGauss* ModelSg_JECdown_Gauss = new SignalDoubleGauss(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown,*sg_JECmeandown2, *sg_JECsigmadown2, *sg_JECfnormdown);
+    SignalDoubleGauss* ModelSg_JERdown_Gauss = new SignalDoubleGauss(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2, *sg_JERfnormdown);
 
 
     // converting function into hist to debug
@@ -917,10 +917,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     RooArgList mypdfs;
     mypdfs.add(*ModelSg_Gauss);
     //mypdfs.add(*ModelSg_Gauss_variation);
-    // mypdfs.add(*ModelSg_JECup_Gauss);
-    // mypdfs.add(*ModelSg_JERup_Gauss);
-    // mypdfs.add(*ModelSg_JECdown_Gauss);
-    // mypdfs.add(*ModelSg_JERdown_Gauss);
+    mypdfs.add(*ModelSg_JECup_Gauss);
+    mypdfs.add(*ModelSg_JERup_Gauss);
+    mypdfs.add(*ModelSg_JECdown_Gauss);
+    mypdfs.add(*ModelSg_JERdown_Gauss);
 
     RooCategory category("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"Index of Pdf which is active");
     RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"All Pdfs",category,mypdfs);
