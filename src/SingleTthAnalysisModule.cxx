@@ -1151,7 +1151,7 @@ namespace uhh2examples {
     }
     
     event.set(h_best_cat,smallest_cat);
-    //    std::cout<<"smallest_chi2  "<<smallest_chi2<<"  smallest_cat  "<<smallest_cat <<std::endl;
+    //    if (smallest_chi2 >= 99999) std::cout<<"smallest_chi2  "<<smallest_chi2<<"  smallest_cat  "<<smallest_cat <<std::endl;
 
 
     float chi2 = hyp->discriminator("Chi2");

@@ -232,7 +232,7 @@ namespace uhh2examples {
 
 
   bool SingleTthFinalModule::process(Event & event) {
-    // cout << "++++++++++ NEW EVENT ++++++++++" << endl;
+    //    cout << "++++++++++ NEW EVENT ++++++++++" << endl;
     event.set(h_is_tprime_reco, false);
 
     // MUCH or ECH?
@@ -245,6 +245,7 @@ namespace uhh2examples {
     if(!is_tprime_reco) throw runtime_error("After reconstruction, the T still isn't reconstructed. How?");
     std::vector<SingleTthReconstructionHypothesis> hyps = event.get(h_hyps);
     TString best_cat = event.get(h_best_cat);
+    //    std::cout<<"  best_cat  "<< best_cat<<std::endl;
     const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, (string)best_cat );
     float chi2 = hyp->discriminator((string)best_cat);
     float chi2h = hyp->discriminator("Chi2_higgs");
