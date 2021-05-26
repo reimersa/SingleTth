@@ -96,7 +96,7 @@ lumi_unc["2017v2"] = 0.023
 lumi_unc["2018"] = 0.025
 
 #years = {"2016v3","2017v2","2018"}
-years = {"2017v2"}
+years = {"2017v2","2018"}
 ma_mass = "99999"
 
 #categories = ["chi2h_2", "catma60","catma90","catma175", "catma300"]
@@ -171,7 +171,6 @@ for icat in categories:
 
 print "Start to collect uncertainties"
 for icat in categories:
-
     bkg_much_norm[icat] = {}
     bkg_ech_norm[icat] = {}
 
@@ -194,8 +193,8 @@ for icat in categories:
                 for j in range(i+1,len(listOfLines)):
                     if "Electron" in listOfLines[j]: break
                     mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
-                    masses.append(mass)
-    
+                    if mass not in masses:
+                        masses.append(mass)
      
                     norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
                     signal_much_norm[year+"_"+icat+"_"+mass] = norm
@@ -274,6 +273,10 @@ for mass in masses:
         outputfile.write("imax  "+str(2 * len(years) * (len(categories)-2))+" number of channels \n")
     elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
         outputfile.write("imax  "+str(2 * len(years) * (len(categories)-1))+" number of channels \n")
+    elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
+        outputfile.write("imax  "+str(2 * len(years) * len(categories)-2)+" number of channels \n")
+    elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
+        outputfile.write("imax  "+str(2 * len(years) * len(categories)-1)+" number of channels \n")
     else: 
         outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
     outputfile.write("jmax  "+str(number_of_backgrounds)+" number of backgrounds \n")
@@ -301,7 +304,9 @@ for mass in masses:
     for cat in categories:
         if "175" in cat and int(mass) < 700: continue
         if "300" in cat and int(mass) < 700: continue
+
         for year in sorted(years):
+            if "300" in cat and int(mass) < 800 and "2018" in year: continue
             outputfile.write("shapes * ech_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+".root SingleTth"+cat+":$PROCESS_$CHANNEL \n \n")
             outputfile.write("shapes * much_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+".root SingleTth"+cat+":$PROCESS_$CHANNEL \n \n")
 
@@ -385,7 +390,9 @@ for mass in masses:
         if "175" in cat and int(mass) < 700: continue
         if "300" in cat and int(mass) < 700: continue
 
+
         for year in years:
+            if "300" in cat and int(mass) < 800 and "2018" in year: continue
             if b_multipdf:
                 outputfile.write("pdf_index_much_"+year+"_"+cat+" discrete \n ")
                 outputfile.write("pdf_index_ech_"+year+"_"+cat+" discrete \n ")
@@ -434,12 +441,12 @@ for mass in masses:
             outputfile.write("sg_JECsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
             outputfile.write("sg_JECsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
 	
-	        # ############ fnorm
-	        # outputfile.write("sg_fnorm_"+year+"_"+cat+" param "+str(fnorm_value[year+"_"+cat+"_"+mass])+"  "+str(fnorm_error[year+"_"+cat+"_"+mass])+" \n ")
-	        # outputfile.write("sg_JERfnormdown_"+year+"_"+cat+" param "+str(fnorm_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-	        # outputfile.write("sg_JERfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-	        # outputfile.write("sg_JECfnromdown_"+year+"_"+cat+" param "+str(fnorm_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-	        # outputfile.write("sg_JECfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+            # ############ fnorm
+            # outputfile.write("sg_fnorm_"+year+"_"+cat+" param "+str(fnorm_value[year+"_"+cat+"_"+mass])+"  "+str(fnorm_error[year+"_"+cat+"_"+mass])+" \n ")
+            # outputfile.write("sg_JERfnormdown_"+year+"_"+cat+" param "+str(fnorm_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+            # outputfile.write("sg_JERfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+            # outputfile.write("sg_JECfnromdown_"+year+"_"+cat+" param "+str(fnorm_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+            # outputfile.write("sg_JECfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
 	    
         for key in bg3p_v:
             if cat not in key: continue

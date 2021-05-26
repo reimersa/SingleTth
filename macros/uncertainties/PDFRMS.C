@@ -27,8 +27,8 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 void PDFRMS(){
 
   //  TString year = "2016v3";
-  TString year = "2017v2";
-  //       TString year = "2018";
+  //  TString year = "2017v2";
+  TString year = "2018";
 
 
   TString prodch = "";
@@ -42,8 +42,8 @@ void PDFRMS(){
   if(year == "2017v2" || year == "2018") hand="LH";
 
 
-  std::vector<TString> mas = {"_ma75","_ma125","_ma175","_ma250","_ma350","_ma450"};
-
+  std::vector<TString> mas = {};
+  if(year == "2017v2")   mas = {"_ma75","_ma125","_ma175","_ma250","_ma350","_ma450"};
 
   map<TString, TString> samplemap;
   samplemap["TTbar_"+year] = "uhh2.AnalysisModuleRunner.MC.TTbar_"+year+".root";
@@ -70,7 +70,7 @@ void PDFRMS(){
 
   TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/SFbtagmujets/";
   if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/";
-  if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/SFbtagcomb/";
+  if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable/";
 
   FindRMS(infolder, samplemap, "TTbar_"+year,year);
   FindRMS(infolder, samplemap, "WJets_"+year,year);

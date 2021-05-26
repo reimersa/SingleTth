@@ -16,7 +16,7 @@ TF1 * n_param = new TF1("n_param","[0]+[1]*(x-600)",550,1250);
 //TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600)",550,1250);
 TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600) + [2]*(x-600)**2",550,1250);
 bool debug = false;
-bool b_test_param = false;
+bool b_test_param = true;
 
 //write out the number of total events vs events in fitrange
 std::ofstream Nevttofile("Nevents_test.txt", std::ios::out | std::ios::trunc);
@@ -28,8 +28,8 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 void sig_fit()
 {
   //TString year =  "2016v3";
-  TString year =  "2017v2";
-  //  TString year =  "2018";
+  //  TString year =  "2017v2";
+  TString year =  "2018";
   //TString year =  "allyears";
 
   //  TString postfix = "_HEMIssue_LH";
@@ -129,8 +129,8 @@ void sig_fit()
 	  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
 	  if(year.Contains("2017"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2017 
 	  //if(year.Contains("2017"))  uncertainties ={"JEC","JER"}; // 2017 
-	  if(year.Contains("2018"))  uncertainties ={};
-	  //  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
+	  //	  if(year.Contains("2018"))  uncertainties ={};
+	  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
 	  //    if(year.Contains("allyears")) uncertainties = {"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_udsg","eletrigger","mutrigger","btag_bc","scale"}; // prefiring missing
 	  if(year.Contains("allyears")) uncertainties = {"JEC","JER"}; // prefiring missing
 	}
@@ -154,9 +154,6 @@ void sig_fit()
 	    MTs = {600, 700, 800, 900, 1000, 1100,1200};// 2017
 	    MTs_backup = {600, 700, 800, 900, 1000, 1100,1200};// 2017
 	
-	    // MTs = {600};// 2017
-	    // MTs_backup = {600};// 2017
-	
 	  }
 	  if(year.Contains("allyears")){
 	    MTs = { 600,650,700,800,900, 1000,1100, 1200};// 2017
@@ -172,13 +169,16 @@ void sig_fit()
 	if( cat.Contains("catma175")) {
 	  MTs = { 700,800,900, 1000,1100,1200};// 2017
 	  MTs_backup = { 700,800,900, 1000,1100,1200};// 2017
-
+	  
 	}
 
 	if(cat.Contains("catma300")) {
 	  MTs = { 700,800,900, 1000,1100};// 2017
 	  MTs_backup = { 700,800,900, 1000,1100};// 2017
-
+	  if (year.Contains("2018")){
+	  MTs = { 800,900, 1000,1100};// 2017
+	  MTs_backup = { 800,900, 1000,1100};// 2017
+	  }
 	}
 
 
@@ -735,9 +735,9 @@ void sig_fit()
 	TString info_const = TString::Format("#chi^{2}_{const}/ndf = %.2f / %i",fconst->GetChisquare(), fconst->GetNDF());
 	TString info_lin = TString::Format("#chi^{2}_{lin}/ndf = %.2f / %i",flin->GetChisquare(), flin->GetNDF());
 	TString info_p2 = TString::Format("#chi^{2}_{p2}/ndf = %.2f / %i",fp2->GetChisquare(), fp2->GetNDF());
-	text->DrawLatex(0.5, 0.2, info_const.Data());
-	text->DrawLatex(0.5, 0.25, info_lin.Data());
-	text->DrawLatex(0.5, 0.3, info_p2.Data());
+	if(b_test_param)text->DrawLatex(0.5, 0.2, info_const.Data());
+	if(b_test_param)	text->DrawLatex(0.5, 0.25, info_lin.Data());
+	if(b_test_param)	text->DrawLatex(0.5, 0.3, info_p2.Data());
 
 
 	can2_width->RedrawAxis();
@@ -1645,6 +1645,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
       fit_xmin = 500;
       fit_xmax = 1700;
     }
+    if(MA.Contains("99999") && MT==1100 && year.Contains("2018")){
+      fit_xmin = 700;
+      fit_xmax = 1400;
+    }
     if(MA.Contains("99999") && MT==600){
       fit_xmin = 450;
       fit_xmax = 950;
@@ -1659,9 +1663,22 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     if(MA.Contains("999")){
       fit_xmax = 1400;
       fit_xmin = 400;
-      if(MT==1000 || MT==1100){
+      if( MT==1100){
 	fit_xmax = 1300;
 	fit_xmin = 400;
+	if(year.Contains("2018")){
+	fit_xmax = 1450;
+	fit_xmin = 450;
+	}
+      }
+      if(MT==1000){
+	fit_xmax = 1300;
+	fit_xmin = 400;
+	if(year.Contains("2018")){
+	fit_xmax = 1500;
+	fit_xmin = 450;
+	}
+
       }
       if(MT==700 ){
 	fit_xmax = 1000;
@@ -1670,6 +1687,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
       if(MT==900 ){
 	fit_xmax = 1400;
 	fit_xmin = 500;
+	if(year.Contains("2018")){
+	fit_xmax = 1300;
+	fit_xmin = 450;
+	}
       }
 
       if(MT==1200 ){
@@ -1818,7 +1839,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     fitmodel_cb->SetParameter(0, mean);  
     fitmodel_cb->SetParameter(1, sigma);
     fitmodel_cb->SetParameter(2, 2);  
-    // fitmodel_cb->SetParLimits(2, 0,100);  
+    fitmodel_cb->SetParLimits(2, 0,100);  
     // fitmodel_cb->SetParameter(3, 2);
 
     if(MA.Contains("175")){
@@ -1872,6 +1893,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
       fitmodel_cb->SetParLimits(2, 0,100);  
       //      if(MT==600)fitmodel_cb->SetParLimits(3, -0.5,-1000);  
     }
+    if(MA.Contains("999") && year.Contains("2018")) fitmodel_cb->SetParLimits(3, -10,0); 
   }
 
 
@@ -2057,7 +2079,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
     fitmodel_param->SetLineColor(kBlue);
     fitmodel_param->SetLineWidth(2);
-    sigh->Fit(fitmodel_param,"RS");
+    if(b_test_param) sigh->Fit(fitmodel_param,"RS");
     if(b_test_param) fitmodel_param->DrawClone("same");
   }
 
@@ -2170,7 +2192,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
      TString info9 = TString::Format("#chi^{2}/ndf = %.2f / %i", fitmodel_param->GetChisquare(),fitmodel_param->GetNDF() );
      text_param->SetTextColor(kBlue);
-     text_param->DrawLatex(xvalue, 0.2-yoffset, info9.Data());  
+     if (b_test_param) text_param->DrawLatex(xvalue, 0.2-yoffset, info9.Data());  
 
      if(debug){
        info9 = TString::Format("#mu = %.0f #pm %.0f GeV", fitmodel_param->GetParameter(0), fitmodel_param->GetParError(0) );

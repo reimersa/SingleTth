@@ -61,7 +61,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
       } else if(year.Contains("2017")){
 	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
       } else if(year.Contains("2018")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtagcomb/NOMINAL/"; 
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
       }else if(year.Contains("andrea")){ 
 	anaoutputfolder = "/nfs/dust/cms/user/amalara/WorkingArea/File/Analysis/2016/SignalRegion/Puppi/muonchannel/";
       }else{
@@ -805,11 +805,12 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
 
   // loop over mass points, create PDFs and store them
   double MT = 550; 
-    if(cat.Contains("ma300")) MT = 700;
+  if(cat.Contains("ma300")) MT = 700;
+  if(cat.Contains("ma300") && year.Contains("2018")) MT = 800;
   if(cat.Contains("ma175")) MT = 700;
   RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", 200, 2000);
 
-  while (MT<1250)
+  while (MT<1200)
       //  while (MT<810)
   {
     TString SgName = TString::Format("MT%d_", (int)MT);
