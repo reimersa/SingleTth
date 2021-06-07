@@ -20,9 +20,9 @@ EFitFunction FitFunc = eFunc3p;
 void bkg_fit()
 {
 
-  //  TString year = "2016v3";
-  //  TString year = "2017v2";
-    TString year = "2018";
+  //    TString year = "2016v3";
+    TString year = "2017v2";
+  //    TString year = "2018";
   //  TString year = "allyears";
   
   std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175", "catma300"};
@@ -88,6 +88,10 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   } else {
     fit_xmin = 560;
     fit_xmax = 2000;       
+    if(year.Contains("2016")){
+    fit_xmin = 560;
+    fit_xmax = 1999;       
+    }
   }
 
   gROOT->SetBatch(kTRUE);

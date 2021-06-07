@@ -38,6 +38,8 @@ CreateRooWorkspace::CreateRooWorkspace(TString year, TString cat) : infotofile("
    fWS = new RooWorkspace("SingleTth"+cat);
    gSystem->Exec("mkdir -p datacards");
    debug_histos = new TFile("debug_histos.root","RECREATE");
+   xmin = 0;
+   xmax = 0;
 }
 
 TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel ch, bool dodata, bool all_bkgds, TString year, TString cat)
@@ -57,7 +59,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
     } else {
       cout << "Using NAF setup." << endl;
       if (year.Contains("2016")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/"; 
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/NOMINAL/"; 
       } else if(year.Contains("2017")){
 	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
       } else if(year.Contains("2018")){
@@ -175,9 +177,9 @@ void CreateRooWorkspace::PrintWorkspace()
   fWS->Print();
 }
 
-void CreateRooWorkspace::StoreWorkspace(TString year,TString cat)
+void CreateRooWorkspace::StoreWorkspace(TString year,TString cat, TString MA)
 {
-  fWS->writeToFile("datacards/ws_SingleTth_"+year+"_"+cat+".root");
+  fWS->writeToFile("datacards/ws_SingleTth_"+year+"_"+cat+"_"+MA+".root");
   //infotofile.close();
   debug_histos->Close();
 }
@@ -196,6 +198,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
     if(cat.Contains("catma300")) fit_xmin = 560;
     if(cat.Contains("chi2h_2")) fit_xmin = 520;
+    // if(cat.Contains("chi2h_2")) fit_xmin = 500;
+    //    if(cat.Contains("chi2h_2")&&year.Contains("2018")) fit_xmin = 490;
     if(cat.Contains("catma175")) fit_xmin = 590;
     if(cat.Contains("ma90") && channel==defs::eEle) fit_xmax = 1999;
 
@@ -224,8 +228,10 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
   int Nbins = 0;
-  double xmin = 1e6;
-  double xmax = 0;  
+  // double xmin = 1e6;
+  // double xmax = 0;  
+  xmin=1e6;
+  xmax = 0;
   for (int i=0; i<h_data->GetNbinsX()+1; ++i){
     if (h_data->GetXaxis()->GetBinLowEdge(i)>=fit_xmin){
       if (xmin>1e5) xmin = h_data->GetXaxis()->GetBinLowEdge(i);
@@ -238,7 +244,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 
   //RooRealVar* x = new RooRealVar("x", "m_{T} [GeV]", plot_low, plot_high);
-  RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", xmin, xmax);
+  RooRealVar* x = new RooRealVar("x"+cat+year, "m_{T} [GeV]", xmin, xmax);
+  // RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", xmin, xmax);
   x->setBins(Nbins);
   RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name+"_"+year+"_"+cat, "data_obs_"+ch_name+"_"+year+"_"+cat, RooArgList(*x), h_data);
   //RooDataHist* dataSR = new RooDataHist("data_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), h_data);
@@ -369,7 +376,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 }
 
-void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString cat)
+void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString cat, TString MA)
 {
   // set up name
   TString ch_name; 
@@ -380,11 +387,11 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
   }
 
   ////// CURRENTLY ONLY WORKING FOR MH=125 GeV !!!! ALLYEARS ALSO NOT UPDATED!!!
-  std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_99999"+".txt");
-  std::ifstream infile_much("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_99999"+"_much.txt");
-  std::ifstream infile_ech("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_99999"+"_ech.txt");
+  std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt");
+  std::ifstream infile_much("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_"+MA+"_much.txt");
+  std::ifstream infile_ech("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_"+MA+"_ech.txt");
   //  std::ifstream infile_allyears("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_allyears_"+ch_name+".txt");
-  std::ifstream infile_allyears("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_99999"+".txt");
+  std::ifstream infile_allyears("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt");
 
   std::string line;
 
@@ -757,9 +764,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
 
 
   TF1* eff_ele = new TF1("eff_ele", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
-  eff_ele->SetParameter(0, 0.00266047);
-  eff_ele->SetParameter(1, 1.03871e-05);
-  eff_ele->SetParameter(2, -1.18081e-08);
+    eff_ele->SetParameter(0, 0.00387224);
+    eff_ele->SetParameter(1, 7.31594e-06);
+    eff_ele->SetParameter(2, -8.14789e-09);
 
   if(year.Contains("2017")){
     // eff_ele->SetParameter(0, 0.00190037);
@@ -771,32 +778,28 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
 
   }
   if(year.Contains("2018")){ 
-    eff_ele->SetParameter(0, 0.00387224);
-    eff_ele->SetParameter(1, 7.31594e-06);
-    eff_ele->SetParameter(2, -8.14789e-09);
-    
+  eff_ele->SetParameter(0, param0_eff_value_ech);
+    eff_ele->SetParameter(1, param1_eff_value_ech);
+    eff_ele->SetParameter(2, param2_eff_value_ech);    
   }
 
 
   TF1* eff_muon = new TF1("eff_muon", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
-  eff_muon->SetParameter(0,  0.00409465 );
-  eff_muon->SetParameter(1, 1.22991e-05);
-  eff_muon->SetParameter(2, -1.41367e-08);
+  eff_muon->SetParameter(0, param0_eff_value_much);
+  eff_muon->SetParameter(1, param1_eff_value_much);
+  eff_muon->SetParameter(2, param2_eff_value_much);
+
 
   if(year.Contains("2017")){
-    // eff_muon->SetParameter(0, 0.00288765);
-    // eff_muon->SetParameter(1, 3.80026e-06);
-    // eff_muon->SetParameter(2, -6.2685e-09);
     eff_muon->SetParameter(0, param0_eff_value_much);
     eff_muon->SetParameter(1, param1_eff_value_much);
     eff_muon->SetParameter(2, param2_eff_value_much);
 
   }
   if(year.Contains("2018")){
-    eff_muon->SetParameter(0, 0.00571333);
-    eff_muon->SetParameter(1,  7.82543e-06);
-    eff_muon->SetParameter(2, -1.02954e-08);
-
+    eff_muon->SetParameter(0, param0_eff_value_much);
+    eff_muon->SetParameter(1, param1_eff_value_much);
+    eff_muon->SetParameter(2, param2_eff_value_much);
   }
 
   infotofile << "===== Number of events for Signal in the "; 
@@ -808,7 +811,9 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
   if(cat.Contains("ma300")) MT = 700;
   if(cat.Contains("ma300") && year.Contains("2018")) MT = 800;
   if(cat.Contains("ma175")) MT = 700;
-  RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", 200, 2000);
+  //  RooRealVar* x = new RooRealVar("x"+cat+year, "m_{T} [GeV]", 200, 2000);
+  RooRealVar* x = new RooRealVar("x"+cat+year, "m_{T} [GeV]", xmin, xmax);
+  // RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", 200, 2000);
 
   while (MT<1200)
       //  while (MT<810)
@@ -860,10 +865,16 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     std::cout<<"Cat:  "<< cat <<"  MT "<<MT<< "  sg_mean  "<<sg_mean->getValV()<<"  sg_sigma  "<<sg_sigma->getValV()<<"  sg_mean2  "<<sg_mean2->getValV()<<"  sg_sigma2  "<<sg_sigma2->getValV()<<std::endl;
     //Hier
     RooCBShape* ModelSg_Gauss = new RooCBShape(SgName, SgName, *x, *sg_mean, *sg_sigma,*sg_sigma2,*sg_mean2);
-    SignalDoubleGauss* ModelSg_JECup_Gauss = new SignalDoubleGauss(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup,*sg_JECmeanup2, *sg_JECsigmaup2, *sg_JECfnormup);
-    SignalDoubleGauss* ModelSg_JERup_Gauss = new SignalDoubleGauss(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup,*sg_JERmeanup2, *sg_JERsigmaup2, *sg_JERfnormup);
-    SignalDoubleGauss* ModelSg_JECdown_Gauss = new SignalDoubleGauss(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown,*sg_JECmeandown2, *sg_JECsigmadown2, *sg_JECfnormdown);
-    SignalDoubleGauss* ModelSg_JERdown_Gauss = new SignalDoubleGauss(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2, *sg_JERfnormdown);
+    // SignalDoubleGauss* ModelSg_JECup_Gauss = new SignalDoubleGauss(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup,*sg_JECmeanup2, *sg_JECsigmaup2, *sg_JECfnormup);
+    // SignalDoubleGauss* ModelSg_JERup_Gauss = new SignalDoubleGauss(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup,*sg_JERmeanup2, *sg_JERsigmaup2, *sg_JERfnormup);
+    // SignalDoubleGauss* ModelSg_JECdown_Gauss = new SignalDoubleGauss(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown,*sg_JECmeandown2, *sg_JECsigmadown2, *sg_JECfnormdown);
+    // SignalDoubleGauss* ModelSg_JERdown_Gauss = new SignalDoubleGauss(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2, *sg_JERfnormdown);
+
+
+    // RooCBShape* ModelSg_JECup_Gauss = new RooCBShape(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup,*sg_JECmeanup2, *sg_JECsigmaup2);
+    // RooCBShape* ModelSg_JERup_Gauss = new RooCBShape(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup,*sg_JERmeanup2, *sg_JERsigmaup2);
+    // RooCBShape* ModelSg_JECdown_Gauss = new RooCBShape(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown,*sg_JECmeandown2, *sg_JECsigmadown2);
+    // RooCBShape* ModelSg_JERdown_Gauss = new RooCBShape(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2);
 
 
     // converting function into hist to debug
@@ -885,10 +896,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     TCanvas* c_sg = new TCanvas(SgName, SgName, 10, 10, 700, 700);
     RooPlot* plotter=x->frame();
     ModelSg_Gauss->plotOn(plotter, RooFit::LineColor(kRed));
-    //    ModelSg_JECup_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
+    // ModelSg_JECup_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
     // ModelSg_JECdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
     // ModelSg_JERdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
-    //    ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
+    // ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
     plotter->Draw();
     c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+"_"+cat+".pdf");
     c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+"_"+cat+".eps");
@@ -918,10 +929,11 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     RooArgList mypdfs;
     mypdfs.add(*ModelSg_Gauss);
     //mypdfs.add(*ModelSg_Gauss_variation);
-    mypdfs.add(*ModelSg_JECup_Gauss);
-    mypdfs.add(*ModelSg_JERup_Gauss);
-    mypdfs.add(*ModelSg_JECdown_Gauss);
-    mypdfs.add(*ModelSg_JERdown_Gauss);
+
+    // mypdfs.add(*ModelSg_JECup_Gauss);
+    // mypdfs.add(*ModelSg_JERup_Gauss);
+    // mypdfs.add(*ModelSg_JECdown_Gauss);
+    // mypdfs.add(*ModelSg_JERdown_Gauss);
 
     RooCategory category("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"Index of Pdf which is active");
     RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"All Pdfs",category,mypdfs);

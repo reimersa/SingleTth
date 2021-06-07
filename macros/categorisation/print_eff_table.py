@@ -147,7 +147,7 @@ def creat_eff_plot_per_cat(folder, signal_list = []):
     c.SaveAs("catma125.eps")
     c.SaveAs("catma125.pdf")
 
-def creat_eff_plot_per_sig(folder, signal_list = [],ma = False):
+def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
     #when signal list is empty look for all samples
     if not len(signal_list):
         signal_list = list_of_signal(folder)
@@ -155,7 +155,8 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False):
     #loop over all samples and calculate percentage
     sample_dict = {}
     for el in signal_list:
-        if (not ma) and "_ma" in el: continue
+        if (not ma) and "125" in mamass and "_ma" in el: continue
+        if (not ma) and  mamass not in el: continue
         elif ma and (not "_ma" in el): continue
         mass = int(re.findall(r'\d+', el)[1])
         if ma: mass = int(re.findall(r'\d+', el)[2])
@@ -196,6 +197,7 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False):
         hist.GetXaxis().SetTitle("M_{T} [GeV]")
         if ma:         hist.GetXaxis().SetTitle("M_{a} [GeV]")
         hist.GetYaxis().SetRangeUser(0,0.8)
+        if ma:         hist.GetYaxis().SetRangeUser(0,1.0)
 
         hist.SetLineWidth(2)
         if prop.has_key(dic):
@@ -211,18 +213,19 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False):
     if ma:
         text = CMSPlotStyle.draw_info("Signal: M_{T} = 700 GeV, #mu+jets",0.15,0.945,11)
     else:
-        text = CMSPlotStyle.draw_info("Signal: M_{a} = 125 GeV, #mu+jets",0.15,0.945,11)
+        text = CMSPlotStyle.draw_info("Signal: M_{a} = "+mamass+" GeV, #mu+jets",0.15,0.945,11)
     text.Draw("same")
 
     if not ma:
-        c.SaveAs("sigma125.eps")
-        c.SaveAs("sigma125.pdf")
+        c.SaveAs("sigma"+mamass+".eps")
+        c.SaveAs("sigma"+mamass+".pdf")
     else:
         c.SaveAs("sigmT700.eps")
         c.SaveAs("sigmT700.pdf")
 
 
 create_eff_table("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
-#creat_eff_plot_per_cat("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
+creat_eff_plot_per_cat("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True)
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="75")

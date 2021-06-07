@@ -37,7 +37,7 @@ gStyle.SetPaintTextFormat("2.3f")
 
 c2 = TCanvas()
 
-postfix = "_mavariable_cb_MT700GeV"
+postfix = "_mavariable_cb_MT600GeV"
 # exp vs exp
 infile = TFile("fitDiagnosticsexp2p_r1"+postfix+".root","r")
 TH1.AddDirectory(0)
@@ -86,7 +86,7 @@ histo_dijet3p.Draw("same")
 text = CMSPlotStyle.draw_info("Bias test: r=1",0.55,0.85,11)
 text.Draw("same")
 
-text2 = CMSPlotStyle.draw_info("Fit function: exp.",0.55,0.8,11)
+#text2 = CMSPlotStyle.draw_info("Fit function: exp.",0.55,0.8,11)
 #text2.Draw("same")
 
 leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
@@ -156,7 +156,7 @@ histo_dijet3p.Draw("same")
 text = CMSPlotStyle.draw_info("Bias test: r=0",0.55,0.85,11)
 text.Draw("same")
 
-text2 = CMSPlotStyle.draw_info("Fit function: exp.",0.55,0.8,11)
+#text2 = CMSPlotStyle.draw_info("Fit function: exp.",0.55,0.8,11)
 #text2.Draw("same")
 
 leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")

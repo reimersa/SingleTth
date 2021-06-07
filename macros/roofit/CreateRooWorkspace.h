@@ -21,17 +21,18 @@ private:
 	std::ofstream infotofile;
 	CreateRooWorkspace(const CreateRooWorkspace&);
 	CreateRooWorkspace& operator=(const CreateRooWorkspace&);
+	float xmin, xmax;
 
 public: 
 	CreateRooWorkspace(TString year = "2016v3", TString cat= "chi2h_2");
 
-	void StoreWorkspace(TString year = "2016v3", TString cat = "chi2h_2");
+	void StoreWorkspace(TString year = "2016v3", TString cat = "chi2h_2", TString MA = "99999");
 
 	TH1F* GetAnalysisOutput(defs::Eregion region, defs::Echannel ch, bool dodata, bool all_bkgds, TString year = "2016v3", TString cat = "chi2h_2");
 
 	void SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel ch, bool dodata, bool all_bkgds, TString year = "2016v3", TString cat = "chi2h_2");
 
-	void SaveSignals(defs::Echannel ch, TString year = "2016v3", TString cat = "chi2h_2");	
+	void SaveSignals(defs::Echannel ch, TString year = "2016v3", TString cat = "chi2h_2", TString MA="99999");	
 
 	void PrintWorkspace();
 

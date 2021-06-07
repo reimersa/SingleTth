@@ -16,7 +16,7 @@ TF1 * n_param = new TF1("n_param","[0]+[1]*(x-600)",550,1250);
 //TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600)",550,1250);
 TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600) + [2]*(x-600)**2",550,1250);
 bool debug = false;
-bool b_test_param = true;
+bool b_test_param = false;
 
 //write out the number of total events vs events in fitrange
 std::ofstream Nevttofile("Nevents_test.txt", std::ios::out | std::ios::trunc);
@@ -27,10 +27,10 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 void sig_fit()
 {
-  //TString year =  "2016v3";
-  //  TString year =  "2017v2";
-  TString year =  "2018";
-  //TString year =  "allyears";
+  //  TString year =  "2016v3";
+  TString year =  "2017v2";
+     //      TString year =  "2018";
+  //  TString year =  "allyears";
 
   //  TString postfix = "_HEMIssue_LH";
   TString postfix = "";
@@ -43,23 +43,24 @@ void sig_fit()
 
   //run over all ma, if ma=99999 GeV do the old stuff for the moment
   //  std::vector<TString>MAs = {"75","125","175","250","350","450","99999"};
-  std::vector<TString>MAs = {"99999"};
-   //  std::vector<TString>MAs = {"175"};
+  //  std::vector<TString>MAs = {"99999"};
+  std::vector<TString>MAs = {"75"};
   //// WARNING: NOT YET IMPLEMENTED FOR UNC!!!!!
   for(unsigned int ima = 0; ima < MAs.size();ima++){
 
     TString MA = MAs[ima];
 
     ///// run over all channels
-    std::vector<Echannel> channels = {eComb,eEle,eMuon};
-    //    std::vector<Echannel> channels = {eComb};
+    //       std::vector<Echannel> channels = {eComb,eEle,eMuon};
+    std::vector<Echannel> channels = {eComb};
     for(unsigned int ich = 0; ich < channels.size();ich++){
     
       Echannel ch =channels[ich];
   
       ///// run over all cat
       //  std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175","catma300"};
-      std::vector<TString> categories = {"chi2h_2","catma90","catma175","catma300"};
+      //      std::vector<TString> categories = {"chi2h_2","catma90","catma175","catma300"};
+      std::vector<TString> categories = {"catma300","catma90","catma60"};
       //      std::vector<TString> categories = {"catma175"};
       for(unsigned int icat=0;icat < categories.size();icat++){
 
@@ -71,6 +72,7 @@ void sig_fit()
 	if(cat.Contains("175")) func = "cb";
 	if(cat.Contains("300")) func = "cb";
 	if(cat.Contains("300")&& MA.Contains("999")) func = "cb";
+	//	if(cat.Contains("300")&& MA=="75") func = "simplegauss";
 
 	TString outfile_name = "SignalFitOutput_"+year+"_"+cat+"_"+MA+postfix+".txt";
 	if(ch==eEle) outfile_name = "SignalFitOutput_"+year+"_"+cat+"_"+MA+"_ech"+postfix+".txt";
@@ -83,6 +85,7 @@ void sig_fit()
 	  TString a,b;
 	  float mean_param0,mean_param1,sigma_param0,sigma_param1,n_param0,n_param1,alpha_param0,alpha_param1,alpha_param2;
 
+	  
 	  std::ifstream infile(outfile_name);
 	  while(infile >>a>>b>>c>>d){
 	    //	    std::cout<<" a "<<a<<" b "<<b<<" c "<<c<< " d "<<d<<std::endl;
@@ -92,14 +95,38 @@ void sig_fit()
 	    if(a.Contains("width") && !a.Contains("2") && b.Contains("param0")) sigma_param0=c;
 	    if(a.Contains("width") && !a.Contains("2") && b.Contains("param1")) sigma_param1=c;
 	    
+
 	    if(a.Contains("mean2") && b.Contains("param0")) n_param0=c;
 	    if(a.Contains("mean2") && b.Contains("param1")) n_param1=c;
-
+	    
 	    if(a.Contains("width2") && b.Contains("param0")) alpha_param0=c;
 	    if(a.Contains("width2") && b.Contains("param1")) alpha_param1=c;
 	    if(a.Contains("width2") && b.Contains("param2")) alpha_param2=c;
-	    
+
 	  }
+
+	  // if(year.Contains("2016")){
+	  //   TString new_name = outfile_name;
+	  //   new_name.ReplaceAll("2016v3","2017v2");
+	  //   std::ifstream infile_2016(new_name);
+	  //   while(infile_2016 >>a>>b>>c>>d){
+	  //     //	    std::cout<<" a "<<a<<" b "<<b<<" c "<<c<< " d "<<d<<std::endl;
+	  //     // if(a.Contains("mean") && !a.Contains("2") && b.Contains("param0")) mean_param0=c;
+	  //     // if(a.Contains("mean") && !a.Contains("2") && b.Contains("param1")) mean_param1=c;
+	      
+	  //     // if(a.Contains("width") && !a.Contains("2") && b.Contains("param0")) sigma_param0=c;
+	  //     // if(a.Contains("width") && !a.Contains("2") && b.Contains("param1")) sigma_param1=c;
+	      
+	      
+	  //     if(a.Contains("mean2") && b.Contains("param0")) n_param0=c;
+	  //     if(a.Contains("mean2") && b.Contains("param1")) n_param1=c;
+	      
+	  //     if(a.Contains("width2") && b.Contains("param0")) alpha_param0=c;
+	  //     if(a.Contains("width2") && b.Contains("param1")) alpha_param1=c;
+	  //     if(a.Contains("width2") && b.Contains("param2")) alpha_param2=c;
+		
+	  //   }
+	  // }
 
 
 	  mean_param->FixParameter(0,mean_param0);
@@ -127,12 +154,13 @@ void sig_fit()
 	std::vector<TString> uncertainties ={}; // no syst.
 	if(!b_test) {
 	  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
-	  if(year.Contains("2017"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2017 
+	  uncertainties ={}; // 2016 
+	  //	  if(year.Contains("2017"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2017 
 	  //if(year.Contains("2017"))  uncertainties ={"JEC","JER"}; // 2017 
 	  //	  if(year.Contains("2018"))  uncertainties ={};
 	  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
 	  //    if(year.Contains("allyears")) uncertainties = {"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_udsg","eletrigger","mutrigger","btag_bc","scale"}; // prefiring missing
-	  if(year.Contains("allyears")) uncertainties = {"JEC","JER"}; // prefiring missing
+	  if(year.Contains("allyears")) uncertainties = {}; // prefiring missing
 	}
     
 	std::vector<double> MTs = {600};// 2016
@@ -147,29 +175,36 @@ void sig_fit()
 	  //MTs_backup = {700,800, 900, 1000, 1200};// 2016
       
 	  // Roman's setup
-	  MTs = {700, 900, 1000, 1200};// 2016
-	  MTs_backup = {700, 900, 1000, 1200};// 2016
+	  MTs = {700, 800, 900, 1000, 1200};// 2016
+	  MTs_backup = {700,800, 900, 1000, 1200};// 2016
       
 	  if(year.Contains("2018") or year.Contains("2017")){
 	    MTs = {600, 700, 800, 900, 1000, 1100,1200};// 2017
 	    MTs_backup = {600, 700, 800, 900, 1000, 1100,1200};// 2017
+	    // MTs = { 700};// 2017
+	    // MTs_backup = { 700};// 2017
 	
 	  }
 	  if(year.Contains("allyears")){
-	    MTs = { 600,650,700,800,900, 1000,1100, 1200};// 2017
-	    MTs_backup = { 600,650,700,800,900, 1000,1100, 1200};// 2017
+	    MTs = { 700,800,900, 1000, 1200};// 2017
+	    MTs_backup = { 700,800,900, 1000, 1200};// 2017
 	  }
 	}
 
-	if(!MA.Contains("9999")) {
-	  MTs = {700};
-	  MTs_backup = {700};
+
+	if( cat.Contains("catma90") && year.Contains("2016")) {
+	  MTs = {700, 800, 900, 1000};// 2016
+	  MTs_backup = {700,800, 900, 1000};// 2016
 	}
 
 	if( cat.Contains("catma175")) {
 	  MTs = { 700,800,900, 1000,1100,1200};// 2017
 	  MTs_backup = { 700,800,900, 1000,1100,1200};// 2017
 	  
+	  if(year.Contains("2016") || year.Contains("allyears")){
+	    MTs = {700, 800, 900, 1000, 1200};// 2016
+	    MTs_backup = {700,800, 900, 1000, 1200};// 2016
+	  }
 	}
 
 	if(cat.Contains("catma300")) {
@@ -179,8 +214,24 @@ void sig_fit()
 	  MTs = { 800,900, 1000,1100};// 2017
 	  MTs_backup = { 800,900, 1000,1100};// 2017
 	  }
+	  if(year.Contains("2016") || year.Contains("allyears")){
+	    MTs = {700, 800, 900, 1000, 1200};// 2016
+	    MTs_backup = {700,800, 900, 1000, 1200};// 2016
+	  }
 	}
 
+	if(!MA.Contains("9999")) {
+	  MTs = {600,700,800,900,1000,1100,1200};
+	  MTs_backup = {600,700,800,900,1000,1100,1200};
+	  if(cat.Contains("catma60")){
+	    MTs = {600,700,800,1000,1100};
+	    MTs_backup = {600,700,800,1000,1100};
+	  }
+	  if(cat.Contains("catma300")){
+	    MTs = {700,800,900,1000,1200};
+	    MTs_backup = {700,800,900,1000,1200};
+	  }
+	}
 
     
 	std::vector<double> means;
@@ -356,6 +407,8 @@ void sig_fit()
 	gStyle->SetStatY(0.85);  
 	lin = new TF1("meanfit", "[0]+[1]*(x-600)", 550, 1250);
 	if(cat.Contains("ma300"))lin->SetParLimits(0,0,999999999);
+	if(cat.Contains("ma60"))lin->SetParLimits(0,0,999999999);
+	if(cat.Contains("ma90")&&year.Contains("allyears"))lin->SetParLimits(0,0,999999999);
 	lin->SetParName(0, "#mu at 600 GeV");
 	lin->SetParName(1, "Slope");
 	r = gmean2->Fit(lin, "0");
@@ -584,6 +637,7 @@ void sig_fit()
 	painter2->GetXaxis()->SetTitleOffset(1.2);
 	painter2->SetTitle("");
 	painter2->GetYaxis()->SetRangeUser(0, 130);
+	if(year.Contains("2016"))	painter2->GetYaxis()->SetRangeUser(0, 200);
 	if(year.Contains("allyear"))   painter2->GetYaxis()->SetRangeUser(40, 130);
 	if(cat.Contains("175"))  painter2->GetYaxis()->SetRangeUser(40, 300);
 	if(cat.Contains("300"))  painter2->GetYaxis()->SetRangeUser(40, 300);
@@ -670,7 +724,7 @@ void sig_fit()
 	if(func.Contains("cb"))	painter2->GetYaxis()->SetRangeUser(0, 3);
 	if(func.Contains("cb") && cat.Contains("ma300"))	painter2->GetYaxis()->SetRangeUser(-4, 6);
 	if(func.Contains("lin"))	painter2->GetYaxis()->SetRangeUser(-30, 30);
-	if(year.Contains("allyear"))   painter2->GetYaxis()->SetRangeUser(40, 300);
+	//	if(year.Contains("allyear"))   painter2->GetYaxis()->SetRangeUser(40, 300);
 	if(cat.Contains("175"))   painter2->GetYaxis()->SetRangeUser(-10, 10);
 	painter2->Draw();
 	gsigma2->SetMarkerStyle(20);
@@ -688,6 +742,7 @@ void sig_fit()
 	lin2->SetParameter(0,50);
 	lin2->SetParameter(1,0.06);
 	if(func.Contains("cb")) 	lin2 = new TF1("sigmafit", "[0]+[1]*(x-600) + [2]*(x-600)**2", 580, 1250);
+	if(year.Contains("2016")&&cat.Contains("ma90"))	lin2 = new TF1("sigmafit", "[0]+[1]*(x-600) ", 580, 1250);
 	//	if(func.Contains("cb")&&cat.Contains("catma300")) 	lin2 = new TF1("sigmafit", "[0]+[1]*(x-600) ", 580, 1250);
 	gsigma2->Fit(fconst,"0R");
 	gsigma2->Fit(fp2,"0R");
@@ -1598,6 +1653,20 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     sigma = 40 + MT * 0.05;
     fit_xmax = mean + factormax*sigma+40;
     fit_xmin = 220 + 0.2 * MT;
+    if(MA=="75" ){
+      if(MT==800){
+	fit_xmax = 1200;
+	fit_xmin = 550;
+      }
+      if(MT==900){
+	fit_xmax = 1000;
+	fit_xmin = 580;
+      }
+      if(MT==1100){
+	fit_xmax = 1200;
+	fit_xmin = 600;
+      }
+    }
   }  
   if(cat.Contains("ma90")){
     mean = 0.7 * MT + 110;
@@ -1608,6 +1677,56 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     if(MT==800)     {
       fit_xmin = 400;
       fit_xmax = 1000;
+    }
+    if(year.Contains("2016")){
+      if(MT==800)     {
+	fit_xmin = 350;
+	fit_xmax = 1000;
+      }
+      if(MT==900)     {
+	fit_xmin = 350;
+	fit_xmax = 1000;
+      }
+      if(MT==1200)     {
+	fit_xmin = 350;
+	fit_xmax = 1500;
+      }
+    }
+    if(year.Contains("allyears")){
+      if(MT==1200)     {
+	fit_xmin = 700;
+	fit_xmax = 1250;
+      }
+      if(MT==700)     {
+	fit_xmin = 300;
+	// fit_xmin = 430;
+	fit_xmax = 750;
+      }
+      if(MT==800)     {
+	fit_xmin = 280;
+	//	fit_xmin = 280;//  // 430 ziemlich klein
+	fit_xmax = 900;
+      }
+      if(MT==1000)     {
+	fit_xmin = 500;
+	//	fit_xmin = 420;
+	fit_xmax = 1100;
+      }
+
+    }
+    if(MA=="75"){
+      if(MT==900){
+	fit_xmin = 400;
+	fit_xmax = 1100;
+      }
+      if(MT==1000){
+	fit_xmin = 420;
+	fit_xmax = 1200;
+      }
+      if(MT==1100){
+	fit_xmin = 500;
+	fit_xmax = 1300;
+      }
     }
   }  
   if(cat.Contains("chi2h_2")){
@@ -1620,6 +1739,12 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
       sigma = 50;
       fit_xmax = mean + 5*sigma+20;
       fit_xmin = mean - 0.35*MT;
+    }
+    if(year.Contains("2016")){
+      if(MT==700)     {
+        fit_xmin = 420;
+        fit_xmax = 1000;
+      }
     }
 
   }  
@@ -1637,9 +1762,17 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
       fit_xmin = 470;
       fit_xmax = 1300;
     }
+    if(MA.Contains("99999") && MT==800 && year.Contains("2016")){
+      fit_xmin = 470;
+      fit_xmax = 1000;
+    }
     if(MA.Contains("99999") && MT==1000){
       fit_xmin = 500;
       fit_xmax = 1350;
+    }
+    if(MA.Contains("99999") && MT==1000 &&  year.Contains("2016")){
+      fit_xmin = 520;
+      fit_xmax = 1300;
     }
     if(MA.Contains("99999") && MT==1100){
       fit_xmin = 500;
@@ -1678,11 +1811,23 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 	fit_xmax = 1500;
 	fit_xmin = 450;
 	}
+	if(year.Contains("2017")){
+	  fit_xmax = 1600;
+	  fit_xmin = 400;
+	}
 
       }
       if(MT==700 ){
 	fit_xmax = 1000;
 	fit_xmin = 400;
+	if(year.Contains("2017")){
+	fit_xmax = 1100;
+	fit_xmin = 400;
+	}
+	if(year.Contains("2016")){
+	  fit_xmax = 1200;
+	  fit_xmin = 400;
+	}
       }
       if(MT==900 ){
 	fit_xmax = 1400;
@@ -1696,6 +1841,20 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
       if(MT==1200 ){
 	fit_xmax = 1600;
 	fit_xmin = 400;
+      }
+    }
+    if(MA=="75"){
+      if(MT==1000){
+	fit_xmin = 550;
+	fit_xmax = 1400;
+      }
+      if(MT==1100){
+	fit_xmin = 600;
+	fit_xmax = 1600;
+      }
+      if(MT==1200){
+	fit_xmin = 600;
+	fit_xmax = 1500;
       }
     }
   }
@@ -1735,6 +1894,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   sigh->SetTitle("");
   if(cat.Contains("300")&&MA.Contains("9999")) sigh->Rebin(2);
   if(cat.Contains("175")&&MA.Contains("9999")) sigh->Rebin(2);
+  //  if(cat.Contains("90")&&MA.Contains("9999")&&year.Contains("2016")) sigh->Rebin(2);
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
@@ -1804,6 +1964,14 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   fitmodel_dg->SetNpx(200); 
 
+  if (cat.Contains("ma60")){
+    fitmodel_cb->SetParameter(0, mean);  
+    fitmodel_cb->SetParameter(1, sigma);
+    fitmodel_cb->SetParameter(2, 2);  
+    fitmodel_cb->SetParLimits(2, 0,100);  
+    fitmodel_cb->SetParameter(3, 2);
+  }
+
 
   if (cat.Contains("ma90")){
     fitmodel->SetParameter(0, 0.9*MT - 20);  
@@ -1822,7 +1990,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     fitmodel_cb->SetParameter(2, 2);  
     fitmodel_cb->SetParLimits(2, 0,100);  
     fitmodel_cb->SetParameter(3, 2);
-
+    if(year.Contains("2016")) fitmodel_cb->SetParLimits(3, 0,10);
   }
   if (cat.Contains("chi2h_2")){
     fitmodel->SetParameter(0, 0.9*MT - 20);  
@@ -1893,7 +2061,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
       fitmodel_cb->SetParLimits(2, 0,100);  
       //      if(MT==600)fitmodel_cb->SetParLimits(3, -0.5,-1000);  
     }
+    if(MA.Contains("999") && year.Contains("2017")) fitmodel_cb->SetParLimits(3, -10,0); 
+    if(MA=="75" && year.Contains("2017")) fitmodel_cb->SetParLimits(3, -10,0); 
     if(MA.Contains("999") && year.Contains("2018")) fitmodel_cb->SetParLimits(3, -10,0); 
+    if(MA.Contains("999") && year.Contains("2016")) fitmodel_cb->SetParLimits(3, -10,0); 
   }
 
 

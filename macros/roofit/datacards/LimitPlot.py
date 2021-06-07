@@ -21,7 +21,7 @@ berror = False
 #year = "2018"
 year = "allyears"
 
-postfix = "_mavariable_cat125cat90cat175cat300_cb_fullunc"
+postfix = "_mavariable_2017_ma75_catma60p90p300"
 
 masses = []
 
@@ -42,6 +42,7 @@ for line in listOfLines:
 
 print masses
 #masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '850','900', '925', '950','975' ,'1000','1025', '1050', '1075', '1100', '1125', '1175', '1200', '1225']
+#masses = [ '600', '625', '650', '675', '700', '725', '750', '775', '850','900', '925', '950','975' ,'1000', '1050', '1075', '1100', '1125', '1175', '1200', '1225']
 
 outputfile = open("Limits_combine_"+year+postfix+".txt","w")
 outputfile_obs = open("Limits_combine_obs_"+year+postfix+".txt","w")

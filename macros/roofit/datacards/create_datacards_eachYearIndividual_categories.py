@@ -20,6 +20,9 @@ berror = False
 b_multipdf = True
 b_signalrate = True
 b_lumiunc = True
+b_JEC = False
+shift = 0
+if not b_JEC: shift = 8
 #cat = "chi2h_2"
 
 bkg_much_norm = {} # for all years: key is year
@@ -96,11 +99,15 @@ lumi_unc["2017v2"] = 0.023
 lumi_unc["2018"] = 0.025
 
 #years = {"2016v3","2017v2","2018"}
-years = {"2017v2","2018"}
-ma_mass = "99999"
+#years = {"2018","2016v3"}
+years = {"2017v2"}
+#ma_mass = "99999"
+ma_mass = "75"
 
 #categories = ["chi2h_2", "catma60","catma90","catma175", "catma300"]
-categories = ["chi2h_2", "catma90","catma175", "catma300"] 
+#categories = ["chi2h_2", "catma90","catma175", "catma300"] 
+categories = ["catma60","catma90", "catma300"] 
+#categories = ["chi2h_2"] 
 
 number_of_channels = 2 * len(years) * len(categories)
 number_of_backgrounds = "*"
@@ -121,6 +128,7 @@ for icat in categories:
     much_rate_unc[icat] = {}
 
     for year in years:
+        if "2016" in year and "chi2h" not in icat: continue
         f_tot = open(folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+".txt", "r")
         f_much = open(folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+"_much.txt", "r")
         f_ech = open(folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+"_ech.txt", "r")
@@ -136,8 +144,8 @@ for icat in categories:
                 unc = math.sqrt(float(unc)*float(unc) + 0.018 * 0.018 )
             else:
                 unc = math.sqrt(float(unc)*float(unc) + lumi_unc[year] * lumi_unc[year] )
-                unc+=1
-                tot_rate_unc[icat][year][mass] = unc
+            unc+=1
+            tot_rate_unc[icat][year][mass] = unc
     
         print sorted(tot_rate_unc)
     
@@ -176,6 +184,7 @@ for icat in categories:
 
 
     for year in years:
+        if "2016" in year and "chi2h" not in icat: continue
         # Find all possible MT where we have the normalisation
         inputfile = open("AnalysisOutput_"+year+"_"+icat+".txt","r")
         listOfLines = inputfile.readlines()
@@ -193,7 +202,7 @@ for icat in categories:
                 for j in range(i+1,len(listOfLines)):
                     if "Electron" in listOfLines[j]: break
                     mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
-                    if mass not in masses:
+                    if mass not in masses and int(mass)>590:
                         masses.append(mass)
      
                     norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
@@ -203,32 +212,34 @@ for icat in categories:
     
                     sigma_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[4]
                     sigma_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[5]
+
+                    if b_JEC:
+                        mean_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[6]
+                        mean_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[8]
+                        mean_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[10]
+                        mean_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[12]
+                        
+                        sigma_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[7]
+                        sigma_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[9]
+                        sigma_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[11]
+                        sigma_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[13]
     
-                    mean_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[6]
-                    mean_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[8]
-                    mean_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[10]
-                    mean_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[12]
+                    mean2_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[14-shift]
+                    mean2_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[15-shift]
     
-                    sigma_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[7]
-                    sigma_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[9]
-                    sigma_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[11]
-                    sigma_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[13]
+                    sigma2_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[16-shift]
+                    sigma2_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[17-shift]
+                    if b_JEC:
+                    
+                        mean2_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[18]
+                        mean2_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[19]
+                        mean2_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[20]
+                        mean2_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[21]
     
-                    mean2_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[14]
-                    mean2_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[15]
-    
-                    sigma2_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[16]
-                    sigma2_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[17]
-    
-                    mean2_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[18]
-                    mean2_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[19]
-                    mean2_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[20]
-                    mean2_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[21]
-    
-                    sigma2_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[22]
-                    sigma2_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[23]
-                    sigma2_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[24]
-                    sigma2_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[25]
+                        sigma2_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[22]
+                        sigma2_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[23]
+                        sigma2_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[24]
+                        sigma2_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[25]
     
                     # fnorm_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[26]
                     # fnorm_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[27]
@@ -269,16 +280,32 @@ for mass in masses:
     outputfile = open("Datacard_allyears_M"+str(mass)+".txt",'w')
     outputfile.write("# Version of the 139/pb SingleTth Analysis \n\n")
     outputfile.write("------------------------------ \n")
-    if int(mass)<700 and "catma175" in categories and "catma300" in categories:
-        outputfile.write("imax  "+str(2 * len(years) * (len(categories)-2))+" number of channels \n")
-    elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
-        outputfile.write("imax  "+str(2 * len(years) * (len(categories)-1))+" number of channels \n")
-    elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
-        outputfile.write("imax  "+str(2 * len(years) * len(categories)-2)+" number of channels \n")
-    elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
-        outputfile.write("imax  "+str(2 * len(years) * len(categories)-1)+" number of channels \n")
-    else: 
-        outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
+
+    if "2016v3" in years:
+        if int(mass)<700 and "catma175" in categories and "catma300" in categories:
+            outputfile.write("imax  "+str(2 * (len(years)-1) * (len(categories)-2)+2)+" number of channels \n")
+        elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
+            outputfile.write("imax  "+str(2 * (len(years)-1) * (len(categories)-1)+2)+" number of channels \n")
+        elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
+            outputfile.write("imax  "+str(2 * (len(years)-1) * len(categories)-2+2)+" number of channels \n")
+        elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
+            outputfile.write("imax  "+str(2 * (len(years)-1) * len(categories)-1+2)+" number of channels \n")
+        else: 
+            outputfile.write("imax  "+str(number_of_channels-(2*(len(categories)-1)))+" number of channels \n")
+
+    else:
+        if int(mass)<700 and "catma175" in categories and "catma300" in categories:
+            outputfile.write("imax  "+str(2 * len(years) * (len(categories)-2))+" number of channels \n")
+        elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
+            outputfile.write("imax  "+str(2 * len(years) * (len(categories)-1))+" number of channels \n")
+        elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
+            outputfile.write("imax  "+str(2 * len(years) * len(categories)-2)+" number of channels \n")
+        elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
+            outputfile.write("imax  "+str(2 * len(years) * len(categories)-1)+" number of channels \n")
+        else: 
+            outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
+
+
     outputfile.write("jmax  "+str(number_of_backgrounds)+" number of backgrounds \n")
     outputfile.write("kmax  * number of nuisance parameters (sources of systematical uncertainties) \n \n")
     outputfile.write("------------------------------ \n")
@@ -307,8 +334,9 @@ for mass in masses:
 
         for year in sorted(years):
             if "300" in cat and int(mass) < 800 and "2018" in year: continue
-            outputfile.write("shapes * ech_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+".root SingleTth"+cat+":$PROCESS_$CHANNEL \n \n")
-            outputfile.write("shapes * much_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+".root SingleTth"+cat+":$PROCESS_$CHANNEL \n \n")
+            if "2016" in year and "chi2h" not in cat: continue
+            outputfile.write("shapes * ech_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+"_"+ma_mass+".root SingleTth"+cat+":$PROCESS_$CHANNEL \n \n")
+            outputfile.write("shapes * much_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+"_"+ma_mass+".root SingleTth"+cat+":$PROCESS_$CHANNEL \n \n")
 
             bins +=  "ech_"+year+"_"+cat+"   much_"+year+"_"+cat+"   "
             double_bins +=  "ech_"+year+"_"+cat+"    ech_"+year+"_"+cat+"   much_"+year+"_"+cat+"   "+"   much_"+year+"_"+cat+"   "
@@ -393,6 +421,7 @@ for mass in masses:
 
         for year in years:
             if "300" in cat and int(mass) < 800 and "2018" in year: continue
+            if "2016" in year and "chi2h" not in cat: continue
             if b_multipdf:
                 outputfile.write("pdf_index_much_"+year+"_"+cat+" discrete \n ")
                 outputfile.write("pdf_index_ech_"+year+"_"+cat+" discrete \n ")
@@ -415,31 +444,33 @@ for mass in masses:
             outputfile.write("sg_sigma_"+year+"_"+cat+" param "+str(sigma_value[year+"_"+cat+"_"+mass])+"  "+str(sigma_error[year+"_"+cat+"_"+mass])+" \n ")
 	
 	        ##### JER and JEC variations
-            outputfile.write("sg_JERmeandown_"+year+"_"+cat+" param "+str(mean_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JERmeanup_"+year+"_"+cat+" param "+str(mean_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JECmeandown_"+year+"_"+cat+" param "+str(mean_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JECmeanup_"+year+"_"+cat+" param "+str(mean_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+            if b_JEC:
+                outputfile.write("sg_JERmeandown_"+year+"_"+cat+" param "+str(mean_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JERmeanup_"+year+"_"+cat+" param "+str(mean_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JECmeandown_"+year+"_"+cat+" param "+str(mean_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JECmeanup_"+year+"_"+cat+" param "+str(mean_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
 	
 	
-            outputfile.write("sg_JERsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JERsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JECsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JECsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JERsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JERsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JECsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JECsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
 	
             outputfile.write("sg_mean2_"+year+"_"+cat+" param "+str(mean2_value[year+"_"+cat+"_"+mass])+"  "+str(mean2_error[year+"_"+cat+"_"+mass])+" \n ")
             outputfile.write("sg_sigma2_"+year+"_"+cat+" param "+str(sigma2_value[year+"_"+cat+"_"+mass])+"  "+str(sigma2_error[year+"_"+cat+"_"+mass])+" \n ")
 	
 	        ##### JER and JEC variations
-            outputfile.write("sg_JERmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JERmeanup2_"+year+"_"+cat+" param "+str(mean2_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JECmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JECmeanup2_"+year+"_"+cat+" param "+str(mean2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+            if b_JEC:
+                outputfile.write("sg_JERmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JERmeanup2_"+year+"_"+cat+" param "+str(mean2_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JECmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JECmeanup2_"+year+"_"+cat+" param "+str(mean2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
 	
 	
-            outputfile.write("sg_JERsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JERsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JECsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
-            outputfile.write("sg_JECsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JERsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JERsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JER_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JECsigmadown2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
+                outputfile.write("sg_JECsigmaup2_"+year+"_"+cat+" param "+str(sigma2_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
 	
             # ############ fnorm
             # outputfile.write("sg_fnorm_"+year+"_"+cat+" param "+str(fnorm_value[year+"_"+cat+"_"+mass])+"  "+str(fnorm_error[year+"_"+cat+"_"+mass])+" \n ")

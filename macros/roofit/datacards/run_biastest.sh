@@ -12,8 +12,9 @@ name="dijet3p_r0"
 postfix="_mavariable_cb_MT${mass}GeV"
 
 
-years=("2017v2")
+years=("2016v3" "2017v2" "2018")
 categories=("chi2h_2" "catma90" "catma175" "catma300")
+#categories=("chi2h_2")
 freeze_param=""
 set_param=""
 
@@ -45,7 +46,7 @@ eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param}  --free
 eval "python create_snapshot.py -mass ${mass} -signal 1.0"
 
 
- eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters  ${set_param}  -t 1000 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
+eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit  --setParameters  ${set_param}  -t 1000 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
 
 
 eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n exp2p_r1${postfix}"
@@ -66,7 +67,7 @@ eval "combine $datacard -M FitDiagnostics  --setParameters ${set_param}  --freez
 eval "python create_snapshot.py -mass ${mass} -signal 1.0"
 
 
- eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters ${set_param}  -t 1000 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
+ eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit  --setParameters ${set_param}  -t 1000 --expectSignal 1.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
 
 
 
@@ -88,7 +89,7 @@ eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param}  --free
 eval "python create_snapshot.py -mass ${mass} -signal 0.0"
 
 
- eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters  ${set_param}  -t 1000 --expectSignal 0.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
+ eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit   --setParameters  ${set_param}  -t 1000 --expectSignal 0.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
 
 
   
@@ -111,7 +112,7 @@ eval "combine $datacard -M FitDiagnostics  --setParameters ${set_param}  --freez
 eval "python create_snapshot.py -mass ${mass} -signal 0.0"
 
 
- eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit --toysFrequentist --bypassFrequentistFit --setParameters ${set_param}  -t 1000 --expectSignal 0.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
+ eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initialFit  --setParameters ${set_param}  -t 1000 --expectSignal 0.0 --saveToys -m 125  --freezeParameters ${freeze_param}"
 
 
 eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param} --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters ${freeze_param}  --cminDefaultMinimizerStrategy=0 -n dijet3p_r0${postfix}"
