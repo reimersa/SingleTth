@@ -9,10 +9,10 @@ masses=(550 575 600 625 650 675 700 725 750 775 800 825 850 875 900 925 950 975 
 #year="2017v2"
 #year="2018"
 year_nt="allyears"
-cat="chi2h_2"
 
 
-years=("2017v2")
+
+years=("2017v2" "2016v3" "2018")
 categories=("chi2h_2" "catma90" "catma175" "catma300" "catma60")
 freeze_param=""
 set_param=""

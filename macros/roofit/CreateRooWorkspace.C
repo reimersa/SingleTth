@@ -248,7 +248,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", xmin, xmax);
   x->setBins(Nbins);
   RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name+"_"+year+"_"+cat, "data_obs_"+ch_name+"_"+year+"_"+cat, RooArgList(*x), h_data);
-  //RooDataHist* dataSR = new RooDataHist("data_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), h_data);
+
 
 
   // control plots
@@ -308,7 +308,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   TH1* myhist = dataSR->createHistogram("myhist",*x);
   myhist2->Scale(myhist->Integral()/myhist2->Integral());
 
-  //   RooDataHist* dataSR_generated = new RooDataHist("data_obs_"+ch_name+"_"+year, "data_obs_"+ch_name, RooArgList(*x), myhist2);
+    RooDataHist* dataSR_generated = new RooDataHist("data_obs_"+ch_name+"_"+year+"_"+cat, "data_obs_"+ch_name+"_"+year+"_"+cat, RooArgList(*x), myhist2);
  
   // RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR_generated, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   // infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
@@ -323,8 +323,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 
   // save the data to the workspace
-    fWS->import(*dataSR);
-  //    fWS->import(*dataSR_generated);
+    //    fWS->import(*dataSR);
+     fWS->import(*dataSR_generated);
 
   // save the bkg fit to the workspace
   //fWS->import(*bgfunc);
@@ -871,10 +871,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     // SignalDoubleGauss* ModelSg_JERdown_Gauss = new SignalDoubleGauss(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2, *sg_JERfnormdown);
 
 
-    // RooCBShape* ModelSg_JECup_Gauss = new RooCBShape(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup,*sg_JECmeanup2, *sg_JECsigmaup2);
-    // RooCBShape* ModelSg_JERup_Gauss = new RooCBShape(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup,*sg_JERmeanup2, *sg_JERsigmaup2);
-    // RooCBShape* ModelSg_JECdown_Gauss = new RooCBShape(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown,*sg_JECmeandown2, *sg_JECsigmadown2);
-    // RooCBShape* ModelSg_JERdown_Gauss = new RooCBShape(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2);
+    RooCBShape* ModelSg_JECup_Gauss = new RooCBShape(SgName+"_JECup", SgName+"_JECup", *x, *sg_JECmeanup, *sg_JECsigmaup,*sg_JECmeanup2, *sg_JECsigmaup2);
+    RooCBShape* ModelSg_JERup_Gauss = new RooCBShape(SgName+"_JERup", SgName+"_JERup", *x, *sg_JERmeanup, *sg_JERsigmaup,*sg_JERmeanup2, *sg_JERsigmaup2);
+    RooCBShape* ModelSg_JECdown_Gauss = new RooCBShape(SgName+"_JECdown", SgName+"_JECdown", *x, *sg_JECmeandown, *sg_JECsigmadown,*sg_JECmeandown2, *sg_JECsigmadown2);
+    RooCBShape* ModelSg_JERdown_Gauss = new RooCBShape(SgName+"_JERdown", SgName+"_JERdown", *x, *sg_JERmeandown, *sg_JERsigmadown,*sg_JERmeandown2, *sg_JERsigmadown2);
 
 
     // converting function into hist to debug
@@ -896,10 +896,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     TCanvas* c_sg = new TCanvas(SgName, SgName, 10, 10, 700, 700);
     RooPlot* plotter=x->frame();
     ModelSg_Gauss->plotOn(plotter, RooFit::LineColor(kRed));
-    // ModelSg_JECup_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
-    // ModelSg_JECdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
-    // ModelSg_JERdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
-    // ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
+    ModelSg_JECup_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
+    ModelSg_JECdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
+    ModelSg_JERdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
+    ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
     plotter->Draw();
     c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+"_"+cat+".pdf");
     c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+"_"+cat+".eps");
@@ -930,10 +930,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     mypdfs.add(*ModelSg_Gauss);
     //mypdfs.add(*ModelSg_Gauss_variation);
 
-    // mypdfs.add(*ModelSg_JECup_Gauss);
-    // mypdfs.add(*ModelSg_JERup_Gauss);
-    // mypdfs.add(*ModelSg_JECdown_Gauss);
-    // mypdfs.add(*ModelSg_JERdown_Gauss);
+    mypdfs.add(*ModelSg_JECup_Gauss);
+    mypdfs.add(*ModelSg_JERup_Gauss);
+    mypdfs.add(*ModelSg_JECdown_Gauss);
+    mypdfs.add(*ModelSg_JERdown_Gauss);
 
     RooCategory category("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"Index of Pdf which is active");
     RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"All Pdfs",category,mypdfs);

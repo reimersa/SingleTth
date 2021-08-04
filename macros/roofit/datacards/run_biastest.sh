@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mass="600"
+mass="800"
 datacard="Datacard_allyears_M${mass}.txt"
 #datacard="Datacard_allyears_M${mass}_much.txt"
 #datacard="Datacard_allyears_M${mass}_ech.txt"
@@ -9,11 +9,12 @@ signal=0.0
 function_param=0
 #name="exp2p_r1"
 name="dijet3p_r0"
-postfix="_mavariable_cb_MT${mass}GeV"
+postfix="_mavariable_cb_MT${mass}GeV_MA175"
 
 
 years=("2016v3" "2017v2" "2018")
 categories=("chi2h_2" "catma90" "catma175" "catma300")
+#categories=("catma90" "catma60" "catma300")
 #categories=("chi2h_2")
 freeze_param=""
 set_param=""
@@ -50,6 +51,7 @@ eval "combine -M GenerateOnly  -d initialFitWorkspace.root --snapshotName initia
 
 
 eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n exp2p_r1${postfix}"
+#eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombineTest.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10  --cminDefaultMinimizerStrategy=0 -n exp2p_r1${postfix}"
 
 
 # ####### dijet 3p

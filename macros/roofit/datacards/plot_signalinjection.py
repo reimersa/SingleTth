@@ -31,7 +31,8 @@ gStyle.SetPaintTextFormat("2.3f")
 
 #signalstrength = {0.0,0.25,0.5,0.75,1.0,1.5,2.0,2.5,3.0}
 signalstrength = {0.0,0.25,0.5,0.75,1.0}
-masses = {700}
+masses = {600,800}
+MA = "175"
 
 color = [kBlue,kBlack,kRed]
 color_lm = [kBlue,kBlack,kRed]
@@ -75,17 +76,17 @@ for mass in masses:
         hist.SetBinContent(hist.FindBin(sig),mean)
         hist.SetBinError(hist.FindBin(sig),std)
     
-        if mass==600 or mass==1000:
-            infile = TFile("fitDiagnosticssignal"+str(sig)+"_"+str(mass)+"_doublegaussian.root","r")
-            TH1.AddDirectory(0)
-            tree_fit_sb = infile.Get("tree_fit_sb")
-            tree_fit_sb.Draw("r>>h(100,-2,5)")
-            histo = gROOT.FindObject("h")
-            mean = histo.GetMean()
-#            std = histo.GetStdDev()
-            std = histo.GetMeanError()
-            hist_doublegaussian.SetBinContent(hist_doublegaussian.FindBin(sig),mean)
-            hist_doublegaussian.SetBinError(hist_doublegaussian.FindBin(sig),std)
+#         if mass==600 or mass==1000:
+#             infile = TFile("fitDiagnosticssignal"+str(sig)+"_"+str(mass)+"_doublegaussian.root","r")
+#             TH1.AddDirectory(0)
+#             tree_fit_sb = infile.Get("tree_fit_sb")
+#             tree_fit_sb.Draw("r>>h(100,-2,5)")
+#             histo = gROOT.FindObject("h")
+#             mean = histo.GetMean()
+# #            std = histo.GetStdDev()
+#             std = histo.GetMeanError()
+#             hist_doublegaussian.SetBinContent(hist_doublegaussian.FindBin(sig),mean)
+#             hist_doublegaussian.SetBinError(hist_doublegaussian.FindBin(sig),std)
     
     
     hist.GetXaxis().SetTitle("Injected signal cross section [pb]")
@@ -101,16 +102,16 @@ for mass in masses:
     hist.GetYaxis().SetRangeUser(0,ymax)
     hist.Fit(f,"R")
     hist_to_draw[str(i)+"M_{T} = "+str(mass)]  = hist.Clone()
-    if mass==600 or mass==1000:
-        hist_doublegaussian.SetLineWidth(2)
-        hist_doublegaussian.SetMarkerStyle(marker_lm[ii])
-        hist_doublegaussian.SetMarkerColor(color_lm[ii])
-        hist_doublegaussian.SetMarkerSize(1.5)
-        hist_doublegaussian.GetYaxis().SetRangeUser(0,3.5)
-        f.SetLineStyle(style_lm[ii])
-        hist_doublegaussian.Fit(f,"R")
-#        hist_to_draw[str(i)+"M_{T} = "+str(mass)+" (low mass tail)"]  = hist_doublegaussian.Clone()
-        ii+=1
+#     if mass==600 or mass==1000:
+#         hist_doublegaussian.SetLineWidth(2)
+#         hist_doublegaussian.SetMarkerStyle(marker_lm[ii])
+#         hist_doublegaussian.SetMarkerColor(color_lm[ii])
+#         hist_doublegaussian.SetMarkerSize(1.5)
+#         hist_doublegaussian.GetYaxis().SetRangeUser(0,3.5)
+#         f.SetLineStyle(style_lm[ii])
+#         hist_doublegaussian.Fit(f,"R")
+# #        hist_to_draw[str(i)+"M_{T} = "+str(mass)+" (low mass tail)"]  = hist_doublegaussian.Clone()
+#         ii+=1
     
     i+=1
 
@@ -159,4 +160,4 @@ lumi.Draw("same")
 
 
 c1.Print("signalinjection_"+str(mass)+".eps")
-c1.Print("signalinjection_"+str(mass)+".pdf")
+c1.Print("signalinjection_"+str(mass)+"_"+str(MA)+".pdf")

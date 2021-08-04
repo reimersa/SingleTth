@@ -6,10 +6,12 @@ int main(int argc, char *argv[])
 
   bool dodata = true;
   bool all_bkgds = true;
+  //  TString MA = "99999";
   TString MA = "75";
 
   std::vector<TString> categories = {"chi2h_2", "catma90","catma175","catma300"};
   if(MA=="75") categories = {"catma60", "catma90","catma300"};
+  if(MA=="175") categories = {"catma175","catma300","chi2h_2"};
   //  std::vector<TString> categories = {"chi2h_2","catma90"};
   for(unsigned int icat = 0; icat < categories.size(); icat++){
     TString cat = categories[icat];

@@ -129,7 +129,7 @@ def creat_eff_plot_per_cat(folder, signal_list = []):
 
 
     c = TCanvas()
-    hist_ma125.GetYaxis().SetTitle("[%]")
+    hist_ma125.GetYaxis().SetTitle("fraction of events")
     hist_ma125.GetXaxis().SetTitle("M_{T} [GeV]")
     hist_ma125.Draw("HIST")
     
@@ -156,7 +156,7 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
     sample_dict = {}
     for el in signal_list:
         if (not ma) and "125" in mamass and "_ma" in el: continue
-        if (not ma) and  mamass not in el: continue
+        elif (not ma) and  mamass not in el and "125" not in mamass: continue
         elif ma and (not "_ma" in el): continue
         mass = int(re.findall(r'\d+', el)[1])
         if ma: mass = int(re.findall(r'\d+', el)[2])
@@ -193,7 +193,7 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
     
     for el in sorted(hist_to_draw):
         hist = hist_to_draw[el]
-        hist.GetYaxis().SetTitle("[%]")
+        hist.GetYaxis().SetTitle("fraction of events")
         hist.GetXaxis().SetTitle("M_{T} [GeV]")
         if ma:         hist.GetXaxis().SetTitle("M_{a} [GeV]")
         hist.GetYaxis().SetRangeUser(0,0.8)
@@ -224,8 +224,10 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
         c.SaveAs("sigmT700.pdf")
 
 
-create_eff_table("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
-creat_eff_plot_per_cat("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
+# create_eff_table("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
+# creat_eff_plot_per_cat("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True)
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="75")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="175")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="450")

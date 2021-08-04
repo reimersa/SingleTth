@@ -38,17 +38,20 @@ args = parser.parse_args()
 signalstrength = args.integer
 
 
+year =  re.findall('20\d\d',args.outname)[0]
+ch =  re.findall('[mu,e]*ch',args.outname)[0]
+cat =  re.findall('catma[0-9][0-9]+',args.outname)[0]
+
 c1 = TCanvas()
 infile = TFile("higgsCombineTest.GoodnessOfFit.mH120.123456.root","r")
 tree_fit_sb = infile.Get("limit")
-tree_fit_sb.Draw("limit>>h(50,50,180)")
+#tree_fit_sb.Draw("limit>>h(50,1000,1800)")
+tree_fit_sb.Draw("limit>>h(50,0,300)")
 
 histo = gROOT.FindObject("h")
 histo.GetXaxis().SetTitle("Saturated test statistic")
 histo.GetYaxis().SetTitle("Toys")
 gPad.Update()
-
-
 
 ar4 = TArrow(signalstrength,0,signalstrength,10,0.05,"<|");
 ar4.SetLineWidth(2);
@@ -56,4 +59,7 @@ ar4.SetFillColor(2);
 ar4.SetLineColor(2);
 ar4.Draw();
 
-c1.Print(args.outname+".eps")
+infotext = year + ", "+ch+", "+cat
+info = CMSPlotStyle.draw_info(infotext, 0.6, 0.95, textalign = 31, factor = 1)
+
+c1.Print(args.outname+".pdf")

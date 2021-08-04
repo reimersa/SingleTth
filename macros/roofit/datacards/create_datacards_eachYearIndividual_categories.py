@@ -20,7 +20,7 @@ berror = False
 b_multipdf = True
 b_signalrate = True
 b_lumiunc = True
-b_JEC = False
+b_JEC = True
 shift = 0
 if not b_JEC: shift = 8
 #cat = "chi2h_2"
@@ -102,12 +102,15 @@ lumi_unc["2018"] = 0.025
 #years = {"2018","2016v3"}
 years = {"2017v2"}
 #ma_mass = "99999"
-ma_mass = "75"
+ma_mass = "175"
 
 #categories = ["chi2h_2", "catma60","catma90","catma175", "catma300"]
-#categories = ["chi2h_2", "catma90","catma175", "catma300"] 
-categories = ["catma60","catma90", "catma300"] 
-#categories = ["chi2h_2"] 
+categories = ["catma175", "catma300","chi2h_2"] 
+if ma_mass == "75":
+    categories = ["catma60","catma90", "catma300"] 
+if ma_mass == "99999":
+    categories = ["catma90","catma175", "catma300", "chi2h_2"] 
+categories = ["catma300"] 
 
 number_of_channels = 2 * len(years) * len(categories)
 number_of_backgrounds = "*"
@@ -128,7 +131,7 @@ for icat in categories:
     much_rate_unc[icat] = {}
 
     for year in years:
-        if "2016" in year and "chi2h" not in icat: continue
+#        if "2016" in year and "chi2h" not in icat: continue
         f_tot = open(folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+".txt", "r")
         f_much = open(folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+"_much.txt", "r")
         f_ech = open(folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+"_ech.txt", "r")
@@ -184,7 +187,7 @@ for icat in categories:
 
 
     for year in years:
-        if "2016" in year and "chi2h" not in icat: continue
+#        if "2016" in year and "chi2h" not in icat: continue
         # Find all possible MT where we have the normalisation
         inputfile = open("AnalysisOutput_"+year+"_"+icat+".txt","r")
         listOfLines = inputfile.readlines()
@@ -214,6 +217,7 @@ for icat in categories:
                     sigma_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[5]
 
                     if b_JEC:
+#                        print year+"_"+icat+"_"+mass
                         mean_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[6]
                         mean_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[8]
                         mean_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[10]
@@ -281,29 +285,29 @@ for mass in masses:
     outputfile.write("# Version of the 139/pb SingleTth Analysis \n\n")
     outputfile.write("------------------------------ \n")
 
-    if "2016v3" in years:
-        if int(mass)<700 and "catma175" in categories and "catma300" in categories:
-            outputfile.write("imax  "+str(2 * (len(years)-1) * (len(categories)-2)+2)+" number of channels \n")
-        elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
-            outputfile.write("imax  "+str(2 * (len(years)-1) * (len(categories)-1)+2)+" number of channels \n")
-        elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
-            outputfile.write("imax  "+str(2 * (len(years)-1) * len(categories)-2+2)+" number of channels \n")
-        elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
-            outputfile.write("imax  "+str(2 * (len(years)-1) * len(categories)-1+2)+" number of channels \n")
-        else: 
-            outputfile.write("imax  "+str(number_of_channels-(2*(len(categories)-1)))+" number of channels \n")
+    # if "2016v3" in years:
+    #     if int(mass)<700 and "catma175" in categories and "catma300" in categories:
+    #         outputfile.write("imax  "+str(2 * (len(years)-1) * (len(categories)-2)+2)+" number of channels \n")
+    #     elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
+    #         outputfile.write("imax  "+str(2 * (len(years)-1) * (len(categories)-1)+2)+" number of channels \n")
+    #     elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
+    #         outputfile.write("imax  "+str(2 * (len(years)-1) * len(categories)-2+2)+" number of channels \n")
+    #     elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
+    #         outputfile.write("imax  "+str(2 * (len(years)-1) * len(categories)-1+2)+" number of channels \n")
+    #     else: 
+    #         outputfile.write("imax  "+str(number_of_channels-(2*(len(categories)-1)))+" number of channels \n")
 
-    else:
-        if int(mass)<700 and "catma175" in categories and "catma300" in categories:
-            outputfile.write("imax  "+str(2 * len(years) * (len(categories)-2))+" number of channels \n")
-        elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
-            outputfile.write("imax  "+str(2 * len(years) * (len(categories)-1))+" number of channels \n")
-        elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
-            outputfile.write("imax  "+str(2 * len(years) * len(categories)-2)+" number of channels \n")
-        elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
-            outputfile.write("imax  "+str(2 * len(years) * len(categories)-1)+" number of channels \n")
-        else: 
-            outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
+    # else:
+    if int(mass)<700 and "catma175" in categories and "catma300" in categories:
+        outputfile.write("imax  "+str(2 * len(years) * (len(categories)-2))+" number of channels \n")
+    elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
+        outputfile.write("imax  "+str(2 * len(years) * (len(categories)-1))+" number of channels \n")
+    elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
+        outputfile.write("imax  "+str(2 * len(years) * len(categories)-2)+" number of channels \n")
+    elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
+        outputfile.write("imax  "+str(2 * len(years) * len(categories)-1)+" number of channels \n")
+    else: 
+        outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
 
 
     outputfile.write("jmax  "+str(number_of_backgrounds)+" number of backgrounds \n")
@@ -334,7 +338,7 @@ for mass in masses:
 
         for year in sorted(years):
             if "300" in cat and int(mass) < 800 and "2018" in year: continue
-            if "2016" in year and "chi2h" not in cat: continue
+#            if "2016" in year and "chi2h" not in cat: continue
             outputfile.write("shapes * ech_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+"_"+ma_mass+".root SingleTth"+cat+":$PROCESS_$CHANNEL \n \n")
             outputfile.write("shapes * much_"+year+"_"+cat+" ws_SingleTth_"+str(year)+"_"+cat+"_"+ma_mass+".root SingleTth"+cat+":$PROCESS_$CHANNEL \n \n")
 
@@ -421,11 +425,11 @@ for mass in masses:
 
         for year in years:
             if "300" in cat and int(mass) < 800 and "2018" in year: continue
-            if "2016" in year and "chi2h" not in cat: continue
+#            if "2016" in year and "chi2h" not in cat: continue
             if b_multipdf:
                 outputfile.write("pdf_index_much_"+year+"_"+cat+" discrete \n ")
                 outputfile.write("pdf_index_ech_"+year+"_"+cat+" discrete \n ")
-            if b_signalrate:
+            if b_signalrate and (cat == next(iter(categories))):
                 if "2016" in year:
                     outputfile.write(rate_sig_mu_2016)
                     outputfile.write(rate_sig_ech_2016)

@@ -26,9 +26,9 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 
 void PDFRMS(){
 
-    TString year = "2016v3";
-  //  TString year = "2017v2";
-  //  TString year = "2018";
+  TString year = "2016v3";
+     //    TString year = "2017v2";
+  //    TString year = "2018";
 
 
   TString prodch = "";
@@ -42,8 +42,8 @@ void PDFRMS(){
   if(year == "2017v2" || year == "2018") hand="LH";
 
 
-  std::vector<TString> mas = {};
-  if(year == "2017v2")   mas = {"_ma75","_ma125","_ma175","_ma250","_ma350","_ma450"};
+  std::vector<TString> mas = {"_ma75","_ma175","_ma450"};
+  //  if(year == "2017v2")   mas = {"_ma75","_ma125","_ma175","_ma250","_ma350","_ma450"};
 
   map<TString, TString> samplemap;
   samplemap["TTbar_"+year] = "uhh2.AnalysisModuleRunner.MC.TTbar_"+year+".root";
@@ -94,10 +94,30 @@ void PDFRMS(){
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_1700_"+year,year);
   FindRMS(infolder, samplemap, "VLQ_"+hand+"_1800_"+year,year);
 
+  prodch="";
   for(unsigned int ima = 0; ima < mas.size(); ima++){
     TString ma = mas[ima];
+    samplemap["VLQ_LH_600"+ma+"_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_600"+prodch+ma+"_"+year+".root";
+    FindRMS(infolder, samplemap, "VLQ_LH_600"+ma+"_"+year,year);
+
     samplemap["VLQ_LH_700"+ma+"_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_700"+prodch+ma+"_"+year+".root";
     FindRMS(infolder, samplemap, "VLQ_LH_700"+ma+"_"+year,year);
+
+    samplemap["VLQ_LH_800"+ma+"_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_800"+prodch+ma+"_"+year+".root";
+    FindRMS(infolder, samplemap, "VLQ_LH_800"+ma+"_"+year,year);
+
+    samplemap["VLQ_LH_900"+ma+"_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_900"+prodch+ma+"_"+year+".root";
+    FindRMS(infolder, samplemap, "VLQ_LH_900"+ma+"_"+year,year);
+
+    samplemap["VLQ_LH_1000"+ma+"_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000"+prodch+ma+"_"+year+".root";
+    FindRMS(infolder, samplemap, "VLQ_LH_1000"+ma+"_"+year,year);
+
+    samplemap["VLQ_LH_1100"+ma+"_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100"+prodch+ma+"_"+year+".root";
+    FindRMS(infolder, samplemap, "VLQ_LH_1100"+ma+"_"+year,year);
+
+    samplemap["VLQ_LH_1200"+ma+"_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200"+prodch+ma+"_"+year+".root";
+    FindRMS(infolder, samplemap, "VLQ_LH_1200"+ma+"_"+year,year);
+
   }
 }
 

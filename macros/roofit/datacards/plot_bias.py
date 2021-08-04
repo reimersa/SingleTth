@@ -37,7 +37,7 @@ gStyle.SetPaintTextFormat("2.3f")
 
 c2 = TCanvas()
 
-postfix = "_mavariable_cb_MT600GeV"
+postfix = "_mavariable_cb_MT800GeV_MA175"
 # exp vs exp
 infile = TFile("fitDiagnosticsexp2p_r1"+postfix+".root","r")
 TH1.AddDirectory(0)
@@ -105,7 +105,7 @@ lumi = CMSPlotStyle.draw_lumi(True)
 lumi.Draw("same")
 
 c2.SaveAs("bias_r1.eps")
-c2.SaveAs("bias_r1.pdf")
+c2.SaveAs("bias_r1"+postfix+".pdf")
 
 c3 = TCanvas()
 
@@ -176,7 +176,7 @@ lumi.Draw("same")
 
 
 c3.SaveAs("bias_r0.eps")
-c3.SaveAs("bias_r0.pdf")
+c3.SaveAs("bias_r0"+postfix+".pdf")
 
 # ###### r=0 for exp for fitmin 400, 450 M600
 

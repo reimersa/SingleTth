@@ -46,8 +46,8 @@ bool SingleTthChi2Discriminator::process(uhh2::Event & event){
 
   double mass_tlep = 177.;
   double mass_tlep_sigma = 30.;
-  double mass_higgs = 122.7;	
-  double mass_higgs_sigma = 13.;
+  double mass_higgs = 125.;	
+  double mass_higgs_sigma = 12.5;
 
   double mass_higgs_ma60 = 60.;	
   double mass_higgs_sigma_ma60 = 6.;
@@ -61,25 +61,41 @@ bool SingleTthChi2Discriminator::process(uhh2::Event & event){
   double mass_higgs_ma300 = 300.;	
   double mass_higgs_sigma_ma300 = 30.;
 
+  // double mass_higgs = 112.5;	
+  // double mass_higgs_sigma = 11.25;
+
+
+  // double mass_higgs_ma60 = 54.;	
+  // double mass_higgs_sigma_ma60 = 5.4;
+
+  // double mass_higgs_ma90 = 80.;	
+  // double mass_higgs_sigma_ma90 = 8.;
+
+  // double mass_higgs_ma175 = 157.5;	
+  // double mass_higgs_sigma_ma175 = 15.75;
+
+  // double mass_higgs_ma300 = 270.;	
+  // double mass_higgs_sigma_ma300 = 27.;
 
 
 
-  if(year == Year::is2017v2){
-    mass_higgs = 121.6;	
-    mass_higgs_sigma = 13;
 
-    mass_tlep = 172.5;
-    mass_tlep_sigma = 27;
-  }
+  // if(year == Year::is2017v2){
+  //   // mass_higgs = 121.6;	
+  //   // mass_higgs_sigma = 13;
 
-  if(year == Year::is2018){
-    mass_higgs = 120.4;	
-    mass_higgs_sigma = 13.;
+  //   mass_tlep = 172.5;
+  //   mass_tlep_sigma = 27;
+  // }
 
-    mass_tlep = 171.4;
-    mass_tlep_sigma = 28;
+  // if(year == Year::is2018){
+  //   // mass_higgs = 120.4;	
+  //   // mass_higgs_sigma = 13.;
 
-  }
+  //   mass_tlep = 171.4;
+  //   mass_tlep_sigma = 28;
+
+  // }
 
   //// test crystal ball function
   double xmin_top = 50;
