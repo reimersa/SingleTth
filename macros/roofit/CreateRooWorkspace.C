@@ -323,8 +323,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 
   // save the data to the workspace
-    //    fWS->import(*dataSR);
-     fWS->import(*dataSR_generated);
+    fWS->import(*dataSR);
+    //     fWS->import(*dataSR_generated);
 
   // save the bkg fit to the workspace
   //fWS->import(*bgfunc);
@@ -809,7 +809,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
   // loop over mass points, create PDFs and store them
   double MT = 550; 
   if(cat.Contains("ma300")) MT = 700;
-  if(cat.Contains("ma300") && year.Contains("2018")) MT = 800;
+  //  if(cat.Contains("ma300") && year.Contains("2018")) MT = 800;
   if(cat.Contains("ma175")) MT = 700;
   //  RooRealVar* x = new RooRealVar("x"+cat+year, "m_{T} [GeV]", 200, 2000);
   RooRealVar* x = new RooRealVar("x"+cat+year, "m_{T} [GeV]", xmin, xmax);

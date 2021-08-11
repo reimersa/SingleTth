@@ -35,3 +35,4 @@ macros/sigfits/results/
 macros/sigfits/*.eps
 macros/categorisation/*.eps
 macros/categorisation/*.pdf
+*roostats*

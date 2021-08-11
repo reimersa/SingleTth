@@ -27,8 +27,8 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 void sig_fit()
 {
-  // TString year =  "2016v3";
-  //  TString year =  "2017v2";
+  //    TString year =  "2016v3";
+  //    TString year =  "2017v2";
   TString year =  "2018";
   //  TString year =  "allyears";
 
@@ -38,26 +38,27 @@ void sig_fit()
   //run over all ma, if ma=99999 GeV do the old stuff for the moment
   //  std::vector<TString>MAs = {"75","125","175","250","350","450","99999"};
   //  std::vector<TString>MAs = {"99999"};
-  std::vector<TString>MAs = {"75"};
+  std::vector<TString>MAs = {"450"};
 
   for(unsigned int ima = 0; ima < MAs.size();ima++){
 
     TString MA = MAs[ima];
 
     ///// run over all channels
-    //  std::vector<Echannel> channels = {eComb,eEle,eMuon};
-    std::vector<Echannel> channels = {eComb};
+    std::vector<Echannel> channels = {eComb,eEle,eMuon};
+    //std::vector<Echannel> channels = {eComb};
     for(unsigned int ich = 0; ich < channels.size();ich++){
 
       Echannel ch =channels[ich];
 
       ///// run over all cat
-      //  std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175","catma300"};
-      //     std::vector<TString> categories = {"catma90","catma60","catma300"};
-	 //      std::vector<TString> categories = {"chi2h_2","catma175","catma300"};
-      //      std::vector<TString> categories = {"catma300","chi2h_2","catma175","catma90"};
-      //      std::vector<TString> categories = {"catma175","catma300"};
-      std::vector<TString> categories = {"catma60"};
+      std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175","catma300"};
+      if(MA=="75") categories = {"catma90","catma60","catma300"};
+      if(MA=="175") categories = {"chi2h_2","catma175","catma300"};
+      if(MA=="450") categories = {"catma175","catma300"};
+      if(MA.Contains("999")) categories = {"catma300","chi2h_2","catma175","catma90"};
+      //categories = {"catma300"};
+
       for(unsigned int icat=0;icat < categories.size();icat++){
 
 	TString cat = categories[icat];
@@ -122,14 +123,17 @@ void sig_fit()
 	std::vector<TString> uncertainties ={}; // no syst.
 	if(!b_test) {
 	  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
+	  //	  uncertainties ={"JEC","JER","muid","eleid","elereco","muiso","PDF","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
 	  //	  	  uncertainties ={"JEC","JER"}; // 2016 
-	  //	  uncertainties ={"pu"}; 
+	  //	  uncertainties ={}; 
 	  //	  if(year.Contains("2017"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2017 
 	  //if(year.Contains("2017"))  uncertainties ={"JEC","JER"}; // 2017 
 	  if(year.Contains("2017"))  uncertainties ={"JEC","JER","muid","muiso","mutrigger","eleid","elereco","eletrigger","PDF","prefiring","scale","pu","btag_bc","btag_udsg"};
 	  //	  if(year.Contains("2017"))  uncertainties ={"JEC","JER"};
-	  //	  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
-	  if(year.Contains("2018"))  uncertainties ={"JEC","JER"};
+	  //	  if(year.Contains("2017"))  uncertainties ={};
+	  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
+	  //	  if(year.Contains("2018"))  uncertainties ={"JEC","JER"};
+	  //if(year.Contains("2018"))  uncertainties ={};
 
 	  if(year.Contains("allyears")) uncertainties = {}; // prefiring missing
 	}
@@ -412,6 +416,8 @@ void sig_fit()
 	if(cat.Contains("catma300")&&MA.Contains("75"))lin->FixParameter(1,0);
 	if(cat.Contains("catma60")&&MA.Contains("75"))lin->FixParameter(1,0);
 	if(cat.Contains("catma90")&&MA.Contains("75"))lin->FixParameter(1,0);
+	if(cat.Contains("catma175")&&MA.Contains("450"))lin->FixParameter(1,0);
+	if(year.Contains("2017")&&cat.Contains("catma300")&&MA.Contains("450"))lin->FixParameter(1,0);
 	lin->SetParName(0, "#mu at 600 GeV");
 	lin->SetParName(1, "Slope");
 	r = gmean2->Fit(lin, "0");
@@ -1297,6 +1303,10 @@ void sig_fit()
 	}
 	if(MA.Contains("450")){
 	  if(cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.03);
+	  if(year.Contains("2016") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.015);
+	  if(year.Contains("2016") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0., 0.003);
+	  if(year.Contains("2018") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.02);
+	  if(year.Contains("2018") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0., 0.003);
 	}
 	if(year.Contains("allyears"))  painter4->GetYaxis()->SetRangeUser(0., 0.016);
 	painter4->Draw();
@@ -1357,6 +1367,16 @@ void sig_fit()
 	      if(i==0){
 		geff->GetPoint(i+1,x_m1,y_m1);
 		estimation = (geff_totunc->GetErrorY(i+1) / y_m1) * y;
+	      }
+	      double j=2;
+	      while(isnan(estimation)){
+		double y_mj, x_mj;
+		geff->GetPoint(i-j,x_mj,y_mj);
+		estimation = (geff_totunc->GetErrorY(i-j) / y_mj) * y;
+		if(i==0){
+		  geff->GetPoint(i+j,x_mj,y_mj);
+		  estimation = (geff_totunc->GetErrorY(i+j) / y_mj) * y;
+		}	
 	      }
 
 	      //	      std::cout<<"estimation  "<< estimation <<std::endl;
@@ -1450,7 +1470,7 @@ void sig_fit()
 	eff_err_tot->Draw("L3 same");
   
 
-	//eff_err_tot->Draw("P same");
+	//	eff_err_tot->Draw("P same"); // see below
 	eff_err_stat->SetFillColor(kOrange+1);
 	eff_err_stat->SetLineColor(kOrange+1);
 	eff_err_stat->Draw("L3 same");
@@ -2315,6 +2335,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 	  fit_xmin = 450;
 	  fit_xmax = 1200;
 	}
+	if(year.Contains("2016")){
+	  fit_xmin = 400; //400
+	  fit_xmax = 1200; //900
+	}
       }
       if(MT==800){
 	if(unc.Contains("JER_down")){
@@ -2325,6 +2349,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 	  fit_xmin = 350;
 	  fit_xmax = 1400;
 	}
+	if(year.Contains("2018") && channel==eEle){
+	  fit_xmin = 350;
+	  fit_xmax = 1000;
+	}
       }
       if(MT==900){
 	if(year.Contains("2018")){
@@ -2333,8 +2361,22 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 	    fit_xmax = 1200;
 	  }
 	}
+	if(year.Contains("2016")){
+	  if(unc.Contains("JEC_down")){
+	    fit_xmin = 350;
+	    fit_xmax = 1000;
+	  }
+	  if(unc.Contains("JER_up")){
+	    fit_xmin = 350;
+	    fit_xmax = 1200;
+	  }
+	}	
       }
       if(MT==1000){
+	if(year.Contains("2017")){
+	  fit_xmin = 350;
+	  fit_xmax = 1100;
+	}
 	if(year.Contains("2018")){
 	  fit_xmin = 350;
 	  fit_xmax = 1250;
@@ -2342,6 +2384,14 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 	    fit_xmin = 400;
 	    fit_xmax = 1150;
 	  }
+	  if( channel==eEle){
+	    fit_xmin = 400;
+	    fit_xmax = 1150;
+	  }
+	}
+	if(year.Contains("2016")){
+	  fit_xmin = 400;
+	  fit_xmax = 1300;
 	}
       }
       if(MT==1100){
@@ -2362,6 +2412,18 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 	    fit_xmin = 580;
 	    fit_xmax = 1120;
 	  }
+	  if( channel==eEle){
+	    fit_xmin = 500;
+	    fit_xmax = 1100;
+	  }
+	}
+	if(year.Contains("2016")){
+	  fit_xmin = 400;
+	  fit_xmax = 1300;
+	}
+	if(unc.Contains("JER_down")){
+	  fit_xmin = 590;
+	  fit_xmax = 1150;
 	}
       }
     }
@@ -2886,6 +2948,24 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 	}
       }
       if(MT==1100){
+	if(year.Contains("2017")){
+	  fit_xmin = 600;
+	  fit_xmax = 1500;
+	}
+	if(year.Contains("2018")){
+	  fit_xmin = 400;
+	  fit_xmax = 1600;
+	}
+	if(year.Contains("2016")){
+	  fit_xmin = 650;
+	  fit_xmax = 1600;
+	}
+      }
+      if(MT==1200){
+	if(year.Contains("2017")){
+	  fit_xmin = 400;
+	  fit_xmax = 1600;
+	}
 	if(year.Contains("2018")){
 	  fit_xmin = 400;
 	  fit_xmax = 1600;
@@ -3235,7 +3315,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   // draw the result
   if(cat.Contains("300")&& MA.Contains("999"))sigh->GetYaxis()->SetRangeUser(0,30);
   if(cat.Contains("175")&& MA.Contains("999"))sigh->GetYaxis()->SetRangeUser(0,10);
-  
+
   sigh->Draw("PZ");
   //gPad->SetLogy(true);
 

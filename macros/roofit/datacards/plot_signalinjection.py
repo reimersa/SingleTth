@@ -31,8 +31,8 @@ gStyle.SetPaintTextFormat("2.3f")
 
 #signalstrength = {0.0,0.25,0.5,0.75,1.0,1.5,2.0,2.5,3.0}
 signalstrength = {0.0,0.25,0.5,0.75,1.0}
-masses = {600,800}
-MA = "175"
+masses = {700,1000}
+MA = "450"
 
 color = [kBlue,kBlack,kRed]
 color_lm = [kBlue,kBlack,kRed]

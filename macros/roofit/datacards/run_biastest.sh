@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mass="800"
+mass="1000"
 datacard="Datacard_allyears_M${mass}.txt"
 #datacard="Datacard_allyears_M${mass}_much.txt"
 #datacard="Datacard_allyears_M${mass}_ech.txt"
@@ -9,7 +9,7 @@ signal=0.0
 function_param=0
 #name="exp2p_r1"
 name="dijet3p_r0"
-postfix="_mavariable_cb_MT${mass}GeV_MA175"
+postfix="_mavariable_cb_MT${mass}GeV_MA450"
 
 
 years=("2016v3" "2017v2" "2018")

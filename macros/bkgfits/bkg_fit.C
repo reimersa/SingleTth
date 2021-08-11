@@ -9,8 +9,8 @@ void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
-EFitFunction FitFunc = eFunc3p;
-//EFitFunction FitFunc = eFuncExp2;
+//EFitFunction FitFunc = eFunc3p;
+EFitFunction FitFunc = eFuncExp2;
 
 //EFitFunction FitFunc = eFunc4p;
 // EFitFunction FitFunc = eFunc2p;
@@ -25,8 +25,8 @@ void bkg_fit()
   //  TString year = "2018";
   //  TString year = "allyears";
   
-    std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175", "catma300"};
-    //  std::vector<TString> categories = {"catma60"};
+  //  std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175", "catma300"};
+  std::vector<TString> categories = {"chi2h_2"};
   for (unsigned int icat=0;icat < categories.size();icat++){
 
     TString cat = categories[icat];

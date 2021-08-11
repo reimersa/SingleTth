@@ -37,7 +37,7 @@ gStyle.SetPaintTextFormat("2.3f")
 
 c2 = TCanvas()
 
-postfix = "_mavariable_cb_MT800GeV_MA175"
+postfix = "_mavariable_cb_MT1000GeV_MA450"
 # exp vs exp
 infile = TFile("fitDiagnosticsexp2p_r1"+postfix+".root","r")
 TH1.AddDirectory(0)

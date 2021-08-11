@@ -14,6 +14,7 @@ year_nt="allyears"
 
 years=("2017v2" "2016v3" "2018")
 categories=("chi2h_2" "catma90" "catma175" "catma300" "catma60")
+funct="1"
 freeze_param=""
 set_param=""
 
@@ -33,7 +34,7 @@ for mass in "${masses[@]}" ; do
     echo "Working on mass " $mass
 
 
-funct="1"
+
 
 ##### all three years with 3p as uncertainty
 eval "combine -M AsymptoticLimits -d Datacard_"$year_nt"_M${mass}.txt  -n output_$mass --setParameters ${set_param} --freezeParameters ${freeze_param}" # normal version --seed 8192
