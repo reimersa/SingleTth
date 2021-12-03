@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
+
+
+<!ENTITY TargetLumi      "41530">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/NOMINAL">
+<!ENTITY b_Cacheable     "False">
+<!ENTITY NEVT            "-1">
+<!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
+
+
+<!ENTITY VLQ_LH_1100_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma500_2017v2.root">
+<!ENTITY VLQ_LH_900_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma450_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma250_2017v2.root">
+<!ENTITY VLQ_LH_600_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma200_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma100_2017v2.root">
+<!ENTITY VLQ_LH_600_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma200_2017v2.root">
+<!ENTITY VLQ_LH_600_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma125_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma250_2017v2.root">
+<!ENTITY VLQ_LH_800_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma450_2017v2.root">
+<!ENTITY VLQ_LH_800_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma175_2017v2.root">
+<!ENTITY VLQ_LH_600_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma175_2017v2.root">
+<!ENTITY VLQ_LH_700_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma75_2017v2.root">
+<!ENTITY VLQ_LH_800_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma200_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma175_2017v2.root">
+<!ENTITY VLQ_LH_700_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma450_2017v2.root">
+<!ENTITY VLQ_LH_900_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma200_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma500_2017v2.root">
+<!ENTITY VLQ_LH_700_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma350_2017v2.root">
+<!ENTITY VLQ_LH_900_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma500_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma100_2017v2.root">
+<!ENTITY VLQ_LH_800_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma500_2017v2.root">
+<!ENTITY VLQ_LH_900_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma125_2017v2.root">
+<!ENTITY VLQ_LH_900_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma175_2017v2.root">
+<!ENTITY VLQ_LH_600_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma100_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma175_2017v2.root">
+<!ENTITY VLQ_LH_600_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma450_2017v2.root">
+<!ENTITY VLQ_LH_700_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma500_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma200_2017v2.root">
+<!ENTITY VLQ_LH_700_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma250_2017v2.root">
+<!ENTITY VLQ_LH_800_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma100_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma75_2017v2.root">
+<!ENTITY VLQ_LH_800_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma125_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma175_2017v2.root">
+<!ENTITY VLQ_LH_900_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma350_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma350_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma125_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma350_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma450_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma125_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma350_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma450_2017v2.root">
+<!ENTITY VLQ_LH_700_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma200_2017v2.root">
+<!ENTITY VLQ_LH_800_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma250_2017v2.root">
+<!ENTITY VLQ_LH_600_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma500_2017v2.root">
+<!ENTITY VLQ_LH_600_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma250_2017v2.root">
+<!ENTITY VLQ_LH_700_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma125_2017v2.root">
+<!ENTITY VLQ_LH_900_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma450_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma200_2017v2.root">
+<!ENTITY VLQ_LH_600_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma350_2017v2.root">
+<!ENTITY VLQ_LH_900_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma100_2017v2.root">
+<!ENTITY VLQ_LH_700_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma175_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma500_2017v2.root">
+<!ENTITY VLQ_LH_800_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma350_2017v2.root">
+<!ENTITY VLQ_LH_900_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma250_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma250_2017v2.root">
+
+]>
+
+
+
+
+<!--
+<ConfigParse NEventsBreak="100000" FileSplit="0" AutoResubmit="5"/>
+<ConfigSGE RAM="2" DISK="1" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Final_2017"/>
+-->
+
+<!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
+<JobConfiguration JobName="ExampleCycleJob" OutputLevel="INFO">
+	<Library Name="libSUHH2SingleTth"/>
+	<Package Name="SUHH2SingleTth.par" />
+
+	<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&FULLSELdir;/" PostFix="" TargetLumi="&TargetLumi;" >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<UserConfig>
+			<!-- define which collections to read from the input. Only specify what you need to save I/O time -->
+			<Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices" />
+			<Item Name="ElectronCollection" Value="slimmedElectronsUSER" />
+			<Item Name="MuonCollection" Value="slimmedMuonsUSER" />
+			<Item Name="JetCollection" Value="jetsAk4CHS" />
+			<Item Name="METName" Value="slimmedMETs" />
+			<Item Name="GenJetCollection" Value="slimmedGenJets" />
+			<Item Name="GenParticleCollection" Value="GenParticles" />
+			<Item Name="GenInfoName" Value="genInfo" />
+			<Item Name="additionalBranches"      Value="eventweight_final weight_sfmu_id_up weight_sfmu_id_down weight_sfmu_id weight_pu weight_pu_up weight_pu_down weight_sfelec_id weight_sfelec_id_up weight_sfelec_id_down weight_sfelec_reco weight_sfelec_reco_up weight_sfelec_reco_down weight_sfelec_trigger weight_sfelec_trigger_up weight_sfelec_trigger_down weight_sfmu_iso weight_sfmu_iso_up weight_sfmu_iso_down weight_sfmu_trigger weight_sfmu_trigger_up weight_sfmu_trigger_down weight_btag weight_btag_bc_up weight_btag_bc_down weight_btag_udsg_up weight_btag_udsg_down weight_murmuf_upup weight_murmuf_upnone weight_murmuf_noneup weight_murmuf_nonedown weight_murmuf_downnone weight_murmuf_downdown weight_sfL1prefiring weight_sfL1prefiring_up weight_sfL1prefiring_down Best_cat" />
+
+			<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.root" />
+
+			<Item Name="lumihists_lumi_per_bin" Value="1000."/>
+
+
+
+			<!-- The list of available collections to read in corresponds to the pointer members in event. The 'Name's to use here in the configuration are:
+
+			PrimaryVertexCollection
+			ElectronCollection
+			MuonCollection
+			TauCollection
+			PhotonCollection
+			JetCollection
+			TopJetCollection
+			METName
+
+			GenInfoName
+			GenJetCollection
+			GenTopJetCollection
+			GenParticleCollection
+
+			Note that the last four are only read in for MC (InputData Type="MC"), so it is save to specify
+			them for real data, although those branches do not exist.
+
+			As 'Value', always use the branch name (if in doubt, open the input file in ROOT).
+
+			By default, triggers are read. To explicitly disable reading triggers, use:
+			<Item Name="readTrigger" Value="false" />
+		-->
+
+		<!-- the class name of the AnalysisModule subclasses to run: -->
+		<Item Name="AnalysisModule" Value="SingleTthFinalModule" />
+
+		<!-- tell AnalysisModuleRunner NOT to use the MC event weight from SFrame; rather let
+		MCLumiWeight (called via CommonModules) calculate the MC event weight. The MC
+		event weight assigned by MCLumiWeight is InputData.Lumi / Cycle.TargetLumi. -->
+		<Item Name="use_sframe_weight" Value="false" />
+
+		<!-- configuration for MCPileupReweight (run as part of CommonModules): -->
+		<Item Name="pileup_directory_data_up" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram_72383.root" />
+		<Item Name="pileup_directory_data_down" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram_66017.root" />
+
+		<Item Name="pileup_directory" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyMCPileupHistogram.root" />
+		<Item Name="pileup_directory_data" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram2017.root" />
+
+
+		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2017/BTagMCEfficiencyHists.root" />
+		<Item Name="BTagCalibration" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/DeepFlavour_94XSF_WP_V3_B_F.csv" />
+
+		<!-- <Item Name="PDFWeightPath" Value="/nfs/dust/cms/user/reimersa/" /> -->
+
+		<Item Name="jecsmear_direction"      Value="nominal" />
+		<Item Name="jersmear_direction"      Value="nominal" />
+		<Item Name="ScaleVariationMuR"       Value="none" />
+		<Item Name="ScaleVariationMuF"       Value="none" />
+		<Item Name="ScaleVariationProcess"   Value="none" />
+		<Item Name="sys_muonid"      Value="nominal" />
+		<Item Name="sys_muoniso"     Value="nominal" />
+		<Item Name="sys_muontrigger" Value="nominal" />
+		<Item Name="sys_eleid"       Value="nominal" />
+		<Item Name="sys_elereco"     Value="nominal" />
+		<Item Name="sys_eletrigger"  Value="nominal" />
+		<Item Name="sys_btag"        Value="central" />
+		<Item Name="sys_pu"          Value="nominal" />
+
+		<!-- Some test configuration; see LQToTopMuModule.cxx for how to access it: -->
+		<Item Name="TestKey" Value="TestKeyValue" />
+	</UserConfig>
+</Cycle>
+</JobConfiguration>

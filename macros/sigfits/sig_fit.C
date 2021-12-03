@@ -8,6 +8,7 @@ using namespace std;
 bool b_test = false;
 bool b_fitrange = false;
 bool bunc = true;
+bool yearflag = true;
 std::vector<float> sigma_ranges = {1.5,2,2.5};
 
 TF1 * mean_param = new TF1("mean_param","[0]+[1]*(x-600)",550,1250);
@@ -27,8 +28,8 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 void sig_fit()
 {
-  //    TString year =  "2016v3";
-  //    TString year =  "2017v2";
+  //  TString year =  "2016v3";
+  //  TString year =  "2017v2";
   TString year =  "2018";
   //  TString year =  "allyears";
 
@@ -45,8 +46,8 @@ void sig_fit()
     TString MA = MAs[ima];
 
     ///// run over all channels
-    std::vector<Echannel> channels = {eComb,eEle,eMuon};
-    //std::vector<Echannel> channels = {eComb};
+    //    std::vector<Echannel> channels = {eComb,eEle,eMuon};
+    std::vector<Echannel> channels = {eComb};
     for(unsigned int ich = 0; ich < channels.size();ich++){
 
       Echannel ch =channels[ich];
@@ -54,7 +55,11 @@ void sig_fit()
       ///// run over all cat
       std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175","catma300"};
       if(MA=="75") categories = {"catma90","catma60","catma300"};
+      if(MA=="100") categories = {"catma90","catma60","catma300","chi2h_2"};
       if(MA=="175") categories = {"chi2h_2","catma175","catma300"};
+      if(MA=="200") categories = {"catma175","catma300","chi2h_2"};
+      if(MA=="250") categories = {"catma175","catma300"};
+      if(MA=="350") categories = {"catma175","catma300"};
       if(MA=="450") categories = {"catma175","catma300"};
       if(MA.Contains("999")) categories = {"catma300","chi2h_2","catma175","catma90"};
       //categories = {"catma300"};
@@ -63,59 +68,54 @@ void sig_fit()
 
 	TString cat = categories[icat];
 
-	TString func = "simplegauss";
-	if(cat.Contains("ma60") || cat.Contains("ma90") ) func = "cb";
-	if(cat.Contains("chi2h_2")) func = "cb";
-	if(cat.Contains("175")) func = "cb";
-	if(cat.Contains("300")) func = "cb";
-	if(cat.Contains("300")&& MA.Contains("999")) func = "cb";
+	TString func = "cb";
 	
 	TString outfile_name = "SignalFitOutput_"+year+"_"+cat+"_"+MA+postfix+".txt";
 	if(ch==eEle) outfile_name = "SignalFitOutput_"+year+"_"+cat+"_"+MA+"_ech"+postfix+".txt";
 	if(ch==eMuon) outfile_name = "SignalFitOutput_"+year+"_"+cat+"_"+MA+"_much"+postfix+".txt";
 
-	//read in parametrisation only for cb
-	if(func.Contains("cb")){
-	  //first chekc if file exists
-	  float c,d;
-	  TString a,b;
-	  float mean_param0,mean_param1,sigma_param0,sigma_param1,n_param0,n_param1,alpha_param0,alpha_param1,alpha_param2;
+	// //read in parametrisation only for cb
+	// if(func.Contains("cb")){
+	//   //first chekc if file exists
+	//   float c,d;
+	//   TString a,b;
+	//   float mean_param0,mean_param1,sigma_param0,sigma_param1,n_param0,n_param1,alpha_param0,alpha_param1,alpha_param2;
 
 	  
-	  std::ifstream infile(outfile_name);
-	  while(infile >>a>>b>>c>>d){
-	    //	    std::cout<<" a "<<a<<" b "<<b<<" c "<<c<< " d "<<d<<std::endl;
-	    if(a.Contains("mean") && !a.Contains("2") && b.Contains("param0")) mean_param0=c;
-	    if(a.Contains("mean") && !a.Contains("2") && b.Contains("param1")) mean_param1=c;
+	//   std::ifstream infile(outfile_name);
+	//   while(infile >>a>>b>>c>>d){
+	//     //	    std::cout<<" a "<<a<<" b "<<b<<" c "<<c<< " d "<<d<<std::endl;
+	//     if(a.Contains("mean") && !a.Contains("2") && b.Contains("param0")) mean_param0=c;
+	//     if(a.Contains("mean") && !a.Contains("2") && b.Contains("param1")) mean_param1=c;
 
-	    if(a.Contains("width") && !a.Contains("2") && b.Contains("param0")) sigma_param0=c;
-	    if(a.Contains("width") && !a.Contains("2") && b.Contains("param1")) sigma_param1=c;
+	//     if(a.Contains("width") && !a.Contains("2") && b.Contains("param0")) sigma_param0=c;
+	//     if(a.Contains("width") && !a.Contains("2") && b.Contains("param1")) sigma_param1=c;
 	    
 
-	    if(a.Contains("mean2") && b.Contains("param0")) n_param0=c;
-	    if(a.Contains("mean2") && b.Contains("param1")) n_param1=c;
+	//     if(a.Contains("mean2") && b.Contains("param0")) n_param0=c;
+	//     if(a.Contains("mean2") && b.Contains("param1")) n_param1=c;
 	    
-	    if(a.Contains("width2") && b.Contains("param0")) alpha_param0=c;
-	    if(a.Contains("width2") && b.Contains("param1")) alpha_param1=c;
-	    if(a.Contains("width2") && b.Contains("param2")) alpha_param2=c;
+	//     if(a.Contains("width2") && b.Contains("param0")) alpha_param0=c;
+	//     if(a.Contains("width2") && b.Contains("param1")) alpha_param1=c;
+	//     if(a.Contains("width2") && b.Contains("param2")) alpha_param2=c;
 
-	  }
+	//   }
 
 
-	  mean_param->FixParameter(0,mean_param0);
-	  mean_param->FixParameter(1,mean_param1);
+	//   mean_param->FixParameter(0,mean_param0);
+	//   mean_param->FixParameter(1,mean_param1);
 
-	  sigma_param->FixParameter(0,sigma_param0);
-	  sigma_param->FixParameter(1,sigma_param1);
+	//   sigma_param->FixParameter(0,sigma_param0);
+	//   sigma_param->FixParameter(1,sigma_param1);
 
-	  n_param->FixParameter(0,n_param0);
-	  n_param->FixParameter(1,n_param1);
+	//   n_param->FixParameter(0,n_param0);
+	//   n_param->FixParameter(1,n_param1);
 
-	  alpha_param->FixParameter(0,alpha_param0);
-	  alpha_param->FixParameter(1,alpha_param1);
-	  alpha_param->FixParameter(2,alpha_param2);
+	//   alpha_param->FixParameter(0,alpha_param0);
+	//   alpha_param->FixParameter(1,alpha_param1);
+	//   alpha_param->FixParameter(2,alpha_param2);
 	  	  
-	}
+	// }
 
     
 	std::ofstream infotofile(outfile_name, std::ios::out | std::ios::trunc);
@@ -123,17 +123,11 @@ void sig_fit()
 	std::vector<TString> uncertainties ={}; // no syst.
 	if(!b_test) {
 	  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
-	  //	  uncertainties ={"JEC","JER","muid","eleid","elereco","muiso","PDF","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
-	  //	  	  uncertainties ={"JEC","JER"}; // 2016 
-	  //	  uncertainties ={}; 
-	  //	  if(year.Contains("2017"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2017 
-	  //if(year.Contains("2017"))  uncertainties ={"JEC","JER"}; // 2017 
+	  //	  if(year.Contains("2016"))  uncertainties ={};
 	  if(year.Contains("2017"))  uncertainties ={"JEC","JER","muid","muiso","mutrigger","eleid","elereco","eletrigger","PDF","prefiring","scale","pu","btag_bc","btag_udsg"};
-	  //	  if(year.Contains("2017"))  uncertainties ={"JEC","JER"};
 	  //	  if(year.Contains("2017"))  uncertainties ={};
 	  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
-	  //	  if(year.Contains("2018"))  uncertainties ={"JEC","JER"};
-	  //if(year.Contains("2018"))  uncertainties ={};
+	  //	  if(year.Contains("2018"))  uncertainties ={};
 
 	  if(year.Contains("allyears")) uncertainties = {}; // prefiring missing
 	}
@@ -150,10 +144,22 @@ void sig_fit()
 	  MTs = {700, 800, 900, 1000, 1200};// 2016
 	  MTs_backup = {700,800, 900, 1000, 1200};// 2016
       
-	  if(year.Contains("2018") or year.Contains("2017")){
+	  if(year.Contains("2018") || year.Contains("2017")){
 	    MTs = {600, 700, 800, 900, 1000, 1100,1200};// 2017
 	    MTs_backup = {600, 700, 800, 900, 1000, 1100,1200};// 2017
-	
+	    if(cat.Contains("ma300")){
+	      MTs = {700, 800, 900, 1000, 1100,1200};// 2017
+	      MTs_backup = { 700, 800, 900, 1000, 1100,1200};// 2017	  
+	    }
+	    if(year.Contains("2017") && cat.Contains("ma175")){
+	      MTs = {600,700, 800, 900, 1000, 1100};// 2017
+	      MTs_backup = { 600,700, 800, 900, 1000, 1100};// 2017	  
+	    }
+	    if(year.Contains("2017") && cat.Contains("chi2") && MA.Contains("200")){
+	      MTs = {600,700, 800, 900, 1000,1200};// 2017
+	      MTs_backup = { 600,700, 800, 900, 1000, 1200};// 2017	  
+	    }
+
 	  }
 	  if(year.Contains("allyears")){
 	    MTs = { 700,800,900, 1000, 1200};// 2017
@@ -161,77 +167,6 @@ void sig_fit()
 	  }
 	}
 
-
-	if( cat.Contains("catma90") && year.Contains("2016")) {
-	  MTs = {700, 800, 900, 1000,1200};// 2016
-	  MTs_backup = {700,800, 900, 1000,1200};// 2016
-	}
-
-	if( cat.Contains("catma175")) {
-	  MTs = { 700,800,900, 1000,1100,1200};// 2017
-	  MTs_backup = { 700,800,900, 1000,1100,1200};// 2017
-	  
-	  if(year.Contains("2016") || year.Contains("allyears")){
-	    MTs = {700, 800, 900, 1000, 1200};// 2016
-	    MTs_backup = {700,800, 900, 1000, 1200};// 2016
-	  }
-	}
-
-	if(cat.Contains("catma300")) {
-	  MTs = { 700,800,900, 1000,1100};// 2017
-	  MTs_backup = { 700,800,900, 1000,1100};// 2017
-	  if (year.Contains("2018")){
-	    MTs = { 700,800,900, 1000,1100,1200};// 2017
-	    MTs_backup = {700, 800,900, 1000,1100,1200};// 2017
-	  }
-	  if(year.Contains("2016") || year.Contains("allyears")){
-	    MTs = {700, 800, 900, 1000, 1200};// 2016
-	    MTs_backup = {700,800, 900, 1000, 1200};// 2016
-	  }
-	}
-
-	if(!MA.Contains("9999")) {
-	  MTs = {600,700,800,900,1000,1100,1200};
-	  MTs_backup = {600,700,800,900,1000,1100,1200};
-	  if(cat.Contains("catma60")){
-	    MTs = {600,700,800,900,1000,1100};
-	    MTs_backup = {600,700,800,900,1000,1100};
-	    if(year.Contains("2016")){
-	      MTs = {700,800,900,1000,1100,1200};
-	      MTs_backup = {700,800,900,1000,1100,1200};
-	    }
-	  }
-	  if(cat.Contains("catma90")){
-	    if(year.Contains("2016")){
-	      MTs = {700,800,900,1000,1100,1200};
-	      MTs_backup = {700,800,900,1000,1100,1200};
-	    }
-	  }
-	  if(cat.Contains("catma300")){
-	    MTs = {700,800,900,1000,1100,1200};
-	    MTs_backup = {700,800,900,1000,1100,1200};
-	  }
-	  if(MA.Contains("175") && cat.Contains("catma175")){
-	    MTs = {700,800,900,1000,1100,1200};
-	    MTs_backup = {700,800,900,1000,1100,1200};
-	  }
-	  if(MA.Contains("450") && cat.Contains("catma175")){
-	    MTs = {700,800,900,1000,1100};
-	    MTs_backup = {700,800,900,1000,1100};
-	    if(year.Contains("2018")){
-	      MTs = {800,900,1000,1100};
-	      MTs_backup = {800,900,1000,1100};
-	    }
-	  }
-	  if(MA.Contains("450") && cat.Contains("catma300")){
-	    MTs = {700,800,900,1000,1100,1200};
-	    MTs_backup = {700,800,900,1000,1100,1200};
-	    if(year.Contains("2018")){
-	      MTs = {800,900,1000,1100,1200};
-	      MTs_backup = {800,900,1000,1100,1200};
-	    }
-	  }
-	}
 
     
 	std::vector<double> means;
@@ -281,12 +216,14 @@ void sig_fit()
 	  mamass.ReplaceAll("catma", "");
 	}
 	info2 +=", Cat: M_{a} = "+mamass+" GeV";
+	if(yearflag) info2+=", "+year;
 	TLatex* text = new TLatex();
 	text->SetTextFont(42);
 	text->SetNDC();
 	text->SetTextColor(kBlack);
 	text->SetTextSize(0.040);  
     
+	cout<<"Mean values with fit"<<endl;
 	//-------------------------------------------------
 	// Mean values with fit
 	//-------------------------------------------------
@@ -373,6 +310,7 @@ void sig_fit()
 	//  can->SaveAs(fname+postfix+".eps");
 	can->SaveAs(fname+postfix+".pdf");
     
+	cout<<"Mean values with fit: second gauss"<<endl;
 	////////second gauss
 	//-------------------------------------------------
 	// Mean values with fit
@@ -624,6 +562,7 @@ void sig_fit()
     
 	// }
     
+	cout<<"Widths values with fit"<<endl;
 	//-------------------------------------------------
 	// Widths with fit
 	//-------------------------------------------------
@@ -652,6 +591,7 @@ void sig_fit()
 	if(cat.Contains("300"))  painter2->GetYaxis()->SetRangeUser(40, 300);
 	if(cat.Contains("90")&&year.Contains("2018"))  painter2->GetYaxis()->SetRangeUser(0, 200);
 	if(cat.Contains("chi2h")&&MA.Contains("175"))  painter2->GetYaxis()->SetRangeUser(30, 200);
+	if(cat.Contains("chi2h")&&MA.Contains("200"))  painter2->GetYaxis()->SetRangeUser(30, 200);
 	painter2->Draw();
 	gsigma->SetMarkerStyle(20);
 	gsigma->SetLineWidth(2);
@@ -707,6 +647,7 @@ void sig_fit()
 	//  can2->SaveAs(fname2+postfix + ".eps");
 	can2->SaveAs(fname2+postfix + ".pdf");
     
+	cout<<"Widths with fit: second gauss"<<endl;
 	///////second gauss
 	//-------------------------------------------------
 	// Widths with fit
@@ -963,6 +904,7 @@ void sig_fit()
 
 	// }
 
+	cout<<"Efficiencies with fit "<<endl;
 	//-------------------------------------------------
 	// Efficiencies with fit
 	//-------------------------------------------------
@@ -1244,6 +1186,7 @@ void sig_fit()
 	    cout << "MT = " << MTs[i] << " rel err up = " << sqrt(effs_uperr2[i]) << " rel err down = " << sqrt(effs_dnerr2[i]) << endl;
 	  }
 
+	cout<<"Draw efficiencies with fit and total uncertainties "<<endl;
 	//---------------------------------------------------------
 	// Draw efficiencies with fit and total uncertainties
 	//---------------------------------------------------------
@@ -1287,27 +1230,29 @@ void sig_fit()
 	painter4->GetYaxis()->SetTitleOffset(1.6);
 	painter4->GetXaxis()->SetTitleOffset(1.2);
 	painter4->SetTitle("");
-	painter4->GetYaxis()->SetRangeUser(0, 0.008);
-	if(MA.Contains("999") && cat.Contains("chi2h") && year.Contains("2018")) painter4->GetYaxis()->SetRangeUser(0, 0.01);
-	if(MA.Contains("999") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0, 0.005);
-	if(MA.Contains("999") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0, 0.001);
-	if(MA.Contains("999") && cat.Contains("catma175")&& year.Contains("2018")) painter4->GetYaxis()->SetRangeUser(0, 0.0018);
-	if(MA.Contains("999") && cat.Contains("catma90")) painter4->GetYaxis()->SetRangeUser(0, 0.003);
-	if(MA.Contains("75")){
-	  if(cat.Contains("catma60")) painter4->GetYaxis()->SetRangeUser(0, 0.005);
-	}
-	if(MA.Contains("175")){
-	  if(cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0.005, 0.012);
-	  if(cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.01);
-	  if(cat.Contains("chi2h")) painter4->GetYaxis()->SetRangeUser(0., 0.004);
-	}
-	if(MA.Contains("450")){
-	  if(cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.03);
-	  if(year.Contains("2016") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.015);
-	  if(year.Contains("2016") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0., 0.003);
-	  if(year.Contains("2018") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.02);
-	  if(year.Contains("2018") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0., 0.003);
-	}
+	painter4->GetYaxis()->SetRangeUser(0, 0.08);
+	if(cat.Contains("catma300") && MA.Contains("350"))	painter4->GetYaxis()->SetRangeUser(0, 0.1);
+	if(cat.Contains("catma175") && MA.Contains("450"))	painter4->GetYaxis()->SetRangeUser(0, 0.01);
+	// if(MA.Contains("999") && cat.Contains("chi2h") && year.Contains("2018")) painter4->GetYaxis()->SetRangeUser(0, 0.01);
+	// if(MA.Contains("999") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0, 0.005);
+	// if(MA.Contains("999") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0, 0.001);
+	// if(MA.Contains("999") && cat.Contains("catma175")&& year.Contains("2018")) painter4->GetYaxis()->SetRangeUser(0, 0.0018);
+	// if(MA.Contains("999") && cat.Contains("catma90")) painter4->GetYaxis()->SetRangeUser(0, 0.003);
+	// if(MA.Contains("75")){
+	//   if(cat.Contains("catma60")) painter4->GetYaxis()->SetRangeUser(0, 0.005);
+	// }
+	// if(MA.Contains("175")){
+	//   if(cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0.005, 0.012);
+	//   if(cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.01);
+	//   if(cat.Contains("chi2h")) painter4->GetYaxis()->SetRangeUser(0., 0.004);
+	// }
+	// if(MA.Contains("450")){
+	//   if(cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.03);
+	//   if(year.Contains("2016") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.015);
+	//   if(year.Contains("2016") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0., 0.003);
+	//   if(year.Contains("2018") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0., 0.02);
+	//   if(year.Contains("2018") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0., 0.003);
+	// }
 	if(year.Contains("allyears"))  painter4->GetYaxis()->SetRangeUser(0., 0.016);
 	painter4->Draw();
 	geff->SetMarkerStyle(20);
@@ -1364,10 +1309,18 @@ void sig_fit()
 	      double y_m1, x_m1;
 	      geff->GetPoint(i-1,x_m1,y_m1);
 	      double estimation = (geff_totunc->GetErrorY(i-1) / y_m1) * y;
+	      cout<< "in estimation: "<<i<<endl;
 	      if(i==0){
+		double y_m1, x_m1;
 		geff->GetPoint(i+1,x_m1,y_m1);
+		cout<<"ym1 "<<y_m1 <<" tot unc  "<<geff_totunc->GetErrorY(i+1)<<"  y  "<<y<<endl;
 		estimation = (geff_totunc->GetErrorY(i+1) / y_m1) * y;
+		cout<< estimation <<endl;
 	      }
+	      TString error_mess = "Signal fit in cat. "+cat+" of MT=";
+	      error_mess+=MTs[i];
+	      error_mess+=" did not work and the efficiency is nan";
+	      if (isnan(y)) throw runtime_error(error_mess);
 	      double j=2;
 	      while(isnan(estimation)){
 		double y_mj, x_mj;
@@ -1544,7 +1497,6 @@ void sig_fit()
 	TString fname4 = "results/signal_eff_values_" + channel_name+"_"+year+"_"+cat+"_"+MA; 
 
 
-
 	leg_eff->SetHeader(info2);
 	leg_eff->AddEntry(geff_totunc,"Simulated efficiency","PE");
 	TString fitfunc = Form("f(x) = %.2e + %.2e x+ %.2e x^{2}", lin_stat->GetParameter(0),lin_stat->GetParameter(1),lin_stat->GetParameter(2));
@@ -1690,1289 +1642,9 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   double mean = MT-20;
   double sigma = 61.5+0.06*(MT-600.);
   //  fit_xmin = mean - factormin*sigma;
-  fit_xmax = mean + factormax*sigma;
+  //  fit_xmax = mean + factormax*sigma;
+  fit_xmax = 2000;
   fit_xmin = 300;
-
-  if(cat.Contains("ma60")){
-    mean = 0.7 * MT + 110;
-    sigma = 40 + MT * 0.05;
-    fit_xmax = mean + factormax*sigma+40;
-    fit_xmin = 220 + 0.2 * MT;
-    if(MA=="75" ){
-      if(MT==600){
-	fit_xmax = 750;
-	fit_xmin = 350;
-	if(year.Contains("2018")){
-	  if(unc.Contains("JER_down")){
-	    fit_xmax = 750;
-	    fit_xmin = 300;
-	  }
-	}
-      }
-      if(MT==800){
-	fit_xmax = 1200;
-	fit_xmin = 550;
-	if(year.Contains("2016")){
-	  fit_xmax = 1100;
-	  fit_xmin = 400;
-	  if(unc.Contains("JER_up")){
-	    fit_xmax = 1100;
-	    fit_xmin = 550;
-	  }
-	}
-      }
-      if(MT==900){
-	fit_xmax = 1000;
-	fit_xmin = 580;
-	if(unc.Contains("JER_up")){
-	  fit_xmax = 970;
-	  fit_xmin = 430;
-	}
-	if(year.Contains("2018")){
-	  if(unc.Contains("JEC_up")){
-	    fit_xmax = 970;
-	    fit_xmin = 430;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmax = 970;
-	    fit_xmin = 430;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmax = 1100;
-	    fit_xmin = 600;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmax = 1100;
-	  fit_xmin = 400;
-	  if(unc.Contains("JEC_up")){
-	    fit_xmax = 1000;
-	    fit_xmin = 580;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmax = 1000;
-	    fit_xmin = 600;
-	  }
-	}
-      }
-      if(MT==1000){
-	if(unc.Contains("JEC_up")){
-	  fit_xmax = 990;
-	  fit_xmin = 450;
-	}
-	if(year.Contains("2018")){
-	  if(unc.Contains("JEC_up")){
-	    fit_xmax = 1100;
-	    fit_xmin = 400;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmax = 1000;
-	    fit_xmin = 550;
-	  }
-	}
-      }
-      if(MT==1100){
-      	fit_xmax = 1200;
-      	fit_xmin = 600;
-	if(unc.Contains("JEC_up")){
-	  fit_xmax = 1300;
-	  fit_xmin = 550;
-	}
-	if(unc.Contains("JER_down")){
-	  fit_xmax = 1300;
-	  fit_xmin = 500;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmax = 1200;
-	  fit_xmin = 500;
-	}
-	if(year.Contains("2018")){
-	  if(unc.Contains("JER_down")){
-	    fit_xmax = 1300;
-	    fit_xmin = 750;
-	  }
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_up")){
-	    fit_xmax = 1300;
-	    fit_xmin = 700;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmax = 1400;
-	    fit_xmin = 580;
-	  }
-	}
-      }
-      if(MT==1200){
-	if(year.Contains("2016")){
-	  fit_xmax = 1380;
-	  fit_xmin = 730;
-	}
-	if(unc.Contains("JEC_down")){
-	  fit_xmax = 1380;
-	  fit_xmin = 700;
-	}
-      }
-    }
-  }  
-
-  if(cat.Contains("ma90")){
-    mean = 0.7 * MT + 110;
-    sigma = 40 + MT * 0.05;
-    fit_xmax = mean + factormax*sigma+40;
-    fit_xmin = 220 + 0.2 * MT;
-    if(MT==600)     {
-      fit_xmin = 400;
-      fit_xmax = 850;
-    }
-    if(MT==700)     {
-      fit_xmin = 450;
-      fit_xmax = 800;
-      if (unc.Contains("JEC_down")) {
-	fit_xmin =400;
-	fit_xmax = 850;
-      }
-      if(year.Contains("2016")){
-	fit_xmin = 250;
-	fit_xmax = 800;
-      }
-    }
-    if(MT==800)     {
-      fit_xmin = 300;
-      fit_xmax = 1000;
-      if(year.Contains("2016")){
-	fit_xmin = 300;
-	fit_xmax = 1000;
-      }
-    }
-    if(MT==900)     {
-      fit_xmin = 400;
-      fit_xmax = 1000;
-      if(year.Contains("2016")){
-	fit_xmin = 490;
-	fit_xmax = 1000;
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1000;
-	}
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 600;
-	  fit_xmax = 1000;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1000;
-	}
-      }
-    }
-    if(MT==1000)     {
-      fit_xmin = 300;
-      fit_xmax = 1100;
-    }
-    if(MT==1200)     {
-      fit_xmin = 600;
-      fit_xmax = 1300;
-      if(year.Contains("2018")){
-	fit_xmin = 700;
-	fit_xmax = 1300;
-      }
-      if(unc.Contains("JEC_up")){
-	fit_xmin = 750;
-	fit_xmax = 1300;
-      }
-      if(unc.Contains("JER_down")){
-	fit_xmin = 750;
-	fit_xmax = 1300;
-      }
-      if(unc.Contains("JER_up")){
-	fit_xmin = 750;
-	fit_xmax = 1300;
-      }
-      if(year.Contains("2016")){
-	fit_xmin = 600;
-	fit_xmax = 1500;
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 650;
-	  fit_xmax = 1350;
-	}
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 650;
-	  fit_xmax = 1350;
-	}
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 750;
-	  fit_xmax = 1350;
-	}
-      }
-    }
-  
-  
-    if(year.Contains("allyears")){
-      if(MT==1200)     {
-	fit_xmin = 700;
-	fit_xmax = 1250;
-      }
-      if(MT==700)     {
-	fit_xmin = 300;
-	fit_xmax = 750;
-      }
-      if(MT==800)     {
-	fit_xmin = 280;
-	fit_xmax = 900;
-      }
-      if(MT==1000)     {
-	fit_xmin = 500;
-	fit_xmax = 1100;
-      }
-
-    }
-
-    if(MA=="75"){
-      if(MT==600){
-	fit_xmin = 520;
-	fit_xmax = 800;
-	if(year.Contains("2018")){
-	  fit_xmin = 300;
-	  fit_xmax = 800;
-	}
-      }
-      if(MT==800){
-	if(year.Contains("2016")){
-	  fit_xmin = 300;
-	  fit_xmax = 1100;
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 600;
-	    fit_xmax = 1200;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 600;
-	    fit_xmax = 1200;
-	  }
-	}
-      }
-      if(MT==900){
-	fit_xmin = 400;
-	fit_xmax = 1100;
-      }
-      if(MT==1000){
-	fit_xmin = 420;
-	fit_xmax = 1200;
-	if(year.Contains("2018")){
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 450;
-	    fit_xmax = 1300;
-	  }
-	}
-      }
-      if(MT==1100){
-	fit_xmin = 500;
-	fit_xmax = 1300;
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 600;
-	  fit_xmax = 1300;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 550;
-	  fit_xmax = 1300;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 700;
-	  fit_xmax = 1300;
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1400;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 750;
-	    fit_xmax = 1400;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 700;
-	  fit_xmax = 1400;
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 550;
-	    fit_xmax = 1400;
-	  }
-	}
-      }
-      if(MT==1200){
-	fit_xmin = 500;
-	fit_xmax = 1450;
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 500;
-	  fit_xmax = 1400;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 750;
-	  fit_xmax = 1400;
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 1050;
-	  fit_xmax = 1600;	  
-	}
-      }
-    }
-  }  
-
-//////////////////////////
-///
-/// Chi2h_2
-///
-//////////////////////////
-
-
-  if(cat.Contains("chi2h_2")){
-    fit_xmax = mean + factormax*sigma;
-    fit_xmin = mean - 0.5*MT+50;
-
-    if(MT==700)     {
-      if(year.Contains("2016")){
-        fit_xmin = 350;
-        fit_xmax = 1000;
-      }
-      if(year.Contains("2018")){
-	fit_xmin = 500;
-	fit_xmax = 840;
-      }
-    }
-    if(MT==800)     {
-      if(year.Contains("2016")){       
-	fit_xmin = 550;
-	fit_xmax = 1000;
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 450;
-	  fit_xmax = 1000;
-	}
-      }
-    }
-  
-    if(MA.Contains("175")){
-      mean = MT - 100;
-      sigma = 50;
-      fit_xmax = mean + 5*sigma+20;
-      fit_xmin = mean - 0.35*MT;
-      if(MT==600){
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 300;
-	  fit_xmax = 1100;
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 400;
-	  fit_xmax = 900;
-	}
-      }
-      if(MT==700){
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 300;
-	  fit_xmax = 1100;
-	}
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 300;
-	  fit_xmax = 800;
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 300;
-	    fit_xmax = 720;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 820;
-	  }
-	}
-      }
-      if(MT==800){
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 300;
-	  fit_xmax = 1100;
-	}
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 300;
-	  fit_xmax = 1100;
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 300;
-	  fit_xmax = 900;
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 300;
-	    fit_xmax = 850;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 300;
-	    fit_xmax = 820;
-	  }
-	}
-      }
-      if(MT==900){
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 300;
-	  fit_xmax = 1000;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 300;
-	  fit_xmax = 1020;
-	}
-	if(year.Contains("2018")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 300;
-	    fit_xmax = 1100;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 300;
-	    fit_xmax = 990;
-	  }
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 450;
-	    fit_xmax = 1000;
-	  }
-	}
-      }
-      if(MT==1000){
-	fit_xmin = 400;
-	fit_xmax = 1300;
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1150;
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 500;
-	  fit_xmax = 1000;
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 300;
-	    fit_xmax = 1000;
-	  }
-	}
-      }
-      if(MT==1100){
-	fit_xmin = 500;
-	fit_xmax = 1180;
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 500;
-	  fit_xmax = 1300;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 500;
-	  fit_xmax = 1150;
-	}
-	if(year.Contains("2018")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1170;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 500;
-	    fit_xmax = 1150;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1000;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 500;
-	    fit_xmax = 1100;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 500;
-	  fit_xmax = 1120;
-	}
-      }
-      if(MT==1200){
-	fit_xmin = 600;
-	fit_xmax = 1600;
-	if(year.Contains("2018")){
-	  fit_xmin = 600;
-	  fit_xmax = 1300;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 600;
-	    fit_xmax = 1500;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 600;
-	    fit_xmax = 1500;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 600;
-	  fit_xmax = 1350;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 650;
-	    fit_xmax = 1350;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 650;
-	    fit_xmax = 1400;
-	  }
-	}
-      }
-    }
-  }    
-
-//////////////////////////
-///
-/// MA175
-///
-//////////////////////////
-
-
-  if(cat.Contains("ma175")){
-    mean = MT+50;
-    sigma = 80 + MT * 0.05;
-    fit_xmax = mean+ 2.*sigma;
-    fit_xmin = mean - 3.5 *sigma;
-    if(MA.Contains("99999") && MT==900){
-      fit_xmin = 500;
-      fit_xmax = 1250;
-      if(unc.Contains("JER_up")){
-	fit_xmin = 550;
-	fit_xmax = 1300;
-      }
-      if(year.Contains("2018")){
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 500;
-	  fit_xmax = 1500;
-	}
-      }
-    }
-    if(MT==700){
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 500;
-	  fit_xmax = 850;
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 500;
-	    fit_xmax = 1050;
-	  }
-	}
-    }
-    if(MA.Contains("99999") && MT==800){
-      fit_xmin = 440;
-      fit_xmax = 1100;
-      if(year.Contains("2018") && unc.Contains("JEC_down")){
-	fit_xmin = 500;
-	fit_xmax = 1000;
-      }
-    }
-    if(MA.Contains("99999") && MT==800 && year.Contains("2016")){
-      fit_xmin = 470;
-      fit_xmax = 1000;
-    }
-      if(MT==900){
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 550;
-	  fit_xmax = 1150;
-	}
-      }
-    if(MA.Contains("99999") && MT==1000){
-      fit_xmin = 500;
-      fit_xmax = 1300;
-    }
-    if(MA.Contains("99999") && MT==1000 &&  year.Contains("2016")){
-      fit_xmin = 520;
-      fit_xmax = 1300;
-    }
-    if(MA.Contains("99999") && MT==1100){
-      fit_xmin = 500;
-      fit_xmax = 1500;
-    }
-    if(MA.Contains("99999") && MT==1100 && year.Contains("2018")){
-      fit_xmin = 700;
-      fit_xmax = 1400;
-    }
-    if(MA.Contains("99999") && MT==600){
-      fit_xmin = 450;
-      fit_xmax = 950;
-    }
-    if(MA.Contains("175")){
-      if( MT==700){
-	if(year.Contains("2018")){
-	  fit_xmin = 500;
-	  fit_xmax = 950;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1300;
-	  }
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1000;
-	  }
-	}
-      }
-      if( MT==800){
-	fit_xmin = 400;
-	fit_xmax = 1300;
-	if(year.Contains("2018")){
-	  fit_xmin = 500;
-	  fit_xmax = 1100;
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 600;
-	    fit_xmax = 1300;
-	  }
-	}
-      }
-      if( MT==900){
-	fit_xmin = 400;
-	fit_xmax = 1300;
-      }
-      if( MT==1200){
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 600;
-	  fit_xmax = 1600;
-	}
-      }
-    }
-    if(MA.Contains("450")){
-      if(MT==700){
-	fit_xmin = 350;
-	fit_xmax = 800;
-	if(unc.Contains("JEC_up")) {
-	  fit_xmin = 450;
-	  fit_xmax = 1200;
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 400; //400
-	  fit_xmax = 1200; //900
-	}
-      }
-      if(MT==800){
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 350;
-	  fit_xmax = 1200;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 350;
-	  fit_xmax = 1400;
-	}
-	if(year.Contains("2018") && channel==eEle){
-	  fit_xmin = 350;
-	  fit_xmax = 1000;
-	}
-      }
-      if(MT==900){
-	if(year.Contains("2018")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 350;
-	    fit_xmax = 1200;
-	  }
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 350;
-	    fit_xmax = 1000;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 350;
-	    fit_xmax = 1200;
-	  }
-	}	
-      }
-      if(MT==1000){
-	if(year.Contains("2017")){
-	  fit_xmin = 350;
-	  fit_xmax = 1100;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 350;
-	  fit_xmax = 1250;
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 400;
-	    fit_xmax = 1150;
-	  }
-	  if( channel==eEle){
-	    fit_xmin = 400;
-	    fit_xmax = 1150;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 400;
-	  fit_xmax = 1300;
-	}
-      }
-      if(MT==1100){
-	fit_xmin = 560;
-	fit_xmax = 1400;
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 550;
-	  fit_xmax = 1350;
-	}
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 750;
-	  fit_xmax = 1200;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 500;
-	  fit_xmax = 1150;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 580;
-	    fit_xmax = 1120;
-	  }
-	  if( channel==eEle){
-	    fit_xmin = 500;
-	    fit_xmax = 1100;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 400;
-	  fit_xmax = 1300;
-	}
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 590;
-	  fit_xmax = 1150;
-	}
-      }
-    }
-  }
-
-//////////////////////////
-///
-/// MA300
-///
-//////////////////////////
-
-
-  if(cat.Contains("ma300")){
-    mean = MT-100;
-    sigma = 100;
-    fit_xmax = 1200;
-    fit_xmin = 400;
-    if(MA.Contains("999")){
-      fit_xmax = 1400;
-      fit_xmin = 400;
-      if( MT==800){
-	fit_xmin = 400;
-	fit_xmax = 1300;
-	if(year.Contains("2016")){
-	  fit_xmin = 400;
-	  fit_xmax = 1100;
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 480;
-	    fit_xmax = 1150;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 500;
-	    fit_xmax = 1300;
-	  }
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1400;
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1200;
-	  }
-	}
-      }
-      if( MT==1100){
-	fit_xmax = 1300;
-	fit_xmin = 400;
-	if(year.Contains("2018")){
-	fit_xmax = 1400;
-	fit_xmin = 400;
-	if(unc.Contains("JEC_down")){
-	  fit_xmax = 1400;
-	  fit_xmin = 450;
-	}
-	}
-      }
-      if(MT==1000){
-	fit_xmax = 1300;
-	fit_xmin = 400;
-	if(year.Contains("2018")){
-	fit_xmax = 1500;
-	fit_xmin = 450;
-	if(unc.Contains("JEC_up")){
-	  fit_xmax = 1400;
-	  fit_xmin = 450;
-	}
-	if(unc.Contains("JER_down")){
-	  fit_xmax = 1250;
-	  fit_xmin = 450;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmax = 1300;
-	  fit_xmin = 450;
-	}
-	}
-	if(year.Contains("2016")){
-	  fit_xmax = 1500;
-	  fit_xmin = 450;
-	  if(unc.Contains("JER_up")){
-	    fit_xmax = 1400;
-	    fit_xmin = 450;
-	  }
-	}
-	if(year.Contains("2017")){
-	  fit_xmax = 1480;
-	  fit_xmin = 400;
-	  if(unc.Contains("JER_down"))fit_xmax = 1450;
-	}
-
-      }
-      if(MT==700 ){
-	fit_xmax = 1000;
-	fit_xmin = 400;
-	if(year.Contains("2017")){
-	fit_xmax = 1100;
-	fit_xmin = 400;
-	}
-	if(year.Contains("2016")){
-	  fit_xmax = 1200;
-	  fit_xmin = 400;
-	}
-	if(year.Contains("2018")){
-	  fit_xmax = 1400;
-	  fit_xmin = 400;
-	}
-      }
-      if(MT==900 ){
-	fit_xmax = 1400;
-	fit_xmin = 500;
-	if(year.Contains("2018")){
-	fit_xmax = 1300;
-	fit_xmin = 450;
-	if(unc.Contains("JEC_up")){
-	  fit_xmax = 1500;
-	  fit_xmin = 450;
-	}
-	}
-      }
-
-      if(MT==1200 ){
-	fit_xmax = 1600;
-	fit_xmin = 400;
-	if(year.Contains("2016")){
-	  fit_xmax = 2000;
-	  fit_xmin = 400;
-	  if(unc.Contains("JEC_up")){
-	    fit_xmax = 1500;
-	    fit_xmin = 400;
-	  }
-	}
-	if(year.Contains("2018")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmax = 1400;
-	    fit_xmin = 450;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmax = 1400;
-	    fit_xmin = 500;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmax = 1400;
-	    fit_xmin = 450;
-	  }
-	}
-      }
-    }
-    if(MA=="75"){
-      if(MT==700){
-	fit_xmin = 400;
-	fit_xmax = 1300;
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1000;
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 450;
-	  fit_xmax = 1050;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 450;
-	    fit_xmax = 1100;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 450;
-	    fit_xmax = 1200;
-	  }
-	}
-      }
-      if(MT==800){
-	fit_xmin = 500;
-	fit_xmax = 1300;
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 600;
-	  fit_xmax = 1000;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 450;
-	  fit_xmax = 1300;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 400;
-	    fit_xmax = 1050;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1100;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1000;
-	  }
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 400;
-	    fit_xmax = 1100;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1100;
-	  }
-	}
-      }
-      if(MT==900){
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 500;
-	  fit_xmax = 1400;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 500;
-	  fit_xmax = 1400;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1400;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1500;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1500;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 400;
-	    fit_xmax = 1500;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1300;
-	  }
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 400;
-	    fit_xmax = 1190;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1300;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1300;
-	  }
-	}
-      }
-      if(MT==1000){
-	fit_xmin = 550;
-	fit_xmax = 1400;
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 700;
-	  fit_xmax = 1200;
-	}
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 600;
-	  fit_xmax = 1300;
-	}
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 800;
-	  fit_xmax = 1200;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 700;
-	  fit_xmax = 1400;
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 700;
-	    fit_xmax = 1400;
-	  }
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 700;
-	    fit_xmax = 1200;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 400;
-	  fit_xmax = 1300;
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1400;
-	  }
-	}
-      }
-      if(MT==1100){
-	fit_xmin = 600;
-	fit_xmax = 1600;
-	if(year.Contains("2016")){
-	  fit_xmin = 800;
-	  fit_xmax = 1500;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 780;
-	    fit_xmax = 1400;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 600;
-	    fit_xmax = 1400;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 900;
-	    fit_xmax = 1600;
-	  }
-	}
-      }
-      if(MT==1200){
-	fit_xmin = 750;
-	fit_xmax = 1500;
-	if(unc.Contains("JEC_down")){
-	  fit_xmin = 750;
-	  fit_xmax = 1450;
-	}
-	if(unc.Contains("JER_down")){
-	  fit_xmin = 600;
-	  fit_xmax = 1600;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 750;
-	  fit_xmax = 1750;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 750;
-	    fit_xmax = 1550;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 750;
-	    fit_xmax = 1800;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 750;
-	    fit_xmax = 1800;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 700;
-	  fit_xmax = 1750;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 700;
-	    fit_xmax = 1600;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 780;
-	    fit_xmax = 1530;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 700;
-	    fit_xmax = 1480;
-	  }
-	}
-      }
-    }
-    if(MA.Contains("175")){
-      if(MT==800){
-	fit_xmin = 400;
-	fit_xmax = 1400;
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1200;
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 400;
-	  fit_xmax = 1100;
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1400;
-	  }
-	}
-      }
-      if(MT==900){
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1400;
-	}
-	if(unc.Contains("JER_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1400;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-          fit_xmax = 1400;
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1120;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 500;
-	    fit_xmax = 1200;
-	  }
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1400;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 580;
-	    fit_xmax = 1250;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 550;
-	    fit_xmax = 1400;
-	  }
-	}
-      }
-      if(MT==1000){
-	fit_xmin = 400;
-	fit_xmax = 1350;
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1600;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1200;
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 400;
-	    fit_xmax = 1400;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 400;
-	  fit_xmax = 1100;
-	}
-      }
-      if(MT==1100){
-	  fit_xmin = 500;
-	  fit_xmax = 1400;
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 500;
-	  fit_xmax = 1600;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 500;
-	  fit_xmax = 1600;
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 700;
-	    fit_xmax = 1600;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 600;
-	    fit_xmax = 1600;
-	  }
-	}
-	if(year.Contains("2016")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 600;
-	    fit_xmax = 1450;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 600;
-	    fit_xmax = 1600;
-	  }
-	}
-      }
-      if(MT==1200){
-	fit_xmin = 400;
-	fit_xmax = 1800;
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1700;
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1500;
-	  }
-	  if(unc.Contains("JER_down")){
-	    fit_xmin = 400;
-	    fit_xmax = 1450;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 400;
-	    fit_xmax = 1400;
-	  }
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 600;
-	  fit_xmax = 1500;
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 600;
-	    fit_xmax = 1400;
-	  }
-	  if(unc.Contains("JEC_up")){
-	    fit_xmin = 600;
-	    fit_xmax = 1400;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 600;
-	    fit_xmax = 1580;
-	  }
-	}
-      }
-      if(MT==700){
-	fit_xmin = 450;
-	fit_xmax = 1200;
-	if(year.Contains("2018")){
-	  if(unc.Contains("JEC_down")){
-	    fit_xmin = 500;
-	    fit_xmax = 1200;
-	  }
-	  if(unc.Contains("JER_up")){
-	    fit_xmin = 500;
-	    fit_xmax = 1200;
-	  }
-	}
-      }
-    }
-    if(MA.Contains("450")){
-      if(MT==700){
-	if(unc.Contains("JEC_up")){
-	  fit_xmin = 400;
-	  fit_xmax = 1300;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1050;
-	}
-      }
-      if(MT==900){
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1400;
-	}
-      }
-      if(MT==1000){
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1600;
-	}
-      }
-      if(MT==1100){
-	if(year.Contains("2017")){
-	  fit_xmin = 600;
-	  fit_xmax = 1500;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1600;
-	}
-	if(year.Contains("2016")){
-	  fit_xmin = 650;
-	  fit_xmax = 1600;
-	}
-      }
-      if(MT==1200){
-	if(year.Contains("2017")){
-	  fit_xmin = 400;
-	  fit_xmax = 1600;
-	}
-	if(year.Contains("2018")){
-	  fit_xmin = 400;
-	  fit_xmax = 1600;
-	}
-      }
-    }
-  }
 
 
   gROOT->SetBatch(kTRUE);
@@ -3010,6 +1682,13 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   if(cat.Contains("300")&&MA.Contains("9999")) sigh->Rebin(2);
   if(cat.Contains("175")&&MA.Contains("9999")) sigh->Rebin(2);
   //  if(cat.Contains("90")&&MA.Contains("9999")&&year.Contains("2016")) sigh->Rebin(2);
+
+  if(fit_xmin < sigh->GetBinLowEdge(sigh->FindFirstBinAbove(0))) fit_xmin = sigh->GetBinLowEdge(sigh->FindFirstBinAbove(0));
+
+  if(fit_xmax > sigh->GetBinLowEdge(sigh->FindLastBinAbove(0)+1)) fit_xmax = sigh->GetBinLowEdge(sigh->FindLastBinAbove(0)+1);
+
+  if(fit_xmax > sigh->GetMean() + 3*sigh->GetRMS()) fit_xmax = sigh->GetMean() + 3*sigh->GetRMS();
+  if(MA.Contains("200"))if(fit_xmin < sigh->GetMean() - 4*sigh->GetRMS()) fit_xmin = sigh->GetMean() - 4*sigh->GetRMS();
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
@@ -3079,108 +1758,101 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   fitmodel_dg->SetNpx(200); 
 
-  if (cat.Contains("ma60")){
-    fitmodel_cb->SetParameter(0, mean);  
-    fitmodel_cb->SetParameter(1, sigma);
-    fitmodel_cb->SetParameter(2, 2);  
-    fitmodel_cb->SetParLimits(2, 0,100);  
-    fitmodel_cb->SetParameter(3, 2);
-  }
+  // if (cat.Contains("ma60")){
+  //   fitmodel_cb->SetParameter(0, mean);  
+  //   fitmodel_cb->SetParameter(1, sigma);
+  //   fitmodel_cb->SetParameter(2, 2);  
+  //   fitmodel_cb->SetParLimits(2, 0,100);  
+  //   fitmodel_cb->SetParameter(3, 2);
+  // }
 
 
-  if (cat.Contains("ma90")){
-    fitmodel->SetParameter(0, 0.9*MT - 20);  
-    fitmodel->SetParameter(1, 60);
+  // if (cat.Contains("ma90")){
+  //   fitmodel->SetParameter(0, 0.9*MT - 20);  
+  //   fitmodel->SetParameter(1, 60);
 
-    fitmodel_dg->SetParameter(0, 0.9*MT - 20);  
-    fitmodel_dg->SetParameter(1, 60);
-    fitmodel_dg->SetParameter(2, 0.7*MT - 80);
-    fitmodel_dg->SetParameter(3, 100 + 0.1*MT);
-    fitmodel_dg->SetParLimits(3,100,10000);
-    fitmodel_dg->SetParameter(4, 0.15);
-    fitmodel_dg->SetParLimits(4, 0.0,0.30);
+  //   fitmodel_dg->SetParameter(0, 0.9*MT - 20);  
+  //   fitmodel_dg->SetParameter(1, 60);
+  //   fitmodel_dg->SetParameter(2, 0.7*MT - 80);
+  //   fitmodel_dg->SetParameter(3, 100 + 0.1*MT);
+  //   fitmodel_dg->SetParLimits(3,100,10000);
+  //   fitmodel_dg->SetParameter(4, 0.15);
+  //   fitmodel_dg->SetParLimits(4, 0.0,0.30);
 
-    fitmodel_cb->SetParameter(0, mean);  
-    fitmodel_cb->SetParameter(1, sigma);
-    fitmodel_cb->SetParameter(2, 2);  
-    fitmodel_cb->SetParLimits(2, 0,100);  
-    fitmodel_cb->SetParameter(3, 2);
-    if(year.Contains("2016")) fitmodel_cb->SetParLimits(3, 0,10);
-  }
-  if (cat.Contains("chi2h_2")){
-    fitmodel->SetParameter(0, 0.9*MT - 20);  
-    fitmodel->SetParameter(1, 60);
+  //   fitmodel_cb->SetParameter(0, mean);  
+  //   fitmodel_cb->SetParameter(1, sigma);
+  //   fitmodel_cb->SetParameter(2, 2);  
+  //   fitmodel_cb->SetParLimits(2, 0,100);  
+  //   fitmodel_cb->SetParameter(3, 2);
+  //   if(year.Contains("2016")) fitmodel_cb->SetParLimits(3, 0,10);
+  // }
+  // if (cat.Contains("chi2h_2")){
+  //   fitmodel->SetParameter(0, 0.9*MT - 20);  
+  //   fitmodel->SetParameter(1, 60);
 
-    fitmodel_dg->SetParameter(0, 0.9*MT - 20);  
-    fitmodel_dg->SetParameter(1, 60);
-    fitmodel_dg->SetParameter(2, 0.7*MT - 80);
-    fitmodel_dg->SetParameter(3, 50 + 0.1*MT);
-    fitmodel_dg->SetParLimits(3,50,10000);
-    fitmodel_dg->SetParameter(4, 0.15);
-    fitmodel_dg->SetParLimits(4, 0.0,0.30);
+  //   fitmodel_dg->SetParameter(0, 0.9*MT - 20);  
+  //   fitmodel_dg->SetParameter(1, 60);
+  //   fitmodel_dg->SetParameter(2, 0.7*MT - 80);
+  //   fitmodel_dg->SetParameter(3, 50 + 0.1*MT);
+  //   fitmodel_dg->SetParLimits(3,50,10000);
+  //   fitmodel_dg->SetParameter(4, 0.15);
+  //   fitmodel_dg->SetParLimits(4, 0.0,0.30);
 
-    fitmodel_cb->SetParameter(0, mean);  
-    fitmodel_cb->SetParameter(1, sigma);
-    fitmodel_cb->SetParameter(2, 2);  
-    fitmodel_cb->SetParLimits(2, 0,100);  
-    // fitmodel_cb->SetParameter(3, 2);
+  //   fitmodel_cb->SetParameter(0, mean);  
+  //   fitmodel_cb->SetParameter(1, sigma);
+  //   fitmodel_cb->SetParameter(2, 2);  
+  //   fitmodel_cb->SetParLimits(2, 0,100);  
+  //   // fitmodel_cb->SetParameter(3, 2);
 
-    if(MA.Contains("175")){
-      fitmodel_cb->SetParameter(3, -2);
-    }
+  //   if(MA.Contains("175")){
+  //     fitmodel_cb->SetParameter(3, -2);
+  //   }
 
-    fitmodel_lin->SetParameter(0, mean);  
-    fitmodel_lin->SetParameter(1, sigma);
-    fitmodel_lin->SetParameter(2, 1);  
-    fitmodel_lin->SetParLimits(2, -100,100);  
-    fitmodel_lin->SetParameter(3, 0.2);
-    // fitmodel_lin->SetParameter(4, 0.2);
-    //    fitmodel_lin->SetParLimits(4,0,0.5);
+  //   fitmodel_lin->SetParameter(0, mean);  
+  //   fitmodel_lin->SetParameter(1, sigma);
+  //   fitmodel_lin->SetParameter(2, 1);  
+  //   fitmodel_lin->SetParLimits(2, -100,100);  
+  //   fitmodel_lin->SetParameter(3, 0.2);
+  //   // fitmodel_lin->SetParameter(4, 0.2);
+  //   //    fitmodel_lin->SetParLimits(4,0,0.5);
 
 
-  }
+  // }
+  double nval = 1;
+  double nvalmin = 0;
+  double nvalmax = 100;
+  double alphaval = 2;
+  double alphavalmin = 0;
+  double alphavalmax = 10;
 
   if (cat.Contains("ma175")){
-    fitmodel->SetParameter(0, MT + 40);  
-    fitmodel->SetParameter(1, 60);
+    // fitmodel->SetParameter(0, MT + 40);  
+    // fitmodel->SetParameter(1, 60);
 
-    fitmodel_dg->SetParameter(0, MT + 40);  
-    fitmodel_dg->SetParameter(1, 60);
-    fitmodel_dg->SetParameter(2, MT - 200);
-    fitmodel_dg->SetParameter(3, 60);
-    fitmodel_dg->SetParameter(4, 0.30);
-    fitmodel_dg ->SetParLimits(4, 0,0.50);
+    // fitmodel_dg->SetParameter(0, MT + 40);  
+    // fitmodel_dg->SetParameter(1, 60);
+    // fitmodel_dg->SetParameter(2, MT - 200);
+    // fitmodel_dg->SetParameter(3, 60);
+    // fitmodel_dg->SetParameter(4, 0.30);
+    // fitmodel_dg ->SetParLimits(4, 0,0.50);
 
-    fitmodel_cb->SetParameter(0, mean);  
-    fitmodel_cb->SetParameter(1, sigma);
-    fitmodel_cb->SetParameter(2, 2);  
-    fitmodel_cb->SetParLimits(2, 0,100);  
-    fitmodel_cb->SetParameter(3, 2);
-
-    if(MA.Contains("999")) {
-      //hier
-      //      fitmodel_cb->SetParLimits(3,-5, 20);
-      fitmodel_cb->SetParLimits(3,-5, 0);
-    }
-
+    nval = 1;
+    alphaval = 2;
+    alphavalmin = 0;
+    alphavalmax = 10;
   }
   if (cat.Contains("ma300")){
-
+    alphaval = 2;
+    alphavalmin = 0;
+    alphavalmax = 10;
+  }
     fitmodel_cb->SetParameter(0, mean);  
     fitmodel_cb->SetParameter(1, sigma);
-    fitmodel_cb->SetParameter(2, 2);  
-    fitmodel_cb->SetParLimits(2, 0,100);  
-    fitmodel_cb->SetParameter(3, -2);
-
-    if(MA.Contains("999")){
-      fitmodel_cb->SetParLimits(2, 0,100);  
-      //      if(MT==600)fitmodel_cb->SetParLimits(3, -0.5,-1000);  
-    }
-    if(MA.Contains("999") && year.Contains("2017")) fitmodel_cb->SetParLimits(3, -10,0); 
-    if(MA=="75" && year.Contains("2017")) fitmodel_cb->SetParLimits(3, -10,0); 
-    if(MA.Contains("999") && year.Contains("2018")) fitmodel_cb->SetParLimits(3, -10,0); 
-    if(MA.Contains("999") && year.Contains("2016")) fitmodel_cb->SetParLimits(3, -10,0); 
-  }
+    fitmodel_cb->FixParameter(2, nval);  
+    // fitmodel_cb->SetParameter(2, nval);  
+    // fitmodel_cb->SetParLimits(2,nvalmin,nvalmax);  
+    fitmodel_cb->SetParameter(3, alphaval);
+    fitmodel_cb->SetParLimits(3,alphavalmin,alphavalmax);  
 
 
 
@@ -3217,7 +1889,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   // FIT!
   //  TFitResultPtr r = sigh->Fit(fitmodel, "RS 0");
-  TFitResultPtr r = sigh->Fit(fitmodel, "RS");
+  TFitResultPtr r;
+  if(func.Contains("simplegauss")) r = sigh->Fit(fitmodel, "RS");
   if(func.Contains("double")) r = sigh->Fit(fitmodel_dg, "RS");
   if(func.Contains("cb")) r = sigh->Fit(fitmodel_cb, "RS");
   if(func.Contains("lin")) r = sigh->Fit(fitmodel_lin, "RS");
@@ -3225,6 +1898,49 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   TMatrixDSym rho = r->GetCorrelationMatrix();
   covmatr.Print();
   rho.Print();
+
+  ////// If the fit is not good enough redo the fit but with shrinked x range
+  if(func.Contains("cb") ){
+    for(unsigned int i=0; i<10;i++){
+      cout << "Checking chi2  "<< fitmodel_cb->GetChisquare()/ fitmodel_cb->GetNDF()<<endl;
+      if ((fitmodel_cb->GetChisquare()/ fitmodel_cb->GetNDF())<1.5) break;
+      if(cat.Contains("300") || cat.Contains("175")){
+	if(i%2==0 ){
+	  cout<<"defining new bin "<<endl;
+	  unsigned int xbin = sigh->GetXaxis()->FindBin(xmin);
+	  xbin+=1;
+	  xmin = sigh->GetXaxis()->GetBinLowEdge(xbin);
+	}else{
+	  cout<<"defining new bin "<<endl;
+	  unsigned int xbin = sigh->GetXaxis()->FindBin(xmax);
+	  xbin-=1;
+	  xmax = sigh->GetXaxis()->GetBinLowEdge(xbin);
+
+	}
+      } // TODO else case
+
+      cout <<"new range is xmin = "<<xmin<<"  xmax = "<<xmax<<endl;
+      norm = sigh->Integral(sigh->GetXaxis()->FindBin(xmin), sigh->GetXaxis()->FindBin(xmax), "width");
+      cout<<"new norm is "<<norm<<endl;
+      sigfuncobj_cb.set_xmin_xmax(xmin,xmax);
+      sigfuncobj_cb.SetNorm(norm);
+      cout<<"Norm of function"<<sigfuncobj_cb.GetNorm()<<endl;
+      cout<<"after setting norm"<<endl;
+      fitmodel_cb = new TF1("fitmodel_cb", sigfuncobj_cb, xmin, xmax, 4); // cb
+      fitmodel_cb->SetParameter(0, mean);  
+      fitmodel_cb->SetParameter(1, sigma);
+      fitmodel_cb->FixParameter(2, nval);  
+      //      fitmodel_cb->SetParameter(2, nval);  
+      //      fitmodel_cb->SetParLimits(2,nvalmin,nvalmax);
+      fitmodel_cb->SetParameter(3, alphaval);
+      fitmodel_cb->SetParLimits(3,alphavalmin,alphavalmax);  
+
+      cout<<"before fitting"<<endl;
+      r = sigh->Fit(fitmodel_cb, "RS");
+      
+    }
+  }
+
 
   //  c.SaveAs("test.eps");
   // efficiency calculation
@@ -3250,7 +1966,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   Nevents = sigh->IntegralAndError(sigh->GetXaxis()->FindBin(xmin), sigh->GetXaxis()->FindBin(xmax), Nevents_err);
 
   double efferr;
-  double eff = CalcEff(fitmodel, Nevents, Nevents_err, Ntot, MT, efferr, year);
+  double eff;
+  if(func.Contains("simplegauss"))eff = CalcEff(fitmodel, Nevents, Nevents_err, Ntot, MT, efferr, year);
   if(func.Contains("double")) eff = CalcEff(fitmodel_dg, Nevents, Nevents_err, Ntot, MT, efferr, year);
   if(func.Contains("cb")) eff = CalcEff(fitmodel_cb, Nevents, Nevents_err, Ntot, MT, efferr, year);
   if(func.Contains("lin")) eff = CalcEff(fitmodel_lin, Nevents, Nevents_err, Ntot, MT, efferr, year);
@@ -3321,7 +2038,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
 
   // draw 95% CL
-  TH1F* clhist = ComputeHistWithCL(fitmodel, r, sigh, 0.95);
+  TH1F* clhist;
+  if(func.Contains("simplegauss")) clhist= ComputeHistWithCL(fitmodel, r, sigh, 0.95);
   if(func.Contains("double"))clhist = ComputeHistWithCL(fitmodel_dg, r, sigh, 0.95); 
   if(func.Contains("cb"))clhist = ComputeHistWithCL(fitmodel_cb, r, sigh, 0.95); 
   if(func.Contains("lin"))clhist = ComputeHistWithCL(fitmodel_lin, r, sigh, 0.95); 
@@ -3332,7 +2050,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   clhist->Draw("e3 same");
 
   // draw 68% CL
-  TH1F* clhist2 = ComputeHistWithCL(fitmodel, r, sigh, 0.68);
+  TH1F* clhist2;
+  if(func.Contains("simplegauss"))clhist2= ComputeHistWithCL(fitmodel, r, sigh, 0.68);
   if(func.Contains("double")) clhist2 = ComputeHistWithCL(fitmodel_dg, r, sigh, 0.68);
   if(func.Contains("cb")) clhist2 = ComputeHistWithCL(fitmodel_cb, r, sigh, 0.68);
   if(func.Contains("lin")) clhist2 = ComputeHistWithCL(fitmodel_lin, r, sigh, 0.68);
@@ -3451,7 +2170,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     TString info92 = TString::Format("n = %.2f #pm %.2f ", fitmodel_cb->GetParameter(2), fitmodel_cb->GetParError(2) );
     text->DrawLatex(xvalue, 0.43-yoffset, info92.Data());  
 
-    TString info102 = TString::Format("#alpha = %.2f #pm %.0f ",  fitmodel_cb->GetParameter(3), fitmodel_cb->GetParError(3));
+    TString info102 = TString::Format("#alpha = %.2f #pm %.2f ",  fitmodel_cb->GetParameter(3), fitmodel_cb->GetParError(3));
     text->DrawLatex(xvalue, 0.37-yoffset, info102.Data());  
 
   }

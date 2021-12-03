@@ -341,6 +341,7 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
      else throw runtime_error("Year not possible.");
   }
 
+
   double gauss_norm_interval = sigf->Integral(sigf->GetXmin(), sigf->GetXmax(), 1e-3 );
   double f = Npeak / gauss_norm_interval; 
   double f_err = Npeak_err / Npeak; 

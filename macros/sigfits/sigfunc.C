@@ -34,6 +34,13 @@ class signalfunction {
      return f;
    }
 
+  void set_xmin_xmax(double xmin, double xmax){
+    f_xmin = xmin;
+    f_xmax = xmax;
+    f->SetRange(f_xmin,f_xmax);
+  }
+
+
    double operator() (double *xx, double *p) 
    {
 
