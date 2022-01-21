@@ -27,7 +27,7 @@ if "17" in year: pileupfileData = "2017/MyDataPileupHistogram.root"
 if "18" in year: pileupfileData = "2018/MyDataPileupHistogram.root"
 
 btagcalibfile = "2016/DeepJet_2016LegacySF_WP_V1.csv"
-if "17" in year: btagcalibfile = ""
+if "17" in year: btagcalibfile = "2017/DeepFlavour_94XSF_WP_V3_B_F.csv"
 if "18" in year: btagcalibfile = ""
 
 lumi = 35920
@@ -48,7 +48,7 @@ out.write('<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[\n')
 out.write('<!ENTITY TargetLumi      "'+lumi+'"> \n')
 out.write('<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/'+year+'/Preselection/NOMINAL/">\n')
 if not preselection: 
-    out.write('<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/'+year+'/Fullselection/mavariable/NOMINAL">\n')
+    out.write('<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/'+year+'/Fullselection/mavariable/NOMINAL/test/">\n')
 
 out.write('<!ENTITY b_Cacheable     "False"> \n')
 out.write('<!ENTITY NEVT            "-1"> \n')

@@ -81,7 +81,7 @@ bool LowestChi2Value::process(Event & event){
   double lowest_chi2 = 9999;
   double index = 9999;
 
-  for(int i = 0; i<chi2_values.size(); i++){
+  for(unsigned int i = 0; i<chi2_values.size(); i++){
     std::cout<<"chi2 value "<< chi2_values.at(i) <<std::endl;
     std::cout<<"index "<< i <<std::endl;
     if(chi2_values.at(i) < lowest_chi2) {

@@ -27,8 +27,8 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 void PDFRMS(){
 
   TString year = "2016v3";
-     //    TString year = "2017v2";
-  //    TString year = "2018";
+  //  TString year = "2017v2";
+  // TString year = "2018";
 
 
   TString prodch = "";
@@ -42,7 +42,8 @@ void PDFRMS(){
   if(year == "2017v2" || year == "2018") hand="LH";
 
 
-  std::vector<TString> mas = {"_ma75","_ma175","_ma450"};
+  //  std::vector<TString> mas = {"_ma75","_ma175","_ma450"};
+  std::vector<TString> mas = {"_ma100"};
   //  if(year == "2017v2")   mas = {"_ma75","_ma125","_ma175","_ma250","_ma350","_ma450"};
 
   map<TString, TString> samplemap;
@@ -72,27 +73,27 @@ void PDFRMS(){
   if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/";
   if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable/";
 
-  FindRMS(infolder, samplemap, "TTbar_"+year,year);
-  FindRMS(infolder, samplemap, "WJets_"+year,year);
-  FindRMS(infolder, samplemap, "Diboson_"+year,year);
-  FindRMS(infolder, samplemap, "TTV_"+year,year);
-  FindRMS(infolder, samplemap, "DYJets_"+year,year);
-  FindRMS(infolder, samplemap, "SingleTop_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_600_"+year_lowmass,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_650_"+year_lowmass,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_700_"+year,year);
+  // FindRMS(infolder, samplemap, "TTbar_"+year,year);
+  // FindRMS(infolder, samplemap, "WJets_"+year,year);
+  // FindRMS(infolder, samplemap, "Diboson_"+year,year);
+  // FindRMS(infolder, samplemap, "TTV_"+year,year);
+  // FindRMS(infolder, samplemap, "DYJets_"+year,year);
+  // FindRMS(infolder, samplemap, "SingleTop_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_600_"+year_lowmass,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_650_"+year_lowmass,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_700_"+year,year);
 
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_800_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_900_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1000_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1100_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1200_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1300_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1400_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1500_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1600_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1700_"+year,year);
-  FindRMS(infolder, samplemap, "VLQ_"+hand+"_1800_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_800_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_900_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1000_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1100_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1200_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1300_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1400_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1500_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1600_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1700_"+year,year);
+  // FindRMS(infolder, samplemap, "VLQ_"+hand+"_1800_"+year,year);
 
   prodch="";
   for(unsigned int ima = 0; ima < mas.size(); ima++){
@@ -130,7 +131,7 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
   // ==========
 
   TString infilename = infolder +"/NOMINAL/"+ samplemap[sample];
-  //  if(year =="2017v2" || year == "2018") infilename = infolder +"/NOMINAL_NoBTagSF/"+ samplemap[sample];
+    //  if(year =="2017v2" || year == "2018") infilename = infolder +"/NOMINAL_NoBTagSF/"+ samplemap[sample];
   //  if(year == "2018") infilename = infolder +"/NOMINAL_NoBTagSF/"+ samplemap[sample];
   cout << "infilename: " << infilename << endl;
   TFile* infile = new TFile(infilename, "READ");
@@ -178,6 +179,8 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
         outfile->mkdir(makedirname);
         makedirname.ReplaceAll("_pdf_up", "_pdf_down");
         outfile->mkdir(makedirname);
+        makedirname.ReplaceAll("_pdf_down", "_pdf_rms");
+        outfile->mkdir(makedirname);
         // cout << "made dir: " << makedirname << endl;
       }
     }
@@ -186,6 +189,8 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 
   for(size_t i=0; i<foldernames.size(); i++){
     TString foldername = foldernames.at(i);
+    
+    std::cout<<"foldername  "<<foldername<<std::endl;
 
     // create list of histogram names (without the _xx tag for the number of the PDF variation)
     infile->cd(foldername);
@@ -201,6 +206,7 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
       if(!(key->GetClassName() == myclass)) continue;
       TString histname = key->ReadObj()->GetName();
       if(histname.Contains("_99")){
+	if(histname.Contains("rebinlimit")) continue;
         TString histname_base = histname;
         histname_base.ReplaceAll("_99", "");
         histnames.emplace_back(histname_base);
@@ -213,7 +219,7 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
     for(size_t j=0; j<histnames.size(); j++){
 
       TString histname = histnames[j];
-
+      std::cout<<"histname  "<<histname<<std::endl;
 
       // systematic histograms (100)
       vector<TH1F*> hists_thisvar;
@@ -244,12 +250,13 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
     // Now calculate RMS in current folder, in each variable, in each bin
     // ===============================================================
 
-    vector<TH1F*> hists_up, hists_down;
+    vector<TH1F*> hists_up, hists_down, hists_rms;
 
     // loop through variables
     for(size_t j=0; j<histograms_nom.size(); j++){
       TH1F* h_up = (TH1F*)histograms_nom[j]->Clone();
       TH1F* h_down = (TH1F*)histograms_nom[j]->Clone();
+      TH1F* h_rms = (TH1F*)histograms_nom[j]->Clone();
 
       // loop through bins
       for(int k=1; k<histograms_nom[j]->GetNbinsX()+1; k++){
@@ -263,14 +270,18 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 	  if (sample.Contains("VLQ") && k==1) histograms[j][l]->Scale(histograms_nom[j]->Integral()/histograms[j][l]->Integral());
           rms += pow(histograms[j][l]->GetBinContent(k) - nom, 2);
         }
-        rms /= histograms[j].size()-1.;
+        if(year.Contains("2016")) rms /= histograms[j].size()-1.;
         rms = sqrt(rms);
 
+        h_rms->SetBinContent(k, rms);
         h_up->SetBinContent(k, nom + rms);
         h_down->SetBinContent(k, max((float)0., nom - rms));
-        // cout << "value in bin " << k << ": " << nom << " +- " << rms << endl;
+	//        cout << "value in bin " << k << ": " << nom << " +- " << rms << endl;
       }
 
+      // h_up->Scale(histograms_nom[j]->Integral()/h_up->Integral());
+      // h_down->Scale(histograms_nom[j]->Integral()/h_down->Integral());
+      hists_rms.emplace_back(h_rms);
       hists_up.emplace_back(h_up);
       hists_down.emplace_back(h_down);
     }
@@ -289,6 +300,12 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
     outfile->cd(writefoldername);
     for(size_t j=0; j<hists_down.size(); j++){
       hists_down[j]->Write();
+    }
+    writefoldername.ReplaceAll("_pdf_down", "_pdf_rms");
+    // outfile_down->cd(writefoldername);
+    outfile->cd(writefoldername);
+    for(size_t j=0; j<hists_rms.size(); j++){
+      hists_rms[j]->Write();
     }
 
 

@@ -39,7 +39,7 @@ void sig_fit()
   //run over all ma, if ma=99999 GeV do the old stuff for the moment
   //  std::vector<TString>MAs = {"75","125","175","250","350","450","99999"};
   //  std::vector<TString>MAs = {"99999"};
-  std::vector<TString>MAs = {"450"};
+  std::vector<TString>MAs = {"100"};
 
   for(unsigned int ima = 0; ima < MAs.size();ima++){
 
@@ -55,12 +55,13 @@ void sig_fit()
       ///// run over all cat
       std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175","catma300"};
       if(MA=="75") categories = {"catma90","catma60","catma300"};
-      if(MA=="100") categories = {"catma90","catma60","catma300","chi2h_2"};
+      if(MA=="100") categories = {"catma90","catma300","chi2h_2"};
       if(MA=="175") categories = {"chi2h_2","catma175","catma300"};
       if(MA=="200") categories = {"catma175","catma300","chi2h_2"};
       if(MA=="250") categories = {"catma175","catma300"};
       if(MA=="350") categories = {"catma175","catma300"};
       if(MA=="450") categories = {"catma175","catma300"};
+      if(MA=="500") categories = {"catma175","catma300"};
       if(MA.Contains("999")) categories = {"catma300","chi2h_2","catma175","catma90"};
       //categories = {"catma300"};
 
@@ -122,8 +123,8 @@ void sig_fit()
     
 	std::vector<TString> uncertainties ={}; // no syst.
 	if(!b_test) {
-	  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger"}; // 2016 
-	  //	  if(year.Contains("2016"))  uncertainties ={};
+	  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","prefiring","btag_bc","btag_udsg","eletrigger","mutrigger","scale"}; // 2016 
+	  //	  if(year.Contains("2016"))  uncertainties ={"JER","JEC","muid","pu","eleid","elereco","muiso",};
 	  if(year.Contains("2017"))  uncertainties ={"JEC","JER","muid","muiso","mutrigger","eleid","elereco","eletrigger","PDF","prefiring","scale","pu","btag_bc","btag_udsg"};
 	  //	  if(year.Contains("2017"))  uncertainties ={};
 	  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
@@ -141,9 +142,14 @@ void sig_fit()
 	if (!b_test){
             
 	  // Roman's setup
-	  MTs = {700, 800, 900, 1000, 1200};// 2016
-	  MTs_backup = {700,800, 900, 1000, 1200};// 2016
+	  MTs = {700, 800, 900, 1000, 1100,1200};// 2016
+	  MTs_backup = {700,800, 900, 1000,1100, 1200};// 2016
       
+	  if(year.Contains("2016") && MA.Contains("125")){
+	    MTs = {700, 800, 900, 1000, 1200};// 2016
+	    MTs_backup = {700,800, 900, 1000, 1200};// 2016
+	  }
+
 	  if(year.Contains("2018") || year.Contains("2017")){
 	    MTs = {600, 700, 800, 900, 1000, 1100,1200};// 2017
 	    MTs_backup = {600, 700, 800, 900, 1000, 1100,1200};// 2017
@@ -152,12 +158,28 @@ void sig_fit()
 	      MTs_backup = { 700, 800, 900, 1000, 1100,1200};// 2017	  
 	    }
 	    if(year.Contains("2017") && cat.Contains("ma175")){
-	      MTs = {600,700, 800, 900, 1000, 1100};// 2017
-	      MTs_backup = { 600,700, 800, 900, 1000, 1100};// 2017	  
+	      // MTs = {600,700, 800, 900, 1000, 1100};// 2017
+	      // MTs_backup = { 600,700, 800, 900, 1000, 1100};// 2017	  
+	      MTs = {600,700, 800, 900, 1000, 1100,1200};// 2017
+	      MTs_backup = { 600,700, 800, 900, 1000, 1100,1200};// 2017	  
+
+	    }
+	    if(year.Contains("2017") && cat.Contains("ma175") && MA.Contains("450")){
+	      MTs = {600,700, 800, 900,  1100,1200};// 2017
+	      MTs_backup = { 600,700, 800, 900, 1100,1200};// 2017	  
+
 	    }
 	    if(year.Contains("2017") && cat.Contains("chi2") && MA.Contains("200")){
-	      MTs = {600,700, 800, 900, 1000,1200};// 2017
-	      MTs_backup = { 600,700, 800, 900, 1000, 1200};// 2017	  
+	      MTs = {600,700, 800, 900, 1000,1100};// 2017
+	      MTs_backup = { 600,700, 800, 900, 1000, 1100};// 2017	  
+	    }
+	    if(year.Contains("2017") && cat.Contains("catma90") && MA.Contains("75")){
+	      MTs = {600,700, 800, 1000,1100,1200};// 2017
+	      MTs_backup = { 600,700, 800, 1000, 1100, 1200};// 2017	  
+	    }
+	    if(year.Contains("2018") && cat.Contains("catma300") && MA.Contains("200")){
+	      MTs = {600,700, 800, 900, 1000,1100,1200};// 2018
+	      MTs_backup = { 600,700, 800, 900, 1000, 1100,1200};// 2018
 	    }
 
 	  }
@@ -1232,7 +1254,9 @@ void sig_fit()
 	painter4->SetTitle("");
 	painter4->GetYaxis()->SetRangeUser(0, 0.08);
 	if(cat.Contains("catma300") && MA.Contains("350"))	painter4->GetYaxis()->SetRangeUser(0, 0.1);
+	if(cat.Contains("catma175") && MA.Contains("350"))	painter4->GetYaxis()->SetRangeUser(0, 0.01);
 	if(cat.Contains("catma175") && MA.Contains("450"))	painter4->GetYaxis()->SetRangeUser(0, 0.01);
+	if(cat.Contains("catma175") && MA.Contains("500"))	painter4->GetYaxis()->SetRangeUser(0, 0.01);
 	// if(MA.Contains("999") && cat.Contains("chi2h") && year.Contains("2018")) painter4->GetYaxis()->SetRangeUser(0, 0.01);
 	// if(MA.Contains("999") && cat.Contains("catma300")) painter4->GetYaxis()->SetRangeUser(0, 0.005);
 	// if(MA.Contains("999") && cat.Contains("catma175")) painter4->GetYaxis()->SetRangeUser(0, 0.001);
@@ -1683,12 +1707,17 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   if(cat.Contains("175")&&MA.Contains("9999")) sigh->Rebin(2);
   //  if(cat.Contains("90")&&MA.Contains("9999")&&year.Contains("2016")) sigh->Rebin(2);
 
+  std::cout<<"fit_xmax "<<fit_xmax<<std::endl;
   if(fit_xmin < sigh->GetBinLowEdge(sigh->FindFirstBinAbove(0))) fit_xmin = sigh->GetBinLowEdge(sigh->FindFirstBinAbove(0));
 
   if(fit_xmax > sigh->GetBinLowEdge(sigh->FindLastBinAbove(0)+1)) fit_xmax = sigh->GetBinLowEdge(sigh->FindLastBinAbove(0)+1);
+  std::cout<<"fit_xmax 2 "<<fit_xmax<<std::endl;
+  std::cout<<"last bin above 0 "<< sigh->FindLastBinAbove(0)<<std::endl;
+  std::cout<<"Nbins of hist  "<< sigh->GetNbinsX()<<std::endl;
 
   if(fit_xmax > sigh->GetMean() + 3*sigh->GetRMS()) fit_xmax = sigh->GetMean() + 3*sigh->GetRMS();
   if(MA.Contains("200"))if(fit_xmin < sigh->GetMean() - 4*sigh->GetRMS()) fit_xmin = sigh->GetMean() - 4*sigh->GetRMS();
+  std::cout<<"fit_xmax 3 "<<fit_xmax<<std::endl;
 
   // important: get xmin and xmax from bin edges!
   // needed for normalization, otherwise the fit quality is bad
@@ -1822,7 +1851,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   double nvalmin = 0;
   double nvalmax = 100;
   double alphaval = 2;
-  double alphavalmin = 0;
+  double alphavalmin = 0.5;
   double alphavalmax = 10;
 
   if (cat.Contains("ma175")){
@@ -1838,12 +1867,12 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
     nval = 1;
     alphaval = 2;
-    alphavalmin = 0;
+    alphavalmin = 0.5;
     alphavalmax = 10;
   }
   if (cat.Contains("ma300")){
     alphaval = 2;
-    alphavalmin = 0;
+    alphavalmin = 0.5;
     alphavalmax = 10;
   }
     fitmodel_cb->SetParameter(0, mean);  

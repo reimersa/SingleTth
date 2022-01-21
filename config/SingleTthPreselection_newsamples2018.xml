@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
+<!ENTITY TargetLumi      "59740"> 
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2018/Preselection/NOMINAL/">
+<!ENTITY b_Cacheable     "False"> 
+<!ENTITY NEVT            "-1"> 
+<!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
+
+<!ENTITY VLQ_LH_700_ma75 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH75_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH250_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH200_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH450_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma500 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH500_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700_ma175 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH175_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma75 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH75_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH100_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH450_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma500 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH500_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma125 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH125_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700_ma125 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH125_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma175 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH175_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700_ma500 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH500_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH200_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH100_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH200_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH200_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma75 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH75_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma175 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH175_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700_ma350 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH350_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH100_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH200_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma175 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH175_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma500 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH500_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH450_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma350 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH350_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH100_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH450_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH250_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma75 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH75_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH100_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma350 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH350_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma75 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH75_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH250_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma125 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH125_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma125 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH125_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma500 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH500_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma350 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH350_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma125 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH125_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH250_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH450_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma125 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH125_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH100_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma350 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH350_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma125 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH125_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH100_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma175 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH175_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma500 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH500_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma500 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH500_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_700_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT700_MH250_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH450_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH200_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_600_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT600_MH250_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH250_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH200_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma75 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH75_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH450_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1100_ma350 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1100_MH350_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1200_ma175 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1200_MH175_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_900_ma75 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT900_MH75_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_1000_ma175 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT1000_MH175_TuneCP5_13TeV-madgraph-pythia8.xml">
+<!ENTITY VLQ_LH_800_ma350 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2018/TprimeBToTH_TLep_Hbb_LH_MT800_MH350_TuneCP5_13TeV-madgraph-pythia8.xml">
+]>
+
+<!-- 
+<ConfigParse NEventsBreak="0" FileSplit="25" AutoResubmit="5"/>
+<ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth_Pre2018"/>
+-->
+
+<JobConfiguration JobName="ExampleCycleJob" OutputLevel="INFO">
+	<Library Name="libSUHH2SingleTth"/>
+	<Package Name="SUHH2SingleTth.par" />
+	<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&PRESELdir;/" PostFix="" TargetLumi="&TargetLumi;" >
+
+	<!-- <InputData Lumi="77.11183369" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma75_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma75; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="140.82502548" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma250_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma250; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="211.23739085" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma200_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma200; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="162.82127258" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma450_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma450; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="115.10378714" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma500_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma500; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="163.38680963" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma175_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma175; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="60.80322291" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma75_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma75; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="101.96150936" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma100_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma100; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="148.55249651" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma450_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1000_ma450; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="131.68218661" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma500_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma500; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="79.62741303" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma125_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma125; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="124.67257386" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma125_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma125; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="70.153996998" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma175_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma175; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="71.55722905" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma500_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma500; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="78.850217773" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma200_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma200; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="33.125512808" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma100_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma100; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="63.99669931" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma200_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma200; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="178.7946517" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma200_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma200; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="97.90871683" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma75_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma75; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="132.88856232" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma175_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma175; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="197.28687399" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma350_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma350; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="128.45137853" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma100_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma100; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="119.87567695" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma200_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma200; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="107.48351892" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma175_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma175; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="144.68464436" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma500_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1000_ma500; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="130.50700073" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma450_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma450; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="141.18593882" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma350_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1000_ma350; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="80.81842617" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma100_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma100; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="163.74900491" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma450_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma450; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="169.53927966" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma250_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma250; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="49.57716545" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma75_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma75; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<InputData Lumi="51.28021038" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma100_2018" Cacheable="&b_Cacheable;">
+			&VLQ_LH_1000_ma100;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+	<!-- <InputData Lumi="168.97130736" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma350_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma350; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="76.851095284" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma75_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1000_ma75; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="94.9364881" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma250_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma250; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="63.700926212" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma125_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1000_ma125; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="51.147875461" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma125_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma125; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="150.77329249" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma500_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma500; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="99.15506197" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma350_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma350; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="155.38441937" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma125_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma125; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="115.89098444" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma250_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1000_ma250; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="127.72679087" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma450_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma450; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="41.24069678" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma125_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma125; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="41.20261067" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma100_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma100; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="165.04498115" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma350_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma350; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="99.53924541" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma125_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma125; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="64.314604651" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma100_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma100; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="191.60826654" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma175_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma175; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="130.97801032" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma500_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma500; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="0.008280443012" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma500_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma500; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="199.32218527" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma250_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_700_ma250; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="1.4360854982" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma450_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma450; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="97.27914099" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma200_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1000_ma200; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="222.32715188" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma250_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_600_ma250; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="77.59739163" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma250_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma250; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="147.01989435" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma200_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma200; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="61.57317035" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma75_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma75; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="112.06247263" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma450_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma450; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="118.96468517" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma350_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1100_ma350; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="56.78071577" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma175_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1200_ma175; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="48.30940812" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma75_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_900_ma75; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="86.70437551" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma175_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_1000_ma175; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+	<!-- <InputData Lumi="179.57994412" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma350_2018" Cacheable="&b_Cacheable;"> -->
+	<!-- 		&VLQ_LH_800_ma350; -->
+	<!-- 		<InputTree Name="AnalysisTree" /> -->
+	<!-- 		<OutputTree Name="AnalysisTree" /> -->
+	<!-- 	</InputData> -->
+		<UserConfig> 
+ 			<Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices" /> 
+ 			<Item Name="ElectronCollection" Value="slimmedElectronsUSER" /> 
+ 			<Item Name="MuonCollection" Value="slimmedMuonsUSER" /> 
+ 			<Item Name="JetCollection" Value="jetsAk4CHS" /> 
+ 			<Item Name="METName" Value="slimmedMETs" /> 
+ 			<Item Name="GenJetCollection" Value="slimmedGenJets" /> 
+ 			<Item Name="GenParticleCollection" Value="GenParticles" /> 
+			<Item Name="GenInfoName" Value="genInfo" /> 
+ 			<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2018/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.root" /> 
+ 			<Item Name="lumihists_lumi_per_bin" Value="1000."/> 
+ 		<Item Name="AnalysisModule" Value="SingleTthPreselectionModule" /> 
+ 		<Item Name="use_sframe_weight" Value="false" /> 
+ 		<Item Name="pileup_directory" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2018/MyMCPileupHistogram.root" /> 
+ 		<Item Name="pileup_directory_data" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2018/MyDataPileupHistogram2018.root" /> 
+ 		<Item Name="jecsmear_direction" Value="nominal" /> 
+ 		<Item Name="jersmear_direction" Value="nominal" /> 
+ 		<Item Name="ScaleVariationMuR"       Value="none" /> 
+ 		<Item Name="ScaleVariationMuF"       Value="none" /> 
+		<Item Name="sys_muonid"      Value="nominal" /> 
+		<Item Name="sys_muoniso"     Value="nominal" /> 
+		<Item Name="sys_muontrigger" Value="nominal" /> 
+		<Item Name="sys_eleid"       Value="nominal" /> 
+		<Item Name="sys_elereco"     Value="nominal" /> 
+		<Item Name="sys_eletrigger"  Value="nominal" /> 
+		<Item Name="sys_btag"        Value="central" /> 
+		<Item Name="sys_pu"          Value="nominal" /> 
+ 		<Item Name="TestKey" Value="TestKeyValue" /> 
+ 	</UserConfig> 
+ </Cycle> 
+ </JobConfiguration> 

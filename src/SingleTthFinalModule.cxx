@@ -264,11 +264,15 @@ namespace uhh2examples {
     event.weight = weight_nominal;
     // cout << "weight nominal: " << weight_nominal << endl;
     fill_histograms(event, "nominal", is_sr, is_much, best_catmap[best_cat]);
+    
+    //    std::cout<<"after nominal"<<std::endl;
 
     // Loop over easy systematics
     for(unsigned int i=0; i<systnames.size(); i++){
       for(unsigned int j=0; j<systshift.size(); j++){
 
+
+	//	std::cout<<"in syst  "<<systnames.at(i)<<"  "<<systshift.at(j)<<std::endl;
         // if(systnames[i] == "pu" && !is_mc) continue;
 
         int idx = 2*i + j;
@@ -282,6 +286,8 @@ namespace uhh2examples {
       }
     }
 
+    //    std::cout<<"scale"<<std::endl;
+
     // Loop over scale systematics
     for(unsigned int j=0; j<systshift_scale.size(); j++){
 
@@ -291,6 +297,8 @@ namespace uhh2examples {
       TString tag = "scale_" + systshift_scale[j];
       fill_histograms(event, (string)tag, is_sr, is_much, best_catmap[best_cat]);
     }
+
+    //    std::cout<<"PDF"<<std::endl;
 
     // Fill PDF histograms
     event.weight = weight_nominal;

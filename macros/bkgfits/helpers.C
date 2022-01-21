@@ -266,12 +266,12 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
   sigh->SetDirectory(0);
   sigh->Rebin(2);
 
-  for(unsigned int ibin=1; ibin<sigh->GetNbinsX()+1;ibin++){
-    if(sigh->GetBinError(ibin) < 0.1) {
-      sigh->SetBinContent(ibin,0);
-      sigh->SetBinError(ibin,0);
-    }
-  }
+  // for(unsigned int ibin=1; ibin<sigh->GetNbinsX()+1;ibin++){
+  //   if(sigh->GetBinError(ibin) < 0.1) {
+  //     sigh->SetBinContent(ibin,0);
+  //     sigh->SetBinError(ibin,0);
+  //   }
+  // }
 
   // cosmetics
   sigh->SetXTitle("M_{T}^{rec} [GeV]");

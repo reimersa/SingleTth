@@ -2,7 +2,7 @@
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 <!ENTITY TargetLumi      "41530"> 
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/NOMINAL/">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/">
 <!ENTITY b_Cacheable     "False"> 
 <!ENTITY NEVT            "-1"> 
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -351,8 +351,8 @@
  		<Item Name="pileup_directory_data" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram.root" /> 
  		<Item Name="pileup_directory_data_up" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram_72383.root" /> 
  		<Item Name="pileup_directory_data_down" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram_66017.root" /> 
-		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2017/BTagMCEfficiencyHists_mediumWP.root" /> 
-		<Item Name="BTagCalibration" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/" /> 
+		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2017/BTagMCEfficiencyHists_mediumwp.root" /> 
+		<Item Name="BTagCalibration" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/DeepFlavour_94XSF_WP_V3_B_F.csv" /> 
  		<Item Name="jecsmear_direction" Value="nominal" /> 
  		<Item Name="jersmear_direction" Value="nominal" /> 
  		<Item Name="ScaleVariationMuR"       Value="none" /> 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
-<!ENTITY TargetLumi      "35920"> 
+<!ENTITY TargetLumi      "59740"> 
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2016/Preselection/NOMINAL/">
 <!ENTITY b_Cacheable     "False"> 
 <!ENTITY NEVT            "-1"> 
@@ -13,6 +13,7 @@
 <!ENTITY VLQ_LH_1200_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT1200_MH200_TuneCUETP8M1_13TeV-madgraph-p_Summer16_v1.xml">
 <!ENTITY VLQ_LH_1200_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT1200_MH100_TuneCUETP8M1_13TeV-madgraph-p_Summer16_v1.xml">
 <!ENTITY VLQ_LH_600_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT600_MH200_TuneCUETP8M1_13TeV-madgraph-py_Summer16_v1.xml">
+<!ENTITY VLQ_LH_800_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT800_MH100_TuneCUETP8M1_13TeV-madgraph-py_Summer16_v1.xml">
 <!ENTITY VLQ_LH_600_ma125 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT600_MH125_TuneCUETP8M1_13TeV-madgraph-py_Summer16_v1.xml">
 <!ENTITY VLQ_LH_1100_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT1100_MH250_TuneCUETP8M1_13TeV-madgraph-p_Summer16_v1.xml">
 <!ENTITY VLQ_LH_800_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT800_MH450_TuneCUETP8M1_13TeV-madgraph-py_Summer16_v1.xml">
@@ -35,6 +36,7 @@
 <!ENTITY VLQ_LH_1000_ma175 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT1000_MH175_TuneCUETP8M1_13TeV-madgraph-p_Summer16_v1.xml">
 <!ENTITY VLQ_LH_600_ma450 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT600_MH450_TuneCUETP8M1_13TeV-madgraph-py_Summer16_v1.xml">
 <!ENTITY VLQ_LH_700_ma500 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT700_MH500_TuneCUETP8M1_13TeV-madgraph-py_Summer16_v1.xml">
+<!ENTITY VLQ_LH_700_ma100 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT700_MH100_TuneCUETP8M1_13TeV-madgraph-py_Summer16_v1.xml">
 <!ENTITY VLQ_LH_1100_ma200 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT1100_MH200_TuneCUETP8M1_13TeV-madgraph-p_Summer16_v1.xml">
 <!ENTITY VLQ_LH_700_ma250 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT700_MH250_TuneCUETP8M1_13TeV-madgraph-py_Summer16_v1.xml">
 <!ENTITY VLQ_LH_800_ma75 SYSTEM "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/new_signals/2016/TprimeBToTH_TLep_Hbb_LH_MT800_MH75_TuneCUETP8M1_13TeV-madgraph-pyt_Summer16_v1.xml">
@@ -110,6 +112,11 @@
 		</InputData>
 	<InputData Lumi="216.803596797" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma200_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_600_ma200;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+	<InputData Lumi="85.701074258" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma100_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_800_ma100;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
@@ -220,6 +227,11 @@
 		</InputData>
 	<InputData Lumi="75.938179173" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma500_2016v3" Cacheable="&b_Cacheable;">
 			&VLQ_LH_700_ma500;
+			<InputTree Name="AnalysisTree" />
+			<OutputTree Name="AnalysisTree" />
+		</InputData>
+	<InputData Lumi="202.357613524" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma100_2016v3" Cacheable="&b_Cacheable;">
+			&VLQ_LH_700_ma100;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>

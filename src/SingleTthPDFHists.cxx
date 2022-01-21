@@ -23,6 +23,7 @@ SingleTthPDFHists::SingleTthPDFHists(Context & ctx, const string & dirname): His
 
   h_hyps           = ctx.get_handle<std::vector<SingleTthReconstructionHypothesis>>("TprimeHypotheses");
   h_is_tprime_reco = ctx.get_handle<bool>("is_tprime_reco");
+  h_best_cat           = ctx.get_handle<TString>("Best_cat");
   m_oname = ctx.get("dataset_version");
   TString m_pdfname = "NNPDF30_lo_as_0130";
   // TString weightpath = ctx.get("PDFWeightPath");
@@ -36,15 +37,18 @@ SingleTthPDFHists::SingleTthPDFHists(Context & ctx, const string & dirname): His
   //1) the sample is LO (and doesn't have ntupleweights for that reason) (this assumption is protected by a runtime_error later)
   //2) the sample is NLO and yet doesn't have ntupleweights
 
-  Year year = extract_year(ctx);
+  year = extract_year(ctx);
   if(year == Year::is2017v1 || year == Year::is2017v2){
-    take_ntupleweights = !(m_oname.Contains("QCD")|| m_oname.Contains("VLQ"));
+    //    take_ntupleweights = !(m_oname.Contains("QCD")|| m_oname.Contains("VLQ"));
+    take_ntupleweights = !(m_oname.Contains("QCD"));
   }
   else if(year == Year::is2018){
-    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("Diboson")|| m_oname.Contains("VLQ"));
+    //    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("Diboson")|| m_oname.Contains("VLQ"));
+    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("Diboson"));
   }
   else{
-    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW")|| m_oname.Contains("VLQ"));
+    //    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW")|| m_oname.Contains("VLQ"));
+    take_ntupleweights = !(m_oname.Contains("QCD") || m_oname.Contains("ST_tW"));
   }
   // take_ntupleweights =  use_ntupleweights && (!is_LO || m_oname.Contains("DYJets")) && (m_oname != "SingleTop_T_tWch" && m_oname != "SingleTop_Tbar_tWch");
 
@@ -103,20 +107,34 @@ void SingleTthPDFHists::fill(const Event & event){
   bool is_tprime_reco = event.get(h_is_tprime_reco);
   if(!is_tprime_reco) throw runtime_error("In SingleTthPDFHists.cxx: Tprime mass has not been reconstructed.");
 
-  vector<SingleTthReconstructionHypothesis> hyps = event.get(h_hyps);
-  const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, "Chi2" );
+  TString best_cat = "Chi2";
+  if(event.is_valid( h_best_cat)) best_cat = event.get(h_best_cat);
+  
+  std::vector<SingleTthReconstructionHypothesis> hyps = event.get(h_hyps);
+  const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, best_cat.Data() );
+  
+  // if(!is_tprime_reco) throw runtime_error("In SingleTthPDFHists.cxx: Tprime mass has not been reconstructed.");
+
+  // vector<SingleTthReconstructionHypothesis> hyps = event.get(h_hyps);
+  // const SingleTthReconstructionHypothesis* hyp = get_best_hypothesis( hyps, "Chi2" );
 
   double m_tprime = 0.;
   if( (hyp->Tprime_v4()).isTimelike() ) {m_tprime = (hyp->Tprime_v4()).M();}
   else {m_tprime = sqrt( -(hyp->Tprime_v4()).mass2());}
 
+
   if(take_ntupleweights){
     for(int i=0; i<100; i++){
 
       double pdf_weight = event.genInfo->systweights().at(i+9);
-      double fillweight = weight * pdf_weight/event.genInfo->originalXWGTUP();
-      if(m_oname.Contains("VLQ_") && !m_oname.Contains("2016v2")) fillweight = weight * pdf_weight/event.genInfo->pdf_scalePDF();
-      // cout << "fillweight: " << weight << " * " << pdf_weight << " / " << event.genInfo->pdf_scalePDF() << " = " << fillweight << endl;
+      if(m_oname.Contains("VLQ_")) {
+	pdf_weight = event.genInfo->systweights().at(i+918);
+	if(year == Year::is2017v1 || year == Year::is2017v2 || year == Year::is2018)	pdf_weight = event.genInfo->systweights().at(i+48);
+      }
+      //      std::cout<<" nominal weight  "<< event.genInfo->systweights().at(917)<<"  "<<event.genInfo->originalXWGTUP()<<std::endl;
+      double fillweight = weight * (pdf_weight/event.genInfo->originalXWGTUP());
+      //      if(m_oname.Contains("VLQ_") && !m_oname.Contains("2016v2")) fillweight = weight * pdf_weight/event.genInfo->pdf_scalePDF();
+      //      cout << "fillweight: " << weight << " * " << pdf_weight << " / " << event.genInfo->originalXWGTUP() << " = " << fillweight << endl;
       TString name1 = histo_names1[i];
       TString name2 = histo_names2[i];
 
