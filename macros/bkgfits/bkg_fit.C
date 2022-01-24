@@ -20,13 +20,13 @@ EFitFunction FitFunc = eFuncExp2;
 void bkg_fit()
 {
 
-  TString year = "2016v3";
-  //    TString year = "2017v2";
-  //  TString year = "2018";
+  //TString year = "2016v3";
+  //  TString year = "2017v2";
+  TString year = "2018";
   //  TString year = "allyears";
   
-  //  std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175", "catma300"};
-  std::vector<TString> categories = {"chi2h_2"};
+  std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175", "catma300"};
+  //  std::vector<TString> categories = {"chi2h_2"};
   for (unsigned int icat=0;icat < categories.size();icat++){
 
     TString cat = categories[icat];
@@ -82,9 +82,10 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   if (region==eSR){
     fit_xmin = 450;
     fit_xmax = 2000;    
-    if(cat.Contains("ma300"))fit_xmin = 550;
+    if(cat.Contains("ma300"))fit_xmin = 560;
     if(cat.Contains("chi2h_2"))fit_xmin = 520;
     if(cat.Contains("ma175"))fit_xmin = 590;
+    if(cat.Contains("ma175")&& channel==eEle && year.Contains("2018"))fit_xmax = 1999;
     if(cat.Contains("ma90") && channel==eEle) fit_xmax = 1999;
   } else {
     fit_xmin = 560;

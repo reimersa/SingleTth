@@ -201,6 +201,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     // if(cat.Contains("chi2h_2")) fit_xmin = 500;
     //    if(cat.Contains("chi2h_2")&&year.Contains("2018")) fit_xmin = 490;
     if(cat.Contains("catma175")) fit_xmin = 590;
+    if(cat.Contains("ma175")&& channel==defs::eEle && year.Contains("2018"))fit_xmax = 1999;
     if(cat.Contains("ma90") && channel==defs::eEle) fit_xmax = 1999;
 
   } else {
