@@ -63,7 +63,7 @@ void sig_fit()
       if(MA=="450") categories = {"catma175","catma300"};
       if(MA=="500") categories = {"catma175","catma300"};
       if(MA.Contains("999")) categories = {"catma300","chi2h_2","catma175","catma90"};
-      categories = {"catma300"};
+      //      categories = {"catma300"};
 
       for(unsigned int icat=0;icat < categories.size();icat++){
 
@@ -158,8 +158,6 @@ void sig_fit()
 	      MTs_backup = { 700, 800, 900, 1000, 1100,1200};// 2017	  
 	    }
 	    if(year.Contains("2017") && cat.Contains("ma175")){
-	      // MTs = {600,700, 800, 900, 1000, 1100};// 2017
-	      // MTs_backup = { 600,700, 800, 900, 1000, 1100};// 2017	  
 	      MTs = {600,700, 800, 900, 1000, 1100,1200};// 2017
 	      MTs_backup = { 600,700, 800, 900, 1000, 1100,1200};// 2017	  
 
@@ -197,17 +195,17 @@ void sig_fit()
 	std::vector<double> widths_err;  
 	std::vector<double> effs;  
 	std::vector<double> effs_err;  
-	std::vector<double> means2;
-	std::vector<double> means2_err;
-	std::vector<double> widths2;  
-	std::vector<double> widths2_err;  
+	std::vector<double> nvalues;
+	std::vector<double> nvalues_err;
+	std::vector<double> alpha;  
+	std::vector<double> alpha_err;  
 	std::vector<double> fnorm;  
 	std::vector<double> fnorm_err;  
 	std::vector<double> zeros;
     
 	// do the fits, fill results into graph
 	for (int i=0; i<MTs.size(); ++i){
-	  fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err, effs, effs_err, means2, means2_err, widths2, widths2_err, fnorm, fnorm_err,"",year,cat,MA,func,2,2.5,true);
+	  fitsignal(ch,  (int) MTs[i], means, means_err, widths, widths_err, effs, effs_err, nvalues, nvalues_err, alpha, alpha_err, fnorm, fnorm_err,"",year,cat,MA,func,2,2.5,true);
       
 	  zeros.push_back(0);
 	}
@@ -216,8 +214,8 @@ void sig_fit()
 	TGraphErrors* geff     = new TGraphErrors(MTs.size(), MTs.data(), effs.data(), zeros.data(), effs_err.data()); 
     
 	///second gauss
-	TGraphErrors* gmean2    = new TGraphErrors(MTs.size(), MTs.data(), means2.data(), zeros.data(), means2_err.data());  
-	TGraphErrors* gsigma2   = new TGraphErrors(MTs.size(), MTs.data(), widths2.data(), zeros.data(), widths2_err.data());    
+	TGraphErrors* gn    = new TGraphErrors(MTs.size(), MTs.data(), nvalues.data(), zeros.data(), nvalues_err.data());  
+	TGraphErrors* galpha   = new TGraphErrors(MTs.size(), MTs.data(), alpha.data(), zeros.data(), alpha_err.data());    
 	TGraphErrors* gfnorm     = new TGraphErrors(MTs.size(), MTs.data(), fnorm.data(), zeros.data(), fnorm_err.data()); 
     
 	// efficiency with total (stat+syst) uncertainty, is calculated below
@@ -278,13 +276,13 @@ void sig_fit()
 	gStyle->SetStatX(0.63);
 	gStyle->SetStatW(0.24);
 	gStyle->SetStatY(0.85);  
-	TF1* lin = new TF1("meanfit", "[0]+[1]*(x-600)", 550, 1250);
-	lin->SetParName(0, "#mu at 600 GeV");
-	lin->SetParName(1, "Slope");
-	TFitResultPtr r = gmean->Fit(lin, "0");
+	TF1* lin_mean = new TF1("meanfit", "[0]+[1]*(x-600)", 550, 1250);
+	lin_mean->SetParName(0, "#mu at 600 GeV");
+	lin_mean->SetParName(1, "Slope");
+	TFitResultPtr r = gmean->Fit(lin_mean, "0");
     
-	infotofile<< "meanfit param0 \t"<<lin->GetParameter(0)<<"\t"<<lin->GetParError(0)<<std::endl;
-	infotofile<< "meanfit param1 \t"<<lin->GetParameter(1)<<"\t"<<lin->GetParError(1)<<std::endl;
+	infotofile<< "meanfit param0 \t"<<lin_mean->GetParameter(0)<<"\t"<<lin_mean->GetParError(0)<<std::endl;
+	infotofile<< "meanfit param1 \t"<<lin_mean->GetParameter(1)<<"\t"<<lin_mean->GetParError(1)<<std::endl;
     
 	TGraphErrors* fit_err_95 = new TGraphErrors(MTs.size(), MTs.data(), means.data(), zeros.data(), means_err.data());  
 	TFitter* fitter = (TFitter*) TVirtualFitter::GetFitter();
@@ -297,19 +295,19 @@ void sig_fit()
 	fit_err_68->SetFillColor(kOrange+1);
 	fit_err_68->Draw("L3 same");
     
-	lin->SetLineColor(kRed+1);
-	lin->DrawCopy("same");
+	lin_mean->SetLineColor(kRed+1);
+	lin_mean->DrawCopy("same");
 	gmean->Draw("P same");
     
-	lin->SetParameter(0, lin->GetParameter(0)+2 * lin->GetParError(0));
-	lin->SetParameter(1, lin->GetParameter(1)+2*0.5* lin->GetParError(1));
-	lin->SetLineColor(kBlue);
-	//lin->DrawCopy("same");
+	lin_mean->SetParameter(0, lin_mean->GetParameter(0)+2 * lin_mean->GetParError(0));
+	lin_mean->SetParameter(1, lin_mean->GetParameter(1)+2*0.5* lin_mean->GetParError(1));
+	lin_mean->SetLineColor(kBlue);
+	//lin_mean->DrawCopy("same");
     
-	lin->SetParameter(0, lin->GetParameter(0)-2*lin->GetParError(0));
-	lin->SetParameter(1, lin->GetParameter(1)- lin->GetParError(1));
-	lin->SetLineColor(kBlue);
-	//  lin->DrawCopy("same");
+	lin_mean->SetParameter(0, lin_mean->GetParameter(0)-2*lin_mean->GetParError(0));
+	lin_mean->SetParameter(1, lin_mean->GetParameter(1)- lin_mean->GetParError(1));
+	lin_mean->SetLineColor(kBlue);
+	//  lin_mean->DrawCopy("same");
     
     
 	TString channel_name = "";
@@ -337,14 +335,14 @@ void sig_fit()
 	//-------------------------------------------------
 	// Mean values with fit
 	//-------------------------------------------------
-	TCanvas *can_mean2 = new TCanvas("mean_can_mean2","",10,10,700,700);
+	TCanvas *can_n = new TCanvas("mean_can_n","",10,10,700,700);
 	gPad->SetTickx();
 	gPad->SetTicky();
 	gStyle->SetOptStat(0);
-	can_mean2->SetLeftMargin(0.15);
-	can_mean2->SetRightMargin(0.05);
-	can_mean2->SetTopMargin(0.10);
-	can_mean2->SetBottomMargin(0.12);
+	can_n->SetLeftMargin(0.15);
+	can_n->SetRightMargin(0.05);
+	can_n->SetTopMargin(0.10);
+	can_n->SetBottomMargin(0.12);
     
 	// cosmetics
 	painter = new TH1F("painter", "", 1, 550, 1250);
@@ -362,53 +360,53 @@ void sig_fit()
 	if(func.Contains("lin")) painter->GetYaxis()->SetRangeUser(0,100);
 	if(cat.Contains("175")) painter->GetYaxis()->SetRangeUser(-2,10);
 	painter->Draw();
-	gmean2->SetMarkerStyle(20);
-	gmean2->SetLineWidth(2);
+	gn->SetMarkerStyle(20);
+	gn->SetLineWidth(2);
     
 	gStyle->SetStatX(0.63);
 	gStyle->SetStatW(0.24);
 	gStyle->SetStatY(0.85);  
-	lin = new TF1("meanfit", "[0]+[1]*(x-600)", 550, 1250);
-	if(cat.Contains("ma300"))lin->SetParLimits(0,0,999999999);
-	if(cat.Contains("ma60"))lin->SetParLimits(0,0,999999999);
-	if(cat.Contains("ma90")&&year.Contains("allyears"))lin->SetParLimits(0,0,999999999);
-	if(cat.Contains("chi2h")&&MA.Contains("175"))lin->FixParameter(1,0);
-	if(cat.Contains("catma300")&&MA.Contains("75"))lin->FixParameter(1,0);
-	if(cat.Contains("catma60")&&MA.Contains("75"))lin->FixParameter(1,0);
-	if(cat.Contains("catma90")&&MA.Contains("75"))lin->FixParameter(1,0);
-	if(cat.Contains("catma175")&&MA.Contains("450"))lin->FixParameter(1,0);
-	if(year.Contains("2017")&&cat.Contains("catma300")&&MA.Contains("450"))lin->FixParameter(1,0);
-	lin->SetParName(0, "#mu at 600 GeV");
-	lin->SetParName(1, "Slope");
-	r = gmean2->Fit(lin, "0");
+	TF1* lin_n = new TF1("meanfit", "[0]+[1]*(x-600)", 550, 1250);
+	if(cat.Contains("ma300"))lin_n->SetParLimits(0,0,999999999);
+	if(cat.Contains("ma60"))lin_n->SetParLimits(0,0,999999999);
+	if(cat.Contains("ma90")&&year.Contains("allyears"))lin_n->SetParLimits(0,0,999999999);
+	if(cat.Contains("chi2h")&&MA.Contains("175"))lin_n->FixParameter(1,0);
+	if(cat.Contains("catma300")&&MA.Contains("75"))lin_n->FixParameter(1,0);
+	if(cat.Contains("catma60")&&MA.Contains("75"))lin_n->FixParameter(1,0);
+	if(cat.Contains("catma90")&&MA.Contains("75"))lin_n->FixParameter(1,0);
+	if(cat.Contains("catma175")&&MA.Contains("450"))lin_n->FixParameter(1,0);
+	if(year.Contains("2017")&&cat.Contains("catma300")&&MA.Contains("450"))lin_n->FixParameter(1,0);
+	lin_n->SetParName(0, "#mu at 600 GeV");
+	lin_n->SetParName(1, "Slope");
+	r = gn->Fit(lin_n, "0");
     
-	infotofile<< "mean2fit param0 \t"<<lin->GetParameter(0)<<"\t"<<lin->GetParError(0)<<std::endl;
-	infotofile<< "mean2fit param1 \t"<<lin->GetParameter(1)<<"\t"<<lin->GetParError(1)<<std::endl;
+	infotofile<< "mean2fit param0 \t"<<lin_n->GetParameter(0)<<"\t"<<lin_n->GetParError(0)<<std::endl;
+	infotofile<< "mean2fit param1 \t"<<lin_n->GetParameter(1)<<"\t"<<lin_n->GetParError(1)<<std::endl;
     
-	fit_err_95 = new TGraphErrors(MTs.size(), MTs.data(), means2.data(), zeros.data(), means2_err.data());  
+	fit_err_95 = new TGraphErrors(MTs.size(), MTs.data(), nvalues.data(), zeros.data(), nvalues_err.data());  
 	fitter = (TFitter*) TVirtualFitter::GetFitter();
 	fitter->GetConfidenceIntervals(fit_err_95, 0.95);
 	fit_err_95->SetFillColor(kOrange-4);
 	fit_err_95->Draw("L3 same");
     
-	fit_err_68 = new TGraphErrors(MTs.size(), MTs.data(), means2.data(), zeros.data(), means2_err.data());  
+	fit_err_68 = new TGraphErrors(MTs.size(), MTs.data(), nvalues.data(), zeros.data(), nvalues_err.data());  
 	fitter->GetConfidenceIntervals(fit_err_68, 0.68);
 	fit_err_68->SetFillColor(kOrange+1);
 	fit_err_68->Draw("L3 same");
     
-	lin->SetLineColor(kRed+1);
-	lin->DrawCopy("same");
-	gmean2->Draw("P same");
+	lin_n->SetLineColor(kRed+1);
+	lin_n->DrawCopy("same");
+	gn->Draw("P same");
     
-	lin->SetParameter(0, lin->GetParameter(0)+2 * lin->GetParError(0));
-	lin->SetParameter(1, lin->GetParameter(1)+2*0.5* lin->GetParError(1));
-	lin->SetLineColor(kBlue);
-	//lin->DrawCopy("same");
+	lin_n->SetParameter(0, lin_n->GetParameter(0)+2 * lin_n->GetParError(0));
+	lin_n->SetParameter(1, lin_n->GetParameter(1)+2*0.5* lin_n->GetParError(1));
+	lin_n->SetLineColor(kBlue);
+	//lin_n->DrawCopy("same");
     
-	lin->SetParameter(0, lin->GetParameter(0)-2*lin->GetParError(0));
-	lin->SetParameter(1, lin->GetParameter(1)- lin->GetParError(1));
-	lin->SetLineColor(kBlue);
-	//  lin->DrawCopy("same");
+	lin_n->SetParameter(0, lin_n->GetParameter(0)-2*lin_n->GetParError(0));
+	lin_n->SetParameter(1, lin_n->GetParameter(1)- lin_n->GetParError(1));
+	lin_n->SetLineColor(kBlue);
+	//  lin_n->DrawCopy("same");
     
     
 	fname = "results/signal_mean2_values_" + channel_name +"_"+year+"_"+cat+"_"+MA; 
@@ -419,9 +417,9 @@ void sig_fit()
 	info.Append(info2);
 	text->DrawLatex(0.16, 0.92, info.Data());
     
-	can_mean2->RedrawAxis();
-	//  can_mean2->SaveAs(fname+postfix+".eps");
-	can_mean2->SaveAs(fname+postfix+".pdf");
+	can_n->RedrawAxis();
+	//  can_n->SaveAs(fname+postfix+".eps");
+	can_n->SaveAs(fname+postfix+".pdf");
     
 	////// add uncertainties
 	// for each uncertainties fit linear function and draw it
@@ -432,10 +430,10 @@ void sig_fit()
 	std::vector<double> effs_unc;  
 	std::vector<double> effs_err_unc;  
     
-	std::vector<double> means2_unc;
-	std::vector<double> means2_err_unc;
-	std::vector<double> widths2_unc;  
-	std::vector<double> widths2_err_unc;  
+	std::vector<double> nvalues_unc;
+	std::vector<double> nvalues_err_unc;
+	std::vector<double> alpha_unc;  
+	std::vector<double> alpha_err_unc;  
 	std::vector<double> fnorm_unc;  
 	std::vector<double> fnorm_err_unc;  
     
@@ -464,59 +462,59 @@ void sig_fit()
 	    widths_err_unc.clear();  
 	    effs_unc.clear();  
 	    effs_err_unc.clear();  
-	    means2_unc.clear();
-	    means2_err_unc.clear();
-	    widths2_unc.clear();  
-	    widths2_err_unc.clear();  
+	    nvalues_unc.clear();
+	    nvalues_err_unc.clear();
+	    alpha_unc.clear();  
+	    alpha_err_unc.clear();  
 	    fnorm_unc.clear();  
 	    fnorm_err_unc.clear();  
 	
 	    for (int i=0; i<MTs.size(); ++i){
-	      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, means2_unc, means2_err_unc, widths2_unc, widths2_err_unc, fnorm_unc, fnorm_err_unc, unc+direction,year,cat,MA,func);
+	      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, nvalues_unc, nvalues_err_unc, alpha_unc, alpha_err_unc, fnorm_unc, fnorm_err_unc, unc+direction,year,cat,MA,func);
 	    }
 	    TGraphErrors* gmean_unc  = new TGraphErrors(MTs.size(), MTs.data(), means_unc.data(), zeros.data(), means_err_unc.data());  
-	    TF1* lin = new TF1("meanfit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
-	    TFitResultPtr r_unc = gmean_unc->Fit(lin, "0");
-	    lin->SetLineColor(kBlue+jj);
-	    lin->SetLineStyle(jj); 
+	    TF1* lin_mean = new TF1("meanfit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
+	    TFitResultPtr r_unc = gmean_unc->Fit(lin_mean, "0");
+	    lin_mean->SetLineColor(kBlue+jj);
+	    lin_mean->SetLineStyle(jj); 
 	    can->cd();
 	
-	    TGraphErrors* gmean2_unc  = new TGraphErrors(MTs.size(), MTs.data(), means2_unc.data(), zeros.data(), means2_err_unc.data());  
-	    TF1* lin_mean2 = new TF1("meanfit2"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
-	    TFitResultPtr r_mean2_unc = gmean2_unc->Fit(lin_mean2, "0");
+	    TGraphErrors* gn_unc  = new TGraphErrors(MTs.size(), MTs.data(), nvalues_unc.data(), zeros.data(), nvalues_err_unc.data());  
+	    TF1* lin_n = new TF1("meanfit2"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
+	    TFitResultPtr r_n_unc = gn_unc->Fit(lin_n, "0");
 	
 	    if(unc.Contains("JER") or unc.Contains("JEC")){
-	      lin->DrawCopy("same");
+	      lin_mean->DrawCopy("same");
 	      //jj+=4;
 	    }
 	    if(unc.Contains("JEC")&&direction.Contains("up")){
-	      infotofile<< "JECmfitup param0 \t"<< lin->GetParameter(0)<<"\t"<<lin->GetParError(0)<<std::endl;
-	      infotofile<< "JECmfitup param1 \t"<< lin->GetParameter(1)<<"\t"<<  lin->GetParError(1)<<std::endl;
-	      infotofile<< "JECmfitup param2 \t"<< lin_mean2->GetParameter(0)<<"\t"<<lin_mean2->GetParError(0)<<std::endl;
-	      infotofile<< "JECmfitup param3 \t"<< lin_mean2->GetParameter(1)<<"\t"<<  lin_mean2->GetParError(1)<<std::endl;
+	      infotofile<< "JECmfitup param0 \t"<< lin_mean->GetParameter(0)<<"\t"<<lin_mean->GetParError(0)<<std::endl;
+	      infotofile<< "JECmfitup param1 \t"<< lin_mean->GetParameter(1)<<"\t"<<  lin_mean->GetParError(1)<<std::endl;
+	      infotofile<< "JECmfitup param2 \t"<< lin_n->GetParameter(0)<<"\t"<<lin_n->GetParError(0)<<std::endl;
+	      infotofile<< "JECmfitup param3 \t"<< lin_n->GetParameter(1)<<"\t"<<  lin_n->GetParError(1)<<std::endl;
 	  
 	    }
 	    if(unc.Contains("JER")&&direction.Contains("up")){
-	      infotofile<< "JERmfitup param0 \t"<< lin->GetParameter(0)<<"\t"<<lin->GetParError(0)<<std::endl;
-	      infotofile<< "JERmfitup param1 \t"<< lin->GetParameter(1)<<"\t"<<  lin->GetParError(1)<<std::endl;
-	      infotofile<< "JERmfitup param2 \t"<< lin_mean2->GetParameter(0)<<"\t"<<lin_mean2->GetParError(0)<<std::endl;
-	      infotofile<< "JERmfitup param3 \t"<< lin_mean2->GetParameter(1)<<"\t"<<  lin_mean2->GetParError(1)<<std::endl;
+	      infotofile<< "JERmfitup param0 \t"<< lin_mean->GetParameter(0)<<"\t"<<lin_mean->GetParError(0)<<std::endl;
+	      infotofile<< "JERmfitup param1 \t"<< lin_mean->GetParameter(1)<<"\t"<<  lin_mean->GetParError(1)<<std::endl;
+	      infotofile<< "JERmfitup param2 \t"<< lin_n->GetParameter(0)<<"\t"<<lin_n->GetParError(0)<<std::endl;
+	      infotofile<< "JERmfitup param3 \t"<< lin_n->GetParameter(1)<<"\t"<<  lin_n->GetParError(1)<<std::endl;
 	    }
 	    if(unc.Contains("JEC")&&direction.Contains("down")){
-	      infotofile<< "JECmfitdown param0 \t"<< lin->GetParameter(0)<<"\t"<<lin->GetParError(0)<<std::endl;
-	      infotofile<< "JECmfitdown param1 \t"<< lin->GetParameter(1)<<"\t"<<  lin->GetParError(1)<<std::endl;
-	      infotofile<< "JECmfitdown param2 \t"<< lin_mean2->GetParameter(0)<<"\t"<<lin_mean2->GetParError(0)<<std::endl;
-	      infotofile<< "JECmfitdown param3 \t"<< lin_mean2->GetParameter(1)<<"\t"<<  lin_mean2->GetParError(1)<<std::endl;
+	      infotofile<< "JECmfitdown param0 \t"<< lin_mean->GetParameter(0)<<"\t"<<lin_mean->GetParError(0)<<std::endl;
+	      infotofile<< "JECmfitdown param1 \t"<< lin_mean->GetParameter(1)<<"\t"<<  lin_mean->GetParError(1)<<std::endl;
+	      infotofile<< "JECmfitdown param2 \t"<< lin_n->GetParameter(0)<<"\t"<<lin_n->GetParError(0)<<std::endl;
+	      infotofile<< "JECmfitdown param3 \t"<< lin_n->GetParameter(1)<<"\t"<<  lin_n->GetParError(1)<<std::endl;
 	    }
 	    if(unc.Contains("JER")&&direction.Contains("down")){
-	      infotofile<< "JERmfitdown param0 \t"<< lin->GetParameter(0)<<"\t"<<lin->GetParError(0)<<std::endl;
-	      infotofile<< "JERmfitdown param1 \t"<< lin->GetParameter(1)<<"\t"<<  lin->GetParError(1)<<std::endl;
-	      infotofile<< "JERmfitdown param2 \t"<< lin_mean2->GetParameter(0)<<"\t"<<lin_mean2->GetParError(0)<<std::endl;
-	      infotofile<< "JERmfitdown param3 \t"<< lin_mean2->GetParameter(1)<<"\t"<<  lin_mean2->GetParError(1)<<std::endl;
+	      infotofile<< "JERmfitdown param0 \t"<< lin_mean->GetParameter(0)<<"\t"<<lin_mean->GetParError(0)<<std::endl;
+	      infotofile<< "JERmfitdown param1 \t"<< lin_mean->GetParameter(1)<<"\t"<<  lin_mean->GetParError(1)<<std::endl;
+	      infotofile<< "JERmfitdown param2 \t"<< lin_n->GetParameter(0)<<"\t"<<lin_n->GetParError(0)<<std::endl;
+	      infotofile<< "JERmfitdown param3 \t"<< lin_n->GetParameter(1)<<"\t"<<  lin_n->GetParError(1)<<std::endl;
 	    }
 	
 	    if(j==0){
-	      leg->AddEntry(lin,unc+" Slope "+TString::Format("%.3f", lin->GetParameter(1)),"l");
+	      leg->AddEntry(lin_mean,unc+" Slope "+TString::Format("%.3f", lin_mean->GetParameter(1)),"l");
 	      jj+=1;
 	      if (jj == 5) jj++;
 	    }
@@ -621,12 +619,12 @@ void sig_fit()
 	gStyle->SetStatX(0.70);
 	gStyle->SetStatW(0.27);
 	gStyle->SetStatY(0.85);  
-	TF1* lin2 = new TF1("sigmafit", "[0]+[1]*(x-600)", 550, 1250);
-	lin2->SetParName(0, "#sigma at 600 GeV");
-	lin2->SetParName(1, "Slope");
-	lin2->SetParameter(0,60);
-	lin2->SetParameter(1,0.06);
-	TFitResultPtr r2 = gsigma->Fit(lin2, "0");
+	TF1* lin_sigma = new TF1("sigmafit", "[0]+[1]*(x-600)", 550, 1250);
+	lin_sigma->SetParName(0, "#sigma at 600 GeV");
+	lin_sigma->SetParName(1, "Slope");
+	lin_sigma->SetParameter(0,60);
+	lin_sigma->SetParameter(1,0.06);
+	TFitResultPtr r2 = gsigma->Fit(lin_sigma, "0");
     
 	TGraphErrors* fit2_err_95 = new TGraphErrors(MTs.size(), MTs.data(), widths.data(), zeros.data(), widths_err.data());  
 	fitter = (TFitter*) TVirtualFitter::GetFitter();
@@ -639,23 +637,23 @@ void sig_fit()
 	fit2_err_68->SetFillColor(kOrange+1);
 	fit2_err_68->Draw("L3 same");
     
-	lin2->SetLineColor(kRed+1);
-	lin2->DrawCopy("same");
+	lin_sigma->SetLineColor(kRed+1);
+	lin_sigma->DrawCopy("same");
 	gsigma->Draw("P same");
     
-	infotofile<< "widthfit param0 \t"<<lin2->GetParameter(0)<<"\t"<<lin2->GetParError(0)<<std::endl;
-	infotofile<< "widthfit param1 \t"<<lin2->GetParameter(1)<<"\t"<<lin2->GetParError(1)<<std::endl;
+	infotofile<< "widthfit param0 \t"<<lin_sigma->GetParameter(0)<<"\t"<<lin_sigma->GetParError(0)<<std::endl;
+	infotofile<< "widthfit param1 \t"<<lin_sigma->GetParameter(1)<<"\t"<<lin_sigma->GetParError(1)<<std::endl;
     
 
-	lin2->SetParameter(0,lin2->GetParameter(0)+lin2->GetParError(0));
-	lin2->SetParameter(1,lin2->GetParameter(1)+0.5*lin2->GetParError(1));
-	lin2->SetLineColor(kBlue);
-	//  lin2->DrawCopy("same");
+	lin_sigma->SetParameter(0,lin_sigma->GetParameter(0)+lin_sigma->GetParError(0));
+	lin_sigma->SetParameter(1,lin_sigma->GetParameter(1)+0.5*lin_sigma->GetParError(1));
+	lin_sigma->SetLineColor(kBlue);
+	//  lin_sigma->DrawCopy("same");
     
-	lin2->SetParameter(0,lin2->GetParameter(0)-2*lin2->GetParError(0));
-	lin2->SetParameter(1,lin2->GetParameter(1)-lin2->GetParError(1));
-	lin2->SetLineColor(kBlue);
-	//  lin2->DrawCopy("same");
+	lin_sigma->SetParameter(0,lin_sigma->GetParameter(0)-2*lin_sigma->GetParError(0));
+	lin_sigma->SetParameter(1,lin_sigma->GetParameter(1)-lin_sigma->GetParError(1));
+	lin_sigma->SetLineColor(kBlue);
+	//  lin_sigma->DrawCopy("same");
 
 
 	TString fname2 = "results/signal_sigma_values_" + channel_name+"_"+year+"_"+cat+"_"+MA; 
@@ -702,60 +700,60 @@ void sig_fit()
 	if(cat.Contains("175"))   painter2->GetYaxis()->SetRangeUser(-10, 10);
 	if(cat.Contains("chi2h")&&MA.Contains("175"))   painter2->GetYaxis()->SetRangeUser(-10, 10);
 	painter2->Draw();
-	gsigma2->SetMarkerStyle(20);
-	gsigma2->SetLineWidth(2);
+	galpha->SetMarkerStyle(20);
+	galpha->SetLineWidth(2);
 
 	gStyle->SetStatX(0.70);
 	gStyle->SetStatW(0.27);
 	gStyle->SetStatY(0.85);  
-	lin2 = new TF1("sigmafit", "[0]+[1]*(x-600)", 550, 1250);
+	TF1* lin_alpha = new TF1("sigmafit", "[0]+[1]*(x-600)", 550, 1250);
 	TF1* fconst = new TF1("fconst", "[0]", 550, 1250);
 	TF1* fp2 = new TF1("fp2", "[0]+[1]*(x-600)+ [2]*(x-600)**2", 550, 1250);
 	TF1* flin = new TF1("flin", "[0]+[1]*(x-600)", 550, 1250);
-	lin2->SetParName(0, "#sigma at 600 GeV");
-	lin2->SetParName(1, "Slope");
-	lin2->SetParameter(0,50);
-	lin2->SetParameter(1,0.06);
-	if(func.Contains("cb")) 	lin2 = new TF1("sigmafit", "[0]+[1]*(x-600) + [2]*(x-600)**2", 580, 1250);
-	if(year.Contains("2016")&&cat.Contains("ma90"))	lin2->FixParameter(2,0);//lin2 = new TF1("sigmafit", "[0]+[1]*(x-600) ", 580, 1250);
+	lin_alpha->SetParName(0, "#sigma at 600 GeV");
+	lin_alpha->SetParName(1, "Slope");
+	lin_alpha->SetParameter(0,50);
+	lin_alpha->SetParameter(1,0.06);
+	if(func.Contains("cb")) 	lin_alpha = new TF1("sigmafit", "[0]+[1]*(x-600) + [2]*(x-600)**2", 580, 1250);
+	if(year.Contains("2016")&&cat.Contains("ma90"))	lin_alpha->FixParameter(2,0);//lin_alpha = new TF1("sigmafit", "[0]+[1]*(x-600) ", 580, 1250);
 	if(year.Contains("2016")&&cat.Contains("ma60"))	{
-	  lin2->FixParameter(2,0);//lin2 = new TF1("sigmafit", "[0]+[1]*(x-600) ", 580, 1250);
+	  lin_alpha->FixParameter(2,0);//lin_alpha = new TF1("sigmafit", "[0]+[1]*(x-600) ", 580, 1250);
 	}
-	//	if(func.Contains("cb")&&cat.Contains("catma300")) 	lin2 = new TF1("sigmafit", "[0]+[1]*(x-600) ", 580, 1250);
-	gsigma2->Fit(fconst,"0R");
-	gsigma2->Fit(fp2,"0R");
-	gsigma2->Fit(flin,"0R");
-	r2 = gsigma2->Fit(lin2,"0R");
+	//	if(func.Contains("cb")&&cat.Contains("catma300")) 	lin_alpha = new TF1("sigmafit", "[0]+[1]*(x-600) ", 580, 1250);
+	galpha->Fit(fconst,"0R");
+	galpha->Fit(fp2,"0R");
+	galpha->Fit(flin,"0R");
+	r2 = galpha->Fit(lin_alpha,"0R");
 
-	fit2_err_95 = new TGraphErrors(MTs.size(), MTs.data(), widths2.data(), zeros.data(), widths2_err.data());  
+	fit2_err_95 = new TGraphErrors(MTs.size(), MTs.data(), alpha.data(), zeros.data(), alpha_err.data());  
 	fitter = (TFitter*) TVirtualFitter::GetFitter();
 	fitter->GetConfidenceIntervals(fit2_err_95, 0.95);
 	fit2_err_95->SetFillColor(kOrange-4);
 	fit2_err_95->Draw("L3 same");
 
-	fit2_err_68 = new TGraphErrors(MTs.size(), MTs.data(), widths2.data(), zeros.data(), widths2_err.data());  
+	fit2_err_68 = new TGraphErrors(MTs.size(), MTs.data(), alpha.data(), zeros.data(), alpha_err.data());  
 	fitter->GetConfidenceIntervals(fit2_err_68, 0.68);
 	fit2_err_68->SetFillColor(kOrange+1);
 	fit2_err_68->Draw("L3 same");
 
-	lin2->SetLineColor(kRed+1);
-	lin2->DrawCopy("same");
-	gsigma2->Draw("P same");
+	lin_alpha->SetLineColor(kRed+1);
+	lin_alpha->DrawCopy("same");
+	galpha->Draw("P same");
 
-	infotofile<< "width2fit param0 \t"<<lin2->GetParameter(0)<<"\t"<<lin2->GetParError(0)<<std::endl;
-	infotofile<< "width2fit param1 \t"<<lin2->GetParameter(1)<<"\t"<<lin2->GetParError(1)<<std::endl;
-	if(func.Contains("cb"))	infotofile<< "width2fit param2 \t"<<lin2->GetParameter(2)<<"\t"<<lin2->GetParError(2)<<std::endl;
+	infotofile<< "width2fit param0 \t"<<lin_alpha->GetParameter(0)<<"\t"<<lin_alpha->GetParError(0)<<std::endl;
+	infotofile<< "width2fit param1 \t"<<lin_alpha->GetParameter(1)<<"\t"<<lin_alpha->GetParError(1)<<std::endl;
+	if(func.Contains("cb"))	infotofile<< "width2fit param2 \t"<<lin_alpha->GetParameter(2)<<"\t"<<lin_alpha->GetParError(2)<<std::endl;
 
 
-	lin2->SetParameter(0,lin2->GetParameter(0)+lin2->GetParError(0));
-	lin2->SetParameter(1,lin2->GetParameter(1)+0.5*lin2->GetParError(1));
-	lin2->SetLineColor(kBlue);
-	//  lin2->DrawCopy("same");
+	lin_alpha->SetParameter(0,lin_alpha->GetParameter(0)+lin_alpha->GetParError(0));
+	lin_alpha->SetParameter(1,lin_alpha->GetParameter(1)+0.5*lin_alpha->GetParError(1));
+	lin_alpha->SetLineColor(kBlue);
+	//  lin_alpha->DrawCopy("same");
 
-	lin2->SetParameter(0,lin2->GetParameter(0)-2*lin2->GetParError(0));
-	lin2->SetParameter(1,lin2->GetParameter(1)-lin2->GetParError(1));
-	lin2->SetLineColor(kBlue);
-	//  lin2->DrawCopy("same");
+	lin_alpha->SetParameter(0,lin_alpha->GetParameter(0)-2*lin_alpha->GetParError(0));
+	lin_alpha->SetParameter(1,lin_alpha->GetParameter(1)-lin_alpha->GetParError(1));
+	lin_alpha->SetLineColor(kBlue);
+	//  lin_alpha->DrawCopy("same");
 
 
 	fname2 = "results/signal_sigma2_values_" + channel_name+"_"+year+"_"+cat+"_"+MA; 
@@ -806,25 +804,25 @@ void sig_fit()
 	    effs_unc.clear();  
 	    effs_err_unc.clear();  
 
-	    means2_unc.clear();
-	    means2_err_unc.clear();
-	    widths2_unc.clear();  
-	    widths2_err_unc.clear();  
+	    nvalues_unc.clear();
+	    nvalues_err_unc.clear();
+	    alpha_unc.clear();  
+	    alpha_err_unc.clear();  
 	    fnorm_unc.clear();  
 	    fnorm_err_unc.clear();  
 
 	    for (int i=0; i<MTs.size(); ++i){
-	      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, means2_unc, means2_err_unc, widths2_unc, widths2_err_unc, fnorm_unc, fnorm_err_unc, unc+direction, year,cat,MA, func);
+	      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, nvalues_unc, nvalues_err_unc, alpha_unc, alpha_err_unc, fnorm_unc, fnorm_err_unc, unc+direction, year,cat,MA, func);
 	    }
 	    TGraphErrors* gsigma_unc = new TGraphErrors(MTs.size(), MTs.data(), widths_unc.data(), zeros.data(), widths_err_unc.data());    
-	    TF1* lin2 = new TF1("sigmafit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
-	    TFitResultPtr r_unc = gsigma_unc->Fit(lin2, "0");
-	    lin2->SetLineColor(kBlue+jj);
-	    lin2->SetLineStyle(jj);
+	    TF1* lin_sigma = new TF1("sigmafit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
+	    TFitResultPtr r_unc = gsigma_unc->Fit(lin_sigma, "0");
+	    lin_sigma->SetLineColor(kBlue+jj);
+	    lin_sigma->SetLineStyle(jj);
 	    can2->cd();
-	    TGraphErrors* gsigma2_unc = new TGraphErrors(MTs.size(), MTs.data(), widths2_unc.data(), zeros.data(), widths2_err_unc.data());    
-	    TF1* lin2_sigma = new TF1("sigmafit2"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
-	    TFitResultPtr r_unc_sigma = gsigma2_unc->Fit(lin2_sigma, "0");
+	    TGraphErrors* galpha_unc = new TGraphErrors(MTs.size(), MTs.data(), alpha_unc.data(), zeros.data(), alpha_err_unc.data());    
+	    TF1* lin_alpha = new TF1("sigmafit2"+TString::Format("%d",jj), "[0]+[1]*(x-600)+[2]*(x-600)**2", 550, 1250);
+	    TFitResultPtr r_unc_sigma = galpha_unc->Fit(lin_alpha, "0");
 
 	    TGraphErrors* gfnorm_unc = new TGraphErrors(MTs.size(), MTs.data(), fnorm_unc.data(), zeros.data(), fnorm_err_unc.data());    
 	    TF1* lin2_fnorm = new TF1("fnorm"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
@@ -834,44 +832,44 @@ void sig_fit()
 	    gsigma_unc->SetMarkerStyle(24);
 	    if(unc.Contains("PDF"))gsigma_unc->Draw("PE Same");
 	    if(unc.Contains("JEC")&&direction.Contains("up")){
-	      infotofile<< "JECwfitup param0 \t"<< lin2->GetParameter(0)<<"\t"<<lin2->GetParError(0)<<std::endl;
-	      infotofile<< "JECwfitup param1 \t"<< lin2->GetParameter(1)<<"\t"<<  lin2->GetParError(1)<<std::endl;
-	      infotofile<< "JECwfitup param2 \t"<< lin2_sigma->GetParameter(0)<<"\t"<<lin2_sigma->GetParError(0)<<std::endl;
-	      infotofile<< "JECwfitup param3 \t"<< lin2_sigma->GetParameter(1)<<"\t"<<  lin2_sigma->GetParError(1)<<std::endl;
-	      infotofile<< "JECwfitup param4 \t"<< lin2_sigma->GetParameter(2)<<"\t"<<  lin2_sigma->GetParError(2)<<std::endl;
+	      infotofile<< "JECwfitup param0 \t"<< lin_sigma->GetParameter(0)<<"\t"<<lin_sigma->GetParError(0)<<std::endl;
+	      infotofile<< "JECwfitup param1 \t"<< lin_sigma->GetParameter(1)<<"\t"<<  lin_sigma->GetParError(1)<<std::endl;
+	      infotofile<< "JECwfitup param2 \t"<< lin_alpha->GetParameter(0)<<"\t"<<lin_alpha->GetParError(0)<<std::endl;
+	      infotofile<< "JECwfitup param3 \t"<< lin_alpha->GetParameter(1)<<"\t"<<  lin_alpha->GetParError(1)<<std::endl;
+	      infotofile<< "JECwfitup param4 \t"<< lin_alpha->GetParameter(2)<<"\t"<<  lin_alpha->GetParError(2)<<std::endl;
 	      infotofile<< "JECffitup param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<  lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JECffitup param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
 	    }
 	    if(unc.Contains("JER")&&direction.Contains("up")){
-	      infotofile<< "JERwfitup param0 \t"<< lin2->GetParameter(0)<<"\t"<<lin2->GetParError(0)<<std::endl;
-	      infotofile<< "JERwfitup param1 \t"<< lin2->GetParameter(1)<<"\t"<<  lin2->GetParError(1)<<std::endl;
-	      infotofile<< "JERwfitup param2 \t"<< lin2_sigma->GetParameter(0)<<"\t"<<lin2_sigma->GetParError(0)<<std::endl;
-	      infotofile<< "JERwfitup param3 \t"<< lin2_sigma->GetParameter(1)<<"\t"<<  lin2_sigma->GetParError(1)<<std::endl;
-	      infotofile<< "JERwfitup param4 \t"<< lin2_sigma->GetParameter(2)<<"\t"<<  lin2_sigma->GetParError(2)<<std::endl;
+	      infotofile<< "JERwfitup param0 \t"<< lin_sigma->GetParameter(0)<<"\t"<<lin_sigma->GetParError(0)<<std::endl;
+	      infotofile<< "JERwfitup param1 \t"<< lin_sigma->GetParameter(1)<<"\t"<<  lin_sigma->GetParError(1)<<std::endl;
+	      infotofile<< "JERwfitup param2 \t"<< lin_alpha->GetParameter(0)<<"\t"<<lin_alpha->GetParError(0)<<std::endl;
+	      infotofile<< "JERwfitup param3 \t"<< lin_alpha->GetParameter(1)<<"\t"<<  lin_alpha->GetParError(1)<<std::endl;
+	      infotofile<< "JERwfitup param4 \t"<< lin_alpha->GetParameter(2)<<"\t"<<  lin_alpha->GetParError(2)<<std::endl;
 	      infotofile<< "JERffitup param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<  lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JERffitup param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
 	    }
 	    if(unc.Contains("JEC")&&direction.Contains("down")){
-	      infotofile<< "JECwfitdown param0 \t"<< lin2->GetParameter(0)<<"\t"<<lin2->GetParError(0)<<std::endl;
-	      infotofile<< "JECwfitdown param1 \t"<< lin2->GetParameter(1)<<"\t"<<  lin2->GetParError(1)<<std::endl;
-	      infotofile<< "JECwfitdown param2 \t"<< lin2_sigma->GetParameter(0)<<"\t"<<lin2_sigma->GetParError(0)<<std::endl;
-	      infotofile<< "JECwfitdown param3 \t"<< lin2_sigma->GetParameter(1)<<"\t"<<  lin2_sigma->GetParError(1)<<std::endl;
-	      infotofile<< "JECwfitdown param4 \t"<< lin2_sigma->GetParameter(2)<<"\t"<<  lin2_sigma->GetParError(2)<<std::endl;
+	      infotofile<< "JECwfitdown param0 \t"<< lin_sigma->GetParameter(0)<<"\t"<<lin_sigma->GetParError(0)<<std::endl;
+	      infotofile<< "JECwfitdown param1 \t"<< lin_sigma->GetParameter(1)<<"\t"<<  lin_sigma->GetParError(1)<<std::endl;
+	      infotofile<< "JECwfitdown param2 \t"<< lin_alpha->GetParameter(0)<<"\t"<<lin_alpha->GetParError(0)<<std::endl;
+	      infotofile<< "JECwfitdown param3 \t"<< lin_alpha->GetParameter(1)<<"\t"<<  lin_alpha->GetParError(1)<<std::endl;
+	      infotofile<< "JECwfitdown param4 \t"<< lin_alpha->GetParameter(2)<<"\t"<<  lin_alpha->GetParError(2)<<std::endl;
 	      infotofile<< "JECffitdown param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JECffitdown param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
 	    }
 	    if(unc.Contains("JER")&&direction.Contains("down")){
-	      infotofile<< "JERwfitdown param0 \t"<< lin2->GetParameter(0)<<"\t"<<lin2->GetParError(0)<<std::endl;
-	      infotofile<< "JERwfitdown param1 \t"<< lin2->GetParameter(1)<<"\t"<<  lin2->GetParError(1)<<std::endl;
-	      infotofile<< "JERwfitdown param2 \t"<< lin2_sigma->GetParameter(0)<<"\t"<<lin2_sigma->GetParError(0)<<std::endl;
-	      infotofile<< "JERwfitdown param3 \t"<< lin2_sigma->GetParameter(1)<<"\t"<<  lin2_sigma->GetParError(1)<<std::endl;
-	      infotofile<< "JERwfitdown param4 \t"<< lin2_sigma->GetParameter(2)<<"\t"<<  lin2_sigma->GetParError(2)<<std::endl;
+	      infotofile<< "JERwfitdown param0 \t"<< lin_sigma->GetParameter(0)<<"\t"<<lin_sigma->GetParError(0)<<std::endl;
+	      infotofile<< "JERwfitdown param1 \t"<< lin_sigma->GetParameter(1)<<"\t"<<  lin_sigma->GetParError(1)<<std::endl;
+	      infotofile<< "JERwfitdown param2 \t"<< lin_alpha->GetParameter(0)<<"\t"<<lin_alpha->GetParError(0)<<std::endl;
+	      infotofile<< "JERwfitdown param3 \t"<< lin_alpha->GetParameter(1)<<"\t"<<  lin_alpha->GetParError(1)<<std::endl;
+	      infotofile<< "JERwfitdown param4 \t"<< lin_alpha->GetParameter(2)<<"\t"<<  lin_alpha->GetParError(2)<<std::endl;
 	      infotofile<< "JERffitdown param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JERffitdown param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
 	    }
 
-	    if(j==0)lin2->Draw("same");
-	    if(j==0)leg2->AddEntry(lin2,unc+" Slope "+TString::Format("%.3f", lin2->GetParameter(1)),"l");
+	    if(j==0)lin_sigma->Draw("same");
+	    if(j==0)leg2->AddEntry(lin_sigma,unc+" Slope "+TString::Format("%.3f", lin_sigma->GetParameter(1)),"l");
 	    if(j==0)jj++;
 	    if(jj==5)jj++;
 	  }
@@ -1052,7 +1050,7 @@ void sig_fit()
 	//fit3_err_95->SetFillColor(kOrange-4);
 	//fit3_err_95->Draw("L3 same");
 
-	fit2_err_95 = new TGraphErrors(MTs.size(), MTs.data(), widths2.data(), zeros.data(), widths2_err.data());  
+	fit2_err_95 = new TGraphErrors(MTs.size(), MTs.data(), alpha.data(), zeros.data(), alpha_err.data());  
 	fitter = (TFitter*) TVirtualFitter::GetFitter();
 	fitter->GetConfidenceIntervals(fit2_err_95, 0.95);
 	fit2_err_95->SetFillColor(kOrange-4);
@@ -1060,7 +1058,7 @@ void sig_fit()
 
 
 
-	fit3_err_68 = new TGraphErrors(MTs.size(), MTs.data(), means2.data(), zeros.data(), means2_err.data());  
+	fit3_err_68 = new TGraphErrors(MTs.size(), MTs.data(), nvalues.data(), zeros.data(), nvalues_err.data());  
 	fitter->GetConfidenceIntervals(fit3_err_68, 0.68);
 	fit3_err_68->SetFillColor(kOrange+1);
 	fit3_err_68->Draw("L3 same");
@@ -1129,17 +1127,17 @@ void sig_fit()
 	  widths_err_unc.clear();  
 	  effs_unc.clear();  
 	  effs_err_unc.clear();  
-	  means2_unc.clear();
-	  means2_err_unc.clear();
-	  widths2_unc.clear();  
-	  widths2_err_unc.clear();  
+	  nvalues_unc.clear();
+	  nvalues_err_unc.clear();
+	  alpha_unc.clear();  
+	  alpha_err_unc.clear();  
 	  fnorm_unc.clear();  
 	  fnorm_err_unc.clear();  
 
 
 	  // for each unc fit all signal mass points
 	  for (int i=0; i<MTs.size(); ++i){
-	    fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, means2_unc, means2_err_unc, widths2_unc, widths2_err_unc, fnorm_unc, fnorm_err_unc, unc+"_up", year,cat,MA,func,2,2.5,true);
+	    fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, nvalues_unc, nvalues_err_unc, alpha_unc, alpha_err_unc, fnorm_unc, fnorm_err_unc, unc+"_up", year,cat,MA,func,2,2.5,true);
 	  }
 	  // generate TGraph with the eff for each up unc
 	  TGraphErrors* geff_unc_up = new TGraphErrors(MTs.size(), MTs.data(), effs_unc.data(), zeros.data(), effs_err_unc.data());          
@@ -1151,16 +1149,16 @@ void sig_fit()
 	  widths_err_unc.clear();  
 	  effs_unc.clear();  
 	  effs_err_unc.clear();      
-	  means2_unc.clear();
-	  means2_err_unc.clear();
-	  widths2_unc.clear();  
-	  widths2_err_unc.clear();  
+	  nvalues_unc.clear();
+	  nvalues_err_unc.clear();
+	  alpha_unc.clear();  
+	  alpha_err_unc.clear();  
 	  fnorm_unc.clear();  
 	  fnorm_err_unc.clear();      
 
 	  // for each unc fit all signal mass points
 	  for (int i=0; i<MTs.size(); ++i){
-	    fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc,means2_unc, means2_err_unc, widths2_unc, widths2_err_unc, fnorm_unc, fnorm_err_unc, unc+"_down", year,cat,MA,func,2,2.5,true);
+	    fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc,nvalues_unc, nvalues_err_unc, alpha_unc, alpha_err_unc, fnorm_unc, fnorm_err_unc, unc+"_down", year,cat,MA,func,2,2.5,true);
 	  }
 	  
 	  // generate TGraph with the eff for each dn unc
@@ -1658,7 +1656,7 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 }
 
-void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,std::vector<double>& means2, std::vector<double>& means2_err, std::vector<double>& widths2, std::vector<double>& widths2_err, std::vector<double>& fnorm, std::vector<double>& fnorm_err,TString unc, TString year, TString cat, TString MA, TString func, float factormin, float factormax, bool write_Nevet)
+void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,std::vector<double>& nvalues, std::vector<double>& nvalues_err, std::vector<double>& alpha, std::vector<double>& alpha_err, std::vector<double>& fnorm, std::vector<double>& fnorm_err,TString unc, TString year, TString cat, TString MA, TString func, float factormin, float factormax, bool write_Nevet)
 {
   
   // set fit regions (crude estimate)
@@ -2015,10 +2013,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     effs_err.push_back(efferr);
 
     //second gaussian
-    means2.push_back(fitmodel_dg->GetParameter(2));
-    means2_err.push_back(fitmodel_dg->GetParError(2));
-    widths2.push_back(fitmodel_dg->GetParameter(3));
-    widths2_err.push_back(fitmodel_dg->GetParError(3));
+    nvalues.push_back(fitmodel_dg->GetParameter(2));
+    nvalues_err.push_back(fitmodel_dg->GetParError(2));
+    alpha.push_back(fitmodel_dg->GetParameter(3));
+    alpha_err.push_back(fitmodel_dg->GetParError(3));
     fnorm.push_back(fitmodel_dg->GetParameter(4));
     fnorm_err.push_back(fitmodel_dg->GetParError(4));
   }
@@ -2031,10 +2029,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     effs_err.push_back(efferr);
 
     //second gaussian
-    means2.push_back(fitmodel_cb->GetParameter(2));
-    means2_err.push_back(fitmodel_cb->GetParError(2));
-    widths2.push_back(fitmodel_cb->GetParameter(3));
-    widths2_err.push_back(fitmodel_cb->GetParError(3));
+    nvalues.push_back(fitmodel_cb->GetParameter(2));
+    nvalues_err.push_back(fitmodel_cb->GetParError(2));
+    alpha.push_back(fitmodel_cb->GetParameter(3));
+    alpha_err.push_back(fitmodel_cb->GetParError(3));
   }
   else if(func.Contains("lin")){
     means.push_back(fitmodel_lin->GetParameter(0));
@@ -2045,10 +2043,10 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
     effs_err.push_back(efferr);
 
     //second gaussian
-    means2.push_back(fitmodel_lin->GetParameter(2));
-    means2_err.push_back(fitmodel_lin->GetParError(2));
-    widths2.push_back(fitmodel_lin->GetParameter(3));
-    widths2_err.push_back(fitmodel_lin->GetParError(3));
+    nvalues.push_back(fitmodel_lin->GetParameter(2));
+    nvalues_err.push_back(fitmodel_lin->GetParError(2));
+    alpha.push_back(fitmodel_lin->GetParameter(3));
+    alpha_err.push_back(fitmodel_lin->GetParError(3));
     // fnorm.push_back(fitmodel_lin->GetParameter(4));
     // fnorm_err.push_back(fitmodel_lin->GetParError(4));
 
