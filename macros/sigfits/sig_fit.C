@@ -63,7 +63,7 @@ void sig_fit()
       if(MA=="450") categories = {"catma175","catma300"};
       if(MA=="500") categories = {"catma175","catma300"};
       if(MA.Contains("999")) categories = {"catma300","chi2h_2","catma175","catma90"};
-      //categories = {"catma300"};
+      categories = {"catma300"};
 
       for(unsigned int icat=0;icat < categories.size();icat++){
 
@@ -838,6 +838,7 @@ void sig_fit()
 	      infotofile<< "JECwfitup param1 \t"<< lin2->GetParameter(1)<<"\t"<<  lin2->GetParError(1)<<std::endl;
 	      infotofile<< "JECwfitup param2 \t"<< lin2_sigma->GetParameter(0)<<"\t"<<lin2_sigma->GetParError(0)<<std::endl;
 	      infotofile<< "JECwfitup param3 \t"<< lin2_sigma->GetParameter(1)<<"\t"<<  lin2_sigma->GetParError(1)<<std::endl;
+	      infotofile<< "JECwfitup param4 \t"<< lin2_sigma->GetParameter(2)<<"\t"<<  lin2_sigma->GetParError(2)<<std::endl;
 	      infotofile<< "JECffitup param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<  lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JECffitup param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
 	    }
@@ -846,6 +847,7 @@ void sig_fit()
 	      infotofile<< "JERwfitup param1 \t"<< lin2->GetParameter(1)<<"\t"<<  lin2->GetParError(1)<<std::endl;
 	      infotofile<< "JERwfitup param2 \t"<< lin2_sigma->GetParameter(0)<<"\t"<<lin2_sigma->GetParError(0)<<std::endl;
 	      infotofile<< "JERwfitup param3 \t"<< lin2_sigma->GetParameter(1)<<"\t"<<  lin2_sigma->GetParError(1)<<std::endl;
+	      infotofile<< "JERwfitup param4 \t"<< lin2_sigma->GetParameter(2)<<"\t"<<  lin2_sigma->GetParError(2)<<std::endl;
 	      infotofile<< "JERffitup param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<  lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JERffitup param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
 	    }
@@ -854,6 +856,7 @@ void sig_fit()
 	      infotofile<< "JECwfitdown param1 \t"<< lin2->GetParameter(1)<<"\t"<<  lin2->GetParError(1)<<std::endl;
 	      infotofile<< "JECwfitdown param2 \t"<< lin2_sigma->GetParameter(0)<<"\t"<<lin2_sigma->GetParError(0)<<std::endl;
 	      infotofile<< "JECwfitdown param3 \t"<< lin2_sigma->GetParameter(1)<<"\t"<<  lin2_sigma->GetParError(1)<<std::endl;
+	      infotofile<< "JECwfitdown param4 \t"<< lin2_sigma->GetParameter(2)<<"\t"<<  lin2_sigma->GetParError(2)<<std::endl;
 	      infotofile<< "JECffitdown param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JECffitdown param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
 	    }
@@ -862,6 +865,7 @@ void sig_fit()
 	      infotofile<< "JERwfitdown param1 \t"<< lin2->GetParameter(1)<<"\t"<<  lin2->GetParError(1)<<std::endl;
 	      infotofile<< "JERwfitdown param2 \t"<< lin2_sigma->GetParameter(0)<<"\t"<<lin2_sigma->GetParError(0)<<std::endl;
 	      infotofile<< "JERwfitdown param3 \t"<< lin2_sigma->GetParameter(1)<<"\t"<<  lin2_sigma->GetParError(1)<<std::endl;
+	      infotofile<< "JERwfitdown param4 \t"<< lin2_sigma->GetParameter(2)<<"\t"<<  lin2_sigma->GetParError(2)<<std::endl;
 	      infotofile<< "JERffitdown param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JERffitdown param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
 	    }
