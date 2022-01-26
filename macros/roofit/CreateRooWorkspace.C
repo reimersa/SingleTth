@@ -782,9 +782,12 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
 
 
   TF1* eff_ele = new TF1("eff_ele", "[0]+[1]*(x-600)+[2]*(x-600)*(x-600)", 500, 1250);
-    eff_ele->SetParameter(0, 0.00387224);
-    eff_ele->SetParameter(1, 7.31594e-06);
-    eff_ele->SetParameter(2, -8.14789e-09);
+    // eff_ele->SetParameter(0, 0.00387224);
+    // eff_ele->SetParameter(1, 7.31594e-06);
+    // eff_ele->SetParameter(2, -8.14789e-09);
+    eff_ele->SetParameter(0, param0_eff_value_ech);
+    eff_ele->SetParameter(1, param1_eff_value_ech);
+    eff_ele->SetParameter(2, param2_eff_value_ech);
 
   if(year.Contains("2017")){
     // eff_ele->SetParameter(0, 0.00190037);
@@ -796,7 +799,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
 
   }
   if(year.Contains("2018")){ 
-  eff_ele->SetParameter(0, param0_eff_value_ech);
+    eff_ele->SetParameter(0, param0_eff_value_ech);
     eff_ele->SetParameter(1, param1_eff_value_ech);
     eff_ele->SetParameter(2, param2_eff_value_ech);    
   }
