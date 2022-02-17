@@ -21,9 +21,6 @@ b_multipdf = True
 b_signalrate = True
 b_lumiunc = True
 b_JEC = True
-shift = 0
-if not b_JEC: shift = 8
-#cat = "chi2h_2"
 
 bkg_much_norm = {} # for all years: key is year
 bkg_ech_norm = {} # for all years: key is year
@@ -99,10 +96,10 @@ lumi_unc["2017v2"] = 0.023
 lumi_unc["2018"] = 0.025
 
 years = {"2016v3","2017v2","2018"}
-#years = {"2018","2016v3"}
+#years = {"2017v2","2016v3"}
 #years = {"2017v2"}
 #ma_mass = "99999"
-ma_mass = "450"
+ma_mass = "125"
 
 #categories = ["chi2h_2", "catma60","catma90","catma175", "catma300"]
 categories = ["catma175", "catma300","chi2h_2"] 
@@ -112,7 +109,19 @@ if ma_mass == "99999":
     categories = ["catma90","catma175", "catma300", "chi2h_2"] 
 if ma_mass == "450":
     categories = ["catma175", "catma300"] 
-#    categories = ["catma175"] 
+if ma_mass == "100":
+    categories = ["catma90","chi2h_2","catma300"]
+if ma_mass == "175":
+    categories = ["chi2h_2","catma175","catma300"]
+if ma_mass == "200":
+    categories = ["catma175","catma300","chi2h_2"]
+if ma_mass ==  "250":
+    categories = ["catma175","catma300"]
+if ma_mass ==  "350":
+    categories = ["catma175","catma300"]
+if ma_mass ==  "500":
+    categories = ["catma175","catma300"]
+#categories = ["catma300","chi2h_2"]
 
 number_of_channels = 2 * len(years) * len(categories)
 number_of_backgrounds = "*"
@@ -124,6 +133,29 @@ ech_rate_unc = {}
 much_rate_unc = {}
 
 
+##### improve read in from uncertainties
+def make_dict_from_line(line):
+    parts = line.split()
+    resultlist = []
+    for i,x in enumerate(parts):
+        if ',' in x or x == 'GeV' or x == '=': continue
+        if i < len(parts)-1:
+               if parts[i+1] == 'Error':
+                       appendme = x+'_Error'
+               else:
+                       appendme = x
+        else:
+               appendme = x
+        resultlist.append(appendme)
+
+    resultlist = [x for x in resultlist if x != 'Error']
+
+    finaldict = {}
+    idx=0
+    while idx < len(resultlist)-1:
+        finaldict[resultlist[idx]] = float(resultlist[idx+1])
+        idx += 2
+    return finaldict
 
 
 print "Start to collect normalisations"
@@ -184,17 +216,20 @@ for icat in categories:
 
 print "Start to collect uncertainties"
 for icat in categories:
+    print icat
     bkg_much_norm[icat] = {}
     bkg_ech_norm[icat] = {}
 
 
     for year in years:
+        print year
 #        if "2016" in year and "chi2h" not in icat: continue
         # Find all possible MT where we have the normalisation
         inputfile = open("AnalysisOutput_"+year+"_"+icat+".txt","r")
         listOfLines = inputfile.readlines()
         i=0
         for line in listOfLines:
+            
             if "Muon" in line and "Signal" not in line:
                 muon_norm_line =  listOfLines[i+1].strip()
                 bkg_much_norm[icat][year] = muon_norm_line.split("N = ")[1]
@@ -204,56 +239,52 @@ for icat in categories:
                 bkg_ech_norm[icat][year] = elec_norm_line.split("N = ")[1]
     
             if "Muon" in line and "Signal" in line:
+
                 for j in range(i+1,len(listOfLines)):
+              
                     if "Electron" in listOfLines[j]: break
+                    tmp_dict = make_dict_from_line(listOfLines[j])
+                    print(tmp_dict)
+              
                     mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
                     if mass not in masses and int(mass)>590:
                         masses.append(mass)
      
                     norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
                     signal_much_norm[year+"_"+icat+"_"+mass] = norm
-                    mean_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[2]
-                    mean_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[3]
+                    mean_value[year+"_"+icat+"_"+mass] = tmp_dict["Mean"]
+                    mean_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean_Error"]
     
-                    sigma_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[4]
-                    sigma_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[5]
+                    sigma_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma"]
+                    sigma_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma_Error"]
 
-                    if b_JEC:
-#                        print year+"_"+icat+"_"+mass
-                        mean_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[6]
-                        mean_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[8]
-                        mean_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[10]
-                        mean_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[12]
+                    mean_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean"]
+                    mean_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownmean"]
+                    mean_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupmean"]
+                    mean_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownmean"]
                         
-                        sigma_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[7]
-                        sigma_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[9]
-                        sigma_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[11]
-                        sigma_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[13]
+                    sigma_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupsigma"]
+                    sigma_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownsigma"]
+                    sigma_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupsigma"]
+                    sigma_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownsigma"] 
     
-                    mean2_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[14-shift]
-                    mean2_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[15-shift]
+                    mean2_value[year+"_"+icat+"_"+mass] = tmp_dict["Mean2"]
+                    mean2_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean2_Error"] + 0.001
     
-                    sigma2_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[16-shift]
-                    sigma2_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[17-shift]
-                    if b_JEC:
+                    sigma2_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2"]
+                    sigma2_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2_Error"]
                     
-                        mean2_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[18]
-                        mean2_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[19]
-                        mean2_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[20]
-                        mean2_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[21]
+                    mean2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean2"]
+                    mean2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownmean2"]
+                    mean2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupmean2"]
+                    mean2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownmean2"]
+                    
+                    sigma2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupsigma2"]
+                    sigma2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownsigma2"]
+                    sigma2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupsigma2"]
+                    sigma2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownsigma2"]
     
-                        sigma2_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[22]
-                        sigma2_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[23]
-                        sigma2_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[24]
-                        sigma2_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[25]
-    
-                    # fnorm_value[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[26]
-                    # fnorm_error[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[27]
-                    # fnorm_value_JER_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[28]
-                    # fnorm_value_JER_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[29]
-                    # fnorm_value_JEC_up[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[30]
-                    # fnorm_value_JEC_down[year+"_"+icat+"_"+mass] = re.findall(r'\d+.\d+',listOfLines[j])[31]
-    
+                    
     
     
             if "Electron" in line and "Signal" in line:
@@ -495,4 +526,3 @@ for mass in masses:
     outputfile.close()
 
 
-##### PDF signal individual for all years

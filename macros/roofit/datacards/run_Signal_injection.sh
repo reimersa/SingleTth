@@ -6,12 +6,13 @@
 #for mass in {1000,800}
 #for mass in {800,600}
 #do
-mass=700
+mass=1000
+MA="125"
 #datacard="Datacard_allyears_M${mass}_much.txt"
 datacard="Datacard_allyears_M${mass}.txt"
 
 years=("2016v3" "2017v2" "2018")
-categories=("chi2h_2" "catma90" "catma175" "catma300")
+categories=("catma60" "chi2h_2" "catma90" "catma175" "catma300")
 #categories=("catma90" "catma60" "catma300")
 #categories=("chi2h_2")
 freeze_params=""
@@ -32,6 +33,7 @@ freeze_params="${freeze_params: : -1}"
 set_params="${set_params: : -1}"
 
 for signal in 0.0 0.25 0.5 0.75 1.0 
+#for signal in  1.0 
 do
 #signal=1.0
 echo ""
@@ -59,7 +61,7 @@ eval "combine -M GenerateOnly -d initialFitWorkspace.root --snapshotName initial
 #eval "combine $datacard -M GenerateOnly --setParameters pdf_index_much_2016v3=0,pdf_index_MT${mass}_much_2016v3=0,pdf_index_ech_2016v3=0,pdf_index_MT${mass}_ech_2016v3=0 --toysFrequentist -t 1000 --expectSignal ${signal} --saveToys -m 125  --freezeParameters pdf_index_much_2016v3,pdf_index_MT${mass}_much_2016v3,pdf_index_ech_2016v3,pdf_index_MT${mass}_ech_2016v3,sg_mean_2016v3,sg_sigma_2016v3,sg_JERmeandown_2016v3,sg_JERmeanup_2016v3,sg_JECmeandown_2016v3,sg_JECmeanup_2016v3,sg_JERsigmadown_2016v3,sg_JERsigmaup_2016v3,sg_JECsigmadown_2016v3,sg_JECsigmaup_2016v3 -n ${mass} --seed 123123"--> old version
 
 
-eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${mass}.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=0 -n signal${signal}_${mass}"
+eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${mass}.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=0 -n signal${signal}_${mass}_${MA}"
 
 
 #done

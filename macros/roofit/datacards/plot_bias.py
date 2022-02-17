@@ -37,7 +37,9 @@ gStyle.SetPaintTextFormat("2.3f")
 
 c2 = TCanvas()
 
-postfix = "_mavariable_cb_MT1000GeV_MA450"
+MA = "125"
+MT = "1000"
+postfix = "_mavariable_cb_MT"+MT+"GeV_MA"+MA
 # exp vs exp
 infile = TFile("fitDiagnosticsexp2p_r1"+postfix+".root","r")
 TH1.AddDirectory(0)
@@ -83,18 +85,23 @@ histo_exp.Draw("HIST")
 #histo_dijet2p.Draw("same")
 histo_dijet3p.Draw("same")
 
-text = CMSPlotStyle.draw_info("Bias test: r=1",0.55,0.85,11)
+text = CMSPlotStyle.draw_info("Bias test: r=1",0.2,0.85,1)
 text.Draw("same")
+text_mt = CMSPlotStyle.draw_info("M_{T} = "+MT+" GeV",0.2,0.8,1)
+text_mt.Draw("same")
+text_ma = CMSPlotStyle.draw_info("M_{a} = "+MA+" GeV",0.2,0.75,1)
+text_ma.Draw("same")
 
 #text2 = CMSPlotStyle.draw_info("Fit function: exp.",0.55,0.8,11)
 #text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.5,0.73,0.85,0.89, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 #leg.SetHeader("#splitline{Bias test: r=1}{#splitline{Fit function: exp.}{Generation with}}")
+#leg.SetHeader("#splitline{M_{a} = "+MA+" GeV}{Generation and fitting with}")
 leg.SetHeader("Generation and fitting with")
 leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
 #leg.AddEntry(histo_dijet2p,"dijet 2p (<r/#sigma_{r}> = %.2f)"%(mean_dijet2p),"l")
@@ -153,18 +160,25 @@ histo_exp.Draw("HIST")
 #histo_dijet2p.Draw("same")
 histo_dijet3p.Draw("same")
 
-text = CMSPlotStyle.draw_info("Bias test: r=0",0.55,0.85,11)
+text = CMSPlotStyle.draw_info("Bias test: r=0",0.2,0.85,1)
 text.Draw("same")
+text_mt = CMSPlotStyle.draw_info("M_{T} = "+MT+" GeV",0.2,0.8,1)
+text_mt.Draw("same")
+text_ma = CMSPlotStyle.draw_info("M_{a} = "+MA+" GeV",0.2,0.75,1)
+text_ma.Draw("same")
+
 
 #text2 = CMSPlotStyle.draw_info("Fit function: exp.",0.55,0.8,11)
 #text2.Draw("same")
 
-leg = TLegend(0.55,0.55,0.85,0.79, "","brNDC")
+leg = TLegend(0.5,0.73,0.85,0.89, "","brNDC")
 leg.SetBorderSize(0);	
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
 #leg.SetHeader("#splitline{Bias test: r=1}{#splitline{Fit function: exp.}{Generation with}}")
+#leg.SetHeader("Generation and fitting with")
+#leg.SetHeader("#splitline{M_{a} = "+MA+"}{Generation and fitting with}")
 leg.SetHeader("Generation and fitting with")
 leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
 #leg.AddEntry(histo_dijet2p,"dijet 2p (<r/#sigma_{r}> = %.2f)"%(mean_dijet2p),"l")

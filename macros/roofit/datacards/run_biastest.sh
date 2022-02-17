@@ -9,11 +9,11 @@ signal=0.0
 function_param=0
 #name="exp2p_r1"
 name="dijet3p_r0"
-postfix="_mavariable_cb_MT${mass}GeV_MA450"
+postfix="_mavariable_cb_MT${mass}GeV_MA125"
 
 
 years=("2016v3" "2017v2" "2018")
-categories=("chi2h_2" "catma90" "catma175" "catma300")
+categories=("catma60" "chi2h_2" "catma90" "catma175" "catma300")
 #categories=("catma90" "catma60" "catma300")
 #categories=("chi2h_2")
 freeze_param=""

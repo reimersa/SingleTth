@@ -28,10 +28,10 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 
 void sig_fit()
 {
-  //  TString year =  "2016v3";
-  //  TString year =  "2017v2";
+  //TString year =  "2016v3";
+  //TString year =  "2017v2";
   TString year =  "2018";
-  //  TString year =  "allyears";
+  //TString year =  "allyears";
 
   TString postfix = "";
 
@@ -39,15 +39,17 @@ void sig_fit()
   //run over all ma, if ma=99999 GeV do the old stuff for the moment
   //  std::vector<TString>MAs = {"75","125","175","250","350","450","99999"};
   //  std::vector<TString>MAs = {"99999"};
-  std::vector<TString>MAs = {"100"};
+  //  std::vector<TString>MAs = {"75","100","125","175","200","250","350","450","500"};
+  std::vector<TString>MAs = {"125"};
 
   for(unsigned int ima = 0; ima < MAs.size();ima++){
 
     TString MA = MAs[ima];
 
     ///// run over all channels
-    //    std::vector<Echannel> channels = {eComb,eEle,eMuon};
-    std::vector<Echannel> channels = {eComb};
+    std::vector<Echannel> channels = {eComb,eEle,eMuon};
+    //    std::vector<Echannel> channels = {eMuon};
+    //    std::vector<Echannel> channels = {eComb};
     for(unsigned int ich = 0; ich < channels.size();ich++){
 
       Echannel ch =channels[ich];
@@ -175,6 +177,10 @@ void sig_fit()
 	      MTs = {600,700, 800, 1000,1100,1200};// 2017
 	      MTs_backup = { 600,700, 800, 1000, 1100, 1200};// 2017	  
 	    }
+	    // if(year.Contains("2018") && cat.Contains("catma60") && MA.Contains("75")){
+	    //   MTs = {600,700, 800, 900, 1000};// 2017
+	    //   MTs_backup = { 600,700, 800, 900, 1000};// 2017	  
+	    // }
 	    if(year.Contains("2018") && cat.Contains("catma300") && MA.Contains("200")){
 	      MTs = {600,700, 800, 900, 1000,1100,1200};// 2018
 	      MTs_backup = { 600,700, 800, 900, 1000, 1100,1200};// 2018
@@ -473,6 +479,16 @@ void sig_fit()
 	      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, nvalues_unc, nvalues_err_unc, alpha_unc, alpha_err_unc, fnorm_unc, fnorm_err_unc, unc+direction,year,cat,MA,func);
 	    }
 	    TGraphErrors* gmean_unc  = new TGraphErrors(MTs.size(), MTs.data(), means_unc.data(), zeros.data(), means_err_unc.data());  
+	    if(unc.Contains("JER") && direction.Contains("up") && MA.Contains("175") && year.Contains("2017") ){
+	      for (int i=MTs.size()-1; i>=0; --i){
+		if(MTs[i]>720 && MTs[i]<880) gmean_unc->RemovePoint(i);
+	      }
+	    } 
+	    if(unc.Contains("JER") && direction.Contains("up") && MA.Contains("75") && year.Contains("2016") && cat.Contains("ma60")){
+	      for (int i=MTs.size()-1; i>=0; --i){
+		if(MTs[i]>920 && MTs[i]<1020) gmean_unc->RemovePoint(i);
+	      }
+	    } 
 	    TF1* lin_mean = new TF1("meanfit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
 	    TFitResultPtr r_unc = gmean_unc->Fit(lin_mean, "0");
 	    lin_mean->SetLineColor(kBlue+jj);
@@ -499,6 +515,7 @@ void sig_fit()
 	      infotofile<< "JERmfitup param1 \t"<< lin_mean->GetParameter(1)<<"\t"<<  lin_mean->GetParError(1)<<std::endl;
 	      infotofile<< "JERmfitup param2 \t"<< lin_n->GetParameter(0)<<"\t"<<lin_n->GetParError(0)<<std::endl;
 	      infotofile<< "JERmfitup param3 \t"<< lin_n->GetParameter(1)<<"\t"<<  lin_n->GetParError(1)<<std::endl;
+	      gmean_unc->Draw("Same");
 	    }
 	    if(unc.Contains("JEC")&&direction.Contains("down")){
 	      infotofile<< "JECmfitdown param0 \t"<< lin_mean->GetParameter(0)<<"\t"<<lin_mean->GetParError(0)<<std::endl;
@@ -815,12 +832,35 @@ void sig_fit()
 	      fitsignal(ch,  (int) MTs[i], means_unc, means_err_unc, widths_unc, widths_err_unc, effs_unc, effs_err_unc, nvalues_unc, nvalues_err_unc, alpha_unc, alpha_err_unc, fnorm_unc, fnorm_err_unc, unc+direction, year,cat,MA, func);
 	    }
 	    TGraphErrors* gsigma_unc = new TGraphErrors(MTs.size(), MTs.data(), widths_unc.data(), zeros.data(), widths_err_unc.data());    
+	    if(unc.Contains("JER") && direction.Contains("up")&& MA.Contains("175") && year.Contains("2017") ){
+	      for (int i=MTs.size()-1; i>=0; --i){
+		if(MTs[i]>720 && MTs[i]<880) gsigma_unc->RemovePoint(i);
+	      }
+	    } 
+	    if(unc.Contains("JER") && direction.Contains("up") && MA.Contains("75") && year.Contains("2016") && cat.Contains("ma60")){
+	      for (int i=MTs.size()-1; i>=0; --i){
+		if(MTs[i]>920 && MTs[i]<1020) gsigma_unc->RemovePoint(i);
+		//		if(MTs[i]>720 && MTs[i]<820) gsigma_unc->RemovePoint(i);
+	      }
+	    } 
+
 	    TF1* lin_sigma = new TF1("sigmafit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
 	    TFitResultPtr r_unc = gsigma_unc->Fit(lin_sigma, "0");
 	    lin_sigma->SetLineColor(kBlue+jj);
 	    lin_sigma->SetLineStyle(jj);
 	    can2->cd();
 	    TGraphErrors* galpha_unc = new TGraphErrors(MTs.size(), MTs.data(), alpha_unc.data(), zeros.data(), alpha_err_unc.data());    
+	    if(unc.Contains("JER") && direction.Contains("up")&& MA.Contains("175") && year.Contains("2017") ){
+	      for (int i=MTs.size()-1; i>=0; --i){
+		if(MTs[i]>720 && MTs[i]<880) galpha_unc->RemovePoint(i);
+	      }
+	    } 
+	    if(unc.Contains("JER") && direction.Contains("up") && MA.Contains("75") && year.Contains("2016") && cat.Contains("ma60")){
+	      for (int i=MTs.size()-1; i>=0; --i){
+		if(MTs[i]>920 && MTs[i]<1020) galpha_unc->RemovePoint(i);
+	      }
+	    } 
+
 	    TF1* lin_alpha = new TF1("sigmafit2"+TString::Format("%d",jj), "[0]+[1]*(x-600)+[2]*(x-600)**2", 550, 1250);
 	    TFitResultPtr r_unc_sigma = galpha_unc->Fit(lin_alpha, "0");
 
@@ -848,6 +888,8 @@ void sig_fit()
 	      infotofile<< "JERwfitup param4 \t"<< lin_alpha->GetParameter(2)<<"\t"<<  lin_alpha->GetParError(2)<<std::endl;
 	      infotofile<< "JERffitup param0 \t"<< lin2_fnorm->GetParameter(0)<<"\t"<<  lin2_fnorm->GetParError(0)<<std::endl;
 	      infotofile<< "JERffitup param1 \t"<< lin2_fnorm->GetParameter(1)<<"\t"<<  lin2_fnorm->GetParError(1)<<std::endl;
+	      gsigma_unc->Draw("Same");
+	      //	      galpha_unc->Draw("Same");
 	    }
 	    if(unc.Contains("JEC")&&direction.Contains("down")){
 	      infotofile<< "JECwfitdown param0 \t"<< lin_sigma->GetParameter(0)<<"\t"<<lin_sigma->GetParError(0)<<std::endl;
@@ -1335,7 +1377,7 @@ void sig_fit()
 	      double y_m1, x_m1;
 	      geff->GetPoint(i-1,x_m1,y_m1);
 	      double estimation = (geff_totunc->GetErrorY(i-1) / y_m1) * y;
-	      cout<< "in estimation: "<<i<<endl;
+	      cout<< "in estimation: "<<i<< "  estimation  "<<estimation<<endl;
 	      if(i==0){
 		double y_m1, x_m1;
 		geff->GetPoint(i+1,x_m1,y_m1);
@@ -1351,11 +1393,13 @@ void sig_fit()
 	      while(isnan(estimation)){
 		double y_mj, x_mj;
 		geff->GetPoint(i-j,x_mj,y_mj);
+		std::cout<<"in while loop "<< i-j<<" x_mj "<< x_mj<<"   y_mj  "<<y_mj<<std::endl;
 		estimation = (geff_totunc->GetErrorY(i-j) / y_mj) * y;
 		if(i==0){
 		  geff->GetPoint(i+j,x_mj,y_mj);
 		  estimation = (geff_totunc->GetErrorY(i+j) / y_mj) * y;
 		}	
+		j+=1;
 	      }
 
 	      //	      std::cout<<"estimation  "<< estimation <<std::endl;
@@ -1975,6 +2019,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
 
   //  c.SaveAs("test.eps");
   // efficiency calculation
+  // TODO: - ist es null wenn die Funktion nicht definiert ist
+  // - nicht bei bin 1 sonder wo der backgroundfit anfaengt
   double Nevents_err; 
   double Nevents = 0;
   for(int bin=1;bin < sigh->GetNbinsX()+1;bin++){
@@ -2194,8 +2240,8 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   }
 
   if (func.Contains("cb")){
-    TString info9 = TString::Format("#mu = %.0f #pm %.0f GeV", fitmodel_cb->GetParameter(0), fitmodel_cb->GetParError(0) );
-    TString info10 = TString::Format("#sigma = %.0f #pm %.0f GeV",  fitmodel_cb->GetParameter(1), fitmodel_cb->GetParError(1));
+    info9 = TString::Format("#mu = %.0f #pm %.0f GeV", fitmodel_cb->GetParameter(0), fitmodel_cb->GetParError(0) );
+    info10 = TString::Format("#sigma = %.0f #pm %.0f GeV",  fitmodel_cb->GetParameter(1), fitmodel_cb->GetParError(1));
 
 
     TString info92 = TString::Format("n = %.2f #pm %.2f ", fitmodel_cb->GetParameter(2), fitmodel_cb->GetParError(2) );

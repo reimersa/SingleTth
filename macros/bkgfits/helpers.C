@@ -363,10 +363,11 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   // this is not correct, as Ntot is already after the preselection! 
   // we should use the total generated number of events, scaled by the cross section (1pb)
   // todo: read in the preselection file to get this number from the file instead of hard-coding it
-  double Ntot = 35800.;
-  if(year.Contains("2017")) Ntot = 41500;
-  if(year.Contains("2018")) Ntot = 59700;
-  if(year.Contains("allyears")) Ntot = 137200;
+  double BR = 0.324;
+  double Ntot = 35800. * BR;
+  if(year.Contains("2017")) Ntot = 41500 * BR;
+  if(year.Contains("2018")) Ntot = 59700 * BR;
+  if(year.Contains("allyears")) Ntot = 137200 *BR;
 
   // cout << "\nNevents before selection = " << Ntot << endl;
   // cout << "Sum of weights = " << h->GetSumOfWeights() << endl;

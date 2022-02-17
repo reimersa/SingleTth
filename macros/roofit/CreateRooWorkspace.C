@@ -198,7 +198,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
     if(cat.Contains("catma300")) fit_xmin = 560;
     if(cat.Contains("chi2h_2")) fit_xmin = 520;
-    // if(cat.Contains("chi2h_2")) fit_xmin = 500;
+    //    if(cat.Contains("chi2h_2")) fit_xmin = 480;
+    //    if(cat.Contains("chi2h_2") && year.Contains("2017")) fit_xmax = 1900;
     //    if(cat.Contains("chi2h_2")&&year.Contains("2018")) fit_xmin = 490;
     if(cat.Contains("catma175")) fit_xmin = 590;
     if(cat.Contains("ma175")&& channel==defs::eEle && year.Contains("2018"))fit_xmax = 1999;
@@ -661,7 +662,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
   JERmeandown_error->SetParameter(1, param1_JERmeandown_value);
 
   ////////second mean
-  TString mean2functionstring = "1"
+  TString mean2functionstring = "1";
   TF1* mean2 = new TF1("mean2fit", mean2functionstring, 500, 1250);
   // mean2->SetParameter(0, 584.9);
   // mean2->SetParameter(1, 0.9755);
@@ -918,8 +919,8 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     RooPlot* plotter=x->frame();
     ModelSg_Gauss->plotOn(plotter, RooFit::LineColor(kRed));
     ModelSg_JECup_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
-    ModelSg_JECdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlue));
-    ModelSg_JERdown_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
+    ModelSg_JECdown_Gauss->plotOn(plotter, RooFit::LineColor(kTeal));
+    ModelSg_JERdown_Gauss->plotOn(plotter, RooFit::LineColor(kGray));
     ModelSg_JERup_Gauss->plotOn(plotter, RooFit::LineColor(kBlack));
     plotter->Draw();
     c_sg->SaveAs("plots/Fit_Sg"+SgName+"_"+year+"_"+cat+".pdf");
@@ -936,13 +937,14 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     else eff = eff_muon->Eval(MT);
     std::cout<<"================ eff  "<< eff<<std::endl;
 
-    double Nevts = 35800*eff;
-    if(year.Contains("2017")) Nevts = 41500*eff;
-    if(year.Contains("2018")) Nevts = 59700*eff;
+    double BR = 0.324;
+    double Nevts = 35800*eff*BR;
+    if(year.Contains("2017")) Nevts = 41500*eff*BR;
+    if(year.Contains("2018")) Nevts = 59700*eff*BR;
     //    infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<mean_error->Eval(MT)-mean->Eval(MT)<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT)<< std::endl;
     infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<(mean_error->Eval(MT)-mean->Eval(MT))<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT);
-    infotofile << "  JERupmean   "<<JERmeanup_error->Eval(MT)<<"   JERsigmaup   "<<JERsigmaup_error->Eval(MT)<<"  JERdownmean   "<<JERmeandown_error->Eval(MT)<<"   JERsigmadown   "<<JERsigmadown_error->Eval(MT)<< "  JECupmean   "<<JECmeanup_error->Eval(MT)<<"   JECsigmaup   "<<JECsigmaup_error->Eval(MT)<<"  JECdownmean   "<<JECmeandown_error->Eval(MT)<<"   JECsigmadown   "<<JECsigmadown_error->Eval(MT)<<" ,  Mean2  "<< mean2->Eval(MT)<<"  , Mean2 Error  "<<(mean2_error->Eval(MT)-mean2->Eval(MT))<<"  Sigma2  "<<sigma2->Eval(MT)<<"  Sigma2 Error "<<sigma2_error->Eval(MT)-sigma2->Eval(MT);
-    infotofile << "  JERupmean2   "<<JERmeanup2_error->Eval(MT)<<"   JERsigmaup2   "<<JERsigmaup2_error->Eval(MT)<<"  JERdownmean2   "<<JERmeandown2_error->Eval(MT)<<"   JERsigmadown2   "<<JERsigmadown2_error->Eval(MT)<< "  JECupmean2   "<<JECmeanup2_error->Eval(MT)<<"   JECsigmaup2   "<<JECsigmaup2_error->Eval(MT)<<"  JECdownmean2   "<<JECmeandown2_error->Eval(MT)<<"   JECsigmadown2   "<<JECsigmadown2_error->Eval(MT)<<" ,  Fnorm  "<< fnorm->Eval(MT)<<"  , fnorm Error  "<<(fnorm_error->Eval(MT)-fnorm->Eval(MT));
+    infotofile << "  JERupmean   "<<JERmeanup_error->Eval(MT)<<"   JERupsigma   "<<JERsigmaup_error->Eval(MT)<<"  JERdownmean   "<<JERmeandown_error->Eval(MT)<<"   JERdownsigma   "<<JERsigmadown_error->Eval(MT)<< "  JECupmean   "<<JECmeanup_error->Eval(MT)<<"   JECupsigma   "<<JECsigmaup_error->Eval(MT)<<"  JECdownmean   "<<JECmeandown_error->Eval(MT)<<"   JECdownsigma   "<<JECsigmadown_error->Eval(MT)<<" ,  Mean2  "<< mean2->Eval(MT)<<"  , Mean2 Error  "<<(mean2_error->Eval(MT)-mean2->Eval(MT))<<"  Sigma2  "<<sigma2->Eval(MT)<<"  Sigma2 Error "<<sigma2_error->Eval(MT)-sigma2->Eval(MT);
+    infotofile << "  JERupmean2   "<<JERmeanup2_error->Eval(MT)<<"   JERupsigma2   "<<JERsigmaup2_error->Eval(MT)<<"  JERdownmean2   "<<JERmeandown2_error->Eval(MT)<<"   JERdownsigma2   "<<JERsigmadown2_error->Eval(MT)<< "  JECupmean2   "<<JECmeanup2_error->Eval(MT)<<"   JECupsigma2   "<<JECsigmaup2_error->Eval(MT)<<"  JECdownmean2   "<<JECmeandown2_error->Eval(MT)<<"   JECdownsigma2   "<<JECsigmadown2_error->Eval(MT)<<" ,  Fnorm  "<< fnorm->Eval(MT)<<"  , fnorm Error  "<<(fnorm_error->Eval(MT)-fnorm->Eval(MT));
     infotofile << "  JERupfnorm   "<<JERfnormup_error->Eval(MT)<<"  JERdownfnorm   "<<JERfnormdown_error->Eval(MT)<< "  JECupfnorn   "<<JECfnormup_error->Eval(MT)<<"  JECdownfnorm   "<<JECfnormdown_error->Eval(MT)<<std::endl;
 
 

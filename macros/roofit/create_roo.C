@@ -8,13 +8,17 @@ int main(int argc, char *argv[])
   bool all_bkgds = true;
 
   //  TString MA = "99999";
-  TString MA = "450";
+  TString MA = "125";
 
   std::vector<TString> categories = {"chi2h_2", "catma90","catma175","catma300"};
   if(MA=="75") categories = {"catma60", "catma90","catma300"};
-  if(MA=="175") categories = {"catma175","catma300","chi2h_2"};
-  if(MA=="99999") categories = {"catma175","catma300","chi2h_2","catma90"};
+  if(MA=="100") categories = {"catma90","catma300","chi2h_2"};
+  if(MA=="175") categories = {"chi2h_2","catma175","catma300"};
+  if(MA=="200") categories = {"catma175","catma300","chi2h_2"};
+  if(MA=="250") categories = {"catma175","catma300"};
+  if(MA=="350") categories = {"catma175","catma300"};
   if(MA=="450") categories = {"catma175","catma300"};
+  if(MA=="500") categories = {"catma175","catma300"};
 
   for(unsigned int icat = 0; icat < categories.size(); icat++){
     TString cat = categories[icat];

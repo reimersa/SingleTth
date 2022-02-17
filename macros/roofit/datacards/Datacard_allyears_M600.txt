@@ -6,17 +6,17 @@ jmax  * number of backgrounds
 kmax  * number of nuisance parameters (sources of systematical uncertainties) 
  
 ------------------------------ 
-shapes * ech_2016v3_chi2h_2 ws_SingleTth_2016v3_chi2h_2_175.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
+shapes * ech_2016v3_chi2h_2 ws_SingleTth_2016v3_chi2h_2_125.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
  
-shapes * much_2016v3_chi2h_2 ws_SingleTth_2016v3_chi2h_2_175.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
+shapes * much_2016v3_chi2h_2 ws_SingleTth_2016v3_chi2h_2_125.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
  
-shapes * ech_2017v2_chi2h_2 ws_SingleTth_2017v2_chi2h_2_175.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
+shapes * ech_2017v2_chi2h_2 ws_SingleTth_2017v2_chi2h_2_125.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
  
-shapes * much_2017v2_chi2h_2 ws_SingleTth_2017v2_chi2h_2_175.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
+shapes * much_2017v2_chi2h_2 ws_SingleTth_2017v2_chi2h_2_125.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
  
-shapes * ech_2018_chi2h_2 ws_SingleTth_2018_chi2h_2_175.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
+shapes * ech_2018_chi2h_2 ws_SingleTth_2018_chi2h_2_125.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
  
-shapes * much_2018_chi2h_2 ws_SingleTth_2018_chi2h_2_175.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
+shapes * much_2018_chi2h_2 ws_SingleTth_2018_chi2h_2_125.root SingleTthchi2h_2:$PROCESS_$CHANNEL 
  
 ------------------------------ 
 # name of channels, and number of observed events (total number of event in Data) 
@@ -32,112 +32,112 @@ observation     -1             -1  -1             -1  -1             -1
 bin           ech_2016v3_chi2h_2    ech_2016v3_chi2h_2   much_2016v3_chi2h_2      much_2016v3_chi2h_2   ech_2017v2_chi2h_2    ech_2017v2_chi2h_2   much_2017v2_chi2h_2      much_2017v2_chi2h_2   ech_2018_chi2h_2    ech_2018_chi2h_2   much_2018_chi2h_2      much_2018_chi2h_2    
 process         roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf 
 process        0   1    0    1   0   1    0    1   0   1    0    1    
-rate           138.626   1453          28.1454   2000   29.5441   1583          45.6421   2424   43.2864   3144          71.3021   4666   
+rate           421.212   2054          557.349   2700   394.396   2566          653.691   4086   668.497   4109          1002   6121   
  
 ------------------------------ 
 # list of independent sources of uncertainties, and give their effect (syst. error) 
  
-rate_signal     lnN    1.21707058836       -   1.21707058836       -    1.1452486442       -   1.1452486442       -    1.14496286863       -   1.14496286863       -     
+rate_signal     lnN    1.13135910475       -   1.13135910475       -    1.23567040613       -   1.23567040613       -    1.07973616587       -   1.07973616587       -     
 pdf_index_much_2017v2_chi2h_2 discrete 
  pdf_index_ech_2017v2_chi2h_2 discrete 
  pdf_index_MT600_much_2017v2_chi2h_2 discrete 
  pdf_index_MT600_ech_2017v2_chi2h_2 discrete 
- sg_mean_2017v2_chi2h_2 param 532.039  3.47672 
- sg_sigma_2017v2_chi2h_2 param 53.2765  3.45277 
- sg_JERmeandown_2017v2_chi2h_2 param 530.125  0.001 
- sg_JERmeanup_2017v2_chi2h_2 param 555.888  0.001 
- sg_JECmeandown_2017v2_chi2h_2 param 527.089  0.001 
- sg_JECmeanup_2017v2_chi2h_2 param 536.835  0.001 
- sg_JERsigmadown_2017v2_chi2h_2 param 53.1277  0.001 
- sg_JERsigmaup_2017v2_chi2h_2 param 39.7  0.001 
- sg_JECsigmadown_2017v2_chi2h_2 param 58.4435  0.001 
- sg_JECsigmaup_2017v2_chi2h_2 param 56.397  0.001 
- sg_mean2_2017v2_chi2h_2 param 1.13132  0.881448 
- sg_sigma2_2017v2_chi2h_2 param 1.2448  0.365571 
- sg_JERmeandown2_2017v2_chi2h_2 param 0.212937  0.001 
- sg_JERmeanup2_2017v2_chi2h_2 param 0.891492  0.001 
- sg_JECmeandown2_2017v2_chi2h_2 param 1.43357  0.001 
- sg_JECmeanup2_2017v2_chi2h_2 param 1.08343  0.001 
- sg_JERsigmadown2_2017v2_chi2h_2 param 1.5321  0.001 
- sg_JERsigmaup2_2017v2_chi2h_2 param 1.42204  0.001 
- sg_JECsigmadown2_2017v2_chi2h_2 param 2.11443  0.001 
- sg_JECsigmaup2_2017v2_chi2h_2 param 0.0526282  0.001 
+ sg_mean_2017v2_chi2h_2 param 592.628  0.783826 
+ sg_sigma_2017v2_chi2h_2 param 63.4337  0.793926 
+ sg_JERmeandown_2017v2_chi2h_2 param 591.431  0.001 
+ sg_JERmeanup_2017v2_chi2h_2 param 593.782  0.001 
+ sg_JECmeandown_2017v2_chi2h_2 param 589.152  0.001 
+ sg_JECmeanup_2017v2_chi2h_2 param 595.836  0.001 
+ sg_JERsigmadown_2017v2_chi2h_2 param 60.9325  0.001 
+ sg_JERsigmaup_2017v2_chi2h_2 param 64.983  0.001 
+ sg_JECsigmadown_2017v2_chi2h_2 param 62.9673  0.001 
+ sg_JECsigmaup_2017v2_chi2h_2 param 64.0291  0.001 
+ sg_mean2_2017v2_chi2h_2 param 1.0  0.001 
+ sg_sigma2_2017v2_chi2h_2 param 2.64436  0.071414 
+ sg_JERmeandown2_2017v2_chi2h_2 param 1.0  0.001 
+ sg_JERmeanup2_2017v2_chi2h_2 param 1.0  0.001 
+ sg_JECmeandown2_2017v2_chi2h_2 param 1.0  0.001 
+ sg_JECmeanup2_2017v2_chi2h_2 param 1.0  0.001 
+ sg_JERsigmadown2_2017v2_chi2h_2 param 2.32087  0.001 
+ sg_JERsigmaup2_2017v2_chi2h_2 param 2.57891  0.001 
+ sg_JECsigmadown2_2017v2_chi2h_2 param 2.72376  0.001 
+ sg_JECsigmaup2_2017v2_chi2h_2 param 2.45926  0.001 
  pdf_index_much_2016v3_chi2h_2 discrete 
  pdf_index_ech_2016v3_chi2h_2 discrete 
  pdf_index_MT600_much_2016v3_chi2h_2 discrete 
  pdf_index_MT600_ech_2016v3_chi2h_2 discrete 
- sg_mean_2016v3_chi2h_2 param 533.933  3.51222 
- sg_sigma_2016v3_chi2h_2 param 48.2312  3.8248 
- sg_JERmeandown_2016v3_chi2h_2 param 532.581  0.001 
- sg_JERmeanup_2016v3_chi2h_2 param 534.69  0.001 
- sg_JECmeandown_2016v3_chi2h_2 param 525.764  0.001 
- sg_JECmeanup_2016v3_chi2h_2 param 529.248  0.001 
- sg_JERsigmadown_2016v3_chi2h_2 param 52.6504  0.001 
- sg_JERsigmaup_2016v3_chi2h_2 param 47.4673  0.001 
- sg_JECsigmadown_2016v3_chi2h_2 param 55.7576  0.001 
- sg_JECsigmaup_2016v3_chi2h_2 param 67.8498  0.001 
- sg_mean2_2016v3_chi2h_2 param 1.32846  0.857677 
- sg_sigma2_2016v3_chi2h_2 param 1.26587  0.45712 
- sg_JERmeandown2_2016v3_chi2h_2 param 1.3655  0.001 
- sg_JERmeanup2_2016v3_chi2h_2 param 0.836078  0.001 
- sg_JECmeandown2_2016v3_chi2h_2 param 1639.32  0.001 
- sg_JECmeanup2_2016v3_chi2h_2 param 1.75168  0.001 
- sg_JERsigmadown2_2016v3_chi2h_2 param 2.64472  0.001 
- sg_JERsigmaup2_2016v3_chi2h_2 param 0.419594  0.001 
- sg_JECsigmadown2_2016v3_chi2h_2 param 1.11314  0.001 
- sg_JECsigmaup2_2016v3_chi2h_2 param 39.1898  0.001 
+ sg_mean_2016v3_chi2h_2 param 597.534  1.07188 
+ sg_sigma_2016v3_chi2h_2 param 55.7157  1.02989 
+ sg_JERmeandown_2016v3_chi2h_2 param 596.167  0.001 
+ sg_JERmeanup_2016v3_chi2h_2 param 598.124  0.001 
+ sg_JECmeandown_2016v3_chi2h_2 param 594.481  0.001 
+ sg_JECmeanup_2016v3_chi2h_2 param 601.486  0.001 
+ sg_JERsigmadown_2016v3_chi2h_2 param 54.4105  0.001 
+ sg_JERsigmaup_2016v3_chi2h_2 param 57.1855  0.001 
+ sg_JECsigmadown_2016v3_chi2h_2 param 54.922  0.001 
+ sg_JECsigmaup_2016v3_chi2h_2 param 54.9362  0.001 
+ sg_mean2_2016v3_chi2h_2 param 1.0  0.001 
+ sg_sigma2_2016v3_chi2h_2 param 2.21793  0.0807465 
+ sg_JERmeandown2_2016v3_chi2h_2 param 1.0  0.001 
+ sg_JERmeanup2_2016v3_chi2h_2 param 1.0  0.001 
+ sg_JECmeandown2_2016v3_chi2h_2 param 1.0  0.001 
+ sg_JECmeanup2_2016v3_chi2h_2 param 1.0  0.001 
+ sg_JERsigmadown2_2016v3_chi2h_2 param 2.06987  0.001 
+ sg_JERsigmaup2_2016v3_chi2h_2 param 2.19805  0.001 
+ sg_JECsigmadown2_2016v3_chi2h_2 param 2.06409  0.001 
+ sg_JECsigmaup2_2016v3_chi2h_2 param 1.94851  0.001 
  pdf_index_much_2018_chi2h_2 discrete 
  pdf_index_ech_2018_chi2h_2 discrete 
  pdf_index_MT600_much_2018_chi2h_2 discrete 
  pdf_index_MT600_ech_2018_chi2h_2 discrete 
- sg_mean_2018_chi2h_2 param 535.303  3.02534 
- sg_sigma_2018_chi2h_2 param 55.6933  3.30507 
- sg_JERmeandown_2018_chi2h_2 param 530.615  0.001 
- sg_JERmeanup_2018_chi2h_2 param 531.431  0.001 
- sg_JECmeandown_2018_chi2h_2 param 526.929  0.001 
- sg_JECmeanup_2018_chi2h_2 param 537.153  0.001 
- sg_JERsigmadown_2018_chi2h_2 param 51.6172  0.001 
- sg_JERsigmaup_2018_chi2h_2 param 55.3962  0.001 
- sg_JECsigmadown_2018_chi2h_2 param 54.7185  0.001 
- sg_JECsigmaup_2018_chi2h_2 param 53.6788  0.001 
- sg_mean2_2018_chi2h_2 param 0.925672  0.711298 
- sg_sigma2_2018_chi2h_2 param 1.23079  0.369817 
- sg_JERmeandown2_2018_chi2h_2 param 0.978108  0.001 
- sg_JERmeanup2_2018_chi2h_2 param 1.28686  0.001 
- sg_JECmeandown2_2018_chi2h_2 param 1.37035  0.001 
- sg_JECmeanup2_2018_chi2h_2 param 1.03291  0.001 
- sg_JERsigmadown2_2018_chi2h_2 param 1.41501  0.001 
- sg_JERsigmaup2_2018_chi2h_2 param 0.412455  0.001 
- sg_JECsigmadown2_2018_chi2h_2 param 0.335783  0.001 
- sg_JECsigmaup2_2018_chi2h_2 param 0.542052  0.001 
- bg3p_p2much_2018_chi2h_2 param 6.03439  0.794427 
- bg3p_p0much_2016v3_chi2h_2 param -23.2975  10.2429 
- bg3p_p0much_2018_chi2h_2 param -24.2945  5.78987 
- bgexp2_p1ech_2018_chi2h_2 param 3.18793  0.0954023 
- bg3p_p2much_2017v2_chi2h_2 param 4.29707  1.261 
- bgexp2_p1much_2018_chi2h_2 param 3.25535  0.0768947 
- bg3p_p2ech_2017v2_chi2h_2 param 4.37125  1.52342 
- bgexp2_p0much_2018_chi2h_2 param 4.10385  0.513799 
- bg3p_p2ech_2016v3_chi2h_2 param 5.49182  1.72107 
- bg3p_p0much_2017v2_chi2h_2 param -11.7488  9.47107 
- bg3p_p1ech_2018_chi2h_2 param 4.07243  2.45448 
- bg3p_p2much_2016v3_chi2h_2 param 6.0175  1.38149 
- bgexp2_p0ech_2018_chi2h_2 param 3.24873  0.673955 
- bgexp2_p0much_2016v3_chi2h_2 param 3.89096  0.826432 
- bg3p_p1ech_2017v2_chi2h_2 param 7.51743  3.00852 
- bg3p_p1much_2016v3_chi2h_2 param 12.0429  2.67187 
- bg3p_p1ech_2016v3_chi2h_2 param 11.1168  3.28932 
- bg3p_p0ech_2017v2_chi2h_2 param -4.88162  11.709 
- bg3p_p1much_2017v2_chi2h_2 param 8.96237  2.45986 
- bgexp2_p1ech_2016v3_chi2h_2 param 3.17053  0.135982 
- bgexp2_p0ech_2016v3_chi2h_2 param 4.11676  0.877466 
- bg3p_p0ech_2016v3_chi2h_2 param -21.0982  12.5193 
- bgexp2_p0ech_2017v2_chi2h_2 param 1.39873  1.05033 
- bg3p_p1much_2018_chi2h_2 param 12.1464  1.5147 
- bgexp2_p1much_2017v2_chi2h_2 param 3.33845  0.107985 
- bg3p_p2ech_2018_chi2h_2 param 2.03487  1.24312 
- bgexp2_p1ech_2017v2_chi2h_2 param 2.96179  0.137843 
- bgexp2_p0much_2017v2_chi2h_2 param 4.17817  0.740258 
- bgexp2_p1much_2016v3_chi2h_2 param 3.29564  0.119224 
- bg3p_p0ech_2018_chi2h_2 param 7.21433  9.52363 
+ sg_mean_2018_chi2h_2 param 592.984  0.776671 
+ sg_sigma_2018_chi2h_2 param 59.9412  0.756397 
+ sg_JERmeandown_2018_chi2h_2 param 592.175  0.001 
+ sg_JERmeanup_2018_chi2h_2 param 593.687  0.001 
+ sg_JECmeandown_2018_chi2h_2 param 588.888  0.001 
+ sg_JECmeanup_2018_chi2h_2 param 597.139  0.001 
+ sg_JERsigmadown_2018_chi2h_2 param 58.8353  0.001 
+ sg_JERsigmaup_2018_chi2h_2 param 60.4937  0.001 
+ sg_JECsigmadown_2018_chi2h_2 param 59.2329  0.001 
+ sg_JECsigmaup_2018_chi2h_2 param 59.61  0.001 
+ sg_mean2_2018_chi2h_2 param 1.0  0.001 
+ sg_sigma2_2018_chi2h_2 param 2.28273  0.0647599 
+ sg_JERmeandown2_2018_chi2h_2 param 1.0  0.001 
+ sg_JERmeanup2_2018_chi2h_2 param 1.0  0.001 
+ sg_JECmeandown2_2018_chi2h_2 param 1.0  0.001 
+ sg_JECmeanup2_2018_chi2h_2 param 1.0  0.001 
+ sg_JERsigmadown2_2018_chi2h_2 param 2.23272  0.001 
+ sg_JERsigmaup2_2018_chi2h_2 param 2.17011  0.001 
+ sg_JECsigmadown2_2018_chi2h_2 param 2.09059  0.001 
+ sg_JECsigmaup2_2018_chi2h_2 param 2.17909  0.001 
+ bg3p_p2much_2018_chi2h_2 param 4.54539  0.828461 
+ bg3p_p0much_2016v3_chi2h_2 param -25.4484  7.22927 
+ bg3p_p0much_2018_chi2h_2 param -15.5362  6.02767 
+ bgexp2_p1ech_2018_chi2h_2 param 3.07289  0.0818047 
+ bg3p_p2much_2017v2_chi2h_2 param 4.97739  1.04672 
+ bgexp2_p1much_2018_chi2h_2 param 3.16686  0.0655356 
+ bg3p_p2ech_2017v2_chi2h_2 param 3.94304  0.27472 
+ bgexp2_p0much_2018_chi2h_2 param 4.38836  0.410799 
+ bg3p_p2ech_2016v3_chi2h_2 param 7.4022  1.38233 
+ bg3p_p0much_2017v2_chi2h_2 param -15.6062  7.67886 
+ bg3p_p1ech_2018_chi2h_2 param 5.41855  2.29158 
+ bg3p_p2much_2016v3_chi2h_2 param 6.14723  1.00995 
+ bgexp2_p0ech_2018_chi2h_2 param 3.31576  0.549537 
+ bgexp2_p0much_2016v3_chi2h_2 param 3.98598  0.637346 
+ bg3p_p1ech_2017v2_chi2h_2 param 7.87671  0.153506 
+ bg3p_p1much_2016v3_chi2h_2 param 12.2293  1.901 
+ bg3p_p1ech_2016v3_chi2h_2 param 14.5992  2.59221 
+ bg3p_p0ech_2017v2_chi2h_2 param -9.43668  0.119915 
+ bg3p_p1much_2017v2_chi2h_2 param 9.63623  2.00775 
+ bgexp2_p1ech_2016v3_chi2h_2 param 3.12088  0.113136 
+ bgexp2_p0ech_2016v3_chi2h_2 param 4.17804  0.711448 
+ bg3p_p0ech_2016v3_chi2h_2 param -34.5975  9.79268 
+ bgexp2_p0ech_2017v2_chi2h_2 param 3.4862  0.645665 
+ bg3p_p1much_2018_chi2h_2 param 9.51334  1.58137 
+ bgexp2_p1much_2017v2_chi2h_2 param 2.98042  0.0811992 
+ bg3p_p2ech_2018_chi2h_2 param 2.70081  1.17577 
+ bgexp2_p1ech_2017v2_chi2h_2 param 2.97522  0.10145 
+ bgexp2_p0much_2017v2_chi2h_2 param 3.23124  0.530733 
+ bgexp2_p1much_2016v3_chi2h_2 param 3.12068  0.0994196 
+ bg3p_p0ech_2018_chi2h_2 param 0.985096  8.82727 
  ------------------------------ 

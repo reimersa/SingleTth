@@ -21,8 +21,8 @@ void bkg_fit()
 {
 
   //TString year = "2016v3";
-  //  TString year = "2017v2";
-  TString year = "2018";
+  TString year = "2017v2";
+  //  TString year = "2018";
   //  TString year = "allyears";
   
   std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175", "catma300"};

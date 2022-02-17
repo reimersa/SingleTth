@@ -31,8 +31,8 @@ gStyle.SetPaintTextFormat("2.3f")
 
 #signalstrength = {0.0,0.25,0.5,0.75,1.0,1.5,2.0,2.5,3.0}
 signalstrength = {0.0,0.25,0.5,0.75,1.0}
-masses = {700,1000}
-MA = "450"
+masses = {800,1000}
+MA = "125"
 
 color = [kBlue,kBlack,kRed]
 color_lm = [kBlue,kBlack,kRed]
@@ -63,7 +63,7 @@ for mass in masses:
     for sig in signalstrength:
         if mass > 600 and sig > 1: continue
         print sig
-        infile = TFile("fitDiagnosticssignal"+str(sig)+"_"+str(mass)+".root","r")
+        infile = TFile("fitDiagnosticssignal"+str(sig)+"_"+str(mass)+"_"+MA+".root","r")
         TH1.AddDirectory(0)
         tree_fit_sb = infile.Get("tree_fit_sb")
         tree_fit_sb.Draw("r>>h(100,-2,5)")
@@ -123,7 +123,7 @@ leg.SetBorderSize(0);
 leg.SetFillStyle(0);
 leg.SetTextSize(0.035);
 leg.SetTextFont(42);
-leg.SetHeader("Signal mass")
+leg.SetHeader("M_{a} = "+MA)
 fl= TF1("fl","[0]+[1]*x",0,3.5)
 fl.SetParameter(0,0)
 fl.SetParameter(1,1)

@@ -903,9 +903,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     else eff = eff_muon->Eval(MT);
     std::cout<<"================ eff  "<< eff<<std::endl;
 
-    double Nevts = 35800*eff;
-    if(year.Contains("2017")) Nevts = 41500*eff;
-    if(year.Contains("2018")) Nevts = 59700*eff;
+    double BR = 0.324;
+    double Nevts = 35800*eff * BR;
+    if(year.Contains("2017")) Nevts = 41500*eff * BR;
+    if(year.Contains("2018")) Nevts = 59700*eff * BR;
     //    infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<mean_error->Eval(MT)-mean->Eval(MT)<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT)<< std::endl;
     infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<(mean_error->Eval(MT)-mean->Eval(MT))<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT);
     infotofile << "  JERupmean   "<<JERmeanup_error->Eval(MT)<<"   JERsigmaup   "<<JERsigmaup_error->Eval(MT)<<"  JERdownmean   "<<JERmeandown_error->Eval(MT)<<"   JERsigmadown   "<<JERsigmadown_error->Eval(MT)<< "  JECupmean   "<<JECmeanup_error->Eval(MT)<<"   JECsigmaup   "<<JECsigmaup_error->Eval(MT)<<"  JECdownmean   "<<JECmeandown_error->Eval(MT)<<"   JECsigmadown   "<<JECsigmadown_error->Eval(MT)<<" ,  Mean2  "<< mean2->Eval(MT)<<"  , Mean2 Error  "<<(mean2_error->Eval(MT)-mean2->Eval(MT))<<"  Sigma2  "<<sigma2->Eval(MT)<<"  Sigma2 Error "<<sigma2_error->Eval(MT)-sigma2->Eval(MT);
