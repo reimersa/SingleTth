@@ -32,7 +32,7 @@ observation     -1             -1  -1             -1  -1             -1
 bin           ech_2016v3_chi2h_2    ech_2016v3_chi2h_2   much_2016v3_chi2h_2      much_2016v3_chi2h_2   ech_2017v2_chi2h_2    ech_2017v2_chi2h_2   much_2017v2_chi2h_2      much_2017v2_chi2h_2   ech_2018_chi2h_2    ech_2018_chi2h_2   much_2018_chi2h_2      much_2018_chi2h_2    
 process         roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf roomultipdf_MT600   roomultipdf  roomultipdf_MT600   roomultipdf 
 process        0   1    0    1   0   1    0    1   0   1    0    1    
-rate           421.212   2054          557.349   2700   394.396   2566          653.691   4086   668.497   4109          1002   6121   
+rate           139.263   2054          184.272   2700   128.587   2566          213.127   4086   217.942   4109          326.67   6121   
  
 ------------------------------ 
 # list of independent sources of uncertainties, and give their effect (syst. error) 

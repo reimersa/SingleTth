@@ -4,9 +4,9 @@
 
 #for mass in {600,1000}
 #for mass in {1000,800}
-#for mass in {800,600}
-#do
-mass=1000
+for mass in {800,600,1000}
+do
+#mass=1000
 MA="125"
 #datacard="Datacard_allyears_M${mass}_much.txt"
 datacard="Datacard_allyears_M${mass}.txt"
@@ -32,7 +32,7 @@ done
 freeze_params="${freeze_params: : -1}"
 set_params="${set_params: : -1}"
 
-for signal in 0.0 0.25 0.5 0.75 1.0 
+for signal in 0.0 0.1 0.25 0.35 0.5 0.75 1.0 
 #for signal in  1.0 
 do
 #signal=1.0
@@ -64,7 +64,7 @@ eval "combine -M GenerateOnly -d initialFitWorkspace.root --snapshotName initial
 eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${mass}.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=0 -n signal${signal}_${mass}_${MA}"
 
 
-#done
+done
 # echo "python plot_signalstrength.py 0 0.25 0.5 0.75 1 1.5 2 2.5 3 --name \"MuEch_signal_M${mass}_2016\" --mass ${mass}"
 # eval "python plot_signalstrength.py 0 0.25 0.5 0.75 1 1.5 2 2.5 3 --name \"MuEch_signal_M${mass}_2016\" --mass ${mass}"
 done

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mass="1000"
+mass="800"
 datacard="Datacard_allyears_M${mass}.txt"
 #datacard="Datacard_allyears_M${mass}_much.txt"
 #datacard="Datacard_allyears_M${mass}_ech.txt"
