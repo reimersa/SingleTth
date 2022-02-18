@@ -197,7 +197,7 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
         hist.GetYaxis().SetTitle("fraction of events")
         hist.GetXaxis().SetTitle("M_{T} [GeV]")
         if ma:         hist.GetXaxis().SetTitle("M_{a} [GeV]")
-        hist.GetYaxis().SetRangeUser(0,0.8)
+        hist.GetYaxis().SetRangeUser(0,1)
         if ma:         hist.GetYaxis().SetRangeUser(0,1.0)
 
         hist.SetLineWidth(2)
