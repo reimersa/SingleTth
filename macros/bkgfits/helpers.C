@@ -363,11 +363,15 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
   // this is not correct, as Ntot is already after the preselection! 
   // we should use the total generated number of events, scaled by the cross section (1pb)
   // todo: read in the preselection file to get this number from the file instead of hard-coding it
-  double BR = 0.324;
-  double Ntot = 35800. * BR;
-  if(year.Contains("2017")) Ntot = 41500 * BR;
-  if(year.Contains("2018")) Ntot = 59700 * BR;
-  if(year.Contains("allyears")) Ntot = 137200 *BR;
+  // double BR = 0.324;
+  // double Ntot = 35800. * BR;
+  // if(year.Contains("2017")) Ntot = 41500 * BR;
+  // if(year.Contains("2018")) Ntot = 59700 * BR;
+  // if(year.Contains("allyears")) Ntot = 137200 *BR;
+  double Ntot = 35800.;
+  if(year.Contains("2017")) Ntot = 41500;
+  if(year.Contains("2018")) Ntot = 59700;
+  if(year.Contains("allyears")) Ntot = 137200;
 
   // cout << "\nNevents before selection = " << Ntot << endl;
   // cout << "Sum of weights = " << h->GetSumOfWeights() << endl;
@@ -588,7 +592,7 @@ TH1F* ComputeHistWithCL(TF1* f, TFitResultPtr fr, TH1F* h, double cl)
 }
 
 
-void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString funcdesc, TString funcfilename, TString year = "2016v3", TString cat = "chi2h_2")
+void plot_ratio(TH1F* hist, TF1* func, TF1* func_bin1, TF1* func_bin2, std::vector<TH1F*> err_hists, Eregion region, Echannel ch, bool dodata, bool all_bkgds, TString funcdesc, TString funcfilename, TString year = "2016v3", TString cat = "chi2h_2")
 {
   static int i = 0;
   ++i;
@@ -672,6 +676,8 @@ void plot_ratio(TH1F* hist, TF1* func, std::vector<TH1F*> err_hists, Eregion reg
   }
   hist->Draw("PZ same");
   func->Draw("same");
+  func_bin1->Draw("same");
+  func_bin2->Draw("same");
 
   // some information
   TString info, info2;

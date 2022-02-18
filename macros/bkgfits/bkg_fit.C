@@ -140,11 +140,18 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   // calculate the integral to set the normalisation
   double norm = back->Integral(back->GetXaxis()->FindBin(xmin), back->GetXaxis()->FindBin(xmax), "width");
   cout << "Norm from hist = " << norm << endl;
+  // Set up two more fitting functions with 1/2 bins less
+  double norm_bin1 = back->Integral(back->GetXaxis()->FindBin(xmin)+1, back->GetXaxis()->FindBin(xmax), "width");
+  double norm_bin2 = back->Integral(back->GetXaxis()->FindBin(xmin)+2, back->GetXaxis()->FindBin(xmax), "width");
+
+  
 
   //-----------------------------------
   // set up function for fit
   //-----------------------------------
   TF1* fitmodel = NULL;
+  TF1* fitmodel_bin1 = NULL;
+  TF1* fitmodel_bin2 = NULL;
   Int_t linecol = 0;
   Int_t col68 = 0; 
   Int_t col95 = 0;
@@ -167,6 +174,21 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     fitmodel = new TF1("fitmodel", fitfuncobj, xmin, xmax, 2);
     fitmodel->SetParameter(0, 5.3);  
     fitmodel->SetParameter(1, 0.59);
+    
+    // Set up two more fitting functions with 1/2 bins less
+    expfunction_p2 fitfuncobj_bin1(back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+1), xmax);
+    fitfuncobj_bin1.SetNorm(norm_bin1);    
+    fitmodel_bin1 = new TF1("fitmodel_bin1", fitfuncobj_bin1, back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+1), xmax, 2);
+    fitmodel_bin1->SetParameter(0, 5.3);  
+    fitmodel_bin1->SetParameter(1, 0.59);
+
+    expfunction_p2 fitfuncobj_bin2(back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+2), xmax);
+    fitfuncobj_bin2.SetNorm(norm_bin2);    
+    fitmodel_bin2 = new TF1("fitmodel_bin2", fitfuncobj_bin2, back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+2), xmax, 2);
+    fitmodel_bin2->SetParameter(0, 5.3);  
+    fitmodel_bin2->SetParameter(1, 0.59);
+
+    
     linecol = kBlue+1; 
     col68 = kAzure-4; 
     col95 = kAzure-9;
@@ -245,8 +267,19 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   fitmodel->SetLineStyle(kSolid);
   fitmodel->SetLineWidth(2);
 
+  fitmodel_bin1->SetLineColor(kBlack);
+  fitmodel_bin1->SetLineStyle(kDashed);
+  fitmodel_bin1->SetLineWidth(2);
+
+  fitmodel_bin2->SetLineColor(kOrange);
+  fitmodel_bin2->SetLineStyle(kDashed);
+  fitmodel_bin2->SetLineWidth(2);
+
+
   // FIT!
   TFitResultPtr r = back->Fit(fitmodel, "RS 0");
+  TFitResultPtr r_bin1 = back->Fit(fitmodel_bin1, "RS 0");
+  TFitResultPtr r_bin2 = back->Fit(fitmodel_bin2, "RS 0");
   TMatrixDSym covmatr = r->GetCovarianceMatrix();
   TMatrixDSym rho = r->GetCorrelationMatrix();
   covmatr.Print();
@@ -277,6 +310,8 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   //fitmodel->DrawClone("same");
   back->DrawClone("PZ same");
   fitmodel->DrawClone("same");
+  fitmodel_bin1->DrawClone("same");
+  fitmodel_bin2->DrawClone("same");
 
   //DrawFitVariations(fitmodel, back, fit_xmin, fit_xmax);  // doesn't work for correlated parameters
 
@@ -354,7 +389,7 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   std::vector<TH1F*> err_hists;
   err_hists.push_back(clhist);
   err_hists.push_back(clhist2);  
-  plot_ratio(back, fitmodel, err_hists, region, channel, dodata, all_bkgds, fdesc, ffile,year,cat);
+  plot_ratio(back, fitmodel, fitmodel_bin1, fitmodel_bin2, err_hists, region, channel, dodata, all_bkgds, fdesc, ffile,year,cat);
 
   return fitmodel;
 
