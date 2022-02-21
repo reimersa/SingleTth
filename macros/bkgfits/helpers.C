@@ -759,6 +759,13 @@ void plot_ratio(TH1F* hist, TF1* func, TF1* func_bin1, TF1* func_bin2, std::vect
   TH1F *ratio1 = (TH1F*)hist->Clone();
   ratio1->Divide(func);
 
+  TH1F *ratio_bin1 = (TH1F*)hist->Clone();
+  ratio_bin1->Divide(func_bin1);
+
+  TH1F *ratio_bin2 = (TH1F*)hist->Clone();
+  ratio_bin2->Divide(func_bin2);
+
+
   // delete entries outside of fit range
   for (int i=1; i<ratio1->GetNbinsX()+1;++i){
   	if (ratio1->GetXaxis()->GetBinLowEdge(i)<func->GetXmin()){
@@ -770,6 +777,30 @@ void plot_ratio(TH1F* hist, TF1* func, TF1* func_bin1, TF1* func_bin2, std::vect
   		ratio1->SetBinError(i,0);
   	}
   }
+
+  for (int i=1; i<ratio_bin1->GetNbinsX()+1;++i){
+  	if (ratio_bin1->GetXaxis()->GetBinLowEdge(i)<func_bin1->GetXmin()){
+  		ratio_bin1->SetBinContent(i,0);
+  		ratio_bin1->SetBinError(i,0);
+  	}
+  	if (ratio_bin1->GetXaxis()->GetBinUpEdge(i)>func_bin1->GetXmax()){
+  		ratio_bin1->SetBinContent(i,0);
+  		ratio_bin1->SetBinError(i,0);
+  	}
+  }
+
+  for (int i=1; i<ratio_bin2->GetNbinsX()+1;++i){
+  	if (ratio_bin2->GetXaxis()->GetBinLowEdge(i)<func_bin2->GetXmin()){
+  		ratio_bin2->SetBinContent(i,0);
+  		ratio_bin2->SetBinError(i,0);
+  	}
+  	if (ratio_bin2->GetXaxis()->GetBinUpEdge(i)>func_bin2->GetXmax()){
+  		ratio_bin2->SetBinContent(i,0);
+  		ratio_bin2->SetBinError(i,0);
+  	}
+  }
+
+
 
   ratio1->GetYaxis()->SetRangeUser(0.4,1.6);
   ratio1->GetXaxis()->SetNdivisions(6,5,0);
@@ -795,7 +826,7 @@ void plot_ratio(TH1F* hist, TF1* func, TF1* func_bin1, TF1* func_bin2, std::vect
     
   ratio1->SetTitle("");
   ratio1->Draw("PZ");
-    
+
  
   TF1* unity = new TF1("unity", "[0]", func->GetXmin(), func->GetXmax());
   unity->SetLineColor(func->GetLineColor());
@@ -810,6 +841,14 @@ void plot_ratio(TH1F* hist, TF1* func, TF1* func_bin1, TF1* func_bin2, std::vect
   }
 
   ratio1->Draw("PZ same");
+  ratio_bin1->SetMarkerColor(kRed);
+  ratio_bin2->SetMarkerColor(kOrange);
+  ratio_bin1->SetLineColor(kRed);
+  ratio_bin2->SetLineColor(kOrange);
+  ratio_bin1->Draw("PZ same");
+  ratio_bin2->Draw("PZ same");
+  ratio1->Draw("PZ same");
+
   unity->Draw("same");
 
   gPad->RedrawAxis();

@@ -9,8 +9,8 @@ void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
-//EFitFunction FitFunc = eFunc3p;
-EFitFunction FitFunc = eFuncExp2;
+EFitFunction FitFunc = eFunc3p;
+//EFitFunction FitFunc = eFuncExp2;
 
 //EFitFunction FitFunc = eFunc4p;
 // EFitFunction FitFunc = eFunc2p;
@@ -201,6 +201,24 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     fitmodel->SetParameter(0, -13);  
     fitmodel->SetParameter(1, 8);
     fitmodel->SetParameter(2, 3.8);
+
+    // Set up two more fitting functions with 1/2 bins less
+    dijetfunction_p3 fitfuncobj_bin1(back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+1), xmax);
+    fitfuncobj_bin1.SetNorm(norm_bin1);    
+    fitmodel_bin1 = new TF1("fitmodel_bin1", fitfuncobj_bin1, back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+1), xmax, 3);
+    fitmodel_bin1->SetParameter(0, -13);  
+    fitmodel_bin1->SetParameter(1, 8);
+    fitmodel_bin1->SetParameter(2, 3.8);
+
+    dijetfunction_p3 fitfuncobj_bin2(back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+2), xmax);
+    fitfuncobj_bin2.SetNorm(norm_bin2);    
+    fitmodel_bin2 = new TF1("fitmodel_bin2", fitfuncobj_bin2, back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+2), xmax, 3);
+    fitmodel_bin2->SetParameter(0, -13);  
+    fitmodel_bin2->SetParameter(1, 8);
+    fitmodel_bin2->SetParameter(2, 3.8);
+
+
+
     linecol = kRed+2; 
     col68 = kOrange; 
     col95 = kOrange+7;
@@ -267,7 +285,7 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
   fitmodel->SetLineStyle(kSolid);
   fitmodel->SetLineWidth(2);
 
-  fitmodel_bin1->SetLineColor(kBlack);
+  fitmodel_bin1->SetLineColor(kRed);
   fitmodel_bin1->SetLineStyle(kDashed);
   fitmodel_bin1->SetLineWidth(2);
 
