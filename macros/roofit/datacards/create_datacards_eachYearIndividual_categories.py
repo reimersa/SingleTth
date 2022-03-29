@@ -20,7 +20,7 @@ berror = False
 b_multipdf = True
 b_signalrate = True
 b_lumiunc = True
-b_JEC = True
+b_JEC = False
 
 bkg_much_norm = {} # for all years: key is year
 bkg_ech_norm = {} # for all years: key is year
@@ -94,17 +94,24 @@ lumi_unc = {}
 lumi_unc["2016v3"] = 0.025
 lumi_unc["2017v2"] = 0.023
 lumi_unc["2018"] = 0.025
+lumi_unc["allyears"] = 0.013
 
 years = {"2016v3","2017v2","2018"}
 #years = {"2017v2","2016v3"}
-#years = {"2017v2"}
+#years = {"2018"}
+#years = {"allyears"}
 #ma_mass = "99999"
 ma_mass = "125"
+b_only125 = False
 
 #categories = ["chi2h_2", "catma60","catma90","catma175", "catma300"]
-categories = ["catma175", "catma300","chi2h_2"] 
+categories = ["catma90","catma175", "catma300","chi2h_2"] 
 if ma_mass == "75":
     categories = ["catma60","catma90", "catma300"] 
+if ma_mass == "125":
+    categories = ["catma90","chi2h_2","catma300"] 
+#    categories = ["catma90","catma300"] 
+#    categories = ["chi2h_2"] 
 if ma_mass == "99999":
     categories = ["catma90","catma175", "catma300", "chi2h_2"] 
 if ma_mass == "450":
@@ -113,8 +120,12 @@ if ma_mass == "100":
     categories = ["catma90","chi2h_2","catma300"]
 if ma_mass == "175":
     categories = ["chi2h_2","catma175","catma300"]
+    if b_only125:
+        categories = ["chi2h_2"]
 if ma_mass == "200":
     categories = ["catma175","catma300","chi2h_2"]
+    if b_only125:
+        categories = ["chi2h_2"]
 if ma_mass ==  "250":
     categories = ["catma175","catma300"]
 if ma_mass ==  "350":
@@ -250,13 +261,13 @@ for icat in categories:
                     if mass not in masses and int(mass)>590:
                         masses.append(mass)
      
-                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
-                    signal_much_norm[year+"_"+icat+"_"+mass] = norm
+#                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
+                    signal_much_norm[year+"_"+icat+"_"+mass] = tmp_dict["N"]
                     mean_value[year+"_"+icat+"_"+mass] = tmp_dict["Mean"]
-                    mean_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean_Error"]
+                    mean_error[year+"_"+icat+"_"+mass] = sqrt(pow(tmp_dict["Mean_Error"],2) + pow(((abs(tmp_dict["Mean"] - tmp_dict["JERupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JERdownmean"])))/2,2)+ pow(((abs(tmp_dict["Mean"] - tmp_dict["JECupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JECdownmean"])))/2,2) )
     
                     sigma_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma"]
-                    sigma_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma_Error"]
+                    sigma_error[year+"_"+icat+"_"+mass] = sqrt(pow(tmp_dict["Sigma_Error"],2) + pow(((abs(tmp_dict["Sigma"] - tmp_dict["JERupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JERdownsigma"])))/2,2)+ pow(((abs(tmp_dict["Sigma"] - tmp_dict["JECupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JECdownsigma"])))/2,2) )
 
                     mean_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean"]
                     mean_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownmean"]
@@ -273,16 +284,23 @@ for icat in categories:
     
                     sigma2_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2"]
                     sigma2_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2_Error"]
+                    # sigma2_value[year+"_"+icat+"_"+mass] = 10
+                    # sigma2_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2_Error"]
                     
                     mean2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean2"]
                     mean2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownmean2"]
                     mean2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupmean2"]
                     mean2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownmean2"]
                     
-                    sigma2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupsigma2"]
-                    sigma2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownsigma2"]
-                    sigma2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupsigma2"]
-                    sigma2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownsigma2"]
+                    # sigma2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupsigma2"]
+                    # sigma2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownsigma2"]
+                    # sigma2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupsigma2"]
+                    # sigma2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownsigma2"]
+
+                    sigma2_value_JER_up[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
+                    sigma2_value_JER_down[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
+                    sigma2_value_JEC_up[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
+                    sigma2_value_JEC_down[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
     
                     
     
@@ -290,19 +308,23 @@ for icat in categories:
             if "Electron" in line and "Signal" in line:
                 for j in range(i+1,len(listOfLines)):
                     mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
-                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
-                    signal_ech_norm[year+"_"+icat+"_"+mass] = norm
+#                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
+                    signal_ech_norm[year+"_"+icat+"_"+mass] = tmp_dict["N"]
 
             if "Bg" in line:
                 for j in range(i+1,len(listOfLines)):
                     if "bg" in listOfLines[j]:
+                        # print listOfLines[j]
+                        # print re.findall(r'[-+]?\d+.\d*',listOfLines[j])
                         if len(re.findall(r'[-+]?\d+.\d+',listOfLines[j]))>2:
                             value = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[len(re.findall(r'[-+]?\d+.\d+',listOfLines[j]))-2]
                             error = re.findall(r'[-+]?\d+.\d+',listOfLines[j])[len(re.findall(r'[-+]?\d+.\d+',listOfLines[j]))-1]
                         else:
-                            value = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[3]
-                            error = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[4]
-                            
+                            value = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[len(re.findall(r'[-+]?\d+.\d*',listOfLines[j]))-2]
+                            error = re.findall(r'[-+]?\d+.\d*',listOfLines[j])[len(re.findall(r'[-+]?\d+.\d*',listOfLines[j]))-1]
+
+                        # print "value " + str(value)
+                        # print "error " + str(error)
                         key = listOfLines[j].split("  ")[0]
     
                         bg3p_v[key] = value
@@ -362,6 +384,8 @@ for mass in masses:
     rate_sig_ech_2017 = "rate_signal_ech_2017v2     lnN    "
     rate_sig_mu_2018 = "rate_signal_mu_2018     lnN    "
     rate_sig_ech_2018 = "rate_signal_ech_2018     lnN    "
+    rate_sig_mu_allyears = "rate_signal_mu_allyears     lnN    "
+    rate_sig_ech_allyears = "rate_signal_ech_allyears     lnN    "
 
 
     
@@ -385,7 +409,9 @@ for mass in masses:
                 
             process_bins += "0   1    0    1   "
 
-            rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(bkg_ech_norm[cat][year])+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(bkg_much_norm[cat][year]) + "   "
+            #hier
+            # rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(bkg_ech_norm[cat][year])+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(bkg_much_norm[cat][year]) + "   "
+            rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(1)+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(1) + "   "
 
             #        lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
             rate_sig += str(tot_rate_unc[cat][year][mass]) + "       -   "+str(tot_rate_unc[cat][year][mass]) +"       -    "
@@ -410,6 +436,9 @@ for mass in masses:
                 rate_sig_mu_2016 += "-       -    -       -    "
                 rate_sig_ech_2017 +=  "-       -    -       -    "
                 rate_sig_mu_2017 += "-       -    -       -    "
+            if("allyears" in year):
+                rate_sig_ech_allyears += str(ech_rate_unc[cat][year][mass]) + "       -    -       -    "
+                rate_sig_mu_allyears += "-       -    " + str(much_rate_unc[cat][year][mass]) + "       -    "
 	
 	
 
@@ -420,10 +449,12 @@ for mass in masses:
     rate_sig_mu_2016 += " \n"
     rate_sig_mu_2017 += " \n"
     rate_sig_mu_2018 += " \n"
+    rate_sig_mu_allyears += " \n"
     rate_sig += " \n"
     rate_sig_ech_2016 += " \n"
     rate_sig_ech_2017 += " \n"
     rate_sig_ech_2018 += " \n"
+    rate_sig_ech_allyears += " \n"
     
     outputfile.write("------------------------------ \n")
     outputfile.write("# name of channels, and number of observed events (total number of event in Data) \n \n")
@@ -451,28 +482,36 @@ for mass in masses:
     if b_signalrate:
         outputfile.write(rate_sig)
 
+    alreadyWroteRateUncSig = {}
     for cat in categories:
         if "175" in cat and int(mass) < 700: continue
         if "300" in cat and int(mass) < 700: continue
 
 
         for year in years:
+            alreadyWroteRateUncSig.setdefault(year,False)
 #            if "300" in cat and int(mass) < 800 and "2018" in year: continue
 #            if "2016" in year and "chi2h" not in cat: continue
             if b_multipdf:
                 outputfile.write("pdf_index_much_"+year+"_"+cat+" discrete \n ")
                 outputfile.write("pdf_index_ech_"+year+"_"+cat+" discrete \n ")
-            if b_signalrate and (cat == next(iter(categories))):
+            if b_signalrate and not alreadyWroteRateUncSig[year]: #(cat == next(iter(categories))):
                 if "2016" in year:
                     outputfile.write(rate_sig_mu_2016)
                     outputfile.write(rate_sig_ech_2016)
+                    alreadyWroteRateUncSig[year] = True
                 if "2017" in year:
                     outputfile.write(rate_sig_mu_2017)
                     outputfile.write(rate_sig_ech_2017)
+                    alreadyWroteRateUncSig[year] = True
                 if "2018" in year:
                     outputfile.write(rate_sig_mu_2018)
                     outputfile.write(rate_sig_ech_2018)
-	
+                    alreadyWroteRateUncSig[year] = True
+                if "allyears" in year:
+                    outputfile.write(rate_sig_mu_allyears)
+                    outputfile.write(rate_sig_ech_allyears)
+                    alreadyWroteRateUncSig[year] = True
 	
             outputfile.write("pdf_index_MT"+str(mass)+"_much_"+year+"_"+cat+" discrete \n ")
             outputfile.write("pdf_index_MT"+str(mass)+"_ech_"+year+"_"+cat+" discrete \n ")
