@@ -37,7 +37,7 @@ CreateRooWorkspace::CreateRooWorkspace(TString year, TString cat) : infotofile("
 {
    fWS = new RooWorkspace("SingleTth"+cat);
    gSystem->Exec("mkdir -p datacards");
-   debug_histos = new TFile("debug_histos.root","RECREATE");
+   debug_histos = new TFile("debug_histos"+year+".root","RECREATE");
    xmin = 0;
    xmax = 0;
 }
@@ -64,6 +64,8 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
 	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
       } else if(year.Contains("2018")){
 	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
+      } else if(year.Contains("allyears")){
+	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/NOMINAL/"; 
       }else if(year.Contains("andrea")){ 
 	anaoutputfolder = "/nfs/dust/cms/user/amalara/WorkingArea/File/Analysis/2016/SignalRegion/Puppi/muonchannel/";
       }else{
@@ -121,14 +123,14 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
   	if (dodata){
     	back = (TH1F*)data->Clone();
   	} else {
-    	back = (TH1F*)ttbar->Clone();
-    	if (all_bkgds){
-      		back->Add(singlet);
-      		//back->Add(WJets);  // do not consider minor backgrounds (spiky)
-      		//back->Add(DYJets);
-      		back->Add(DIB);
-      		back->Add(ttV);
-    	}
+	  back = (TH1F*)ttbar->Clone();
+	  if (all_bkgds){
+	    back->Add(singlet);
+	    //back->Add(WJets);  // do not consider minor backgrounds (spiky)
+	    //back->Add(DYJets);
+	    back->Add(DIB);
+	    back->Add(ttV);
+	  }
   	}
   	back->Rebin(2);
 
@@ -150,23 +152,26 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
   	if (region_name=="cr"){
     	back->GetYaxis()->SetRangeUser(1., 1000);
   	} else {
-    	back->GetYaxis()->SetRangeUser(0.05, 1000);
+    	back->GetYaxis()->SetRangeUser(0.0, 1000);
   	}
 	back->GetXaxis()->SetRangeUser(200, 2000);
 
 
   	// zero out bins with little MC stats 
-  	for (int i=1; i<back->GetNbinsX()+1; ++i){
-    	if (back->GetBinContent(i) < 0.1){ 
-      		back->SetBinContent(i, 0);
-      		back->SetBinError(i,0);
-    	}
+  	// for (int i=1; i<back->GetNbinsX()+1; ++i){
+    	// if (back->GetBinContent(i) < 0.1){ 
+      	// 	back->SetBinContent(i, 0);
+      	// 	back->SetBinError(i,0);
+    	// }
 	// if(back->GetBinLowEdge(i)<380){
 	//   back->SetBinContent(i,0);
 	//   back->SetBinError(i,0);
 	// }
-	}
+	//	}
+	TCanvas *background = new TCanvas("background","background",10,10,700,700);
   	back->Draw("E1");
+	if(ch == eMuon)	background->SaveAs("plots/background_muon_"+year+cat+".pdf");
+	else 	background->SaveAs("plots/background_elec_"+year+cat+".pdf");
 
   	return back;
 
@@ -198,12 +203,13 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
     if(cat.Contains("catma300")) fit_xmin = 560;
     if(cat.Contains("chi2h_2")) fit_xmin = 520;
-    //    if(cat.Contains("chi2h_2")) fit_xmin = 480;
-    //    if(cat.Contains("chi2h_2") && year.Contains("2017")) fit_xmax = 1900;
-    //    if(cat.Contains("chi2h_2")&&year.Contains("2018")) fit_xmin = 490;
+    // if(cat.Contains("chi2h_2")) fit_xmin = 490;
     if(cat.Contains("catma175")) fit_xmin = 590;
-    if(cat.Contains("ma175")&& channel==defs::eEle && year.Contains("2018"))fit_xmax = 1999;
-    if(cat.Contains("ma90") && channel==defs::eEle) fit_xmax = 1999;
+    // if(cat.Contains("ma175")&& channel==defs::eEle && year.Contains("2018"))fit_xmax = 1999;
+    // if(cat.Contains("ma90") && channel==defs::eEle) fit_xmax = 1999;
+    if(cat.Contains("ma175") && year.Contains("2018"))fit_xmax = 1999;
+    if(cat.Contains("ma90") ) fit_xmax = 1999;
+
 
   } else {
     fit_xmin = 560;
@@ -250,6 +256,9 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", xmin, xmax);
   x->setBins(Nbins);
   RooDataHist* dataSR = new RooDataHist("data_obs_"+ch_name+"_"+year+"_"+cat, "data_obs_"+ch_name+"_"+year+"_"+cat, RooArgList(*x), h_data);
+  debug_histos->cd();
+  h_data->SetName("data_obs_"+ch_name+"_"+year+"_"+cat);
+  h_data->Write();
 
 
 
@@ -278,17 +287,19 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   bg3p_p1->Print();
   bg3p_p2->Print(); 
 
+  float bkgfactor  = 10;
+
   infotofile << "---------  Bg3p  "+ch_name+"  ---------"<<std::endl;
-  infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"  " << bg3p_p0->getValV() <<"  error  "<<   bg3p_p0->getError()<<std::endl;
-  infotofile << "bg3p_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p1->getValV() <<"  error  "<<    bg3p_p1->getError()<<std::endl;
-  infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p2->getValV() <<"  error  "<<   bg3p_p2->getError()<<std::endl;
+  infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"  " << bg3p_p0->getValV() <<"  error  "<<   bkgfactor * bg3p_p0->getError()<<std::endl;
+  infotofile << "bg3p_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p1->getValV() <<"  error  "<<  bkgfactor *   bg3p_p1->getError()<<std::endl;
+  infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p2->getValV() <<"  error  "<<   bkgfactor * bg3p_p2->getError()<<std::endl;
 
 
   RooFitResult *r_bg_exp1 = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
 
   infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
-  infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bgexp2_p0->getValV() <<"  error  "<<   bgexp2_p0->getError()<<std::endl;
-  infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bgexp2_p1->getValV() <<"  error  "<<   bgexp2_p1->getError()<<std::endl;
+  infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bgexp2_p0->getValV() <<"  error  "<<   bkgfactor * bgexp2_p0->getError()<<std::endl;
+  infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bgexp2_p1->getValV() <<"  error  "<<   bkgfactor * bgexp2_p1->getError()<<std::endl;
   
 
   //create a list with all alt and nominal functions
@@ -300,7 +311,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   RooCategory category("pdf_index_"+ch_name+"_"+year+"_"+cat,"Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name+"_"+year+"_"+cat,"All Pdfs",category,mypdfs);
-  RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_"+cat+"_norm","Number of background events",12014,0,1000000);
+  RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_"+cat+"_norm","Number of background events",1000,0,1000000);
 
 
   // convert exp function to pseudo data:
@@ -334,7 +345,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // save the bkg systematic fit to the workspace
   //  fWS->import(*bgfunc_4p);
   fWS->import(category);
-  //  fWS->import(norm);
+  fWS->import(norm);
   fWS->import(multipdf);
 
   // sum up number of events in fit region
@@ -357,6 +368,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   plotter->getAttLine()->SetLineColor(kRed);
   plotter->getAttLine()->SetLineStyle(kDotted);  
   bgfunc_exp->plotOn(plotter);
+  //dataSR->plotOn(plotter);
 
   TCanvas *background_c = new TCanvas("background_c","background fit",10,10,700,700);
   background_c->cd();
@@ -906,10 +918,10 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     TString signalmass = Form("%d",(int)MT);
     if(ch_name.Contains("much")){
       myhist->Scale(80/myhist->Integral());
-      myhist->SetName("signal_"+signalmass+"_much");
+      myhist->SetName("signal_"+signalmass+"_much"+year+cat);
     }else{
       myhist->Scale(53/myhist->Integral());
-      myhist->SetName("signal_"+signalmass+"_ech");
+      myhist->SetName("signal_"+signalmass+"_ech"+year+cat);
     }
     debug_histos->cd();
     myhist->Write();
@@ -941,6 +953,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     double Nevts = 36330*eff*BR;
     if(year.Contains("2017")) Nevts = 41530*eff*BR;
     if(year.Contains("2018")) Nevts = 59740*eff*BR;
+    if(year.Contains("allyears")) Nevts = 137600*eff*BR;
     //    infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<mean_error->Eval(MT)-mean->Eval(MT)<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT)<< std::endl;
     infotofile << "MT = " << MT << " GeV,  N = " << Nevts <<" ,  Mean  "<< mean->Eval(MT)<<"  , Mean Error  "<<(mean_error->Eval(MT)-mean->Eval(MT))<<"  Sigma  "<<sigma->Eval(MT)<<"  Sigma Error "<<sigma_error->Eval(MT)-sigma->Eval(MT);
     infotofile << "  JERupmean   "<<JERmeanup_error->Eval(MT)<<"   JERupsigma   "<<JERsigmaup_error->Eval(MT)<<"  JERdownmean   "<<JERmeandown_error->Eval(MT)<<"   JERdownsigma   "<<JERsigmadown_error->Eval(MT)<< "  JECupmean   "<<JECmeanup_error->Eval(MT)<<"   JECupsigma   "<<JECsigmaup_error->Eval(MT)<<"  JECdownmean   "<<JECmeandown_error->Eval(MT)<<"   JECdownsigma   "<<JECsigmadown_error->Eval(MT)<<" ,  Mean2  "<< mean2->Eval(MT)<<"  , Mean2 Error  "<<(mean2_error->Eval(MT)-mean2->Eval(MT))<<"  Sigma2  "<<sigma2->Eval(MT)<<"  Sigma2 Error "<<sigma2_error->Eval(MT)-sigma2->Eval(MT);
@@ -953,11 +966,11 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     mypdfs.add(*ModelSg_Gauss);
     //mypdfs.add(*ModelSg_Gauss_variation);
 
-    mypdfs.add(*ModelSg_JECup_Gauss);
-    mypdfs.add(*ModelSg_JERup_Gauss);
-    mypdfs.add(*ModelSg_JECdown_Gauss);
-    mypdfs.add(*ModelSg_JERdown_Gauss);
-
+    // mypdfs.add(*ModelSg_JECup_Gauss);
+    // mypdfs.add(*ModelSg_JERup_Gauss);
+    // mypdfs.add(*ModelSg_JECdown_Gauss);
+    // mypdfs.add(*ModelSg_JERdown_Gauss);
+    
     RooCategory category("pdf_index_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"Index of Pdf which is active");
     RooMultiPdf multipdf("roomultipdf_"+(TString::Format("MT%d", (int)MT))+"_"+ch_name+"_"+year+"_"+cat,"All Pdfs",category,mypdfs);
 
