@@ -264,10 +264,10 @@ for icat in categories:
 #                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
                     signal_much_norm[year+"_"+icat+"_"+mass] = tmp_dict["N"]
                     mean_value[year+"_"+icat+"_"+mass] = tmp_dict["Mean"]
-                    mean_error[year+"_"+icat+"_"+mass] = sqrt(pow(tmp_dict["Mean_Error"],2) + pow(((abs(tmp_dict["Mean"] - tmp_dict["JERupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JERdownmean"])))/2,2)+ pow(((abs(tmp_dict["Mean"] - tmp_dict["JECupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JECdownmean"])))/2,2) )
+                    mean_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Mean_Error"],2) + pow(((abs(tmp_dict["Mean"] - tmp_dict["JERupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JERdownmean"])))/2,2)+ pow(((abs(tmp_dict["Mean"] - tmp_dict["JECupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JECdownmean"])))/2,2) )
     
                     sigma_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma"]
-                    sigma_error[year+"_"+icat+"_"+mass] = sqrt(pow(tmp_dict["Sigma_Error"],2) + pow(((abs(tmp_dict["Sigma"] - tmp_dict["JERupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JERdownsigma"])))/2,2)+ pow(((abs(tmp_dict["Sigma"] - tmp_dict["JECupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JECdownsigma"])))/2,2) )
+                    sigma_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Sigma_Error"],2) + pow(((abs(tmp_dict["Sigma"] - tmp_dict["JERupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JERdownsigma"])))/2,2)+ pow(((abs(tmp_dict["Sigma"] - tmp_dict["JECupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JECdownsigma"])))/2,2) )
 
                     mean_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean"]
                     mean_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownmean"]
