@@ -9,10 +9,10 @@ void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
-EFitFunction FitFunc = eFunc3p;
+//EFitFunction FitFunc = eFunc3p;
 //EFitFunction FitFunc = eFuncExp2;
 
-//EFitFunction FitFunc = eFunc4p;
+EFitFunction FitFunc = eFunc4p;
 // EFitFunction FitFunc = eFunc2p;
 //EFitFunction FitFunc = eFuncAlt3p;
   // EFitFunction FitFunc = eFuncAlt4p;
@@ -21,9 +21,9 @@ void bkg_fit()
 {
 
   //TString year = "2016v3";
-  TString year = "2017v2";
+  //  TString year = "2017v2";
   //  TString year = "2018";
-  //  TString year = "allyears";
+  TString year = "allyears";
   
   std::vector<TString> categories = {"chi2h_2","catma60","catma90","catma175", "catma300"};
   //  std::vector<TString> categories = {"chi2h_2"};
@@ -84,6 +84,7 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     fit_xmax = 2000;    
     if(cat.Contains("ma300"))fit_xmin = 560;
     if(cat.Contains("chi2h_2"))fit_xmin = 520;
+    //    if(cat.Contains("chi2h_2"))fit_xmax = 1200;
     if(cat.Contains("ma175"))fit_xmin = 590;
     if(cat.Contains("ma175")&& channel==eEle && year.Contains("2018"))fit_xmax = 1999;
     if(cat.Contains("ma90") && channel==eEle) fit_xmax = 1999;
@@ -244,6 +245,26 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     fitmodel->SetParameter(1, -12.6);
     fitmodel->SetParameter(2, -9.6);
     fitmodel->SetParameter(3, -5.3);
+
+    // Set up two more fitting functions with 1/2 bins less
+    dijetfunction_p4 fitfuncobj_bin1(back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+1), xmax);
+    fitfuncobj_bin1.SetNorm(norm_bin1);    
+    fitmodel_bin1 = new TF1("fitmodel_bin1", fitfuncobj_bin1, back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+1), xmax, 3);
+    fitmodel_bin1->SetParameter(0, 66.45);  
+    fitmodel_bin1->SetParameter(1, -12.6);
+    fitmodel_bin1->SetParameter(2, -9.6);
+    fitmodel_bin1->SetParameter(3, -5.3);
+
+    dijetfunction_p4 fitfuncobj_bin2(back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+2), xmax);
+    fitfuncobj_bin2.SetNorm(norm_bin2);    
+    fitmodel_bin2 = new TF1("fitmodel_bin2", fitfuncobj_bin2, back->GetXaxis()->GetBinLowEdge(back->GetXaxis()->FindBin(xmin)+2), xmax, 3);
+    fitmodel_bin2->SetParameter(0, 66.45);  
+    fitmodel_bin2->SetParameter(1, -12.6);
+    fitmodel_bin2->SetParameter(2, -9.6);
+    fitmodel_bin2->SetParameter(3, -5.3);
+
+
+
     linecol = kGreen+2; 
     col68 = kSpring-1; 
     col95 = kSpring-4;
