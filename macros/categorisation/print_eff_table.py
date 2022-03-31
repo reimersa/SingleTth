@@ -56,7 +56,7 @@ def list_of_signal(folder):
     print "Found the following files"
     for el in my_output_list:
         if "VLQ" in el:
-            print el
+#            print el
             VLQ_samples.append(el)
     return VLQ_samples
 
@@ -148,7 +148,7 @@ def creat_eff_plot_per_cat(folder, signal_list = []):
     c.SaveAs("catma125.eps")
     c.SaveAs("catma125.pdf")
 
-def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
+def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125",MT="700"):
     #when signal list is empty look for all samples
     if not len(signal_list):
         signal_list = list_of_signal(folder)
@@ -156,12 +156,21 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
     #loop over all samples and calculate percentage
     sample_dict = {}
     for el in signal_list:
+        print el
+        print ma
+        print MT not in el
         if (not ma) and "125" in mamass and "_ma" in el: continue
-        elif (not ma) and  mamass not in el and "125" not in mamass: continue
+        elif (not ma) and  "ma"+mamass not in el and "125" not in mamass: continue
         elif ma and (not "_ma" in el): continue
+        if ma and MT not in el: continue
+        print el
         mass = int(re.findall(r'\d+', el)[1])
-        if ma: mass = int(re.findall(r'\d+', el)[2])
-        sample_dict[mass] =  calculate_percentage_per_category(folder, el)
+        print "MA = "+str(mamass)+"  MT = "+str(mass)
+        if int(mamass)>200 and mass < 700: continue
+
+        if ma:
+            mass = int(re.findall(r'\d+', el)[2])
+        sample_dict[mass]=  calculate_percentage_per_category(folder, el)
 #        calculate_percentage_per_category(folder, el, False)
 
     print sample_dict
@@ -212,7 +221,7 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
 
     leg.Draw()
     if ma:
-        text = CMSPlotStyle.draw_info("Signal: M_{T} = 700 GeV, #mu+jets",0.15,0.945,11)
+        text = CMSPlotStyle.draw_info("Signal: M_{T} = "+MT+" GeV, #mu+jets",0.15,0.945,11)
     else:
         text = CMSPlotStyle.draw_info("Signal: M_{a} = "+mamass+" GeV, #mu+jets",0.15,0.945,11)
     text.Draw("same")
@@ -221,14 +230,17 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125"):
         c.SaveAs("sigma"+mamass+".eps")
         c.SaveAs("sigma"+mamass+".pdf")
     else:
-        c.SaveAs("sigmT700.eps")
-        c.SaveAs("sigmT700.pdf")
+        c.SaveAs("sigmT"+MT+".eps")
+        c.SaveAs("sigmT"+MT+".pdf")
 
 
 # create_eff_table("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 # creat_eff_plot_per_cat("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
+
+# creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True)
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True,MT="600")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True,MT="1000")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="75")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="175")
 creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="450")
