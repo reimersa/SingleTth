@@ -177,7 +177,7 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      }
      else if(year.Contains("allyears")){
        anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/mavariable/Finalselection/"; 
+       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Finalselection/mavariable/"; 
        hand = "LH";
      }
      else throw runtime_error("Year not possible.");
