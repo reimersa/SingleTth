@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
   std::vector<TString> categories = {"chi2h_2", "catma90","catma175","catma300"};
   if(MA=="75") categories = {"catma60", "catma90","catma300"};
   if(MA=="100") categories = {"catma90","catma300","chi2h_2"};
+  if(MA=="125") categories = {"catma90","catma300","chi2h_2"};
   if(MA=="175") categories = {"chi2h_2","catma175","catma300"};
   if(MA=="200") categories = {"catma175","catma300","chi2h_2"};
   if(MA=="250") categories = {"catma175","catma300"};
