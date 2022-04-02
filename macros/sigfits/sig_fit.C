@@ -29,9 +29,9 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
 void sig_fit()
 {
   //  TString year =  "2016v3";
-  //TString year =  "2017v2";
-  TString year =  "2018";
-  //TString year =  "allyears";
+  //  TString year =  "2017v2";
+  //  TString year =  "2018";
+  TString year =  "allyears";
 
   TString postfix = "";
 
@@ -40,16 +40,18 @@ void sig_fit()
   //  std::vector<TString>MAs = {"75","125","175","250","350","450","99999"};
   //  std::vector<TString>MAs = {"99999"};
   //  std::vector<TString>MAs = {"75","100","125","175","200","250","350","450","500"};
-  std::vector<TString>MAs = {"125"};
+  std::vector<TString>MAs = {"125","175","200","250","350","450","500"};
+  //  std::vector<TString>MAs = {"250","350","450","500"};
+  //std::vector<TString>MAs = {"125"};
 
   for(unsigned int ima = 0; ima < MAs.size();ima++){
 
     TString MA = MAs[ima];
 
     ///// run over all channels
-    std::vector<Echannel> channels = {eComb,eEle,eMuon};
-    //    std::vector<Echannel> channels = {eMuon};
-    //    std::vector<Echannel> channels = {eComb};
+    //    std::vector<Echannel> channels = {eComb,eEle,eMuon};
+    std::vector<Echannel> channels = {eMuon, eEle};
+    //  std::vector<Echannel> channels = {eComb};
     for(unsigned int ich = 0; ich < channels.size();ich++){
 
       Echannel ch =channels[ich];
@@ -132,7 +134,8 @@ void sig_fit()
 	  if(year.Contains("2018"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
 	  //	  if(year.Contains("2018"))  uncertainties ={};
 
-	  if(year.Contains("allyears")) uncertainties = {}; // prefiring missing
+	  //	  if(year.Contains("allyears")) uncertainties = {}; // prefiring missing
+	  if(year.Contains("allyears"))  uncertainties ={"muid","pu","eleid","elereco","muiso","PDF","JEC","JER","btag_bc","btag_udsg","eletrigger","mutrigger","scale"};
 	}
     
 	std::vector<double> MTs = {600};// 2016
@@ -1162,7 +1165,9 @@ void sig_fit()
 	  if (ch==eEle && !unc.Contains("ele")) continue;
 	  if (ch==eMuon && !unc.Contains("mu")) continue;
 	  if (ch==eComb && (unc.Contains("ele") || unc.Contains("mu"))) continue;
-
+	  if(year.Contains("2017")&&cat.Contains("ma90") && unc.Contains("PDF")){
+	    MTs={600, 700,800,900,1100,1200};
+	  }else{MTs=MTs_backup;}
 	  means_unc.clear();
 	  means_err_unc.clear();
 	  widths_unc.clear();  
