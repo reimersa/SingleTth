@@ -20,7 +20,8 @@ berror = False
 #year = "2017v2"
 #year = "2018"
 year = "allyears"
-postfix = "_mavariable_Run2_ma125_allsyst"
+postfix = "_mavariable_Run2_onlyexp_ma125_allsyst"
+
 
 masses = []
 
@@ -41,10 +42,11 @@ for line in listOfLines:
 
 print masses
 #masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '850','900', '925', '950','975' ,'1000','1025', '1050', '1075', '1100', '1125', '1175', '1200', '1225']
-masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '825', '850', '875', '900', '925', '950', '975', '1000', '1025', '1050', '1075', '1100', '1125', '1150', '1175']
+#masses = ['550', '575', '600', '625', '650', '675', '700', '725', '750', '775', '825', '850', '875', '900', '925', '950', '975', '1000', '1025', '1050', '1075', '1100', '1125', '1150', '1175']
 
 outputfile = open("Limits_combine_"+year+postfix+".txt","w")
 outputfile_obs = open("Limits_combine_obs_"+year+postfix+".txt","w")
+outputfile_theta = open("Limits_combine_theta_"+year+postfix+".txt","w")
 for mass in masses:
     if "550" in mass or "575" in mass: continue
     print mass
@@ -56,11 +58,15 @@ for mass in masses:
 
     outputfile.write(mass+"\t"+str(limits[2])+"\t"+str(limits[0])+"\t"+str(limits[4])+"\t"+str(limits[1])+"\t"+str(limits[3])+"\t")
     outputfile_obs.write(mass+"\t"+str(limits[5])+"\t")
+    outputfile_theta.write(str(limits[2])+", ")
 
 
 outputfile.close()
 outputfile_obs.close()
+outputfile_theta.close()
 
 
 x = open("Limits_combine_"+year+postfix+".txt").read()
 open("Limits_combine_"+year+postfix+".txt","w").write(x[:-1])
+
+
