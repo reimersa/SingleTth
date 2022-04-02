@@ -37,11 +37,12 @@ gStyle.SetPaintTextFormat("2.3f")
 
 c2 = TCanvas()
 
-MA = "125"
-MT = "1000"
-postfix = "_mavariable_cb_MT"+MT+"GeV_MA"+MA
+MA = "500"
+MT = "800"
+postfix = "_mavariable_cb_condor_MT"+MT+"GeV_MA"+MA
 # exp vs exp
 infile = TFile("fitDiagnosticsexp2p_r1"+postfix+".root","r")
+
 TH1.AddDirectory(0)
 tree_fit_sb_exp = infile.Get("tree_fit_sb")
 tree_fit_sb_exp.Draw("(r-1)/rErr>>h(50,-4,6.5)")

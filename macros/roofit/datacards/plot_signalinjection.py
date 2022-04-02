@@ -30,9 +30,11 @@ gStyle.SetPaintTextFormat("2.3f")
 
 
 #signalstrength = {0.0,0.25,0.5,0.75,1.0,1.5,2.0,2.5,3.0}
-signalstrength = {0.0,0.1,0.25,0.35,0.5,0.75,1.0}
+signalstrength = {'0.00','0.10','0.25','0.35','0.50','0.75','1.00'}
 masses = {600,800,1000}
-MA = "125"
+MA = "200"
+if int(MA)>200:
+    masses = {800,1000}
 
 color = [kBlue,kBlack,kOrange]
 color_lm = [kBlue,kBlack,kOrange]
@@ -61,7 +63,7 @@ for mass in masses:
     f= TF1("f","[0]+[1]*x",0,xmax)
 
     for sig in signalstrength:
-        if mass > 600 and sig > 1: continue
+        if mass > 600 and float(sig) > 1: continue
         print sig
         infile = TFile("fitDiagnosticssignal"+str(sig)+"_"+str(mass)+"_"+MA+".root","r")
         TH1.AddDirectory(0)
@@ -73,8 +75,8 @@ for mass in masses:
         std = histo.GetMeanError()
 
     
-        hist.SetBinContent(hist.FindBin(sig),mean)
-        hist.SetBinError(hist.FindBin(sig),std)
+        hist.SetBinContent(hist.FindBin(float(sig)),mean)
+        hist.SetBinError(hist.FindBin(float(sig)),std)
     
 #         if mass==600 or mass==1000:
 #             infile = TFile("fitDiagnosticssignal"+str(sig)+"_"+str(mass)+"_doublegaussian.root","r")
