@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
+<!ENTITY TargetLumi      "41530"> 
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/JER_down/">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/prio125/JER_down/">
+<!ENTITY b_Cacheable     "False"> 
+<!ENTITY NEVT            "-1"> 
+<!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
+
+<!ENTITY VLQ_LH_700_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma75_2017v2.root">
+<!ENTITY VLQ_LH_900_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma250_2017v2.root">
+<!ENTITY VLQ_LH_600_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma200_2017v2.root">
+<!ENTITY VLQ_LH_900_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma450_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma500_2017v2.root">
+<!ENTITY VLQ_LH_700_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma175_2017v2.root">
+<!ENTITY VLQ_LH_800_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma75_2017v2.root">
+<!ENTITY VLQ_LH_700_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma100_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma450_2017v2.root">
+<!ENTITY VLQ_LH_800_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma500_2017v2.root">
+<!ENTITY VLQ_LH_900_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma125_2017v2.root">
+<!ENTITY VLQ_LH_700_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma125_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma175_2017v2.root">
+<!ENTITY VLQ_LH_700_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma500_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma200_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma100_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma200_2017v2.root">
+<!ENTITY VLQ_LH_700_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma200_2017v2.root">
+<!ENTITY VLQ_LH_600_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma75_2017v2.root">
+<!ENTITY VLQ_LH_800_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma175_2017v2.root">
+<!ENTITY VLQ_LH_700_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma350_2017v2.root">
+<!ENTITY VLQ_LH_600_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma100_2017v2.root">
+<!ENTITY VLQ_LH_900_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma200_2017v2.root">
+<!ENTITY VLQ_LH_900_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma175_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma500_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma450_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma350_2017v2.root">
+<!ENTITY VLQ_LH_800_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma100_2017v2.root">
+<!ENTITY VLQ_LH_800_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma450_2017v2.root">
+<!ENTITY VLQ_LH_800_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma250_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma100_2017v2.root">
+<!ENTITY VLQ_LH_600_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma350_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma250_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma125_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma125_2017v2.root">
+<!ENTITY VLQ_LH_900_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma500_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma350_2017v2.root">
+<!ENTITY VLQ_LH_600_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma125_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma250_2017v2.root">
+<!ENTITY VLQ_LH_700_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma450_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma125_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma100_2017v2.root">
+<!ENTITY VLQ_LH_900_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma350_2017v2.root">
+<!ENTITY VLQ_LH_800_ma125  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma125_2017v2.root">
+<!ENTITY VLQ_LH_900_ma100  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma100_2017v2.root">
+<!ENTITY VLQ_LH_600_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma175_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma500_2017v2.root">
+<!ENTITY VLQ_LH_600_ma500  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma500_2017v2.root">
+<!ENTITY VLQ_LH_700_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma250_2017v2.root">
+<!ENTITY VLQ_LH_600_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma450_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma200_2017v2.root">
+<!ENTITY VLQ_LH_600_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_600_ma250_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma250  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma250_2017v2.root">
+<!ENTITY VLQ_LH_800_ma200  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma200_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma450  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma450_2017v2.root">
+<!ENTITY VLQ_LH_1100_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1100_ma350_2017v2.root">
+<!ENTITY VLQ_LH_1200_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1200_ma175_2017v2.root">
+<!ENTITY VLQ_LH_900_ma75  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_900_ma75_2017v2.root">
+<!ENTITY VLQ_LH_1000_ma175  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_1000_ma175_2017v2.root">
+<!ENTITY VLQ_LH_800_ma350  "&PRESELdir;/uhh2.AnalysisModuleRunner.MC.VLQ_LH_800_ma350_2017v2.root">
+]>
+
+<!-- 
+<ConfigParse NEventsBreak="0" FileSplit="25" AutoResubmit="5"/>
+<ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth2017_JERdown"/>
+-->
+
+<JobConfiguration JobName="ExampleCycleJob" OutputLevel="INFO">
+	<Library Name="libSUHH2SingleTth"/>
+	<Package Name="SUHH2SingleTth.par" />
+	<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&FULLSELdir;/" PostFix="" TargetLumi="&TargetLumi;" >
+
+	  <InputData Lumi="77.0239364" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma75_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma75;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="140.78523985" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma250_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma250;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="211.36855411" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma200_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma200;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="162.52030636" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma450_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma450;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="230.00063994" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma500_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma500;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="163.65058688" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma175_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma175;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="60.89555556" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma75_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma75;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="101.95733472" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma100_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma100;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="296.94414806" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma450_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma450;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="137.19435699" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma500_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma500;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="79.60874012" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma125_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma125;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="124.64797025" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma125_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma125;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="140.30527794" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma175_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma175;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="71.50486662" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma500_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma500;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="157.76533794" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma200_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma200;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="66.27663051" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma100_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma100;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="128.03478598" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma200_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma200;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="178.76158739" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma200_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma200;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="97.975392122" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma75_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma75;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="132.7562936" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma175_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma175;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="197.37454582" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma350_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma350;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="128.53534906" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma100_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma100;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="119.70136212" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma200_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma200;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="107.64739687" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma175_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma175;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="289.69099532" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma500_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma500;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="260.89755454" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma450_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma450;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="141.42476539" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma350_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma350;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="80.82354743" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma100_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma100;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="164.07119047" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma450_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma450;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="169.6272729" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma250_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma250;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="24.755620599" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma75_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma75;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="102.5578415" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma100_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma100;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="168.82197362" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma350_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma350;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="38.45273419" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma75_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma75;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="189.85939562" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma250_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma250;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="127.53085316" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma125_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma125;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="102.28901166" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma125_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma125;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="150.71395972" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma500_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma500;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="198.51865342" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma350_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma350;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="155.56410797" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma125_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma125;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="231.75236664" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma250_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma250;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="131.4006456" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma450_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma450;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="82.616308338" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma125_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma125;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="82.333092042" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma100_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma100;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="165.29200258" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma350_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma350;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="99.53545256" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma125_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma125;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="64.22467592" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma100_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma100;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="197.33990951" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma175_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma175;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="262.21437704" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma500_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma500;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="0.008251257186" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma500_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma500;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="199.84457229" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_700_ma250_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_700_ma250;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="1.4376032707" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma450_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma450;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="194.51238298" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma200_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma200;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="221.99069471" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_600_ma250_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_600_ma250;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="155.25511738" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma250_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma250;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="147.36015378" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma200_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma200;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="30.73942135" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma75_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma75;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="224.44809088" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma450_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma450;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="238.19532268" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1100_ma350_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1100_ma350;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="113.617295" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1200_ma175_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1200_ma175;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="48.284960635" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_900_ma75_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_900_ma75;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="173.3082963" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_1000_ma175_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_1000_ma175;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>	  <InputData Lumi="187.29942882" NEventsMax="&NEVT;" Type="MC" Version="VLQ_LH_800_ma350_2017v2" Cacheable="&b_Cacheable;"> 
+       <In FileName="&VLQ_LH_800_ma350;" Lumi="0.0"/> 
+	  		<InputTree Name="AnalysisTree" /> 
+	  		<OutputTree Name="AnalysisTree" /> 
+	  	</InputData>		<UserConfig> 
+ 			<Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices" /> 
+ 			<Item Name="ElectronCollection" Value="slimmedElectronsUSER" /> 
+ 			<Item Name="MuonCollection" Value="slimmedMuonsUSER" /> 
+ 			<Item Name="JetCollection" Value="jetsAk4CHS" /> 
+ 			<Item Name="METName" Value="slimmedMETs" /> 
+ 			<Item Name="GenJetCollection" Value="slimmedGenJets" /> 
+ 			<Item Name="GenParticleCollection" Value="GenParticles" /> 
+			<Item Name="GenInfoName" Value="genInfo" /> 
+ 			<Item Name="lumi_file" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.root" /> 
+ 			<Item Name="lumihists_lumi_per_bin" Value="1000."/> 
+ 		<Item Name="AnalysisModule" Value="SingleTthAnalysisModule" /> 
+ 		<Item Name="use_sframe_weight" Value="false" /> 
+ 		<Item Name="pileup_directory" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyMCPileupHistogram.root" /> 
+ 		<Item Name="pileup_directory_data" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram.root" /> 
+ 		<Item Name="pileup_directory_data_up" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram_72383.root" /> 
+ 		<Item Name="pileup_directory_data_down" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/MyDataPileupHistogram_66017.root" /> 
+		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2017/BTagMCEfficiencyHists_mediumwp.root" /> 
+		<Item Name="BTagCalibration" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2017/DeepFlavour_94XSF_WP_V3_B_F.csv" /> 
+ 		<Item Name="jecsmear_direction" Value="nominal" /> 
+ 		<Item Name="jersmear_direction" Value="down" /> 
+ 		<Item Name="ScaleVariationMuR"       Value="none" /> 
+ 		<Item Name="ScaleVariationMuF"       Value="none" /> 
+		<Item Name="sys_muonid"      Value="nominal" /> 
+		<Item Name="sys_muoniso"     Value="nominal" /> 
+		<Item Name="sys_muontrigger" Value="nominal" /> 
+		<Item Name="sys_eleid"       Value="nominal" /> 
+		<Item Name="sys_elereco"     Value="nominal" /> 
+		<Item Name="sys_eletrigger"  Value="nominal" /> 
+		<Item Name="sys_btag"        Value="central" /> 
+		<Item Name="sys_pu"          Value="nominal" /> 
+ 		<Item Name="TestKey" Value="TestKeyValue" /> 
+ 	</UserConfig> 
+ </Cycle> 
+ </JobConfiguration> 
