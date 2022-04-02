@@ -19,6 +19,7 @@ macros/roofit/create_roo_2017
 macros/roofit/create_roo_2017_CR
 macros/roofit/create_roo_2018
 macros/roofit/create_roo_2018_CR
+macros/roofit/create_roo_allyears
 macros/roofit/datacards/*.pdf
 macros/roofit/datacards/CMSPlotStyle.pyc
 run_local.py
@@ -36,3 +37,8 @@ macros/sigfits/*.eps
 macros/categorisation/*.eps
 macros/categorisation/*.pdf
 *roostats*
+macros/roofit/debug_histos*.root
+macros/roofit/datacards/Canvas_1.C
+macros/uncertainties/CMSPlotStyle.pyc
+macros/uncertainties/PDF_variations_MT800_MA450.pdf
+plots/
