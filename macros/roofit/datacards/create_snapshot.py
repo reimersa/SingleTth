@@ -18,19 +18,23 @@ import CMSPlotStyle
 
 parser = argparse.ArgumentParser(description='Plot the signal strength.')
 parser.add_argument('-mass', metavar='N', type=int, help='Mass of the signal sample')
-parser.add_argument('-signalstrength', metavar='N', type=float,help='Signal Strength of the signal sample')
+parser.add_argument('-signalstrength', metavar='N', type=str,help='Signal Strength of the signal sample')
+parser.add_argument('-name', metavar='Name', type=str,help='name of function and r value',default="")
 
 args = parser.parse_args()
 mass = args.mass
 signal = args.signalstrength
+name = args.name
+print "signal injection test"
+print signal
 
-
-w_f = TFile.Open('higgsCombineinitial_signal'+str(signal)+'_'+str(mass)+'.FitDiagnostics.mH120.root')
+w_f = TFile.Open('higgsCombineinitial_signal'+str(signal)+'_'+str(mass)+'_'+str(name)+'.FitDiagnostics.mH120.root')
 w = w_f.Get('w')
-fr_f = TFile.Open('fitDiagnosticsinitial_signal'+str(signal)+'_'+str(mass)+'.root')
+fr_f = TFile.Open('fitDiagnosticsinitial_signal'+str(signal)+'_'+str(mass)+'_'+str(name)+'.root')
 fr = fr_f.Get('fit_b')
 myargs = RooArgSet(fr.floatParsFinal())
 w.saveSnapshot('initialFit',myargs, True)
-fout = TFile('initialFitWorkspace.root',"recreate")
+print signal
+fout = TFile('initialFitWorkspace_'+str(signal)+"_"+str(mass)+"_"+str(name)+'.root',"recreate")
 fout.WriteTObject(w,'w')
 fout.Close()
