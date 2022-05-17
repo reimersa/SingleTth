@@ -22,7 +22,7 @@ freeze_param="${freeze_param}sg_JERmeandown_"$year"_"$cat",sg_JERmeanup_"$year"_
 #freeze_param="${freeze_param},sg_sigma2_"$year"_"$cat","
 #freeze_param="${freeze_param},sg_sigma_"$year"_"$cat",,sg_mean_"$year"_"$cat","
 #freeze_param="${freeze_param},pdf_index_much_"$year"_"$cat",pdf_index_ech_"$year"_"$cat","
-#freeze_param="${freeze_param},pdf_index_MT${mass}_much_"$year"_"$cat",pdf_index_MT${mass}_ech_"$year"_"$cat","
+freeze_param="${freeze_param},pdf_index_MT${mass}_much_"$year"_"$cat",pdf_index_MT${mass}_ech_"$year"_"$cat","
 # freeze_param="${freeze_param},bgexp2_p1much_"$year"_"$cat",bgexp2_p1ech_"$year"_"$cat",bgexp2_p0much_"$year"_"$cat",bgexp2_p0ech_"$year"_"$cat","
 #freeze_param="${freeze_param},bg3p_p1much_"$year"_"$cat",bg3p_p1ech_"$year"_"$cat",bg3p_p0much_"$year"_"$cat",bg3p_p0ech_"$year"_"$cat",bg3p_p2much_"$year"_"$cat",bg3p_p2ech_"$year"_"$cat","
 
@@ -39,4 +39,7 @@ echo "Working on mass " $mass
 
 
 
-eval "combine -M AsymptoticLimits -d Datacard_"$year_nt"_M${mass}.txt  -n output_$mass --setParameters ${set_param} --freezeParameters ${freeze_param} --X-rtd ADDNLL_CBNLL=0 --cminPreScan" 
+eval "combine -M AsymptoticLimits -d Datacard_"$year_nt"_M${mass}.txt  -n output_$mass --setParameters ${set_param} --freezeParameters ${freeze_param} --cminDefaultMinimizerStrategy=2  --cminFallbackAlgo Minuit2,Simplex,0:0.1" 
+
+# --cminFallbackAlgo Minuit2,Simplex,0:0.1
+#--X-rtd ADDNLL_CBNLL=0 --cminPreScan 
