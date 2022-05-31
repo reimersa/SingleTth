@@ -3,6 +3,8 @@
 #include "sigfunc.C"
 #include "../bkgfits/func.C"
 #include "../bkgfits/helpers.C"
+#include <sys/stat.h>
+
 
 using namespace std;
 bool b_test = false;
@@ -18,6 +20,7 @@ TF1 * n_param = new TF1("n_param","[0]+[1]*(x-600)",550,1250);
 TF1 * alpha_param = new TF1("alpha_param","[0]+[1]*(x-600) + [2]*(x-600)**2",550,1250);
 bool debug = false;
 bool b_test_param = false;
+TString anaoutputfolder;
 
 //write out the number of total events vs events in fitrange
 std::ofstream Nevttofile("Nevents_test.txt", std::ios::out | std::ios::trunc);
@@ -26,23 +29,55 @@ std::ofstream Nevttofile("Nevents_test.txt", std::ios::out | std::ios::trunc);
 void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector<double>& means_err, std::vector<double>& widths, std::vector<double>& widths_err, std::vector<double>& effs, std::vector<double>& effs_err,std::vector<double>& means2, std::vector<double>& means2_err, std::vector<double>& widths2, std::vector<double>& widths2_err, std::vector<double>& fnorm, std::vector<double>& fnorm_err,TString unc="", TString year = "2016v3", TString cat = "chi2h_2",TString MA = "99999",TString func = "simplegauss",float factormin=2, float factormax=2.5, bool write_Nevet = false);
 void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_dn, TString name);
 
-void sig_fit()
+void sig_fit(TString MA, TString year, Echannel channel)
 {
+
+  cout<<"MA in sig_fits:" << MA<<endl;
+  cout<<"year in sig_fits:" << year<<endl;
+  cout<<"channel in sig_fits :" << channel<<endl;
+
+
   //  TString year =  "2016v3";
   //  TString year =  "2017v2";
-  //  TString year =  "2018";
-  TString year =  "allyears";
+  //TString year =  "2018";
+  //  TString year =  "allyears";
 
   TString postfix = "";
 
+  // storing everything in the same folder than the files are taken from
+  ifstream myfile;
+  std::cout<<"fname "<<configname<<endl;
+  myfile.open(configname.c_str());
+  string line;
+  while ( getline (myfile,line) ){
+    if (line.find("anaoutputfolder")!=std::string::npos) anaoutputfolder = split(line,"=")[1];
+  }
+  myfile.close();
+  
+  anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
+  cout<<"outputfolder "<<anaoutputfolder<<endl;
+
+  struct stat buffer;
+  std::string dirname = anaoutputfolder.Data();
+  dirname+="results";
+    
+  if (stat(dirname.c_str(), &buffer) != 0) {
+    cout<<"path does not exist, we create it for you!"<<endl;
+    int check;
+    check = mkdir(dirname.c_str(),0777);
+    // check if directory is created or not
+    if (!check)
+      printf("Directory created\n");
+
+  }  
 
   //run over all ma, if ma=99999 GeV do the old stuff for the moment
   //  std::vector<TString>MAs = {"75","125","175","250","350","450","99999"};
   //  std::vector<TString>MAs = {"99999"};
   //  std::vector<TString>MAs = {"75","100","125","175","200","250","350","450","500"};
-  std::vector<TString>MAs = {"125","175","200","250","350","450","500"};
+  //  std::vector<TString>MAs = {"125","175","200","250","350","450","500"};
   //  std::vector<TString>MAs = {"250","350","450","500"};
-  //std::vector<TString>MAs = {"125"};
+  std::vector<TString>MAs = {MA};
 
   for(unsigned int ima = 0; ima < MAs.size();ima++){
 
@@ -50,8 +85,8 @@ void sig_fit()
 
     ///// run over all channels
     //    std::vector<Echannel> channels = {eComb,eEle,eMuon};
-    std::vector<Echannel> channels = {eMuon, eEle};
-    //  std::vector<Echannel> channels = {eComb};
+    //    std::vector<Echannel> channels = {eMuon, eEle};
+    std::vector<Echannel> channels = {channel};
     for(unsigned int ich = 0; ich < channels.size();ich++){
 
       Echannel ch =channels[ich];
@@ -123,7 +158,7 @@ void sig_fit()
 	// }
 
     
-	std::ofstream infotofile(outfile_name, std::ios::out | std::ios::trunc);
+	std::ofstream infotofile(anaoutputfolder+outfile_name, std::ios::out | std::ios::trunc);
     
 	std::vector<TString> uncertainties ={}; // no syst.
 	if(!b_test) {
@@ -337,7 +372,7 @@ void sig_fit()
     
 	can->RedrawAxis();
 	//  can->SaveAs(fname+postfix+".eps");
-	can->SaveAs(fname+postfix+".pdf");
+	can->SaveAs(anaoutputfolder+fname+postfix+".pdf");
     
 	cout<<"Mean values with fit: second gauss"<<endl;
 	////////second gauss
@@ -428,7 +463,7 @@ void sig_fit()
     
 	can_n->RedrawAxis();
 	//  can_n->SaveAs(fname+postfix+".eps");
-	can_n->SaveAs(fname+postfix+".pdf");
+	can_n->SaveAs(anaoutputfolder+fname+postfix+".pdf");
     
 	////// add uncertainties
 	// for each uncertainties fit linear function and draw it
@@ -545,7 +580,7 @@ void sig_fit()
 	can->cd();
 	leg->Draw();
 	//  can->SaveAs(fname+postfix+"_unc.eps");
-	if(bunc) can->SaveAs(fname+postfix+"_unc.pdf");
+	if(bunc) can->SaveAs(anaoutputfolder+fname+postfix+"_unc.pdf");
     
     
 	// std::vector<double> means_fitrange;
@@ -685,7 +720,7 @@ void sig_fit()
     
 	can2->RedrawAxis();
 	//  can2->SaveAs(fname2+postfix + ".eps");
-	can2->SaveAs(fname2+postfix + ".pdf");
+	can2->SaveAs(anaoutputfolder+fname2+postfix + ".pdf");
     
 	cout<<"Widths with fit: second gauss"<<endl;
 	///////second gauss
@@ -793,7 +828,7 @@ void sig_fit()
 
 	can2_width->RedrawAxis();
 	//  can2_width->SaveAs(fname2+postfix + ".eps");
-	can2_width->SaveAs(fname2+postfix + ".pdf");
+	can2_width->SaveAs(anaoutputfolder+fname2+postfix + ".pdf");
 
 
 
@@ -923,7 +958,7 @@ void sig_fit()
 	can2->cd();
 	leg2->Draw();
 	//  can2->SaveAs(fname2+postfix+"_unc.eps");
-	if(bunc)can2->SaveAs(fname2+postfix+"_unc.pdf");
+	if(bunc)can2->SaveAs(anaoutputfolder+fname2+postfix+"_unc.pdf");
 
 
 	// if(b_fitrange){
@@ -1050,7 +1085,7 @@ void sig_fit()
 
 	can3->RedrawAxis();
 	//  can3->SaveAs(fname3+postfix+ ".eps");
-	can3->SaveAs(fname3+postfix+ ".pdf");
+	can3->SaveAs(anaoutputfolder+fname3+postfix+ ".pdf");
 
 	///// second gauss
 	TCanvas *can3_fnorm = new TCanvas("eff_can","",10,10,700,700);
@@ -1628,7 +1663,7 @@ void sig_fit()
 
 
 	//  can4->SaveAs(fname4+postfix+"_unc.eps");
-	if(bunc)can4->SaveAs(fname4+postfix+"_unc.pdf");
+	if(bunc)can4->SaveAs(anaoutputfolder+fname4+postfix+"_unc.pdf");
       }
     }
   }
@@ -1701,7 +1736,7 @@ void draw_eff_unc(TGraphErrors* geff, TGraphErrors* geff_up, TGraphErrors* geff_
   gunc_dn->Draw("P same");
 
   TString fname = "results/signal_eff_unc_" + name + ".pdf";
-  if(bunc)  c->SaveAs(fname);
+  if(bunc)  c->SaveAs(anaoutputfolder+fname);
 
 }
 
@@ -2354,7 +2389,7 @@ void fitsignal(Echannel channel, int MT, std::vector<double>& means, std::vector
   //   if(unc=="" && !bunc)  can->Print(folder + "/signalfit_" + channel_name + "_" + ffile + + "_" +year+"_"+cat+"_"+MA+"_"+unc+".pdf");
 
   //  if(unc=="")   can->Print(folder + "/signalfit_" + channel_name + "_" + ffile + + "_" +year+"_"+cat+"_"+MA+"_"+unc+".pdf");
-  can->Print(folder + "/signalfit_" + channel_name + "_" + ffile + + "_" +year+"_"+cat+"_"+MA+"_"+unc+".pdf");
+  can->Print(anaoutputfolder+folder + "/signalfit_" + channel_name + "_" + ffile + + "_" +year+"_"+cat+"_"+MA+"_"+unc+".pdf");
 
   // save ratios and all infos
 /*  

@@ -35,7 +35,7 @@ public:
 	void SaveSignals(defs::Echannel ch, TString year = "2016v3", TString cat = "chi2h_2", TString MA="99999");	
 
 	void PrintWorkspace();
-
+	std::vector<std::string> split (std::string s, std::string delimiter);
 };
 
 

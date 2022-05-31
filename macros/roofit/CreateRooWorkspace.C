@@ -58,20 +58,34 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
       year = "2016";
     } else {
       cout << "Using NAF setup." << endl;
-      if (year.Contains("2016")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/NOMINAL/"; 
-      } else if(year.Contains("2017")){
-	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
-      } else if(year.Contains("2018")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
-      } else if(year.Contains("allyears")){
-	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/NOMINAL/"; 
-      }else if(year.Contains("andrea")){ 
-	anaoutputfolder = "/nfs/dust/cms/user/amalara/WorkingArea/File/Analysis/2016/SignalRegion/Puppi/muonchannel/";
-      }else{
-	throw runtime_error("Year not possible.");
-      }
+
+     ifstream myfile;
+     string configname = "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/roofit/datacards/configuration.txt";
+     myfile.open(configname.c_str());
+     string line;
+     while ( getline (myfile,line) ){
+       if (line.find("anaoutputfolder")!=std::string::npos) anaoutputfolder = split(line,"=")[1] + "/NOMINAL/";
+						
+     }
+     myfile.close();
+     anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
+     cout<<"anaoutputfolder"<<anaoutputfolder<<endl;
     }
+
+    //   if (year.Contains("2016")){
+    // 	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/NOMINAL/"; 
+    //   } else if(year.Contains("2017")){
+    // 	anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
+    //   } else if(year.Contains("2018")){
+    // 	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
+    //   } else if(year.Contains("allyears")){
+    // 	    anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/NOMINAL/"; 
+    //   }else if(year.Contains("andrea")){ 
+    // 	anaoutputfolder = "/nfs/dust/cms/user/amalara/WorkingArea/File/Analysis/2016/SignalRegion/Puppi/muonchannel/";
+    //   }else{
+    // 	throw runtime_error("Year not possible.");
+    //   }
+    // }
 
 
   	//All files are read in
@@ -400,12 +414,30 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     ch_name = "ech";
   }
 
+  string configname = "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/roofit/datacards/configuration.txt";
+  TString anaoutputfolder;
+  TString anainputfolder;
+  ifstream myfile;
+  myfile.open(configname.c_str());
+  string line1;
+  while ( getline (myfile,line1) ){
+    if (line1.find("anaoutputfolder")!=std::string::npos){
+      anaoutputfolder = split(line1,"=")[1] + "/NOMINAL/";
+      anainputfolder = split(line1,"=")[1];
+    }
+  }
+  myfile.close();
+  anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
+  anainputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
+  cout<<"anaoutputfolder"<<anaoutputfolder<<endl;
 
-  std::ifstream infile("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt");
-  std::ifstream infile_much("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_"+MA+"_much.txt");
-  std::ifstream infile_ech("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_"+MA+"_ech.txt");
+
+  std::ifstream infile(anainputfolder+"SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt");
+  cout<<"infile  "<< anainputfolder+"SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt" <<endl;
+  std::ifstream infile_much(anainputfolder+"SignalFitOutput_"+year+"_"+cat+"_"+MA+"_much.txt");
+  std::ifstream infile_ech(anainputfolder+"SignalFitOutput_"+year+"_"+cat+"_"+MA+"_ech.txt");
   //  std::ifstream infile_allyears("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_allyears_"+ch_name+".txt");
-  std::ifstream infile_allyears("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt");
+  std::ifstream infile_allyears(anainputfolder+"SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt");
 
   std::string line;
 
@@ -649,6 +681,8 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
   // mean->SetParameter(1, 0.9755);
   mean->SetParameter(0, param0_mean_value);
   mean->SetParameter(1, param1_mean_value);
+
+  cout<<"MEANFIT [0]+[1]*(x-600)  "<< param0_mean_value<<"  "<<param1_mean_value <<endl;
 
   TF1* mean_error = new TF1("meanfit_error", "[0]+[1]*(x-600)", 500, 1250);
   //mean_error->SetParameter(0, param0_mean_value+2*param0_mean_error);
@@ -985,6 +1019,21 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
   }
 
 
+}
+
+ vector<string> CreateRooWorkspace::split (string s, string delimiter) {
+  size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+  string token;
+  vector<string> res;
+
+  while ((pos_end = s.find (delimiter, pos_start)) != string::npos) {
+    token = s.substr (pos_start, pos_end - pos_start);
+    pos_start = pos_end + delim_len;
+    res.push_back (token);
+  }
+
+  res.push_back (s.substr (pos_start));
+  return res;
 }
 
 

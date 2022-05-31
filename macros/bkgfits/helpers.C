@@ -4,12 +4,16 @@
 #include <TMatrixDSym.h>
 #include <TFitResult.h>
 #include <TLatex.h>
-
+#include <iostream>
+#include <fstream>
 // some definitions
 
 enum Eregion {eCR, eSR};
 enum Echannel {eMuon, eEle, eComb};
+string configname = "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/roofit/datacards/configuration.txt";
 
+
+vector<string> split (string s, string delimiter);
 // folder where the analysis output files are 
 // TString anaoutputfolder = "../../../AnalysisOutput_102X/"; 
 
@@ -29,13 +33,24 @@ TH1F* GetAnalysisOutput(Eregion region, Echannel ch, bool dodata, bool all_bkgds
      year = "2016";
   } else {
      cout << "Using NAF setup." << endl;
-     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/NOMINAL/"; 
-     //     if(year.Contains("2016")) anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/SFbtagmujets/NOMINAL/"; 
+     ifstream myfile;
+     myfile.open(configname.c_str());
+     string line;
+     while ( getline (myfile,line) ){
+       if (line.find("anaoutputfolder")!=std::string::npos) anaoutputfolder = split(line,"=")[1] + "/NOMINAL/";
+       cout<<"anaoutputfolder"<<anaoutputfolder<<endl;
+						
+     }
+     myfile.close();
+     anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
 
-     else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
-     else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
-     else if(year.Contains("allyears"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/NOMINAL/"; 
-     else throw runtime_error("Year not possible.");
+     // if(year.Contains("2016")) anaoutputfolder = anaoutputfolder_2016;
+
+
+     // else if(year.Contains("2017"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
+     // else if(year.Contains("2018"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
+     // else if(year.Contains("allyears"))anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/NOMINAL/"; 
+     // else throw runtime_error("Year not possible.");
   }
 	
   //All files are read in
@@ -147,40 +162,49 @@ TH1F* GetAnalysisOutputSignal(int MT, Echannel ch, TString unc = "", TString yea
      systfolder = "../../../AnalysisOutput_102X/2016/syst/"; 
   } else {
      cout << "Using NAF setup." << endl;
-     
+     ifstream myfile;
+     myfile.open(configname.c_str());
+     string line;
+     while ( getline (myfile,line) ){
+	 if (line.find("anaoutputfolder")!=std::string::npos) anaoutputfolder = split(line,"=")[1];
+     }
+     myfile.close();
+
+     anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
+     systfolder = anaoutputfolder;
+     systfolder.ReplaceAll("Fullselection","Finalselection"); 
+     hand = "LH";
+
+
      if(year.Contains("2016")) {
-       // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mavariable/"; 
-       //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mediumWP/"; 
-       hand = "LH";
+       //       hand = "LH";
        prodch = "_B";
        if(!MA.Contains("999"))  prodch = "";
        if ((MT <700) && (val==NULL) && MA.Contains("999")) year = "2016v2";
-   }
-     else if(year.Contains("2017")){
-       // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/"; 
+     }
+     // else if(year.Contains("2017")){
+     //   // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/"; 
+     //   // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/"; 
+     //   // systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/"; 
 
-       // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/DeepCSV/"; 
-       // systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/DeepCSV/"; 
+     //   // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/DeepCSV/"; 
+     //   // systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/DeepCSV/"; 
 
-       //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/"; 
-       hand = "LH";
-     }
-     else if(year.Contains("2018")){
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable/"; 
-       hand = "LH";
-     }
-     else if(year.Contains("allyears")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/"; 
-       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Finalselection/mavariable/"; 
-       hand = "LH";
-     }
-     else throw runtime_error("Year not possible.");
+     //   //       systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mediumWP/"; 
+     //   //  hand = "LH";
+     // }
+     // else if(year.Contains("2018")){
+     //   //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mediumWP/"; 
+     //   // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/"; 
+     //   // systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable/"; 
+     //   //       hand = "LH";
+     // }
+     // else if(year.Contains("allyears")){
+     //   // anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/"; 
+     //   // systfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Finalselection/mavariable/"; 
+     //   //       hand = "LH";
+     // }
+     // else throw runtime_error("Year not possible.");
 
      //     if(unc=="" && (year.Contains("2017") || year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBtagSF/";
      //     if(unc=="" && ( year.Contains("2018"))) anaoutputfolder +="NOMINAL_NoBTagSF/";
@@ -316,29 +340,41 @@ double CalcEff(TF1* sigf, double Npeak, double Npeak_err, double NSRtot, int MT,
      hand = "LH";
   } else {
      cout << "Using NAF setup." << endl;
-     if(year.Contains("2016")){
-       //anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mediumWP/NOMINAL/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/NOMINAL/"; 
+     
+     ifstream myfile;
+     myfile.open(configname.c_str());
+     string line;
+     while ( getline (myfile,line) ){
+	 if (line.find("anaoutputfolder")!=std::string::npos) anaoutputfolder = split(line,"=")[1];
+     }
+     myfile.close();
+
+     anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
+     anaoutputfolder+="/NOMINAL/";
+     hand = "LH";
+
+if(year.Contains("2016")){
+  //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Fullselection/mavariable/NOMINAL/"; 
        prodch = "_B";
        if ((MT <700) && (val==NULL)) year = "2016v2";
-       hand = "LH";
+       //       hand = "LH";
      }
-     else if (year.Contains("2017")){
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL_NoBtagSF/"; 
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"; 
-       hand = "LH";
-     }
-     else if (year.Contains("2018")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
-       //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
-       hand = "LH";
-     }
-     else if (year.Contains("allyears")){
-       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/NOMINAL/"; 
-       hand = "LH";
-     }
-     else throw runtime_error("Year not possible.");
+     // else if (year.Contains("2017")){
+     //   //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mediumWP/NOMINAL_NoBtagSF/"; 
+     //   //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/"; 
+     //   //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/"; 
+     //   //       hand = "LH";
+     // }
+     // else if (year.Contains("2018")){
+     //   //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable/NOMINAL/"; 
+     //   //       anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/SFbtaginc/NOMINAL/"; 
+     //   //       hand = "LH";
+     // }
+     // else if (year.Contains("allyears")){
+     //   anaoutputfolder = "/nfs/dust/cms/user/reimersa/SingleTth/allyears/Fullselection/mavariable/NOMINAL/"; 
+     //   hand = "LH";
+     // }
+     // else throw runtime_error("Year not possible.");
   }
 
 
@@ -888,3 +924,17 @@ void plot_ratio(TH1F* hist, TF1* func, TF1* func_bin1, TF1* func_bin2, std::vect
 
 
 
+vector<string> split (string s, string delimiter) {
+  size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+  string token;
+  vector<string> res;
+
+  while ((pos_end = s.find (delimiter, pos_start)) != string::npos) {
+    token = s.substr (pos_start, pos_end - pos_start);
+    pos_start = pos_end + delim_len;
+    res.push_back (token);
+  }
+
+  res.push_back (s.substr (pos_start));
+  return res;
+}

@@ -2,17 +2,20 @@
 #include <fstream>
 #include "func.C"
 #include "helpers.C"
+#include <sys/stat.h>
 
 using namespace std;
 TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F*& cl68, TH1F*& cl95, TString year = "2016v3",TString cat = "chi2h_2");
 void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString name);
+TString anaoutputfolder;
+
 
 enum EFitFunction {eFunc2p, eFunc3p, eFuncAlt3p, eFunc4p, eFuncAlt4p, eFunc5p, eFuncExp2};
 
 //EFitFunction FitFunc = eFunc3p;
-//EFitFunction FitFunc = eFuncExp2;
+EFitFunction FitFunc = eFuncExp2;
 
-EFitFunction FitFunc = eFunc4p;
+//EFitFunction FitFunc = eFunc4p;
 // EFitFunction FitFunc = eFunc2p;
 //EFitFunction FitFunc = eFuncAlt3p;
   // EFitFunction FitFunc = eFuncAlt4p;
@@ -35,6 +38,28 @@ void bkg_fit()
     TH1F* cl95 = NULL;
     TH1F* dum = NULL; 
     std::vector<TF1*> funcs; 
+
+    ifstream myfile;
+    myfile.open(configname.c_str());
+    string line;
+    while ( getline (myfile,line) ){
+      if (line.find("anaoutputfolder")!=std::string::npos) anaoutputfolder = split(line,"=")[1];
+    }
+    myfile.close();
+    anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
+  struct stat buffer;
+  std::string dirname = anaoutputfolder.Data();
+  dirname+="results";
+    
+  if (stat(dirname.c_str(), &buffer) != 0) {
+    cout<<"path does not exist, we create it for you!"<<endl;
+    int check;
+    check = mkdir(dirname.c_str(),0777);
+    // check if directory is created or not
+    if (!check)
+      printf("Directory created\n");
+  }  
+    
 
     // ------------ Control Region --------------
     if(!cat.Contains("cat")){
@@ -413,13 +438,13 @@ TF1* one_fit(Eregion region, Echannel channel, bool dodata, bool all_bkgds, TH1F
     region_name = "sr";
   }  
   if (dodata){
-    background_c->Print(folder + "/" + region_name + "_" + channel_name + "_data_fit_" + ffile +"_"+year+ "_"+cat+".pdf");
+    background_c->Print(anaoutputfolder+folder + "/" + region_name + "_" + channel_name + "_data_fit_" + ffile +"_"+year+ "_"+cat+".pdf");
   } else {
 
     if (all_bkgds){
-      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_allbkgds_fit_" + ffile + "_"+year+"_"+cat+".pdf");
+      background_c->Print(anaoutputfolder+folder + "/" + region_name + "_" + channel_name + "_allbkgds_fit_" + ffile + "_"+year+"_"+cat+".pdf");
     } else {
-      background_c->Print(folder + "/" + region_name + "_" + channel_name + "_ttbar_fit_" + ffile + "_"+year+"_"+cat+".pdf");
+      background_c->Print(anaoutputfolder+folder + "/" + region_name + "_" + channel_name + "_ttbar_fit_" + ffile + "_"+year+"_"+cat+".pdf");
     }
 
   }
@@ -480,6 +505,6 @@ void PlotFuncComparison(std::vector<TF1*> funcs, TH1F* cl68, TH1F* cl95, TString
     h->Draw("lsame");
   }
 
-  c->SaveAs(name + ".pdf");
+  c->SaveAs(anaoutputfolder+name + ".pdf");
 }
 
