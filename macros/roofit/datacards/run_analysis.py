@@ -14,6 +14,8 @@ def main():
 
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--plotonly','-p', action='store_true', default=False, dest='plotonly', help='only make limit plots')
+    parser.add_argument('--sigfitsonly','-s', action='store_true', default=False, dest='sigfitsonly', help='only do signal fits')
+    parser.add_argument('--wows','-w', action='store_true', default=False, dest='wows', help='wo workshpace')
     args = parser.parse_args()
 
     # check if all signal output is available for the MA mass specified in the configuration file
@@ -56,9 +58,11 @@ def main():
     if not args.plotonly:
         signalfits(indict, MA, years, channels, categories)    
 
-        create_workspace(MA)
-        create_datacards_eachYearIndividual_categories(years,MA,indict["anaoutputfolder"])
-        submit_limits(MA, indict["blimit"], indict["bbias"] ,indict["bsigInj"])
+        if not args.sigfitsonly:
+            if not args.wows:
+                create_workspace(MA)
+            create_datacards_eachYearIndividual_categories(years,MA,indict["anaoutputfolder"])
+            submit_limits(MA, blimit = indict["blimit"], bbias =indict["bbias"] ,bsigInj =indict["bsigInj"])
     else:
         read_limits(indict["limit_postfix"])
         plot_limit(MA,indict["limit_postfix"], indict)
