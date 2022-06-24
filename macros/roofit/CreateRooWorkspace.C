@@ -301,7 +301,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   bg3p_p1->Print();
   bg3p_p2->Print(); 
 
-  float bkgfactor  = 10;
+  float bkgfactor  = 1;
 
   infotofile << "---------  Bg3p  "+ch_name+"  ---------"<<std::endl;
   infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"  " << bg3p_p0->getValV() <<"  error  "<<   bkgfactor * bg3p_p0->getError()<<std::endl;
