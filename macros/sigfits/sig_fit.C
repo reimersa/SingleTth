@@ -1,3 +1,4 @@
+
 #include "TH1.h"
 #include <fstream>
 #include "sigfunc.C"
@@ -102,7 +103,7 @@ void sig_fit(TString MA, TString year, Echannel channel)
       if(MA=="450") categories = {"catma175","catma300"};
       if(MA=="500") categories = {"catma175","catma300"};
       if(MA.Contains("999")) categories = {"catma300","chi2h_2","catma175","catma90"};
-      //      categories = {"catma300"};
+      //categories = {"catma90"};
 
       for(unsigned int icat=0;icat < categories.size();icat++){
 
@@ -222,6 +223,10 @@ void sig_fit(TString MA, TString year, Echannel channel)
 	    if(year.Contains("2018") && cat.Contains("catma300") && MA.Contains("200")){
 	      MTs = {600,700, 800, 900, 1000,1100,1200};// 2018
 	      MTs_backup = { 600,700, 800, 900, 1000, 1100,1200};// 2018
+	    }
+	    if(year.Contains("2018") && cat.Contains("catma90") && MA.Contains("125")){
+	      MTs = {600,700, 800, 900, 1000,1200};// 2018
+	      MTs_backup = { 600,700, 800, 900, 1000};// 2018
 	    }
 
 	  }
@@ -527,6 +532,7 @@ void sig_fit(TString MA, TString year, Echannel channel)
 		if(MTs[i]>920 && MTs[i]<1020) gmean_unc->RemovePoint(i);
 	      }
 	    } 
+
 	    TF1* lin_mean = new TF1("meanfit"+TString::Format("%d",jj), "[0]+[1]*(x-600)", 550, 1250);
 	    TFitResultPtr r_unc = gmean_unc->Fit(lin_mean, "0");
 	    lin_mean->SetLineColor(kBlue+jj);
@@ -1202,6 +1208,8 @@ void sig_fit(TString MA, TString year, Echannel channel)
 	  if (ch==eComb && (unc.Contains("ele") || unc.Contains("mu"))) continue;
 	  if(year.Contains("2017")&&cat.Contains("ma90") && unc.Contains("PDF")){
 	    MTs={600, 700,800,900,1100,1200};
+	  }else if(year.Contains("2018")&&cat.Contains("ma90") && (unc.Contains("btag_udsg")||unc.Contains("elereco")||unc.Contains("eletrigger"))){
+	    MTs={600, 700,800,900,1000,1200};
 	  }else{MTs=MTs_backup;}
 	  means_unc.clear();
 	  means_err_unc.clear();
