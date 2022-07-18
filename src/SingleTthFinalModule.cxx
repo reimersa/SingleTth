@@ -252,9 +252,11 @@ namespace uhh2examples {
     float dR = deltaR(hyp->higgs_jets().at(0),hyp->higgs_jets().at(1));
 
     // SR or CR?
-    bool is_sr = chi2 < 10. && dR < 1.7;
+    //    bool is_sr = chi2 < 10. && dR < 1.7;
+    bool is_sr = chi2 < 10. ;
     if(best_cat == "Chi2_top+ma300") is_sr = chi2 < 10.;
-    if(best_cat == "Chi2") is_sr = (is_sr && chi2h < 2.);
+    //    if(best_cat == "Chi2") is_sr = (is_sr && chi2h < 2.);
+    if(best_cat == "Chi2") is_sr = (chi2 < 10. && chi2h < 2.);
     //    is_sr = true;
 
     // Read out nominal eventweight

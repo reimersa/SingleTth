@@ -522,7 +522,7 @@ namespace uhh2examples {
       }
     }
     
-    event.set(h_best_cat,smallest_cat);
+
     
     float chi2 = hyp->discriminator("Chi2");
     float chi2h = hyp->discriminator("Chi2_higgs");
@@ -530,6 +530,16 @@ namespace uhh2examples {
     LorentzVector W = (hyp->lepton_v4() + hyp->neutrino_v4());
     float dR_bt_Wt = deltaR(W, hyp->toplep_jets().at(0));
     float dR_t_H = deltaR(hyp->toplep_v4(), hyp->higgs_v4());
+
+    /// prio cat ma=125
+    //    if(chi2<10&& chi2h<2 && dR_bH_bH < 1.7) {
+    // if(chi2<10&& chi2h<2) {
+    //   smallest_cat = "Chi2";
+    //   smallest_chi2 = chi2;
+    //   smallest_dR = dR_bH_bH;
+    // }
+
+    event.set(h_best_cat,smallest_cat);
 
     //////// first without cuts ...
     if(smallest_cat=="Chi2_top+ma60"){
@@ -554,15 +564,18 @@ namespace uhh2examples {
     }
 
     //////////// ..... than with cuts
-    if(smallest_cat=="Chi2_top+ma60" && smallest_chi2 < 10 && smallest_dR < 1.7){
+    //    if(smallest_cat=="Chi2_top+ma60" && smallest_chi2 < 10 && smallest_dR < 1.7){
+    if(smallest_cat=="Chi2_top+ma60" && smallest_chi2 < 10 ){
       if(is_much)  fill_histograms(event,"catma60_much_sr");
       else  fill_histograms(event,"catma60_ech_sr");
 	
-    }else if(smallest_cat=="Chi2_top+ma90" && smallest_chi2 < 10 && smallest_dR < 1.7){
+      //    }else if(smallest_cat=="Chi2_top+ma90" && smallest_chi2 < 10 && smallest_dR < 1.7){
+    }else if(smallest_cat=="Chi2_top+ma90" && smallest_chi2 < 10){
       if(is_much) fill_histograms(event,"catma90_much_sr");
       else  fill_histograms(event,"catma90_ech_sr");
 	
-    }else if(smallest_cat=="Chi2_top+ma175" && smallest_chi2 < 10 && smallest_dR < 1.7){
+      //    }else if(smallest_cat=="Chi2_top+ma175" && smallest_chi2 < 10 && smallest_dR < 1.7){
+    }else if(smallest_cat=="Chi2_top+ma175" && smallest_chi2 < 10){
       if(is_much)  fill_histograms(event,"catma175_much_sr");
       else  fill_histograms(event,"catma175_ech_sr");
 	
@@ -570,7 +583,8 @@ namespace uhh2examples {
       if(is_much)  fill_histograms(event,"catma300_much_sr");
       else  fill_histograms(event,"catma300_ech_sr");
 
-    }else if(smallest_cat=="Chi2"  && smallest_chi2 < 10 && chi2h<2 && smallest_dR < 1.7){
+      //    }else if(smallest_cat=="Chi2"  && smallest_chi2 < 10 && chi2h<2 && smallest_dR < 1.7){
+    }else if(smallest_cat=="Chi2"  && smallest_chi2 < 10 && chi2h<2){
 
       bool chi2_10_sr = (chi2 < 10.);
       bool chi2h_05_sr = (chi2h < 5.);
