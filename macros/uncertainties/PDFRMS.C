@@ -26,9 +26,9 @@ void FindRMS(TString infolder, map<TString, TString> samplemap, TString sample, 
 
 void PDFRMS(){
 
-  TString year = "2016v3";
-  //  TString year = "2017v2";
-  // TString year = "2018";
+          TString year = "2016v3";
+  //TString year = "2017v2";
+  //        TString year = "2018";
 
 
   TString prodch = "";
@@ -43,7 +43,7 @@ void PDFRMS(){
 
 
   //  std::vector<TString> mas = {"_ma75","_ma175","_ma450"};
-  std::vector<TString> mas = {"_ma100"};
+  std::vector<TString> mas = {"_ma500"};
   //  if(year == "2017v2")   mas = {"_ma75","_ma125","_ma175","_ma250","_ma350","_ma450"};
 
   map<TString, TString> samplemap;
@@ -53,25 +53,25 @@ void PDFRMS(){
   samplemap["TTV_"+year] = "uhh2.AnalysisModuleRunner.MC.TTV_"+year+".root";
   samplemap["DYJets_"+year] = "uhh2.AnalysisModuleRunner.MC.DYJets_"+year+".root";
   samplemap["SingleTop_"+year] = "uhh2.AnalysisModuleRunner.MC.SingleTop_"+year+".root";
-  samplemap["VLQ_"+hand+"_600_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_600_"+prodch+year_lowmass+".root";
-  samplemap["VLQ_"+hand+"_650_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_650_"+prodch+year_lowmass+".root";
-  samplemap["VLQ_"+hand+"_700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_700_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_800_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_900_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_900_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1000_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1000_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1100_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1100_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1200_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1200_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1300_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1300_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1400_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1400_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1500_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1500_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1600_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1600_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1700_"+prodch+year+".root";
-  samplemap["VLQ_"+hand+"_1800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1800_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_600_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_600_"+prodch+year_lowmass+".root";
+  // samplemap["VLQ_"+hand+"_650_"+year_lowmass] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_650_"+prodch+year_lowmass+".root";
+  // samplemap["VLQ_"+hand+"_700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_700_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_800_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_900_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_900_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1000_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1000_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1100_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1100_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1200_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1200_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1300_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1300_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1400_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1400_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1500_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1500_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1600_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1600_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1700_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1700_"+prodch+year+".root";
+  // samplemap["VLQ_"+hand+"_1800_"+year] = "uhh2.AnalysisModuleRunner.MC.VLQ_"+hand+"_1800_"+prodch+year+".root";
 
 
-  TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mavariable/";
-  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/";
-  if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable/";
+  TString infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2016/Finalselection/mavariable_wodR_all/";
+  if (year == "2017v2") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable_wodR_all/";
+  if (year == "2018") infolder = "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable_wodR_all/";
 
   // FindRMS(infolder, samplemap, "TTbar_"+year,year);
   // FindRMS(infolder, samplemap, "WJets_"+year,year);
