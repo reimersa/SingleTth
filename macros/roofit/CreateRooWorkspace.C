@@ -215,14 +215,23 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     fit_xmin = 450;
     fit_xmax = 2000;    
 
-    if(cat.Contains("catma300")) fit_xmin = 560;
-    if(cat.Contains("chi2h_2")) fit_xmin = 520;
-    // if(cat.Contains("chi2h_2")) fit_xmin = 490;
+    if(cat.Contains("catma300")) fit_xmin = 580;
+    if(cat.Contains("catma300")) fit_xmax = 1999;
+    //    if(cat.Contains("chi2h_2")) fit_xmin = 520;
+    if(year.Contains("2017") && cat.Contains("chi2h_2")) fit_xmax = 1999;
+    if(year.Contains("2016") && cat.Contains("chi2h_2")) fit_xmax = 1999;
+    if(year.Contains("2016") && cat.Contains("chi2h_2")) fit_xmin = 470;
     if(cat.Contains("catma175")) fit_xmin = 590;
     // if(cat.Contains("ma175")&& channel==defs::eEle && year.Contains("2018"))fit_xmax = 1999;
     // if(cat.Contains("ma90") && channel==defs::eEle) fit_xmax = 1999;
     if(cat.Contains("ma175") && year.Contains("2018"))fit_xmax = 1999;
-    if(cat.Contains("ma90") ) fit_xmax = 1999;
+    if(cat.Contains("ma90") && year.Contains("2016") ){
+      fit_xmax = 1200;
+      fit_xmin = 470;
+    }else  if(cat.Contains("ma90") ){
+      fit_xmin = 470;
+      fit_xmax = 1999;
+    }
 
 
   } else {
@@ -451,6 +460,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
   double param0_JECmeandown_value,param1_JECmeandown_value,param0_JECsigmadown_value,param1_JECsigmadown_value,param0_JECmeandown2_value,param1_JECmeandown2_value,param0_JECsigmadown2_value,param1_JECsigmadown2_value,param2_JECsigmadown2_value,param0_JECfnormdown_value,param1_JECfnormdown_value;
   double param0_JERmeandown_value,param1_JERmeandown_value,param0_JERsigmadown_value,param1_JERsigmadown_value,param0_JERmeandown2_value,param1_JERmeandown2_value,param0_JERsigmadown2_value,param1_JERsigmadown2_value,param2_JERsigmadown2_value,param0_JERfnormdown_value,param1_JERfnormdown_value;
 
+
   while (infile)
     {
       string c,d;
@@ -644,8 +654,11 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
 	param0_fnorm_error = std::stod(d);
       }
       if(fitname.find("fnormfit")!=std::string::npos && paramname.find("param1")!=std::string::npos) {
-	param1_fnorm_value = std::stod(c); 
-	param1_fnorm_error = std::stod(d);
+	// param1_fnorm_value = std::stod(c); 
+	// param1_fnorm_error = std::stod(d);
+	param1_fnorm_value = 0;
+	param1_fnorm_error = 0;
+
       }
       if((fitname.find("ffitup")!=std::string::npos) && (paramname.find("param0")!=std::string::npos) && (fitname.find("JEC")!=std::string::npos)) {
 	param0_JECfnormup_value = std::stod(c); 
