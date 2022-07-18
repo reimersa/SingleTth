@@ -2,7 +2,7 @@
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 <!ENTITY TargetLumi      "41530"> 
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Preselection/JEC_down/">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/prio125/JEC_down/">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/JEC_down/">
 <!ENTITY b_Cacheable     "False"> 
 <!ENTITY NEVT            "-1"> 
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">

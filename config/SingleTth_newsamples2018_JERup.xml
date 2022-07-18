@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 <!ENTITY TargetLumi      "59740"> 
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2018/Preselection/NOMINAL/">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable_wodR_all/NOMINAL/">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2018/Preselection/JER_up/">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable_wodR_all/JER_up/">
 <!ENTITY b_Cacheable     "False"> 
 <!ENTITY NEVT            "-1"> 
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">
@@ -74,7 +74,7 @@
 
 <!-- 
 <ConfigParse NEventsBreak="0" FileSplit="25" AutoResubmit="5"/>
-<ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth2018"/>
+<ConfigSGE RAM="4" DISK="3" Mail="anna.benecke@desy.de" Notification="as" Workdir="workdir_SingleTth2018_JERup"/>
 -->
 
 <JobConfiguration JobName="ExampleCycleJob" OutputLevel="INFO">
@@ -357,7 +357,7 @@
 		<Item Name="MCBtagEfficiencies" Value="/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/data/2018/BTagMCEfficiencyHists_mediumWP.root" /> 
 		<Item Name="BTagCalibration" Value="/nfs/dust/cms/user/reimersa/CMSSW_10_2_X_v1/CMSSW_10_2_10/src/UHH2/common/data/2018/DeepJet_102XSF_WP_V1.csv" /> 
  		<Item Name="jecsmear_direction" Value="nominal" /> 
- 		<Item Name="jersmear_direction" Value="nominal" /> 
+ 		<Item Name="jersmear_direction" Value="up" /> 
  		<Item Name="ScaleVariationMuR"       Value="none" /> 
  		<Item Name="ScaleVariationMuF"       Value="none" /> 
 		<Item Name="sys_muonid"      Value="nominal" /> 

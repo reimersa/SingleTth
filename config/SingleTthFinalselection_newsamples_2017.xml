@@ -3,8 +3,8 @@
 
 
 <!ENTITY TargetLumi      "41530">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/NOMINAL">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable_wodR_all/NOMINAL">
 <!-- <!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2017/Finalselection/mavariable/test"> -->
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
