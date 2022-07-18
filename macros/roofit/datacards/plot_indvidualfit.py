@@ -32,7 +32,7 @@ gStyle.SetPaintTextFormat("2.3f")
 
 channels = ["much","ech"]
 years = ["2016v3","2017v2","2018"]
-categories = ["chi2h_2","catma90"]
+categories = ["chi2h_2"]
 
 
 
@@ -115,26 +115,26 @@ def plot_fits(cat,year,channel):
     
     
     ## Plot postfit s+b
-    sb_postfit_spb = infile.Get("shapes_fit_s/"+channel+"_"+year+"_"+cat+"/total")
-    sb_postfit_spb.SetLineColor(kBlue)
-    sb_postfit_spb.SetLineWidth(2)
+    # sb_postfit_spb = infile.Get("shapes_fit_s/"+channel+"_"+year+"_"+cat+"/total")
+    # sb_postfit_spb.SetLineColor(kBlue)
+    # sb_postfit_spb.SetLineWidth(2)
     
-    b_postfit_spb = infile.Get("shapes_fit_s/"+channel+"_"+year+"_"+cat+"/total_background")
-    b_postfit_spb.SetLineColor(kBlue)
-    b_postfit_spb.SetLineWidth(2)
-    b_postfit_spb.SetLineStyle(2)
-    if bscale: b_postfit_spb.Scale(int_toys/sb_postfit_spb.Integral())
-    b_postfit_spb.Draw("HIST same")
+    # b_postfit_spb = infile.Get("shapes_fit_s/"+channel+"_"+year+"_"+cat+"/total_background")
+    # b_postfit_spb.SetLineColor(kBlue)
+    # b_postfit_spb.SetLineWidth(2)
+    # b_postfit_spb.SetLineStyle(2)
+    # if bscale: b_postfit_spb.Scale(int_toys/sb_postfit_spb.Integral())
+    # b_postfit_spb.Draw("HIST same")
     
-    s_postfit_spb = infile.Get("shapes_fit_s/"+channel+"_"+year+"_"+cat+"/total_signal")
-    s_postfit_spb.SetLineColor(kBlue)
-    s_postfit_spb.SetLineWidth(2)
-    s_postfit_spb.SetLineStyle(2)
-    if bscale: s_postfit_spb.Scale(int_toys/sb_postfit_spb.Integral())
-    s_postfit_spb.Draw("HIST same")
+    # s_postfit_spb = infile.Get("shapes_fit_s/"+channel+"_"+year+"_"+cat+"/total_signal")
+    # s_postfit_spb.SetLineColor(kBlue)
+    # s_postfit_spb.SetLineWidth(2)
+    # s_postfit_spb.SetLineStyle(2)
+    # if bscale: s_postfit_spb.Scale(int_toys/sb_postfit_spb.Integral())
+    # s_postfit_spb.Draw("HIST same")
     
-    if bscale: sb_postfit_spb.Scale(int_toys/sb_postfit_spb.Integral())
-    if b_draw_total: sb_postfit_spb.Draw("HIST same")
+    # if bscale: sb_postfit_spb.Scale(int_toys/sb_postfit_spb.Integral())
+    # if b_draw_total: sb_postfit_spb.Draw("HIST same")
     
     plotter.Draw("same")
     
@@ -151,7 +151,7 @@ def plot_fits(cat,year,channel):
     #leg.AddEntry(plotter,"Toys","lpe")
     leg.AddEntry(sb_prefit,"Total prefit","l")
     leg.AddEntry(sb_postfit_bonly,"Total b only postfit","l")
-    leg.AddEntry(sb_postfit_spb,"Total s+b only postfit","l")
+#    leg.AddEntry(sb_postfit_spb,"Total s+b only postfit","l")
     
     leg.Draw()
     
@@ -259,12 +259,12 @@ def plot_comp(cat, year, channel):
 #  MAIN
 #
 ###################3
-# for channel in channels:
-#     for cat in categories:
-#         for year in years:
+for channel in channels:
+    for cat in categories:
+        for year in years:
 
-#             plot_fits(cat,year,channel)
+            plot_fits(cat,year,channel)
             
 
-plot_comp("chi2h_2","2017v2","much")
-plot_comp("chi2h_2","2017v2","ech")
+#plot_comp("chi2h_2","2017v2","much")
+#plot_comp("chi2h_2","2017v2","ech")

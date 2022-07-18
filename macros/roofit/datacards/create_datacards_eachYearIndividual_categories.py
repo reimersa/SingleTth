@@ -111,8 +111,9 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
         categories = ["catma60","catma90", "catma300"] 
     if ma_mass == "125":
         categories = ["catma90","chi2h_2","catma300"] 
+        # categories = ["chi2h_2","catma300"] 
         #    categories = ["catma90","catma300"] 
-        #categories = ["chi2h_2"] 
+        # categories = ["chi2h_2"] 
     if ma_mass == "99999":
         categories = ["catma90","catma175", "catma300", "chi2h_2"] 
     if ma_mass == "450":
@@ -161,7 +162,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
             f_much = open(folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+"_much.txt", "r")
             f_ech = open(folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+"_ech.txt", "r")
         
-            #print folder + "SignalFitOutput_"+years[year]+"_"+icat+"_"+ma_mass+".txt"
+            print folder + "SignalFitOutput_"+year+"_"+icat+"_"+ma_mass+".txt"
             # tot unc for both e and mu
             tot_rate_unc[icat][year] = {}
         
@@ -173,10 +174,12 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
                     unc = math.sqrt(float(unc)*float(unc) + 0.018 * 0.018 )
                 else:
                     unc = math.sqrt(float(unc)*float(unc) + lumi_unc[year] * lumi_unc[year] )
+
                 unc+=1
                 tot_rate_unc[icat][year][mass] = unc
         
-            print sorted(tot_rate_unc)
+            #print "tot_rate_unc"
+            #print tot_rate_unc
         
         
             # e ch unc 
@@ -189,7 +192,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
                 unc+=1
                 ech_rate_unc[icat][year][mass] = unc
         
-            print sorted(ech_rate_unc)
+            #print sorted(ech_rate_unc)
         
             # mu ch unc 
             much_rate_unc[icat][year] = {}
@@ -201,7 +204,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
                 unc+=1
                 much_rate_unc[icat][year][mass] = unc
         
-            print sorted(much_rate_unc)
+            #print sorted(much_rate_unc)
         
     
     ###
@@ -237,7 +240,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
                   
                         if "Electron" in listOfLines[j]: break
                         tmp_dict = make_dict_from_line(listOfLines[j])
-                        print(tmp_dict)
+                        #print(tmp_dict)
                   
                         mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
                         if mass not in masses and int(mass)>590:
@@ -288,11 +291,11 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
         
         
                 if "Electron" in line and "Signal" in line:
-                    print line
+                    #print line
                     print year
                     for j in range(i+1,len(listOfLines)):
                         tmp_dict = make_dict_from_line(listOfLines[j])
-                        print(tmp_dict)
+                        #print(tmp_dict)
 
                         mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
     #                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
@@ -564,6 +567,9 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
 def make_dict_from_line(line):
     parts = line.split()
     resultlist = []
+    print line
+    print "resultlist"
+    print resultlist
     for i,x in enumerate(parts):
         if ',' in x or x == 'GeV' or x == '=': continue
         if i < len(parts)-1:
