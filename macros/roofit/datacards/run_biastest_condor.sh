@@ -25,7 +25,7 @@ echo $name
 
 MA=$4
 
-postfix="_mavariable_cb_condor_MT${mass}GeV_MA${MA}"
+postfix=$5"_MT${mass}GeV"
 
 
 years=("2016v3" "2017v2" "2018")

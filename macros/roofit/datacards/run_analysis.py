@@ -8,6 +8,8 @@ from os import path
 from create_datacards_eachYearIndividual_categories import create_datacards_eachYearIndividual_categories
 from parallel import submit_limits
 from LimitPlot import read_limits
+from plot_bias import plot_bias
+from plot_signalinjection import plot_signIn
 import argparse
 
 def main():
@@ -62,9 +64,18 @@ def main():
             if not args.wows:
                 create_workspace(MA)
             create_datacards_eachYearIndividual_categories(years,MA,indict["anaoutputfolder"])
-            submit_limits(MA, blimit = indict["blimit"], bbias =indict["bbias"] ,bsigInj =indict["bsigInj"])
+            submit_limits(MA, blimit = indict["blimit"]=="True", bbias = indict["bbias"]=="True" ,bsigInj =indict["bsigInj"]=="True", postfix=indict["limit_postfix"])
     else:
         read_limits(indict["limit_postfix"])
+        if indict["bbias"]=="True": 
+            if int(MA)>200:
+                plot_bias(MA,indict["limit_postfix"],MT="800")
+            else:
+                plot_bias(MA,indict["limit_postfix"],MT="600")
+            plot_bias(MA,indict["limit_postfix"],MT="1000")
+            
+        if indict["bsigInj"]=="True":
+            plot_signIn(MA,indict["limit_postfix"])
         plot_limit(MA,indict["limit_postfix"], indict)
 
 def plot_limit(MA,postfix, indict):

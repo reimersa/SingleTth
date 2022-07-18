@@ -5,7 +5,7 @@ import subprocess
 from collections import OrderedDict
 
 
-def submit_limits(MA, blimit = True, bbias = True , bsigInj = True):
+def submit_limits(MA, blimit = True, bbias = True , bsigInj = True, postfix = ""):
     MA=125
     b_only125 = False
     MTs_limit = [600, 625, 650, 675, 700, 725, 750, 775, 800, 825, 850, 875, 900, 925, 950, 975, 1000, 1025, 1050, 1075, 1100, 1125, 1150, 1175]
@@ -22,19 +22,20 @@ def submit_limits(MA, blimit = True, bbias = True , bsigInj = True):
 
     MTs_bias = [600,700,800,1000]
     rs_bias = [0.0,1.0]
+    print bbias
     if bbias:
         for MT in MTs_bias:
             for r in rs_bias:
                 for function in range(0,2):
                                 
-                    run_bias(MA,MT,r,function,scriptfolder)
+                    run_bias(MA,MT,r,function,scriptfolder, postfix)
     
 
     rs_signal = [0.00, 0.10, 0.25, 0.35, 0.50, 0.75, 1.00]
     if bsigInj:
         for MT in MTs_bias:
             for r in rs_signal:
-                run_signal(MA,MT,r,scriptfolder)
+                run_signal(MA,MT,r,scriptfolder, postfix)
     
 
 
@@ -50,25 +51,25 @@ def run_limits(MA, MT, scriptfolder):
     command = 'condor_submit %s' % (submissionscriptname)
     os.system(command)
 
-def run_bias(MA, MT, r, function, scriptfolder):
+def run_bias(MA, MT, r, function, scriptfolder, postfix):
     print "MA=" + str(MA) + " MT="+str(MT) + " r="+str(r)+" function="+str(function)
 
     workdir = os.path.join(scriptfolder,"workdir_bias_condor")
     ensureDirectory(workdir)
 
-    submissionsettings = derive_from_default_settings("run_biastest_condor.sh",'"%i %.1f %i %i"' % (MT,r,function, MA),"bias", scriptfolder, workdir, MA, MT)
+    submissionsettings = derive_from_default_settings("run_biastest_condor.sh",'"%i %.1f %i %i %s"' % (MT,r,function, MA, postfix),"bias", scriptfolder, workdir, MA, MT)
     submissionscriptname = os.path.join(workdir, 'submit_combine_condor.sub')
     create_submitfile(settings=submissionsettings, outfilename=submissionscriptname)
     command = 'condor_submit %s' % (submissionscriptname)
     os.system(command)
 
-def run_signal(MA, MT, r, scriptfolder):
+def run_signal(MA, MT, r, scriptfolder, postfix):
     print "MA=" + str(MA) + " MT="+str(MT)+" r="+str(r)
 
     workdir = os.path.join(scriptfolder,"workdir_signal_condor")
     ensureDirectory(workdir)
 
-    submissionsettings = derive_from_default_settings("run_signalinjection_condor.sh",'"%i %.2f %i"' % (MT,r, MA),"signal", scriptfolder, workdir, MA, MT)
+    submissionsettings = derive_from_default_settings("run_signalinjection_condor.sh",'"%i %.2f %i %s"' % (MT,r, MA, postfix),"signal", scriptfolder, workdir, MA, MT)
     submissionscriptname = os.path.join(workdir, 'submit_combine_condor.sub')
     create_submitfile(settings=submissionsettings, outfilename=submissionscriptname)
     command = 'condor_submit %s' % (submissionscriptname)

@@ -35,7 +35,9 @@ eval "python create_snapshot.py -mass ${mass} -signal ${signal} -name signal"
 
 eval "combine -M GenerateOnly -d initialFitWorkspace_${signal}_${mass}_signal.root --snapshotName initialFit --expectSignal ${signal}  --setParameters ${set_params} --saveToys -m 125  --freezeParameters ${freeze_params} -n ${signal}_${mass}_signal -t 1000"
 
-eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${signal}_${mass}_signal.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=0 -n signal${signal}_${mass}_${MA}"
+postfix=$4
+
+eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${signal}_${mass}_signal.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=0 -n ${postfix}_signal${signal}_${mass}"
 
 
 
