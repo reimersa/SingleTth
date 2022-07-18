@@ -30,20 +30,23 @@ prop = {}
 prop["others"] = [kRed,"others"]
 # prop["MH"] = [kBlack,"M_{H}"]
 # prop["MA"] = [kRed,"M_{a}"]
-prop["MH"] = [kBlack,"ohne Kategorien"]
-prop["MA"] = [kRed,"prio125"]
+#prop["MH"] = [kBlack,"ohne Kategorien"]
+prop["MH"] = [kBlack,"prio125"]
+prop["MA"] = [kRed,"prio125_woDR"]
 
-# infile_mH = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_2017v2.root")
+infile_mH = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_2017v2.root")
 
-# infile_mA = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/prio125/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma125_2017v2.root")
+infile_mA = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/prio125_wodR/NOMINAL/uhh2.AnalysisModuleRunner.MC.VLQ_LH_700_ma125_2017v2.root")
 
-infile_mH = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/uhh2.AnalysisModuleRunner.MC.background.root")
+#infile_mH = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/SFbtagmujets/NOMINAL/uhh2.AnalysisModuleRunner.MC.background.root")
+# infile_mH = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/prio125/NOMINAL/uhh2.AnalysisModuleRunner.MC.background.root")
 
-infile_mA = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/prio125/NOMINAL/uhh2.AnalysisModuleRunner.MC.background.root")
+# infile_mA = TFile("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/prio125_wodR/NOMINAL/uhh2.AnalysisModuleRunner.MC.background.root")
 
 
 def plot_comparison(histname = "M_Tprime_rebin2",xtitle="M_{T} [GeV]"):
     #    dic_list = {"chi2h_2_much_sr","catma60_much_sr","catma90_much_sr","catma175_much_sr","catma300_much_sr"}
+    #    dic_list = {"chi2h_2_much_sr","catma90_much_sr","catma300_much_sr"}
     dic_list = {"chi2h_2_much_sr"}
 
     for dic in dic_list:

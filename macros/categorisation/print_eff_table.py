@@ -159,8 +159,7 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125",MT=
         print el
         print ma
         print MT not in el
-        if (not ma) and "125" in mamass and "_ma" in el: continue
-        elif (not ma) and  "ma"+mamass not in el and "125" not in mamass: continue
+        if (not ma) and  "ma"+mamass not in el: continue
         elif ma and (not "_ma" in el): continue
         if ma and MT not in el: continue
         print el
@@ -238,15 +237,16 @@ def creat_eff_plot_per_sig(folder, signal_list = [],ma = False, mamass="125",MT=
 # creat_eff_plot_per_cat("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
 
 # creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True)
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True,MT="600")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",ma=True,MT="1000")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="75")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="175")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="450")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="100")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="125")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="200")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="250")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="350")
-creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable/NOMINAL/",mamass="500")
+
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",ma=True)
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",ma=True,MT="600")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",ma=True,MT="1000")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="75")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="175")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="450")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="100")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="125")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="200")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="250")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="350")
+creat_eff_plot_per_sig("/nfs/dust/cms/user/reimersa/SingleTth/2017/Fullselection/mavariable_wodR_all/NOMINAL/",mamass="500")
