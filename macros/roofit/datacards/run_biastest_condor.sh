@@ -53,7 +53,9 @@ done
 set_param="${set_param: : -1}"
 
 
-eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param}  --freezeParameters ${freeze_param}  --cminDefaultMinimizerStrategy=0 -n initial_signal${signal}_${mass}_${name} --saveWorkspace" 
+eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_param}  --freezeParameters ${freeze_param} --cminDefaultMinimizerStrategy 0  -n initial_signal${signal}_${mass}_${name} --saveWorkspace --cminPreScan --cminPreFit 1 --setRobustFitTolerance 1 " 
+
+# --cminDefaultMinimizerStrategy=2  --cminFallbackAlgo Minuit2,Simplex,0:0.1
 
 eval "python create_snapshot.py -mass ${mass} -signal ${signal} -name ${name}"
 
@@ -61,7 +63,7 @@ eval "python create_snapshot.py -mass ${mass} -signal ${signal} -name ${name}"
 eval "combine -M GenerateOnly  -d initialFitWorkspace_${signal}_${mass}_${name}.root --snapshotName initialFit  --setParameters  ${set_param}  -t 1000 --expectSignal ${signal} --saveToys -m 125  --freezeParameters ${freeze_param} -n ${signal}_${mass}_${name}"
 
 
-eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombine${signal}_${mass}_${name}.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=0 -n ${name}${postfix}"
+eval "combine $datacard -M FitDiagnostics  --setParameters   ${set_param}  --toysFile higgsCombine${signal}_${mass}_${name}.GenerateOnly.mH125.123456.root  -t 1000 --rMin -10 --rMax 10 --freezeParameters  ${freeze_param} --cminDefaultMinimizerStrategy=2 -n ${name}${postfix}  --cminPreScan --cminPreFit 1 "
 
 
 

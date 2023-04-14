@@ -69,7 +69,7 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
      }
      myfile.close();
      anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
-     cout<<"anaoutputfolder"<<anaoutputfolder<<endl;
+     cout<<"anaoutputfolder  "<<anaoutputfolder<<endl;
     }
 
     //   if (year.Contains("2016")){
@@ -212,26 +212,25 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   double fit_xmin = 0;
   double fit_xmax = 0;  
   if (region==defs::eSR){
-    fit_xmin = 450;
-    fit_xmax = 2000;    
 
-    if(cat.Contains("catma300")) fit_xmin = 580;
-    if(cat.Contains("catma300")) fit_xmax = 1999;
-    //    if(cat.Contains("chi2h_2")) fit_xmin = 520;
-    if(year.Contains("2017") && cat.Contains("chi2h_2")) fit_xmax = 1999;
-    if(year.Contains("2016") && cat.Contains("chi2h_2")) fit_xmax = 1999;
-    if(year.Contains("2016") && cat.Contains("chi2h_2")) fit_xmin = 470;
-    if(cat.Contains("catma175")) fit_xmin = 590;
-    // if(cat.Contains("ma175")&& channel==defs::eEle && year.Contains("2018"))fit_xmax = 1999;
-    // if(cat.Contains("ma90") && channel==defs::eEle) fit_xmax = 1999;
-    if(cat.Contains("ma175") && year.Contains("2018"))fit_xmax = 1999;
-    if(cat.Contains("ma90") && year.Contains("2016") ){
-      fit_xmax = 1200;
-      fit_xmin = 470;
-    }else  if(cat.Contains("ma90") ){
-      fit_xmin = 470;
-      fit_xmax = 1999;
+    fit_xmin = 430;
+    //fit_xmax = 1540;
+    fit_xmax = 1200;
+    //fit_xmax = 2000;   
+
+
+    // if(cat.Contains("catma90")) {
+    //   fit_xmin = 470;
+    //   fit_xmax = 1999;
+    // }
+    // if(cat.Contains("chi2h_2")) {
+    //   fit_xmin = 450;
+    // }
+    if(cat.Contains("catma300")) {
+      fit_xmin = 580;
     }
+    if(cat.Contains("catma175")) fit_xmin = 590;
+
 
 
   } else {
@@ -253,6 +252,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   // get data or MC histogram
   TH1F* h_data = GetAnalysisOutput(region, channel, dodata, all_bkgds,year, cat); 
+  TH1F* h_MC = GetAnalysisOutput(region, channel, false , all_bkgds,year, cat); 
 
 
 
@@ -263,11 +263,17 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // double xmax = 0;  
   xmin=1e6;
   xmax = 0;
+  double bin_xmin=1e6;
+  double bin_xmax = 0;
   for (int i=0; i<h_data->GetNbinsX()+1; ++i){
     if (h_data->GetXaxis()->GetBinLowEdge(i)>=fit_xmin){
-      if (xmin>1e5) xmin = h_data->GetXaxis()->GetBinLowEdge(i);
+      if (xmin>1e5) {
+	xmin = h_data->GetXaxis()->GetBinLowEdge(i);
+	bin_xmin = i;
+      }
       if (h_data->GetXaxis()->GetBinUpEdge(i)<=fit_xmax){ 
         xmax = h_data->GetXaxis()->GetBinUpEdge(i);
+	bin_xmax = i;
         ++Nbins;
       }
     }
@@ -294,14 +300,32 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year+"_"+cat, "bg3p_p1"+ch_name,   9.1, -100,  100);
   RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year+"_"+cat, "bg3p_p2"+ch_name,   2.5, -100,   100 );
 
+  // RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year+"_"+cat, "bg3p_p0"+ch_name, -13.2, -10,  30);
+  // RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year+"_"+cat, "bg3p_p1"+ch_name,   9.1, -10,  20);
+  // RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year+"_"+cat, "bg3p_p2"+ch_name,   2.5, -10,   10 );
 
   BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
 
   // 2 parameter exponential function 
   RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name+"_"+year+"_"+cat, "bgexp2_p0"+ch_name, 8.2, -100, 100);
   RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name+"_"+year+"_"+cat, "bgexp2_p1"+ch_name, 4.3, -100, 100);
+  // RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name+"_"+year+"_"+cat, "bgexp2_p0"+ch_name, 8.2, -10, 20);
+  // RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name+"_"+year+"_"+cat, "bgexp2_p1"+ch_name, 4.3, -20, 20);
 
   BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
+
+
+  // 4 parameter function for nominal result
+  RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0"+ch_name+"_"+year+"_"+cat, "bg4p_p0"+ch_name, -300, -1000,  1000);
+  RooRealVar* bg4p_p1 = new RooRealVar("bg4p_p1"+ch_name+"_"+year+"_"+cat, "bg4p_p1"+ch_name,   50, -500,  500);
+  RooRealVar* bg4p_p2 = new RooRealVar("bg4p_p2"+ch_name+"_"+year+"_"+cat, "bg4p_p2"+ch_name,   35, -100,   100 );
+  RooRealVar* bg4p_p3 = new RooRealVar("bg4p_p3"+ch_name+"_"+year+"_"+cat, "bg4p_p3"+ch_name,   12, -100,   100 );
+
+  // RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year+"_"+cat, "bg3p_p0"+ch_name, -13.2, -10,  30);
+  // RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year+"_"+cat, "bg3p_p1"+ch_name,   9.1, -10,  20);
+  // RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year+"_"+cat, "bg3p_p2"+ch_name,   2.5, -10,   10 );
+
+  BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
   //  nominal fit
    RooFitResult *r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
@@ -316,6 +340,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"  " << bg3p_p0->getValV() <<"  error  "<<   bkgfactor * bg3p_p0->getError()<<std::endl;
   infotofile << "bg3p_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p1->getValV() <<"  error  "<<  bkgfactor *   bg3p_p1->getError()<<std::endl;
   infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p2->getValV() <<"  error  "<<   bkgfactor * bg3p_p2->getError()<<std::endl;
+  //  infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p2->getValV() <<"  error  "<<   0.01 * bg3p_p2->getError()<<std::endl;
 
 
   RooFitResult *r_bg_exp1 = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
@@ -328,23 +353,28 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   //create a list with all alt and nominal functions
   RooArgList mypdfs;
   mypdfs.add(*bgfunc);
-  //  mypdfs.add(*bgfunc_4p);
-  mypdfs.add(*bgfunc_exp);
+  mypdfs.add(*bgfunc_4p);
+   //  mypdfs.add(*bgfunc_exp);
   //  mypdfs.add(*bgfunc_2p);
 
   RooCategory category("pdf_index_"+ch_name+"_"+year+"_"+cat,"Index of Pdf which is active");
   RooMultiPdf multipdf("roomultipdf_"+ch_name+"_"+year+"_"+cat,"All Pdfs",category,mypdfs);
-  RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_"+cat+"_norm","Number of background events",1000,0,1000000);
+  //  RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_"+cat+"_norm","Number of background events",10000,0,1000000);
 
 
   // convert exp function to pseudo data:
-  RooDataSet* data1 = bgfunc_exp->generate(RooArgSet(*x),5000);
+  TH1* myhist = dataSR->createHistogram("myhist",*x);
+  RooDataSet* data1 = bgfunc_exp->generate(RooArgSet(*x),myhist->Integral());
   RooDataHist *hist1 = data1->binnedClone();
   TH1* myhist2 =  hist1->createHistogram("myhist2",*x);
-  TH1* myhist = dataSR->createHistogram("myhist",*x);
-  myhist2->Scale(myhist->Integral()/myhist2->Integral());
 
-    RooDataHist* dataSR_generated = new RooDataHist("data_obs_"+ch_name+"_"+year+"_"+cat, "data_obs_"+ch_name+"_"+year+"_"+cat, RooArgList(*x), myhist2);
+  //  myhist2->Scale(myhist->Integral()/myhist2->Integral());
+  
+  double int_dataSR = myhist -> Integral(bin_xmin, bin_xmax);
+
+
+
+  //  RooDataHist* dataSR_generated = new RooDataHist("data_obs_"+ch_name+"_"+year+"_"+cat, "data_obs_"+ch_name+"_"+year+"_"+cat, RooArgList(*x), myhist2);
  
   // RooFitResult *r_bg_exp = bgfunc_exp->fitTo(*dataSR_generated, RooFit::Range(xmin,xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
   // infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
@@ -368,7 +398,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   // save the bkg systematic fit to the workspace
   //  fWS->import(*bgfunc_4p);
   fWS->import(category);
-  fWS->import(norm);
+  //  fWS->import(norm);
   fWS->import(multipdf);
 
   // sum up number of events in fit region
@@ -385,6 +415,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   infotofile << "In interval: xmin = " << xmin << " xmax = " << xmax << "  ";
   infotofile << "Cat: "+cat+" N = " << Ntot << endl << endl;
 
+   // RooRealVar norm("roomultipdf_"+ch_name+"_"+year+"_"+cat+"_norm","Number of background events",Ntot,Ntot-0.2*Ntot,Ntot+0.2*Ntot);
+   // fWS->import(norm);
   //  RooPlot *plotter=x->frame();
   //  dataSR->plotOn(plotter, RooFit::LineColor(kBlack), RooFit::MarkerColor(kBlack));
   bgfunc->plotOn(plotter);
@@ -438,7 +470,7 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
   myfile.close();
   anaoutputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
   anainputfolder.ReplaceAll("[YEAR]",year).ReplaceAll("v3","").ReplaceAll("v2","");
-  cout<<"anaoutputfolder"<<anaoutputfolder<<endl;
+  cout<<"anaoutputfolder_Signal  "<<anaoutputfolder<<endl;
 
 
   std::ifstream infile(anainputfolder+"SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt");

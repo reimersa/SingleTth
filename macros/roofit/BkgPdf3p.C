@@ -36,6 +36,18 @@ BkgPdf3p::BkgPdf3p(const BkgPdf3p& other, const char* name) :
 
 Double_t BkgPdf3p::evaluate() const 
 { 
+
+  // // Actual implementation
+
+  // Double_t xp = x/13000.; // scale x to TeV
+
+  // // numerator 
+  // Double_t num = TMath::Power(xp, p0);
+
+  // // denominator, 3rd order polynomial in log(x) in exponent
+  // Double_t d1 = p1 + p2*TMath::Log(xp); 
+  // Double_t denom = TMath::Power(xp, d1); 
+
   // Actual implementation
 
   Double_t xp = x/1000.; // scale x to TeV

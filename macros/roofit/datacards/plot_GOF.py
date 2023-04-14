@@ -28,38 +28,54 @@ gStyle.SetPaintTextFormat("2.3f")
 
 
 
-parser = argparse.ArgumentParser(description='Plot the signal strength.')
-parser.add_argument('-integer', metavar='N', type=float,
-                   help='Singal stregth to plot')
-parser.add_argument('--name', dest='outname',type=str)
 
 
-args = parser.parse_args()
-signalstrength = args.integer
+
+def create_plot(infilename_toys, infilename_data, outfilename, year, ch, MT, MA,signalparam):
+    print "Toys: " + infilename_toys
+    print "Data: " + infilename_data
+    c1 = TCanvas()
+    infile = TFile(infilename_toys+".root","r")
+    tree_fit_sb = infile.Get("limit")
+    tree_fit_sb.Draw("limit>>h(50)")
+    
+    
+    histo = gROOT.FindObject("h")
+    histo.GetXaxis().SetTitle("Saturated test statistic")
+    histo.GetYaxis().SetTitle("Toys")
+    gPad.Update()
+    
+    
+    infile_data = TFile(infilename_data+".root","r")
+    tree_data = infile_data.Get("limit")
+    tree_data.Draw("limit>>h_data(50)")
+    histo_data = gROOT.FindObject("h_data")
+    
+    tree_fit_sb.Draw("limit>>h(50)")
+
+    ar4 = TArrow(histo_data.GetMean(),0,histo_data.GetMean(),10,0.05,"<|");
+    ar4.SetLineWidth(2);
+    ar4.SetFillColor(2);
+    ar4.SetLineColor(2);
+    ar4.Draw();
+    
+    infotext = year + ", "+ch+ ", "+str(MT)+ ", "+ str(MA)+ ", "+str(signalparam)
+    info = CMSPlotStyle.draw_info(infotext, 0.6, 0.95, textalign = 31, factor = 1)
+
+    c1.Print(outfilename+".pdf")
 
 
-year =  re.findall('20\d\d',args.outname)[0]
-ch =  re.findall('[mu,e]*ch',args.outname)[0]
-cat =  re.findall('catma[0-9][0-9]+',args.outname)[0]
 
-c1 = TCanvas()
-infile = TFile("higgsCombineTest.GoodnessOfFit.mH120.123456.root","r")
-tree_fit_sb = infile.Get("limit")
-#tree_fit_sb.Draw("limit>>h(50,1000,1800)")
-tree_fit_sb.Draw("limit>>h(50,0,300)")
+#uebergeben von run_analysis genauso wie MT
+#signalparams = ["float", "fixed"]
 
-histo = gROOT.FindObject("h")
-histo.GetXaxis().SetTitle("Saturated test statistic")
-histo.GetYaxis().SetTitle("Toys")
-gPad.Update()
+def plot(MT, MA, signalparams, year, ch):
 
-ar4 = TArrow(signalstrength,0,signalstrength,10,0.05,"<|");
-ar4.SetLineWidth(2);
-ar4.SetFillColor(2);
-ar4.SetLineColor(2);
-ar4.Draw();
 
-infotext = year + ", "+ch+", "+cat
-info = CMSPlotStyle.draw_info(infotext, 0.6, 0.95, textalign = 31, factor = 1)
-
-c1.Print(args.outname+".pdf")
+    for signalparam in signalparams:
+        infilename_base = "higgsCombineGOF"+signalparam+"R_XXX_M"+str(MT)+"_MA"+str(MA)+".GoodnessOfFit.mH120"
+        #infilename_base = "higgsCombineGOF"+signalparam+"R_XXX_M"+str(MT)+".GoodnessOfFit.mH120.123456"
+        infilename_toys = infilename_base.replace("XXX","toys")+".123456"
+        infilename_data = infilename_base.replace("XXX","data")
+        outfilename = "GOF_"+signalparam+"_MT"+str(MT) + "_MA"+str(MA)+"_"+year
+        create_plot(infilename_toys,infilename_data, outfilename, year, ch, MT, MA,signalparam)

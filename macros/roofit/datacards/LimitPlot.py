@@ -15,14 +15,16 @@ from ROOT import TFile,TCanvas,gROOT,gStyle,TLegend,TGraphAsymmErrors,kGreen,kOr
 from collections import OrderedDict
 
 
-def read_limits(postfix):
+def read_limits(postfix, b_only125 = False):
     berror = False
     #year = "2016v3"
     #year = "2017v2"
     #year = "2018"
     year = "allyears"
-#    postfix = "_mavariable_Run2_onlyexp_ma125_allsyst"
+    #    postfix = "_mavariable_Run2_onlyexp_ma125_allsyst"
     
+    postfix_only125 = ""
+    if b_only125: postfix_only125 = "_only125"
     
     masses = []
     
@@ -46,10 +48,13 @@ def read_limits(postfix):
     outputfile = open("Limits_combine_"+year+postfix+".txt","w")
     outputfile_obs = open("Limits_combine_obs_"+year+postfix+".txt","w")
     outputfile_theta = open("Limits_combine_theta_"+year+postfix+".txt","w")
+
+
     for mass in masses:
         if "550" in mass or "575" in mass: continue
+        if b_only125 and int(mass) > 700: continue 
         print mass
-        rootfile = TFile.Open("higgsCombineoutput_"+mass+".AsymptoticLimits.mH120.root","r")
+        rootfile = TFile.Open("higgsCombineoutput_"+mass+postfix_only125+".AsymptoticLimits.mH120.root","r")
         tree = rootfile.limit 
         limits = []
         for event in tree:

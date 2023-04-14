@@ -54,6 +54,7 @@ def plot_bias(MA,postfixarg,MT="800"):
     
     # 3p vs exp
     infile = TFile("fitDiagnosticsdijet3p_r1"+postfix+".root","r")
+    print "fitDiagnosticsdijet3p_r1"+postfix+".root"
     TH1.AddDirectory(0)
     tree_fit_sb_dijet3p = infile.Get("tree_fit_sb")
     tree_fit_sb_dijet3p.Draw("(r-1)/rErr>>h3p(50,-4,6.5)")

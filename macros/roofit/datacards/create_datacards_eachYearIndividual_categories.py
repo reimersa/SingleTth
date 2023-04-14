@@ -13,9 +13,9 @@ import time
 import datetime
 from ROOT import TFile,TCanvas,gROOT,gStyle,TLegend,TGraphAsymmErrors,kGreen,kOrange,kSpring,TF1,kAzure, TH2F,TH1F,gPad, TPaveText, TH1,kRed,SetOwnership, TMath
 from collections import OrderedDict
+from categories import get_categories
 
-
-def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
+def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_only125 = False):
     berror = False
     
     b_multipdf = True
@@ -97,45 +97,9 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
     lumi_unc["2018"] = 0.025
     lumi_unc["allyears"] = 0.013
     
-#    years = {"2016v3","2017v2","2018"}
-    #years = {"2017v2","2016v3"}
-    #years = {"2018"}
-    #years = {"allyears"}
-    #ma_mass = "99999"
- #   ma_mass = "125"
-    b_only125 = False
-    
-    #categories = ["chi2h_2", "catma60","catma90","catma175", "catma300"]
-    categories = ["catma90","catma175", "catma300","chi2h_2"] 
-    if ma_mass == "75":
-        categories = ["catma60","catma90", "catma300"] 
-    if ma_mass == "125":
-        categories = ["catma90","chi2h_2","catma300"] 
-        # categories = ["chi2h_2","catma300"] 
-        #    categories = ["catma90","catma300"] 
-        # categories = ["chi2h_2"] 
-    if ma_mass == "99999":
-        categories = ["catma90","catma175", "catma300", "chi2h_2"] 
-    if ma_mass == "450":
-        categories = ["catma175", "catma300"] 
-    if ma_mass == "100":
-        categories = ["catma90","chi2h_2","catma300"]
-    if ma_mass == "175":
-        categories = ["chi2h_2","catma175","catma300"]
-        if b_only125:
-            categories = ["chi2h_2"]
-    if ma_mass == "200":
-        categories = ["catma175","catma300","chi2h_2"]
-        if b_only125:
-            categories = ["chi2h_2"]
-    if ma_mass ==  "250":
-        categories = ["catma175","catma300"]
-    if ma_mass ==  "350":
-        categories = ["catma175","catma300"]
-    if ma_mass ==  "500":
-        categories = ["catma175","catma300"]
-    #categories = ["catma300","chi2h_2"]
-    
+    categories = get_categories(ma_mass,b_only125)
+
+
     number_of_channels = 2 * len(years) * len(categories)
     number_of_backgrounds = "*"
     
@@ -249,10 +213,18 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
     #                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
                         signal_much_norm[year+"_"+icat+"_"+mass] = tmp_dict["N"]
                         mean_value[year+"_"+icat+"_"+mass] = tmp_dict["Mean"]
-                        mean_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Mean_Error"],2) + pow(((abs(tmp_dict["Mean"] - tmp_dict["JERupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JERdownmean"])))/2,2)+ pow(((abs(tmp_dict["Mean"] - tmp_dict["JECupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JECdownmean"])))/2,2) )
+                        if b_JEC:
+                            mean_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean_Error"]
+                        else:
+                            mean_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Mean_Error"],2) + pow(((abs(tmp_dict["Mean"] - tmp_dict["JERupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JERdownmean"])))/2,2)+ pow(((abs(tmp_dict["Mean"] - tmp_dict["JECupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JECdownmean"])))/2,2) )
+
         
                         sigma_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma"]
-                        sigma_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Sigma_Error"],2) + pow(((abs(tmp_dict["Sigma"] - tmp_dict["JERupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JERdownsigma"])))/2,2)+ pow(((abs(tmp_dict["Sigma"] - tmp_dict["JECupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JECdownsigma"])))/2,2) )
+                        if b_JEC:
+                            sigma_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma_Error"]
+                        else:
+                            sigma_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Sigma_Error"],2) + pow(((abs(tmp_dict["Sigma"] - tmp_dict["JERupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JERdownsigma"])))/2,2)+ pow(((abs(tmp_dict["Sigma"] - tmp_dict["JECupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JECdownsigma"])))/2,2) )
+
     
                         mean_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean"]
                         mean_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownmean"]
@@ -405,8 +377,8 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
                 process_bins += "0   1    0    1   "
     
                 #hier
-                # rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(bkg_ech_norm[cat][year])+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(bkg_much_norm[cat][year]) + "   "
-                rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(1)+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(1) + "   "
+                rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(bkg_ech_norm[cat][year])+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(bkg_much_norm[cat][year]) + "   "
+                # rates += str(signal_ech_norm[year+"_"+cat+"_"+mass]) + "   "+ str(1)+"          "+str(signal_much_norm[year+"_"+cat+"_"+mass])+"   "+str(1) + "   "
     
                 #        lumi += str(lumi_unc[year]) + "       -    " + str(lumi_unc[year]) + "       -    "
                 rate_sig += str(tot_rate_unc[cat][year][mass]) + "       -   "+str(tot_rate_unc[cat][year][mass]) +"       -    "
@@ -551,9 +523,16 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
                 # outputfile.write("sg_JECfnromdown_"+year+"_"+cat+" param "+str(fnorm_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
                 # outputfile.write("sg_JECfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
     	    
+            flat_list = ["bgexp2_p0much_2018_catma90","bgexp2_p0much_2017v2_catma90","bgexp2_p0ech_2016v3_catma90","bgexp2_p1much_2017v2_catma90","bgexp2_p1much_2018_catma90","bgexp2_p1much_2016v3_catma90","bgexp2_p1ech_2016v3_catma90","bgexp2_p0much_2016v3_catma90","bgexp2_p0much_2016v3_chi2h_2","bgexp2_p1ech_2016v3_chi2h_2","bgexp2_p0ech_2016v3_chi2h_2","bgexp2_p1much_2016v3_chi2h_2"]
             for key in bg3p_v:
                 if cat not in key: continue
-                outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")
+                outputfile.write(str(key) +" flatParam \n ")
+                # if  key in flat_list:
+                #     outputfile.write(str(key) +" flatParam \n ")
+                # else:
+                #     outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")
+                #print str(key) +"="+ str(bg3p_v[key])
+                #outputfile.write(str(key) +" flatParam \n ")
             outputfile.write("------------------------------ \n")
     
     
@@ -567,9 +546,9 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder):
 def make_dict_from_line(line):
     parts = line.split()
     resultlist = []
-    print line
-    print "resultlist"
-    print resultlist
+    # print line
+    # print "resultlist"
+    # print resultlist
     for i,x in enumerate(parts):
         if ',' in x or x == 'GeV' or x == '=': continue
         if i < len(parts)-1:

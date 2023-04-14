@@ -5,19 +5,21 @@ import subprocess
 from collections import OrderedDict
 
 
-def submit_limits(MA, blimit = True, bbias = True , bsigInj = True, postfix = ""):
-    MA=125
-    b_only125 = False
+def submit_limits(MA, blimit = True, bbias = True , bsigInj = True, postfix = "",    b_only125 = False):
+
+
     MTs_limit = [600, 625, 650, 675, 700, 725, 750, 775, 800, 825, 850, 875, 900, 925, 950, 975, 1000, 1025, 1050, 1075, 1100, 1125, 1150, 1175]
+    postfix_only125=""
     if b_only125:
         MTs_limit = [600, 625, 650, 675, 700]
+        postfix_only125="_only125"
         
     scriptfolder = "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/roofit/datacards/"
 
 
     if blimit:
         for MT in MTs_limit:
-            run_limits(MA,MT, scriptfolder)
+            run_limits(MA,MT, scriptfolder, postfix_only125)
 
 
     MTs_bias = [600,700,800,1000]
@@ -39,13 +41,13 @@ def submit_limits(MA, blimit = True, bbias = True , bsigInj = True, postfix = ""
     
 
 
-def run_limits(MA, MT, scriptfolder):
+def run_limits(MA, MT, scriptfolder,postfix = ""):
     print "MA=" + str(MA) + " MT="+str(MT)
 
     workdir = os.path.join(scriptfolder,"workdir_limits_condor")
     ensureDirectory(workdir)
 
-    submissionsettings = derive_from_default_settings("run_combine_condor.sh",'"%i"' % (MT),"limits", scriptfolder, workdir, MA, MT)
+    submissionsettings = derive_from_default_settings("run_combine_condor.sh",'"%i %s"' % (MT, postfix),"limits", scriptfolder, workdir, MA, MT)
     submissionscriptname = os.path.join(workdir, 'submit_combine_condor.sub')
     create_submitfile(settings=submissionsettings, outfilename=submissionscriptname)
     command = 'condor_submit %s' % (submissionscriptname)
@@ -57,7 +59,7 @@ def run_bias(MA, MT, r, function, scriptfolder, postfix):
     workdir = os.path.join(scriptfolder,"workdir_bias_condor")
     ensureDirectory(workdir)
 
-    submissionsettings = derive_from_default_settings("run_biastest_condor.sh",'"%i %.1f %i %i %s"' % (MT,r,function, MA, postfix),"bias", scriptfolder, workdir, MA, MT)
+    submissionsettings = derive_from_default_settings("run_biastest_condor.sh",'"%i %.1f %i %s %s"' % (MT,r,function, MA, postfix),"bias", scriptfolder, workdir, MA, MT)
     submissionscriptname = os.path.join(workdir, 'submit_combine_condor.sub')
     create_submitfile(settings=submissionsettings, outfilename=submissionscriptname)
     command = 'condor_submit %s' % (submissionscriptname)
@@ -69,30 +71,30 @@ def run_signal(MA, MT, r, scriptfolder, postfix):
     workdir = os.path.join(scriptfolder,"workdir_signal_condor")
     ensureDirectory(workdir)
 
-    submissionsettings = derive_from_default_settings("run_signalinjection_condor.sh",'"%i %.2f %i %s"' % (MT,r, MA, postfix),"signal", scriptfolder, workdir, MA, MT)
+    submissionsettings = derive_from_default_settings("run_signalinjection_condor.sh",'"%i %.2f %s %s"' % (MT,r, MA, postfix),"signal", scriptfolder, workdir, MA, MT)
     submissionscriptname = os.path.join(workdir, 'submit_combine_condor.sub')
     create_submitfile(settings=submissionsettings, outfilename=submissionscriptname)
     command = 'condor_submit %s' % (submissionscriptname)
     os.system(command)
 
 
-def derive_from_default_settings(executable,arguments,jobname_base, scriptfolder, workdir, MA, MT):
+def derive_from_default_settings(executable,arguments,jobname_base, scriptfolder, workdir, MA, MT, runtime = "3600"):
     submissionsettings = OrderedDict([
                 ('executable' ,  os.path.join(scriptfolder, executable)),
-                ('output'     ,  os.path.join(workdir, '%s_MA%i_MT%i_$(ClusterId).out'%(jobname_base,MA,MT))),
-                ('error'      ,  os.path.join(workdir, '%s_MA%i_MT%i_$(ClusterId).err'%(jobname_base,MA,MT))),
-                ('log'        ,  os.path.join(workdir, '%s_MA%i_MT%i_$(ClusterId).log'%(jobname_base,MA,MT))),
+                ('output'     ,  os.path.join(workdir, '%s_MA%s_MT%i_$(ClusterId).out'%(jobname_base,MA,MT))),
+                ('error'      ,  os.path.join(workdir, '%s_MA%s_MT%i_$(ClusterId).err'%(jobname_base,MA,MT))),
+                ('log'        ,  os.path.join(workdir, '%s_MA%s_MT%i_$(ClusterId).log'%(jobname_base,MA,MT))),
                 ('environment', 'ClusterId=$(ClusterId);PATH_STORED=%s;LD_LIBRARY_PATH_STORED=%s' % (os.environ['PATH'], os.environ['LD_LIBRARY_PATH'])),
                 ('arguments'  , arguments),
                 ('transfer_output_files', '""'),
                 ('stream_output', 'True'),
                 ('stream_error', 'True'),
-                ('+RequestRuntime', '3600'),
+                ('+RequestRuntime', runtime),
                 ('RequestMemory', '1024'),
                 ('RequestDisk', '1048576'),
                 ('initialdir', scriptfolder),
                 ('getenv', "True"),
-                ('JobBatchName', "%s_%i_%i"%(jobname_base,MA,MT)),
+                ('JobBatchName', "%s_%s_%i"%(jobname_base,MA,MT)),
                 ('queue'      , '')
             ])
 
