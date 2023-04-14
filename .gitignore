@@ -43,3 +43,4 @@ macros/uncertainties/CMSPlotStyle.pyc
 macros/uncertainties/PDF_variations_MT800_MA450.pdf
 plots/
 *.pyc
+*.png
