@@ -23,6 +23,7 @@ namespace uhh2examples {
     bool is_mc;
     bool is_signal_sample;
     TH2F* eta_phi_map;
+    TH2F* MTPrime_vs_MA;
     virtual ~SingleTthHists();
   };
 

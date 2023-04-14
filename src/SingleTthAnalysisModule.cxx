@@ -233,10 +233,10 @@ namespace uhh2examples {
     // 2. set up selections
     //Selection
 
-    muon_sel_much.reset(new NMuonSelection(1, 1));
-    ele_sel_much.reset(new NElectronSelection(0, 0));
-    muon_sel_ech.reset(new NMuonSelection(0, 0));
-    ele_sel_ech.reset(new NElectronSelection(1, 1));
+    muon_sel_much.reset(new NMuonSelection(1, 1, MuId));
+    ele_sel_much.reset(new NElectronSelection(0, 0, EleId));
+    muon_sel_ech.reset(new NMuonSelection(0, 0, MuId));
+    ele_sel_ech.reset(new NElectronSelection(1, 1, EleId));
 
     btag_loose_sel.reset(new NJetSelection(3, -1, DeepjetLoose));
     btag_2medium_sel.reset(new NJetSelection(2,-1,DeepjetMedium));
@@ -268,9 +268,23 @@ namespace uhh2examples {
 
     book_histograms(ctx,{"reco_much_sr","reco_much_cr","reco_chi2h_2_much_sr","reco_catma60_much_sr","reco_catma90_much_sr","reco_catma175_much_sr","reco_catma300_much_sr"});
     book_histograms(ctx,{"chi2h_2_much_sr","catma60_much_sr","catma90_much_sr","catma175_much_sr","catma300_much_sr","chi2h_2_much_cr"});
+    book_histograms(ctx,{"chi2_3_chi2h_2_much_sr","chi2_3_catma60_much_sr","chi2_3_catma90_much_sr","chi2_3_catma175_much_sr","chi2_3_catma300_much_sr","chi2_3_chi2h_2_much_cr"});
 
     book_histograms(ctx,{"reco_ech_sr","reco_ech_cr","reco_chi2h_2_ech_sr","reco_catma60_ech_sr","reco_catma90_ech_sr","reco_catma175_ech_sr","reco_catma300_ech_sr"});
     book_histograms(ctx,{"chi2h_2_ech_sr","catma60_ech_sr","catma90_ech_sr","catma175_ech_sr","catma300_ech_sr","chi2h_2_ech_cr"});
+    book_histograms(ctx,{"chi2_3_chi2h_2_ech_sr","chi2_3_catma60_ech_sr","chi2_3_catma90_ech_sr","chi2_3_catma175_ech_sr","chi2_3_catma300_ech_sr","chi2_3_chi2h_2_ech_cr"});
+
+    book_histograms(ctx,{"best_chi2_10_chi2h_2_much_sr","best_chi2_10_catma60_much_sr","best_chi2_10_catma90_much_sr","best_chi2_10_catma175_much_sr","best_chi2_10_catma300_much_sr"});
+    book_histograms(ctx,{"best_chi2_10_chi2h_2_ech_sr","best_chi2_10_catma60_ech_sr","best_chi2_10_catma90_ech_sr","best_chi2_10_catma175_ech_sr","best_chi2_10_catma300_ech_sr"});
+
+    book_histograms(ctx,{"best_chi2_25_chi2h_2_much_sr","best_chi2_25_catma60_much_sr","best_chi2_25_catma90_much_sr","best_chi2_25_catma175_much_sr","best_chi2_25_catma300_much_sr"});
+    book_histograms(ctx,{"best_chi2_25_chi2h_2_ech_sr","best_chi2_25_catma60_ech_sr","best_chi2_25_catma90_ech_sr","best_chi2_25_catma175_ech_sr","best_chi2_25_catma300_ech_sr"});
+
+    book_histograms(ctx,{"best_chi2_3_chi2h_2_much_sr","best_chi2_3_catma60_much_sr","best_chi2_3_catma90_much_sr","best_chi2_3_catma175_much_sr","best_chi2_3_catma300_much_sr"});
+    book_histograms(ctx,{"best_chi2_3_chi2h_2_ech_sr","best_chi2_3_catma60_ech_sr","best_chi2_3_catma90_ech_sr","best_chi2_3_catma175_ech_sr","best_chi2_3_catma300_ech_sr"});
+
+    book_histograms(ctx,{"best_chi2h_2_much_sr","best_catma60_much_sr","best_catma90_much_sr","best_catma175_much_sr","best_catma300_much_sr"});
+    book_histograms(ctx,{"best_chi2h_2_ech_sr","best_catma60_ech_sr","best_catma90_ech_sr","best_catma175_ech_sr","best_catma300_ech_sr"});
 
 
 
@@ -300,6 +314,7 @@ namespace uhh2examples {
   bool SingleTthAnalysisModule::process(Event & event) {
     // cout << "++++++++++ NEW EVENT ++++++++++" << endl;
     event.set(h_is_tprime_reco, false);
+
 
     is_much = (muon_sel_much->passes(event) && ele_sel_much->passes(event));
     if(!is_much){
@@ -511,20 +526,24 @@ namespace uhh2examples {
     /// find smallest hypothesis
     float smallest_chi2 = 99999;
     TString smallest_cat = "";
-    float smallest_dR = 999999;
+    // float smallest_dR = 999999;
 
     for(auto index:hyp_catmap){
       float current_chi2 = index.second->discriminator((std::string)index.first);
       if(current_chi2 < smallest_chi2){
 	smallest_chi2 = current_chi2;
 	smallest_cat = index.first;
-	smallest_dR = deltaR(index.second->higgs_jets().at(0),index.second->higgs_jets().at(1));
+	// smallest_dR = deltaR(index.second->higgs_jets().at(0),index.second->higgs_jets().at(1));
       }
     }
     
 
     
     float chi2 = hyp->discriminator("Chi2");
+    float chi2_catma60 = hyp_catma60->discriminator("Chi2_top+ma60");
+    float chi2_catma90 = hyp_catma90->discriminator("Chi2_top+ma90");
+    float chi2_catma175 = hyp_catma175->discriminator("Chi2_top+ma175");
+    float chi2_catma300 = hyp_catma300->discriminator("Chi2_top+ma300");
     float chi2h = hyp->discriminator("Chi2_higgs");
     float dR_bH_bH = deltaR(hyp->higgs_jets().at(0),hyp->higgs_jets().at(1));
     LorentzVector W = (hyp->lepton_v4() + hyp->neutrino_v4());
@@ -568,20 +587,39 @@ namespace uhh2examples {
     if(smallest_cat=="Chi2_top+ma60" && smallest_chi2 < 10 ){
       if(is_much)  fill_histograms(event,"catma60_much_sr");
       else  fill_histograms(event,"catma60_ech_sr");
-	
+      
+      if(smallest_chi2 < 3){
+	if(is_much)  fill_histograms(event,"chi2_3_catma60_much_sr");
+	else  fill_histograms(event,"chi2_3_catma60_ech_sr");
+      }	
       //    }else if(smallest_cat=="Chi2_top+ma90" && smallest_chi2 < 10 && smallest_dR < 1.7){
     }else if(smallest_cat=="Chi2_top+ma90" && smallest_chi2 < 10){
       if(is_much) fill_histograms(event,"catma90_much_sr");
       else  fill_histograms(event,"catma90_ech_sr");
+
+      if(smallest_chi2 < 3){
+	if(is_much)  fill_histograms(event,"chi2_3_catma90_much_sr");
+	else  fill_histograms(event,"chi2_3_catma90_ech_sr");
+      }	
 	
       //    }else if(smallest_cat=="Chi2_top+ma175" && smallest_chi2 < 10 && smallest_dR < 1.7){
     }else if(smallest_cat=="Chi2_top+ma175" && smallest_chi2 < 10){
       if(is_much)  fill_histograms(event,"catma175_much_sr");
       else  fill_histograms(event,"catma175_ech_sr");
 	
+      if(smallest_chi2 < 3){
+	if(is_much)  fill_histograms(event,"chi2_3_catma175_much_sr");
+	else  fill_histograms(event,"chi2_3_catma175_ech_sr");
+      }	
+
     }else if(smallest_cat=="Chi2_top+ma300" && smallest_chi2 < 10){
       if(is_much)  fill_histograms(event,"catma300_much_sr");
       else  fill_histograms(event,"catma300_ech_sr");
+
+      if(smallest_chi2 < 3){
+	if(is_much)  fill_histograms(event,"chi2_3_catma300_much_sr");
+	else  fill_histograms(event,"chi2_3_catma300_ech_sr");
+      }	
 
       //    }else if(smallest_cat=="Chi2"  && smallest_chi2 < 10 && chi2h<2 && smallest_dR < 1.7){
     }else if(smallest_cat=="Chi2"  && smallest_chi2 < 10 && chi2h<2){
@@ -598,6 +636,12 @@ namespace uhh2examples {
 	fill_histograms(event,"chi2h_2_ech_sr");
 	//	  // h_PDF_variations_ech_sr->fill(event);
       }
+
+      if(smallest_chi2 < 3){
+	if(is_much)  fill_histograms(event,"chi2_3_chi2h_2_much_sr");
+	else  fill_histograms(event,"chi2_3_chi2h_2_ech_sr");
+      }	
+
     }else{
       if(is_much){
 	fill_histograms(event,"chi2h_2_much_cr");
@@ -608,6 +652,91 @@ namespace uhh2examples {
 	// h_PDF_variations_ech_cr->fill(event);
       }
     }
+
+    event.set(h_best_cat,"Chi2_top+ma60");
+    if(is_much)  fill_histograms(event,"best_catma60_much_sr");
+    else  fill_histograms(event,"best_catma60_ech_sr");
+    if(chi2_catma60 < 25 ){
+      if(is_much)  fill_histograms(event,"best_chi2_25_catma60_much_sr");
+      else  fill_histograms(event,"best_chi2_25_catma60_ech_sr");
+      if(chi2_catma60 < 10 ){
+	if(is_much)  fill_histograms(event,"best_chi2_10_catma60_much_sr");
+	else  fill_histograms(event,"best_chi2_10_catma60_ech_sr");
+	if(chi2_catma60 < 3 ){
+	  if(is_much)  fill_histograms(event,"best_chi2_3_catma60_much_sr");
+	  else  fill_histograms(event,"best_chi2_3_catma60_ech_sr");
+	}
+      }
+    }
+
+
+    event.set(h_best_cat,"Chi2_top+ma90");
+    if(is_much)  fill_histograms(event,"best_catma90_much_sr");
+    else  fill_histograms(event,"best_catma90_ech_sr");
+    if(chi2_catma90 < 25 ){
+      if(is_much)  fill_histograms(event,"best_chi2_25_catma90_much_sr");
+      else  fill_histograms(event,"best_chi2_25_catma90_ech_sr");
+      if(chi2_catma90 < 10 ){
+	if(is_much)  fill_histograms(event,"best_chi2_10_catma90_much_sr");
+	else  fill_histograms(event,"best_chi2_10_catma90_ech_sr");
+	if(chi2_catma90 < 3 ){
+	  if(is_much)  fill_histograms(event,"best_chi2_3_catma90_much_sr");
+	  else  fill_histograms(event,"best_chi2_3_catma90_ech_sr");
+	}
+      }
+    }
+
+
+    event.set(h_best_cat,"Chi2_top+ma175");
+    if(is_much)  fill_histograms(event,"best_catma175_much_sr");
+    else  fill_histograms(event,"best_catma175_ech_sr");
+    if(chi2_catma175 < 25 ){
+      if(is_much)  fill_histograms(event,"best_chi2_25_catma175_much_sr");
+      else  fill_histograms(event,"best_chi2_25_catma175_ech_sr");
+      if(chi2_catma175 < 10 ){
+	if(is_much)  fill_histograms(event,"best_chi2_10_catma175_much_sr");
+	else  fill_histograms(event,"best_chi2_10_catma175_ech_sr");
+	if(chi2_catma175 < 3 ){
+	  if(is_much)  fill_histograms(event,"best_chi2_3_catma175_much_sr");
+	  else  fill_histograms(event,"best_chi2_3_catma175_ech_sr");
+	}
+      }
+    }
+
+    event.set(h_best_cat,"Chi2_top+ma300");
+    if(is_much)  fill_histograms(event,"best_catma300_much_sr");
+    else  fill_histograms(event,"best_catma300_ech_sr");
+    if(chi2_catma300 < 25 ){
+      if(is_much)  fill_histograms(event,"best_chi2_25_catma300_much_sr");
+      else  fill_histograms(event,"best_chi2_25_catma300_ech_sr");
+      if(chi2_catma300 < 10 ){
+	if(is_much)  fill_histograms(event,"best_chi2_10_catma300_much_sr");
+	else  fill_histograms(event,"best_chi2_10_catma300_ech_sr");
+	if(chi2_catma300 < 3 ){
+	  if(is_much)  fill_histograms(event,"best_chi2_3_catma300_much_sr");
+	  else  fill_histograms(event,"best_chi2_3_catma300_ech_sr");
+	}
+      }
+    }
+
+    event.set(h_best_cat,"Chi2");
+    if(is_much)  fill_histograms(event,"best_chi2h_2_much_sr");
+    else  fill_histograms(event,"best_chi2h_2_ech_sr");
+    if(chi2 < 25 ){
+      if(is_much)  fill_histograms(event,"best_chi2_25_chi2h_2_much_sr");
+      else  fill_histograms(event,"best_chi2_25_chi2h_2_ech_sr");
+      if(chi2 < 10 ){
+	if(is_much)  fill_histograms(event,"best_chi2_10_chi2h_2_much_sr");
+	else  fill_histograms(event,"best_chi2_10_chi2h_2_ech_sr");
+	if(chi2 < 3 ){
+	  if(is_much)  fill_histograms(event,"best_chi2_3_chi2h_2_much_sr");
+	  else  fill_histograms(event,"best_chi2_3_chi2h_2_ech_sr");
+	}
+      }
+    }
+
+
+
     
     
     // pdf_weight_producer->process(event);

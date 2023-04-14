@@ -148,6 +148,7 @@ SingleTthHists::SingleTthHists(Context & ctx, const string & dirname): Hists(ctx
   book<TH1F>("dPhi_bH_bH", "#Delta #Phi (b_{H}, b_{H})", 60, 0, 3);
   book<TH1F>("dPhi_bt_Wt", "#Delta #Phi (b_{t}, W_{t})", 60, 0, 3);
   book<TH1F>("dPhi_t_H", "#Delta #Phi (t, H)", 60, 0, 3);
+  MTPrime_vs_MA = book<TH2F>("MTPrime_vs_MA", "MTPrime_vs_MA",300, 0, 3000,50, 0, 500);
 
   book<TH1F>("sum_event_weights", "BinContent = sum(eventweights)", 1, 0.5, 1.5);
 
@@ -464,6 +465,7 @@ void SingleTthHists::fill(const Event & event){
     hist("M_Tprime_rebinlimit")->Fill(m_tprime,weight);
     hist("M_higgs")->Fill(m_higgs,weight);
     hist("M_top")->Fill(m_top,weight);
+    MTPrime_vs_MA->Fill(m_tprime,m_higgs,weight);
 
     double n_jets_higgs = hyp->higgs_jets().size();
     double n_jets_top = hyp->toplep_jets().size();
