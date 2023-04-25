@@ -11,6 +11,10 @@ int main(int argc, char *argv[])
   //  TString MA = "125";
   TString MA = argv[1];
 
+  TString limitvariable = argv[2];
+  std::cout<<"limitvariable "<<limitvariable<<std::endl;
+
+
   std::vector<TString> categories = {"chi2h_2", "catma90","catma175","catma300"};
   if(MA=="75") categories = {"catma60", "catma90","catma300"};
   if(MA=="100") categories = {"catma90","catma300","chi2h_2"};
@@ -31,16 +35,16 @@ int main(int argc, char *argv[])
 
 
     // muon channel: save data hist and bkg fit to the workspace
-    prod.SaveDataAndBkgFunc(defs::eSR, defs::eMuon, dodata, all_bkgds,"allyears",cat);
+    prod.SaveDataAndBkgFunc(defs::eSR, defs::eMuon, dodata, all_bkgds,"allyears",cat,limitvariable);
 
     // electron channel: save data hist and bkg fit to the workspace
-    prod.SaveDataAndBkgFunc(defs::eSR, defs::eEle, dodata, all_bkgds, "allyears",cat);
+    prod.SaveDataAndBkgFunc(defs::eSR, defs::eEle, dodata, all_bkgds, "allyears",cat,limitvariable);
 
     // now produce the signals
-    prod.SaveSignals(defs::eMuon,"allyears", cat,MA);
+    prod.SaveSignals(defs::eMuon,"allyears", cat,MA,limitvariable);
 
     // now produce the signals
-    prod.SaveSignals(defs::eEle,"allyears",cat,MA);  
+    prod.SaveSignals(defs::eEle,"allyears",cat,MA,limitvariable);  
   
 
     prod.PrintWorkspace();

@@ -29,14 +29,17 @@ def read_limits(postfix, b_only125 = False):
     masses = []
     
     if "allyears" in year:
-        inputfile = open("AnalysisOutput_2017v2_chi2h_2.txt","r")
+        inputfile = open("AnalysisOutput_2018_chi2h_2.txt","r")
     else:
-        inputfile = open("AnalysisOutput_"+year+".txt","r")
+        inputfile = open("AnalysisOutput_"+year+"_chi2h_2.txt","r")
     
     listOfLines = inputfile.readlines()
     i=0
     for line in listOfLines:
+        print line
         if "Muon" in line and "Signal" in line:
+            print "in Muon"
+            print line
             for j in range(i+1,len(listOfLines)):
                 if "Electron" in listOfLines[j]: break
                 mass = re.findall(r'\d+.\d+',listOfLines[j])[0]

@@ -15,7 +15,7 @@ from ROOT import TFile,TCanvas,gROOT,gStyle,TLegend,TGraphAsymmErrors,kGreen,kOr
 from collections import OrderedDict
 from categories import get_categories
 
-def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_only125 = False):
+def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_only125 = False, limitvariable = "M_Tprime"):
     berror = False
     
     b_multipdf = True
@@ -49,6 +49,17 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
     mean2_value_JER_up = {} # for all years and mass points: key is year_mass
     mean2_value_JER_down = {} # for all years and mass points: key is year_mass
     mean2_error = {} # for all years and mass points: key is year_mass
+
+    alphaR_value = {} # for all years and mass points: key is year_mass
+    alphaR_error = {} # for all years and mass points: key is year_mass
+    alphaL_value = {} # for all years and mass points: key is year_mass
+    alphaL_error = {} # for all years and mass points: key is year_mass
+
+    nR_value = {} # for all years and mass points: key is year_mass
+    nR_error = {} # for all years and mass points: key is year_mass
+    nL_value = {} # for all years and mass points: key is year_mass
+    nL_error = {} # for all years and mass points: key is year_mass
+
     sigma2_value = {} # for all years and mass points: key is year_mass
     sigma2_error = {} # for all years and mass points: key is year_mass
     sigma2_value_JEC_up = {} # for all years and mass points: key is year_mass
@@ -216,14 +227,16 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
                         if b_JEC:
                             mean_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean_Error"]
                         else:
-                            mean_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Mean_Error"],2) + pow(((abs(tmp_dict["Mean"] - tmp_dict["JERupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JERdownmean"])))/2,2)+ pow(((abs(tmp_dict["Mean"] - tmp_dict["JECupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JECdownmean"])))/2,2) )
+                            mean_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean_Error"]
+                            #                            mean_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Mean_Error"],2) + pow(((abs(tmp_dict["Mean"] - tmp_dict["JERupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JERdownmean"])))/2,2)+ pow(((abs(tmp_dict["Mean"] - tmp_dict["JECupmean"]))+(abs(tmp_dict["Mean"] - tmp_dict["JECdownmean"])))/2,2) )
 
         
                         sigma_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma"]
                         if b_JEC:
                             sigma_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma_Error"]
                         else:
-                            sigma_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Sigma_Error"],2) + pow(((abs(tmp_dict["Sigma"] - tmp_dict["JERupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JERdownsigma"])))/2,2)+ pow(((abs(tmp_dict["Sigma"] - tmp_dict["JECupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JECdownsigma"])))/2,2) )
+                            sigma_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma_Error"]
+                            #sigma_error[year+"_"+icat+"_"+mass] = math.sqrt(pow(tmp_dict["Sigma_Error"],2) + pow(((abs(tmp_dict["Sigma"] - tmp_dict["JERupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JERdownsigma"])))/2,2)+ pow(((abs(tmp_dict["Sigma"] - tmp_dict["JECupsigma"]))+(abs(tmp_dict["Sigma"] - tmp_dict["JECdownsigma"])))/2,2) )
 
     
                         mean_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean"]
@@ -236,28 +249,40 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
                         sigma_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupsigma"]
                         sigma_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownsigma"] 
         
-                        mean2_value[year+"_"+icat+"_"+mass] = tmp_dict["Mean2"]
-                        mean2_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean2_Error"] + 0.001
+                        if "Tprime" in limitvariable:
+                            mean2_value[year+"_"+icat+"_"+mass] = tmp_dict["Mean2"]
+                            mean2_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean2_Error"] + 0.001
+                            sigma2_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2"]
+                            sigma2_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2_Error"]
+                            # sigma2_value[year+"_"+icat+"_"+mass] = 10
+                            # sigma2_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2_Error"]
+                            
+                            mean2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean2"]
+                            mean2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownmean2"]
+                            mean2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupmean2"]
+                            mean2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownmean2"]
+                        
+                            # sigma2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupsigma2"]
+                            # sigma2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownsigma2"]
+                            # sigma2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupsigma2"]
+                            # sigma2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownsigma2"]
+                            
+                            sigma2_value_JER_up[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
+                            sigma2_value_JER_down[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
+                            sigma2_value_JEC_up[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
+                            sigma2_value_JEC_down[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
+
+                        if "ST" in limitvariable:
+                            alphaL_value[year+"_"+icat+"_"+mass] = tmp_dict["alphaL"]
+                            alphaL_error[year+"_"+icat+"_"+mass] = 0.0001 if tmp_dict["alphaL_Error"] < 0.0001 else tmp_dict["alphaL_Error"]
+                            alphaR_value[year+"_"+icat+"_"+mass] = tmp_dict["alphaR"]
+                            alphaR_error[year+"_"+icat+"_"+mass] = 0.0001 if tmp_dict["alphaR_Error"] < 0.0001 else tmp_dict["alphaR_Error"]
+
+                            nL_value[year+"_"+icat+"_"+mass] = tmp_dict["nL"]
+                            nL_error[year+"_"+icat+"_"+mass] = 0.0001 if tmp_dict["nL_Error"] < 0.0001 else tmp_dict["nL_Error"]
+                            nR_value[year+"_"+icat+"_"+mass] = tmp_dict["nR"]
+                            nR_error[year+"_"+icat+"_"+mass] = 0.0001 if tmp_dict["nR_Error"] < 0.0001 else tmp_dict["nR_Error"]
         
-                        sigma2_value[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2"]
-                        sigma2_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2_Error"]
-                        # sigma2_value[year+"_"+icat+"_"+mass] = 10
-                        # sigma2_error[year+"_"+icat+"_"+mass] = tmp_dict["Sigma2_Error"]
-                        
-                        mean2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupmean2"]
-                        mean2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownmean2"]
-                        mean2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupmean2"]
-                        mean2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownmean2"]
-                        
-                        # sigma2_value_JER_up[year+"_"+icat+"_"+mass] = tmp_dict["JERupsigma2"]
-                        # sigma2_value_JER_down[year+"_"+icat+"_"+mass] = tmp_dict["JERdownsigma2"]
-                        # sigma2_value_JEC_up[year+"_"+icat+"_"+mass] = tmp_dict["JECupsigma2"]
-                        # sigma2_value_JEC_down[year+"_"+icat+"_"+mass] = tmp_dict["JECdownsigma2"]
-    
-                        sigma2_value_JER_up[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
-                        sigma2_value_JER_down[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
-                        sigma2_value_JEC_up[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
-                        sigma2_value_JEC_down[year+"_"+icat+"_"+mass] =  tmp_dict["Sigma2"]
         
                         
         
@@ -500,9 +525,15 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
                     outputfile.write("sg_JECsigmadown_"+year+"_"+cat+" param "+str(sigma_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
                     outputfile.write("sg_JECsigmaup_"+year+"_"+cat+" param "+str(sigma_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
     	
-                outputfile.write("sg_mean2_"+year+"_"+cat+" param "+str(mean2_value[year+"_"+cat+"_"+mass])+"  "+str(mean2_error[year+"_"+cat+"_"+mass])+" \n ")
-                outputfile.write("sg_sigma2_"+year+"_"+cat+" param "+str(sigma2_value[year+"_"+cat+"_"+mass])+"  "+str(sigma2_error[year+"_"+cat+"_"+mass])+" \n ")
-    	
+                if "Tprime" in limitvariable:
+                    outputfile.write("sg_mean2_"+year+"_"+cat+" param "+str(mean2_value[year+"_"+cat+"_"+mass])+"  "+str(mean2_error[year+"_"+cat+"_"+mass])+" \n ")
+                    outputfile.write("sg_sigma2_"+year+"_"+cat+" param "+str(sigma2_value[year+"_"+cat+"_"+mass])+"  "+str(sigma2_error[year+"_"+cat+"_"+mass])+" \n ")
+                elif "ST" in limitvariable:
+                    outputfile.write("sg_alphaR_"+year+"_"+cat+" param "+str(alphaR_value[year+"_"+cat+"_"+mass])+"  "+str(alphaR_error[year+"_"+cat+"_"+mass])+" \n ")
+                    outputfile.write("sg_alphaL_"+year+"_"+cat+" param "+str(alphaL_value[year+"_"+cat+"_"+mass])+"  "+str(alphaL_error[year+"_"+cat+"_"+mass])+" \n ")
+                    outputfile.write("sg_nR_"+year+"_"+cat+" param "+str(nR_value[year+"_"+cat+"_"+mass])+"  "+str(nR_error[year+"_"+cat+"_"+mass])+" \n ")
+                    outputfile.write("sg_nL_"+year+"_"+cat+" param "+str(nL_value[year+"_"+cat+"_"+mass])+"  "+str(nL_error[year+"_"+cat+"_"+mass])+" \n ")
+
     	        ##### JER and JEC variations
                 if b_JEC:
                     outputfile.write("sg_JERmeandown2_"+year+"_"+cat+" param "+str(mean2_value_JER_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")

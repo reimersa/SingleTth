@@ -38,7 +38,7 @@ def main():
 
     #get MA from configuration file
     MA = indict["MA"]
-    limitvaraible = indict["limitvaraible"]
+    limitvariable = "M_Tprime" if "MT" in indict["limitvariable"] else "ST_rebin"
     years = {}
 
     if "Run2" in indict["year"]:  
@@ -73,11 +73,11 @@ def main():
 
         if not args.sigfitsonly:
             if not args.wows:
-                create_workspace(MA,years)
+                create_workspace(MA,years, limitvariable)
             if args.gof_only:
                 submit_gofs(int(MA),1000)
             else:
-                create_datacards_eachYearIndividual_categories(years,MA,indict["anaoutputfolder"], b_only125 = indict["bonly125"]=="True")
+                create_datacards_eachYearIndividual_categories(years,MA,indict["anaoutputfolder"], b_only125 = indict["bonly125"]=="True", limitvariable = limitvariable)
                 submit_limits(MA, blimit = indict["blimit"]=="True", bbias = indict["bbias"]=="True" ,bsigInj =indict["bsigInj"]=="True", postfix=indict["limit_postfix"], b_only125 = indict["bonly125"]=="True")
     else:
         if args.gof_only:
@@ -120,15 +120,15 @@ def plot_limit(MA,postfix, indict):
     print "/nfs/dust/cms/user/reimersa/SingleTth/theta_SingleTth/utils2/Limits_MC/output/"
     
 
-def create_workspace(MA,years):
+def create_workspace(MA,years, limitvariable):
     roofit_folder = '/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/roofit' 
     command = 'cd '+roofit_folder+'; make;'
     print command
     os.system(command)
 
-    command = 'cd '+roofit_folder+'; export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/roofit; echo $LD_LIBRARY_PATH; ./create_roo '+MA+'; ./create_roo_2017 '+MA+'; ./create_roo_2018 '+MA+';'
+    command = 'cd '+roofit_folder+'; export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/roofit; echo $LD_LIBRARY_PATH; ./create_roo '+MA+' '+limitvariable+'; ./create_roo_2017 '+MA+' '+limitvariable+'; ./create_roo_2018 '+MA+' '+limitvariable+';'
     if "allyears" in years:
-        command = 'cd '+roofit_folder+'; export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/nfs/dust/cms/user/abenecke/CMSSW_10_2_10/CMSSW_10_2_10/src/UHH2/SingleTth/macros/roofit; echo $LD_LIBRARY_PATH; ./create_roo_allyears '+MA+';'
+        command = 'cd '+roofit_folder+'; export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/roofit; echo $LD_LIBRARY_PATH; ./create_roo_allyears '+MA+' '+limitvariable+';'
     print command
     os.system(command)
 

@@ -10,6 +10,10 @@ int main(int argc, char *argv[])
   //  TString MA = "125";
   TString MA = argv[1];
 
+  TString limitvariable = argv[2];
+  std::cout<<"limitvariable "<<limitvariable<<std::endl;
+
+
   std::vector<TString> categories = {"chi2h_2", "catma90","catma175","catma300"};
   if(MA=="75") categories = {"catma60", "catma90","catma300"};
   if(MA=="100") categories = {"catma90","catma300","chi2h_2"};
@@ -23,22 +27,27 @@ int main(int argc, char *argv[])
 
   for(unsigned int icat = 0; icat < categories.size(); icat++){
     TString cat = categories[icat];
-
+    std::cout<<"cat "<<cat<<std::endl;
+    
     // create the workspace
     CreateRooWorkspace prod("2018",cat);
-
+    std::cout<<"produced workshpace"<<std::endl;
 
     // muon channel: save data hist and bkg fit to the workspace
-    prod.SaveDataAndBkgFunc(defs::eSR, defs::eMuon, dodata, all_bkgds, "2018",cat);
-    
+    prod.SaveDataAndBkgFunc(defs::eSR, defs::eMuon, dodata, all_bkgds, "2018",cat,limitvariable);
+    std::cout<<"save background Muon"<<std::endl;
+
     // electron channel: save data hist and bkg fit to the workspace
-    prod.SaveDataAndBkgFunc(defs::eSR, defs::eEle, dodata, all_bkgds,"2018",cat);
+    prod.SaveDataAndBkgFunc(defs::eSR, defs::eEle, dodata, all_bkgds,"2018",cat,limitvariable);
+    std::cout<<"save background Ele"<<std::endl;
 
     // now produce the signals
-    prod.SaveSignals(defs::eMuon,"2018",cat,MA);
+    prod.SaveSignals(defs::eMuon,"2018",cat,MA,limitvariable);
+    std::cout<<"Save Signal Muon"<<std::endl;
     
     // now produce the signals
-    prod.SaveSignals(defs::eEle,"2018",cat,MA);  
+    prod.SaveSignals(defs::eEle,"2018",cat,MA,limitvariable);  
+    std::cout<<"Save Signal Ele"<<std::endl;
   
 
     prod.PrintWorkspace();
