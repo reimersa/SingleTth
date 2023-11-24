@@ -4,7 +4,7 @@
 
 <!ENTITY TargetLumi      "59740">
 <!ENTITY PRESELdir       "/nfs/dust/cms/user/reimersa/SingleTth/2018/Fullselection/mavariable_wodR_all/NOMINAL">
-<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable_wodR_all/NOMINAL">
+<!ENTITY FULLSELdir      "/nfs/dust/cms/user/reimersa/SingleTth/2018/Finalselection/mavariable_wodR_all_newPDF/NOMINAL">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY PROOFdir        "/nfs/dust/cms/user/reimersa/.proof2">

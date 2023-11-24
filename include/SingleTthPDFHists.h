@@ -29,7 +29,7 @@ namespace uhh2examples {
     uhh2::Event::Handle<std::vector<SingleTthReconstructionHypothesis>> h_hyps;
     uhh2::Event::Handle<bool> h_is_tprime_reco;
     uhh2::Event::Handle<TString> h_best_cat;
-    std::vector<TString> histo_names1, histo_names2;
+    std::vector<TString> histo_names1, histo_names2,histo_names3, histo_names4;
     // bool is_LO;
     bool is_mc, take_ntupleweights;
     TString m_oname;

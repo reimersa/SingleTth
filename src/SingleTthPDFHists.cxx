@@ -70,20 +70,34 @@ SingleTthPDFHists::SingleTthPDFHists(Context & ctx, const string & dirname): His
     name1 += i+1;
     TString name2 = "M_Tprime_rebinlimit_PDF_";
     name2 += i+1;
+    TString name3 = "ST_rebin_PDF_";
+    name3 += i+1;
+    TString name4 = "ST_PDF_";
+    name4 += i+1;
+
 
     TString title1 = "M_{T} [GeV] (fine binning) for PDF No. ";
     title1 += i+1;
     TString title2 = "M_{T} [GeV] (limit binning) for PDF No. ";;
     title2 += i+1;
+    TString title3 = "S_{T} [GeV] (limit binning) for PDF No. ";
+    title3 += i+1;
+    TString title4 = "S_{T} [GeV] (fine binning) for PDF No. ";;
+    title4 += i+1;
+
 
     histo_names1.emplace_back(name1);
     histo_names2.emplace_back(name2);
+    histo_names3.emplace_back(name3);
+    histo_names4.emplace_back(name4);
 
 
 
     vector<double> bins_limits = {0, 300, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1200, 3000};
     book<TH1F>(name1, title1, 300, 0, 3000);
     book<TH1F>(name2, title2, bins_limits.size()-1, &bins_limits[0]);
+    book<TH1F>(name3, title3, 200, 0, 5000);
+    book<TH1F>(name4, title4, 50, 0, 7000);
 
     TString pdfvarname = "weight_pdf_";
     pdfvarname += i+1;
@@ -122,6 +136,17 @@ void SingleTthPDFHists::fill(const Event & event){
   if( (hyp->Tprime_v4()).isTimelike() ) {m_tprime = (hyp->Tprime_v4()).M();}
   else {m_tprime = sqrt( -(hyp->Tprime_v4()).mass2());}
 
+  vector<Jet>* jets = event.jets;
+  vector<Electron>* electrons = event.electrons;
+  vector<Muon>* muons = event.muons;
+  double ST=0;
+  double met = event.met->pt();
+  double st_jets = 0., st_lep = 0.;
+  for(const auto & jet : *jets)           st_jets += jet.pt();
+  for(const auto & electron : *electrons) st_lep += electron.pt();
+  for(const auto & muon : *muons)         st_lep += muon.pt();
+  ST = st_jets + st_lep + met;
+
 
   if(take_ntupleweights){
     for(int i=0; i<100; i++){
@@ -137,9 +162,13 @@ void SingleTthPDFHists::fill(const Event & event){
       //      cout << "fillweight: " << weight << " * " << pdf_weight << " / " << event.genInfo->originalXWGTUP() << " = " << fillweight << endl;
       TString name1 = histo_names1[i];
       TString name2 = histo_names2[i];
+      TString name3 = histo_names3[i];
+      TString name4 = histo_names4[i];
 
       hist(name1)->Fill(m_tprime,fillweight);
       hist(name2)->Fill(m_tprime,fillweight);
+      hist(name3)->Fill(ST,fillweight);
+      hist(name4)->Fill(ST,fillweight);
       // event.set(h_pdfweights[i], fillweight);
     }
     // event.set(h_pdfweights, 1.);
@@ -150,9 +179,15 @@ void SingleTthPDFHists::fill(const Event & event){
       double fillweight = weight*weights[i];
       TString name1 = histo_names1[i];
       TString name2 = histo_names2[i];
+      TString name3 = histo_names3[i];
+      TString name4 = histo_names4[i];
+
 
       hist(name1)->Fill(m_tprime,fillweight);
       hist(name2)->Fill(m_tprime,fillweight);
+      hist(name3)->Fill(ST,fillweight);
+      hist(name4)->Fill(ST,fillweight);
+
       // event.set(h_pdfweights[i], fillweight);
     }
     // event.set(h_pdfweights, 1.);

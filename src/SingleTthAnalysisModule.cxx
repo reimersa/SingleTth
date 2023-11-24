@@ -736,7 +736,7 @@ namespace uhh2examples {
     }
 
 
-
+    event.set(h_best_cat,smallest_cat);
     
     
     // pdf_weight_producer->process(event);
