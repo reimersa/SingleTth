@@ -49,7 +49,7 @@ def plot_fits(cat,year,channel,MT,MA):
 
     infile = TFile("fitDiagnosticsindividualfit_allyears_M"+str(MT)+".root","r")
     infile_gen = TFile("higgsCombineindividualfit_allyears_M"+str(MT)+".FitDiagnostics.mH120.root","r")
-    infile_initial = TFile("ws_SingleTth_"+year+"_"+cat+"_125.root","r")
+    infile_initial = TFile("ws_SingleTth_"+year+"_"+cat+"_"+MA+".root","r")
     b_sbfit = False
 
     c = TCanvas()
@@ -299,6 +299,7 @@ def plot_individual_fits(MA, b_only125, year_dict):
 
 
     MTs = [600, 625, 650, 675, 700, 725, 750, 775, 800, 825, 850, 875, 900, 925, 950, 975, 1000, 1025, 1050, 1075, 1100, 1125, 1150, 1175]
+    if MA=="75":     MTs = [600, 625, 650, 675, 700, 725, 750, 775, 800, 825, 850, 875, 900, 925, 950, 975, 1000]
     if b_only125: MTs = [600, 625, 650, 675, 700]
 
     for MT in MTs:

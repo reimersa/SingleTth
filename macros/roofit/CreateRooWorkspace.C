@@ -4,6 +4,7 @@
 #include "BkgPdf2p.h" 
 #include "BkgPdf4p.h" 
 #include "BkgPdf4pExp.h" 
+#include "BkgPdfExpX.h" 
 #include "SignalDoubleGauss.h" 
 #include "SignalDoubleCB.h" 
 
@@ -20,6 +21,7 @@
 #include "TAxis.h"
 #include "RooPlot.h"
 #include "RooMinimizer.h"
+#include "RooParametricShapeBinPdf.h"
 
 #include <iostream>
 #include <fstream>
@@ -108,7 +110,6 @@ TH1F* CreateRooWorkspace::GetAnalysisOutput(defs::Eregion region, defs::Echannel
   	TFile * DYJets_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.DYJets_" + year + ".root", "READ");
   	TFile * DIB_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.Diboson_" + year + ".root", "READ");
   	TFile * ttV_f = new TFile(anaoutputfolder+"uhh2.AnalysisModuleRunner.MC.TTV_" + year + ".root", "READ");
-
   	//Get all hist from the string hist_name
   	TString channel_name = "";
   	TString region_name = "";
@@ -318,18 +319,41 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
 
   // 3 parameter function for nominal result
-  RooRealVar* bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year+"_"+cat, "bg3p_p0"+ch_name, -13.2, -100,  100);
-  RooRealVar* bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year+"_"+cat, "bg3p_p1"+ch_name,   9.1, -100,  100);
-  RooRealVar* bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year+"_"+cat, "bg3p_p2"+ch_name,   2.5, -100,   100 );
+  RooRealVar* bg3p_p0,* bg3p_p1, * bg3p_p2;  
+  if(limitvariable.Contains("ST")){
+    bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year+"_"+cat, "bg3p_p0"+ch_name, 7, 6.5,  7.5);
+    bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year+"_"+cat, "bg3p_p1"+ch_name,   2.5, 0,  5);
+    bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year+"_"+cat, "bg3p_p2"+ch_name,   0.4, -1,   1 );
+    if(year.Contains("2017"))     bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year+"_"+cat, "bg3p_p2"+ch_name,   0.4, -10,   10 );
+    if(year.Contains("2018"))     bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year+"_"+cat, "bg3p_p0"+ch_name, 7, 0,  10);
+    if(year.Contains("2018") && cat.Contains("chi2"))     bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year+"_"+cat, "bg3p_p0"+ch_name, 7, 4,  10);
+    if(year.Contains("2018") && cat.Contains("ma175"))     bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year+"_"+cat, "bg3p_p0"+ch_name, 0.5, 0,  1);
+    if(year.Contains("2018"))     bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year+"_"+cat, "bg3p_p1"+ch_name,   2.5, 0,  10);
+    if(year.Contains("2018"))     bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year+"_"+cat, "bg3p_p2"+ch_name,   0.4, -5,   5 );
+  }else{
+    bg3p_p0 = new RooRealVar("bg3p_p0"+ch_name+"_"+year+"_"+cat, "bg3p_p0"+ch_name, -13.2, -100,  100);
+    bg3p_p1 = new RooRealVar("bg3p_p1"+ch_name+"_"+year+"_"+cat, "bg3p_p1"+ch_name,   9.1, -100,  100);
+    bg3p_p2 = new RooRealVar("bg3p_p2"+ch_name+"_"+year+"_"+cat, "bg3p_p2"+ch_name,   2.5, -100,   100 );
+  }
 
   BkgPdf3p* bgfunc = new BkgPdf3p("Bkgfunc_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_"+ch_name, *x, *bg3p_p0, *bg3p_p1, *bg3p_p2);
 
   // 2 parameter exponential function 
-  RooRealVar* bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name+"_"+year+"_"+cat, "bgexp2_p0"+ch_name, 8.2, -100, 100);
-  RooRealVar* bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name+"_"+year+"_"+cat, "bgexp2_p1"+ch_name, 4.3, -100, 100);
+  RooRealVar* bgexp2_p0,*bgexp2_p1;
+  if(limitvariable.Contains("ST")){
+    bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name+"_"+year+"_"+cat, "bgexp2_p0"+ch_name, 5.4, -100, 100);
+    //    if(year.Contains("2017"))     bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name+"_"+year+"_"+cat, "bgexp2_p0"+ch_name, 5.4, -10, 10);
+    bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name+"_"+year+"_"+cat, "bgexp2_p1"+ch_name, 3.3, -100, 100);
+  }else{
+    bgexp2_p0 = new RooRealVar("bgexp2_p0"+ch_name+"_"+year+"_"+cat, "bgexp2_p0"+ch_name, 8.2, -100, 100);
+    bgexp2_p1 = new RooRealVar("bgexp2_p1"+ch_name+"_"+year+"_"+cat, "bgexp2_p1"+ch_name, 4.3, -100, 100);
+  }
 
   BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
-
+  // RooArgList* bgfunc_exp_args = new RooArgList("bgfunc_exp_args");
+  // bgfunc_exp_args->add(*bgexp2_p0);
+  // bgfunc_exp_args->add(*bgexp2_p1);
+  // RooParametricShapeBinPdf* shape_bgfunc_exp = new RooParametricShapeBinPdf("Shape_Bkgfunc_Exp2p_"+ch_name+"_"+year+"_"+cat, "Shape_Bkgfunc_Exp2p_"+ch_name, *bgfunc_exp, *x, *bgfunc_exp_args, *h_data );
 
   // 4 parameter function for nominal result
   RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0"+ch_name+"_"+year+"_"+cat, "bg4p_p0"+ch_name, -300, -1000,  1000);
@@ -340,18 +364,48 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   BkgPdf4p* bgfunc_4p = new BkgPdf4p("Bkgfunc_4p_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_4p_"+ch_name, *x, *bg4p_p0, *bg4p_p1, *bg4p_p2, *bg4p_p3);
 
 
+  // 2 parameter function for dijet 2p result
+  RooRealVar* bg2p_p0 = new RooRealVar("bg2p_p0"+ch_name+"_"+year+"_"+cat, "bg2p_p0"+ch_name, 10, -1000,  1000);
+  RooRealVar* bg2p_p1 = new RooRealVar("bg2p_p1"+ch_name+"_"+year+"_"+cat, "bg2p_p1"+ch_name,   1, -100,  100);
+
+  BkgPdf2p* bgfunc_2p = new BkgPdf2p("Bkgfunc_2p_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_2p_"+ch_name, *x, *bg2p_p0, *bg2p_p1);
+
+
   // 4 parameter function for ST result
   std::cout<<"start building bgfunc_4pexp"<<std::endl;
-  RooRealVar* bg4pexp_p0 = new RooRealVar("bg4pexp_p0"+ch_name+"_"+year+"_"+cat, "bg4pexp_p0"+ch_name, 1.27406e-04, 0,  100);
-  RooRealVar* bg4pexp_p1 = new RooRealVar("bg4pexp_p1"+ch_name+"_"+year+"_"+cat, "bg4pexp_p1"+ch_name,   6.11745e-01, -500,  500);
-  RooRealVar* bg4pexp_p2 = new RooRealVar("bg4pexp_p2"+ch_name+"_"+year+"_"+cat, "bg4pexp_p2"+ch_name,   -5.43876e-03, -100,   100 );
-  RooRealVar* bg4pexp_p3 = new RooRealVar("bg4pexp_p3"+ch_name+"_"+year+"_"+cat, "bg4pexp_p3"+ch_name,   -9.11889e-08, -10,   10 );
+  RooRealVar* bg4pexp_p0, *bg4pexp_p1, *bg4pexp_p2, *bg4pexp_p3;
+  // if(cat.Contains("chi2h_2")){
+  //    bg4pexp_p0 = new RooRealVar("bg4pexp_p0"+ch_name+"_"+year+"_"+cat, "bg4pexp_p0"+ch_name, 1.27406e-04, 0,  100);
+  //    bg4pexp_p1 = new RooRealVar("bg4pexp_p1"+ch_name+"_"+year+"_"+cat, "bg4pexp_p1"+ch_name,   6.11745e-01, -200,  200);
+  //    bg4pexp_p2 = new RooRealVar("bg4pexp_p2"+ch_name+"_"+year+"_"+cat, "bg4pexp_p2"+ch_name,   -5.43876e-03, -10,   10 );
+  //    bg4pexp_p3 = new RooRealVar("bg4pexp_p3"+ch_name+"_"+year+"_"+cat, "bg4pexp_p3"+ch_name,   -9.11889e-08, -1,   1 );
+  // }else{
+     bg4pexp_p0 = new RooRealVar("bg4pexp_p0"+ch_name+"_"+year+"_"+cat, "bg4pexp_p0"+ch_name, 1.27406e-04, 0,  1);
+     bg4pexp_p1 = new RooRealVar("bg4pexp_p1"+ch_name+"_"+year+"_"+cat, "bg4pexp_p1"+ch_name,   6.11745e-01, -2,  2);
+     bg4pexp_p2 = new RooRealVar("bg4pexp_p2"+ch_name+"_"+year+"_"+cat, "bg4pexp_p2"+ch_name,   -5.43876e-03, -1,   1 );
+     bg4pexp_p3 = new RooRealVar("bg4pexp_p3"+ch_name+"_"+year+"_"+cat, "bg4pexp_p3"+ch_name,   -9.11889e-08, -0.001,   0.001 );
+     //  }
 
   std::cout<<"before function"<<std::endl;
   BkgPdf4pExp* bgfunc_4pexp = new BkgPdf4pExp("Bkgfunc_4pExp_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_4pExp_"+ch_name, *x, *bg4pexp_p0, *bg4pexp_p1, *bg4pexp_p2, *bg4pexp_p3);
   //  BkgPdf4p* bgfunc_4pexp = new BkgPdf4p("Bkgfunc_4pExp_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_4pExp_"+ch_name, *x, *bg4pexp_p0, *bg4pexp_p1, *bg4pexp_p2, *bg4pexp_p3);
 
   std::cout<<"done building bgfunc_4pexp"<<std::endl;
+
+  // 4 parameter function for ST result
+  RooRealVar* bgexpX_p0, *bgexpX_p1, *bgexpX_p2;
+  bgexpX_p0 = new RooRealVar("bgexpX_p0"+ch_name+"_"+year+"_"+cat, "bgexpX_p0"+ch_name, -4, -20,  20);
+  bgexpX_p1 = new RooRealVar("bgexpX_p1"+ch_name+"_"+year+"_"+cat, "bgexpX_p1"+ch_name,  0.15, -20, 20);
+  if(year.Contains("2017"))   bgexpX_p1 = new RooRealVar("bgexpX_p1"+ch_name+"_"+year+"_"+cat, "bgexpX_p1"+ch_name,  -0.32, -20, 20);
+  bgexpX_p2 = new RooRealVar("bgexpX_p2"+ch_name+"_"+year+"_"+cat, "bgexpX_p2"+ch_name,   0.58, 0,   20 );
+  if(year.Contains("2017"))  bgexpX_p2 = new RooRealVar("bgexpX_p2"+ch_name+"_"+year+"_"+cat, "bgexpX_p2"+ch_name,   0.74, 0,   20 );
+
+  BkgPdfExpX* bgfunc_expX = new BkgPdfExpX("Bkgfunc_ExpX_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_ExpX_"+ch_name, *x, *bgexpX_p0, *bgexpX_p1, *bgexpX_p2);
+  RooArgList* bgfunc_expX_args = new RooArgList("bgfunc_expX_args");
+  // bgfunc_expX_args->add(*bgexpX_p0);
+  // bgfunc_expX_args->add(*bgexpX_p1);
+  // bgfunc_expX_args->add(*bgexpX_p2);
+  // RooParametricShapeBinPdf* shape_bgfunc_expX = new RooParametricShapeBinPdf("Shape_Bkgfunc_ExpX_"+ch_name+"_"+year+"_"+cat, "Shape_Bkgfunc_ExpX_"+ch_name, *bgfunc_expX, *x, *bgfunc_expX_args, *h_data); 
 
   float bkgfactor  = 1;
   RooFitResult *r_bg;
@@ -387,10 +441,8 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   }else if(limitvariable.Contains("ST")){
     std::cout<<"doing the fit for ST"<<std::endl;
     //  ST case
-    r_bg = bgfunc_4pexp->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
-
     // std::cout<<"DO own minimisation"<<std::endl;
-    // RooAbsReal *nll = bgfunc_4pexp->createNLL(*dataSR);
+    // RooAbsReal *nll = bgfunc_expX->createNLL(*dataSR);
   
     // // Minimize likelihood w.r.t all parameters before making plots
     // RooMinimizer minimiser(*nll);
@@ -403,23 +455,53 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     // minimiser.hesse();
     // std::cout<<"END: DO own minimisation"<<std::endl;
     
-    if (r_bg->status() !=0) {
-      std::cout<<"status: "<<r_bg->status()<<std::endl;
-      throw runtime_error("Background fit failed ") ;
+    //    RooFitResult * r_bg4p = bgfunc_4pexp->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+    std::cout<<"+++++++++++ bgexpX fit ++++++++++++"<<std::endl;
+    RooFitResult * r_bgexpX = bgfunc_expX->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+    //    RooFitResult * r_bg2p = bgfunc_2p->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+    std::cout<<"+++++++++++ bgexp2p fit ++++++++++++"<<std::endl;
+    RooFitResult * r_bg_exp = bgfunc_exp->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+    r_bg = bgfunc->fitTo(*dataSR, RooFit::Range(xmin, xmax), RooFit::Save(), RooFit::Verbose(kFALSE));
+
+    if (r_bgexpX->status() !=0 || r_bg_exp->status() !=0) {
+      std::cout<<"status r_bgexpX: "<<r_bgexpX->status()<<std::endl;
+      std::cout<<"status r_bg_exp: "<<r_bg_exp->status()<<std::endl;
+      throw runtime_error("Background fit failed for cat "+cat) ;
     }
 
-    std::cout << "Testing BKG values postfit" << '\n';
-    bg4pexp_p0->Print(); 
-    bg4pexp_p1->Print();
-    bg4pexp_p2->Print(); 
-    bg4pexp_p3->Print(); 
+    // std::cout << "Testing BKG values postfit" << '\n';
+    // bg4pexp_p0->Print(); 
+    // bg4pexp_p1->Print();
+    // bg4pexp_p2->Print(); 
+    // bg4pexp_p3->Print(); 
 
 
-    infotofile << "---------  Bg4pExp  "+ch_name+"  ---------"<<std::endl;
-    infotofile << "bg4pexp_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"  " << bg4pexp_p0->getValV() <<"  error  "<<   bkgfactor * bg4pexp_p0->getError()<<std::endl;
-    infotofile << "bg4pexp_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg4pexp_p1->getValV() <<"  error  "<<  bkgfactor *   bg4pexp_p1->getError()<<std::endl;
-    infotofile << "bg4pexp_p2"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg4pexp_p2->getValV() <<"  error  "<<   bkgfactor * bg4pexp_p2->getError()<<std::endl;
-    infotofile << "bg4pexp_p3"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg4pexp_p3->getValV() <<"  error  "<<   bkgfactor * bg4pexp_p3->getError()<<std::endl;
+    // infotofile << "---------  Bg4pExp  "+ch_name+"  ---------"<<std::endl;
+    // infotofile << "bg4pexp_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"  " << bg4pexp_p0->getValV() <<"  error  "<<   bkgfactor * bg4pexp_p0->getError()<<std::endl;
+    // infotofile << "bg4pexp_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg4pexp_p1->getValV() <<"  error  "<<  bkgfactor *   bg4pexp_p1->getError()<<std::endl;
+    // infotofile << "bg4pexp_p2"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg4pexp_p2->getValV() <<"  error  "<<   bkgfactor * bg4pexp_p2->getError()<<std::endl;
+    // infotofile << "bg4pexp_p3"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg4pexp_p3->getValV() <<"  error  "<<   bkgfactor * bg4pexp_p3->getError()<<std::end lpExp;
+
+    infotofile << "---------  Bg4pExpX  "+ch_name+"  ---------"<<std::endl;
+    infotofile << "bgexpX_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"  " << bgexpX_p0->getValV() <<"  error  "<<   bkgfactor * bgexpX_p0->getError()<<std::endl;
+    infotofile << "bgexpX_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bgexpX_p1->getValV() <<"  error  "<<  bkgfactor *   bgexpX_p1->getError()<<std::endl;
+    infotofile << "bgexpX_p2"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bgexpX_p2->getValV() <<"  error  "<<   bkgfactor * bgexpX_p2->getError()<<std::endl;
+
+
+    infotofile << "---------  Bgexp  "+ch_name+"  - ---------"<<std::endl;
+    infotofile << "bgexp2_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bgexp2_p0->getValV() <<"  error  "<<   bkgfactor * bgexp2_p0->getError()<<std::endl;
+    infotofile << "bgexp2_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bgexp2_p1->getValV() <<"  error  "<<   bkgfactor * bgexp2_p1->getError()<<std::endl;
+
+    // infotofile << "---------  Bg2p  "+ch_name+"  - ---------"<<std::endl;
+    // infotofile << "bg2p_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg2p_p0->getValV() <<"  error  "<<   bkgfactor * bg2p_p0->getError()<<std::endl;
+    // infotofile << "bg2p_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg2p_p1->getValV() <<"  error  "<<   bkgfactor * bg2p_p1->getError()<<std::endl;
+
+
+    // infotofile << "---------  Bg3p  "+ch_name+"  ---------"<<std::endl;
+    // infotofile << "bg3p_p0"<<ch_name<<"_"<<year<<"_"<<cat<<"  " << bg3p_p0->getValV() <<"  error  "<<   bkgfactor * bg3p_p0->getError()<<std::endl;
+    // infotofile << "bg3p_p1"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p1->getValV() <<"  error  "<<  bkgfactor *   bg3p_p1->getError()<<std::endl;
+    // infotofile << "bg3p_p2"<<ch_name<<"_"<<year<<"_"<<cat<<"   " << bg3p_p2->getValV() <<"  error  "<<   bkgfactor * bg3p_p2->getError()<<std::endl;
+
 
   }else{
     throw runtime_error("not defined limitvaraible");
@@ -434,7 +516,10 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     mypdfs.add(*bgfunc_exp);
     //  mypdfs.add(*bgfunc_2p);
   }else if(limitvariable.Contains("ST")){
-    mypdfs.add(*bgfunc_4pexp);
+    mypdfs.add(*bgfunc_exp);
+    //    mypdfs.add(*bgfunc_expX);
+    // mypdfs.add(*bgfunc);
+    // mypdfs.add(*bgfunc_2p);
   }else{
     throw runtime_error("not defined limitvaraible");
   }
@@ -508,7 +593,7 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
     bgfunc_exp->plotOn(plotter);
     //dataSR->plotOn(plotter);
   }else if(limitvariable.Contains("ST")){
-    bgfunc_4pexp->plotOn(plotter);
+    bgfunc_expX->plotOn(plotter);
   }
 
   TCanvas *background_c = new TCanvas("background_c","background fit",10,10,700,700);
@@ -520,10 +605,11 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   // clean up
   delete x; delete dataSR; 
-   delete plotter;
+  delete plotter;
   delete bgfunc;
   delete bgfunc_exp;
   delete bgfunc_4pexp;
+  delete bgfunc_expX;
   delete bg3p_p0; delete bg3p_p1; delete bg3p_p2; 
   delete bg4pexp_p0; delete bg4pexp_p1; delete bg4pexp_p2;  delete bg4pexp_p3; 
   delete r_bg;
@@ -570,14 +656,17 @@ void CreateRooWorkspace::SaveSignals(defs::Echannel ch, TString year, TString ca
     //  std::ifstream infile_allyears("/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/SignalFitOutput_allyears_"+ch_name+".txt");
     infile_allyears.open(anainputfolder+"SignalFitOutput_"+year+"_"+cat+"_"+MA+".txt");
   }else if(limitvariable.Contains("ST")){
-    TString filename = anainputfolder+"ST/parameters_ma"+MA+"_"+year+"_"+cat+".txt";
+    TString year_tmp = year;
+    year_tmp.ReplaceAll("v2","").ReplaceAll("v3","");
+
+    TString filename = anainputfolder+"ST/parameters_ma"+MA+"_"+year_tmp+"_"+cat+".txt";
     infile.open(filename);
     cout<<"infile  "<< filename <<endl;
-    infile_much.open(anainputfolder+"ST/efficiencies_much_ma"+MA+"_"+year+"_"+cat+".txt");
+    infile_much.open(anainputfolder+"ST/efficiencies_much_ma"+MA+"_"+year_tmp+"_"+cat+".txt");
     cout<<"infile_much "<< anainputfolder+"ST/efficiencies_much_ma"+MA+"_"+year+"_"+cat+".txt"<<std::endl;
-infile_ech.open(anainputfolder+"ST/efficiencies_ech_ma"+MA+"_"+year+"_"+cat+".txt");
+infile_ech.open(anainputfolder+"ST/efficiencies_ech_ma"+MA+"_"+year_tmp+"_"+cat+".txt");
     cout<<"infile_ech "<< anainputfolder+"ST/efficiencies_ech_ma"+MA+"_"+year+"_"+cat+".txt"<<std::endl;
-    infile_allyears.open(anainputfolder+"ST/parameters_ma"+MA+"_"+year+"_"+cat+"_allyears.txt");
+    infile_allyears.open(anainputfolder+"ST/parameters_ma"+MA+"_"+year_tmp+"_"+cat+".txt");
   }else throw runtime_error("limitvariabel not defined");
 
   std::string line;
@@ -1174,12 +1263,14 @@ infile_ech.open(anainputfolder+"ST/efficiencies_ech_ma"+MA+"_"+year+"_"+cat+".tx
   double MT = 550; 
   if(cat.Contains("ma300")) MT = 700;
   //  if(cat.Contains("ma300") && year.Contains("2018")) MT = 800;
-  if(cat.Contains("ma175")) MT = 700;
+  if(limitvariable.Contains("Tprime"))  if(cat.Contains("ma175")) MT = 700;
   //  RooRealVar* x = new RooRealVar("x"+cat+year, "m_{T} [GeV]", 200, 2000);
   RooRealVar* x = new RooRealVar("x"+cat+year, "m_{T} [GeV]", xmin, xmax);
   // RooRealVar* x = new RooRealVar("x"+cat, "m_{T} [GeV]", 200, 2000);
 
-  while (MT<1200)
+  double highest_MT  = 1200;
+  if (MA=="75") highest_MT = 1000;
+  while (MT<=highest_MT)
       //  while (MT<810)
   {
     TString SgName = TString::Format("MT%d_", (int)MT);
@@ -1273,7 +1364,7 @@ infile_ech.open(anainputfolder+"ST/efficiencies_ech_ma"+MA+"_"+year+"_"+cat+".tx
       myhist->SetName("signal_"+signalmass+"_ech"+year+cat);
     }
     debug_histos->cd();
-    myhist->Write();
+       myhist->Write();
   
 
     TCanvas* c_sg = new TCanvas(SgName, SgName, 10, 10, 700, 700);

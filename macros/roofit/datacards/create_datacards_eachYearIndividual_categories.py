@@ -115,7 +115,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
     number_of_backgrounds = "*"
     
     #### read out rate unc for e, mu and both together
-#    folder = "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/"
+    #    folder = "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/"
     tot_rate_unc = {}
     ech_rate_unc = {}
     much_rate_unc = {}
@@ -123,7 +123,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
     
     
     
-    print "Start to collect normalisations"
+    print "Start to collect rate uncertainty"
     for icat in categories:
         tot_rate_unc[icat] = {}
         ech_rate_unc[icat] = {}
@@ -153,8 +153,8 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
                 unc+=1
                 tot_rate_unc[icat][year][mass] = unc
         
-            #print "tot_rate_unc"
-            #print tot_rate_unc
+            # print "tot_rate_unc"
+            # print tot_rate_unc
         
         
             # e ch unc 
@@ -203,11 +203,11 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
                 
                 if "Muon" in line and "Signal" not in line:
                     muon_norm_line =  listOfLines[i+1].strip()
-                    bkg_much_norm[icat][year] = muon_norm_line.split("N = ")[1]
+                    bkg_much_norm[icat][year] = muon_norm_line.split("N = ")[1] 
         
                 if "Electron" in line and "Signal" not in line:
                     elec_norm_line =  listOfLines[i+1].strip()
-                    bkg_ech_norm[icat][year] = elec_norm_line.split("N = ")[1]
+                    bkg_ech_norm[icat][year] = elec_norm_line.split("N = ")[1] 
         
                 if "Muon" in line and "Signal" in line:
     
@@ -219,10 +219,11 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
                   
                         mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
                         if mass not in masses and int(mass)>590:
+                            if str(ma_mass) == "75" and int(mass) > 1000: continue
                             masses.append(mass)
          
     #                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
-                        signal_much_norm[year+"_"+icat+"_"+mass] = tmp_dict["N"]
+                        signal_much_norm[year+"_"+icat+"_"+mass] = tmp_dict["N"]#/10 #*10 *2
                         mean_value[year+"_"+icat+"_"+mass] = tmp_dict["Mean"]
                         if b_JEC:
                             mean_error[year+"_"+icat+"_"+mass] = tmp_dict["Mean_Error"]
@@ -296,7 +297,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
 
                         mass = re.findall(r'\d+.\d+',listOfLines[j])[0]
     #                    norm = re.findall(r'\d+.\d+',listOfLines[j])[1]
-                        signal_ech_norm[year+"_"+icat+"_"+mass] = tmp_dict["N"]
+                        signal_ech_norm[year+"_"+icat+"_"+mass] = tmp_dict["N"]#/10 #*10 *2
     
                 if "Bg" in line:
                     for j in range(i+1,len(listOfLines)):
@@ -344,17 +345,18 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
         #         outputfile.write("imax  "+str(number_of_channels-(2*(len(categories)-1)))+" number of channels \n")
     
         # else:
-        if int(mass)<700 and "catma175" in categories and "catma300" in categories:
-            outputfile.write("imax  "+str(2 * len(years) * (len(categories)-2))+" number of channels \n")
-        elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
-            outputfile.write("imax  "+str(2 * len(years) * (len(categories)-1))+" number of channels \n")
-        # elif int(mass)<800  and "catma175" in categories and "catma300" in categories and "2018" in years:
-        #     outputfile.write("imax  "+str(2 * len(years) * len(categories)-2)+" number of channels \n")
-        # elif int(mass)<800  and ("catma175" in categories or "catma300" in categories) and "2018" in years:
-        #     outputfile.write("imax  "+str(2 * len(years) * len(categories)-1)+" number of channels \n")
-        else: 
-            outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
-    
+        if "Tprime" in limitvariable:
+            if int(mass)<700 and "catma175" in categories and "catma300" in categories:
+                outputfile.write("imax  "+str(2 * len(years) * (len(categories)-2))+" number of channels \n")
+            elif int(mass)<700 and ("catma175" in categories or "catma300" in categories):
+                outputfile.write("imax  "+str(2 * len(years) * (len(categories)-1))+" number of channels \n")
+            else: 
+                outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
+        elif "ST" in limitvariable:
+            if int(mass)<700 and  "catma300" in categories:
+                outputfile.write("imax  "+str(2 * len(years) * (len(categories)-1))+" number of channels \n")
+            else: 
+                outputfile.write("imax  "+str(number_of_channels)+" number of channels \n")
     
         outputfile.write("jmax  "+str(number_of_backgrounds)+" number of backgrounds \n")
         outputfile.write("kmax  * number of nuisance parameters (sources of systematical uncertainties) \n \n")
@@ -381,7 +383,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
     
         
         for cat in categories:
-            if "175" in cat and int(mass) < 700: continue
+            if "Tprime" in limitvariable and "175" in cat and int(mass) < 700: continue
             if "300" in cat and int(mass) < 700: continue
     
             for key in sorted(years):
@@ -476,7 +478,7 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
     
         alreadyWroteRateUncSig = {}
         for cat in categories:
-            if "175" in cat and int(mass) < 700: continue
+            if "Tprime" in limitvariable and "175" in cat and int(mass) < 700: continue
             if "300" in cat and int(mass) < 700: continue
     
     
@@ -554,16 +556,29 @@ def create_datacards_eachYearIndividual_categories(years,ma_mass, infolder, b_on
                 # outputfile.write("sg_JECfnromdown_"+year+"_"+cat+" param "+str(fnorm_value_JEC_down[year+"_"+cat+"_"+mass])+"  0.001 \n ")
                 # outputfile.write("sg_JECfnormup_"+year+"_"+cat+" param "+str(fnorm_value_JEC_up[year+"_"+cat+"_"+mass])+"  0.001 \n ")
     	    
-            flat_list = ["bgexp2_p0much_2018_catma90","bgexp2_p0much_2017v2_catma90","bgexp2_p0ech_2016v3_catma90","bgexp2_p1much_2017v2_catma90","bgexp2_p1much_2018_catma90","bgexp2_p1much_2016v3_catma90","bgexp2_p1ech_2016v3_catma90","bgexp2_p0much_2016v3_catma90","bgexp2_p0much_2016v3_chi2h_2","bgexp2_p1ech_2016v3_chi2h_2","bgexp2_p0ech_2016v3_chi2h_2","bgexp2_p1much_2016v3_chi2h_2"]
+            #flat_list = ["bgexp2_p0much_2018_catma90","bgexp2_p0much_2017v2_catma90","bgexp2_p0ech_2016v3_catma90","bgexp2_p1much_2017v2_catma90","bgexp2_p1much_2018_catma90","bgexp2_p1much_2016v3_catma90","bgexp2_p1ech_2016v3_catma90","bgexp2_p0much_2016v3_catma90","bgexp2_p0much_2016v3_chi2h_2","bgexp2_p1ech_2016v3_chi2h_2","bgexp2_p0ech_2016v3_chi2h_2","bgexp2_p1much_2016v3_chi2h_2"]
+            #flat_list = ["bg4pexp_p0ech_2018_chi2h_2","bg4pexp_p0much_2018_chi2h_2","bg4pexp_p1ech_2018_chi2h_2","bg4pexp_p1much_2018_chi2h_2","bg4pexp_p2ech_2018_chi2h_2","bg4pexp_p2much_2018_chi2h_2"]
+            #flat_list = []
+            #not_flat_list = ["bgexpX_p1much_2017v2_catma90","bgexpX_p1much_2018_catma90","bgexpX_p1much_2016v3_catma90","bgexpX_p1ech_2016v3_catma90","bgexpX_p1ech_2017v2_catma90","bgexpX_p1ech_2018_catma90"]
+            flat_list = []
+            flat_par = ["bgexp2_p0","bgexp2_p1"]#,"bgexpX_p1","bgexpX_p2","bgexpX_p0"]
+            #            flat_par = ["bgexp2_p0","bgexp2_p1","bgexpX_p0","bgexpX_p1"]
+            flat_year = ["2016v3","2017v2","2018"]
+            flat_cat = ["catma90","chi2h_2","catma175","catma300"]
+            for par in flat_par:
+                for yr in flat_year:
+                    for ct in flat_cat:
+                        flat_list.append(par+"much_"+yr+"_"+ct)
+                        flat_list.append(par+"ech_"+yr+"_"+ct)
+
             for key in bg3p_v:
                 if cat not in key: continue
-                outputfile.write(str(key) +" flatParam \n ")
-                # if  key in flat_list:
-                #     outputfile.write(str(key) +" flatParam \n ")
-                # else:
-                #     outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")
-                #print str(key) +"="+ str(bg3p_v[key])
-                #outputfile.write(str(key) +" flatParam \n ")
+                # outputfile.write(str(key) +" flatParam \n ")
+                if  key in flat_list:
+                    outputfile.write(str(key) +" flatParam \n ")
+                else:
+                    outputfile.write(str(key) +" param "+str(bg3p_v[key])+"  "+str(bg3p_err[key])+" \n ")
+                print str(key) +"="+ str(bg3p_v[key])
             outputfile.write("------------------------------ \n")
     
     

@@ -70,13 +70,49 @@ def plot_signIn(MA,postfix):
             infile = TFile("fitDiagnostics"+postfix+"_signal"+str(sig)+"_"+str(mass)+".root","r")
             TH1.AddDirectory(0)
             tree_fit_sb = infile.Get("tree_fit_sb")
-            tree_fit_sb.Draw("r>>h(100,-2,5)")
+            #            tree_fit_sb.Draw("(r-%f)/rErr>>h2(50,-1,1)"%float(sig))
+            tree_fit_sb.Draw("rErr>>h2(50,-1,1)")
+
+            histo2 = gROOT.FindObject("h2")
+            c3 = TCanvas()
+            gStyle.SetOptFit(0) 
+            leg2 = TLegend(0.2,0.6,0.55,0.9, "","brNDC")
+            leg2.SetBorderSize(0);	
+            leg2.SetFillStyle(0);
+            leg2.SetTextSize(0.035);
+            leg2.SetTextFont(42);
+            leg2.SetHeader("M_{a} = "+MA)
+            
+            histo2.Draw()
+            c3.Print("normgauss_"+postfix+"_"+str(mass)+"_"+str(sig)+".pdf")
+
+
+            tree_fit_sb.Draw("r>>h(50,-1,2)")
             histo = gROOT.FindObject("h")
             mean = histo.GetMean()
     #        std = histo.GetStdDev()
             std = histo.GetMeanError()
+
+
+            gaus = TF1("gaus","gaus", mean - 2*histo.GetRMS(), mean + 2*histo.GetRMS())
+            histo.Fit(gaus, "R")
+            mean = gaus.GetParameter(1)
+            std = gaus.GetParameter(2)
     
-        
+            
+            c2 = TCanvas()
+            gStyle.SetOptFit(0) 
+            leg = TLegend(0.2,0.6,0.55,0.9, "","brNDC")
+            leg.SetBorderSize(0);	
+            leg.SetFillStyle(0);
+            leg.SetTextSize(0.035);
+            leg.SetTextFont(42);
+            leg.SetHeader("M_{a} = "+MA)
+            
+            histo.Draw()
+            c2.Print("gauss_"+postfix+"_"+str(mass)+"_"+str(sig)+".pdf")
+
+    
             hist.SetBinContent(hist.FindBin(float(sig)),mean)
             hist.SetBinError(hist.FindBin(float(sig)),std)
         
@@ -165,3 +201,6 @@ def plot_signIn(MA,postfix):
     
     c1.Print("signalinjection_"+str(mass)+".eps")
     c1.Print("signalinjection"+postfix+"_"+str(mass)+".pdf")
+
+
+

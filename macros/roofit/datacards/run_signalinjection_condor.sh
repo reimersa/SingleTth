@@ -15,10 +15,18 @@ set_params=""
 
 for cat in "${categories[@]}" ; do
 for year in "${years[@]}"; do
-set_params="${set_params}pdf_index_much_"$year"_"$cat"=1,pdf_index_MT${mass}_much_"$year"_"$cat"=0,pdf_index_ech_"$year"_"$cat"=1,pdf_index_MT${mass}_ech_"$year"_"$cat"=0,"
+set_params="${set_params}pdf_index_much_"$year"_"$cat"=0,pdf_index_MT${mass}_much_"$year"_"$cat"=0,pdf_index_ech_"$year"_"$cat"=0,pdf_index_MT${mass}_ech_"$year"_"$cat"=0,"
 
-freeze_params="${freeze_params}sg_JERmeandown_"$year"_"$cat",sg_JERmeanup_"$year"_"$cat",sg_JECmeandown_"$year"_"$cat",sg_JECmeanup_"$year"_"$cat",sg_JERsigmadown_"$year"_"$cat",sg_JERsigmaup_"$year"_"$cat",sg_JECsigmadown_"$year"_"$cat",sg_JECsigmaup_"$year"_"$cat",sg_JERmeandown2_"$year"_"$cat",sg_JERmeanup2_"$year"_"$cat",sg_JECmeandown2_"$year"_"$cat",sg_JECmeanup2_"$year"_"$cat",sg_JERsigmadown2_"$year"_"$cat",sg_JERsigmaup2_"$year"_"$cat",sg_JECsigmadown2_"$year"_"$cat",sg_JECsigmaup2_"$year"_"$cat",pdf_index_MT${mass}_much_"$year"_"$cat",pdf_index_MT${mass}_ech_"$year"_"$cat",pdf_index_much_"$year"_"$cat",pdf_index_ech_"$year"_"$cat",sg_mean_"$year"_"$cat",sg_sigma_"$year"_"$cat",sg_mean2_"$year"_"$cat",sg_sigma2_"$year"_"$cat","
-
+#freeze_params="${freeze_params}sg_JERmeandown_"$year"_"$cat",sg_JERmeanup_"$year"_"$cat",sg_JECmeandown_"$year"_"$cat",sg_JECmeanup_"$year"_"$cat",sg_JERsigmadown_"$year"_"$cat",sg_JERsigmaup_"$year"_"$cat",sg_JECsigmadown_"$year"_"$cat",sg_JECsigmaup_"$year"_"$cat",sg_JERmeandown2_"$year"_"$cat",sg_JERmeanup2_"$year"_"$cat",sg_JECmeandown2_"$year"_"$cat",sg_JECmeanup2_"$year"_"$cat",sg_JERsigmadown2_"$year"_"$cat",sg_JERsigmaup2_"$year"_"$cat",sg_JECsigmadown2_"$year"_"$cat",sg_JECsigmaup2_"$year"_"$cat
+freeze_params="${freeze_params},pdf_index_MT${mass}_much_"$year"_"$cat",pdf_index_MT${mass}_ech_"$year"_"$cat
+#freeze_params="${freeze_params},pdf_index_much_"$year"_"$cat",pdf_index_ech_"$year"_"$cat
+freeze_params="${freeze_params},sg_mean_"$year"_"$cat",sg_sigma_"$year"_"$cat",sg_mean2_"$year"_"$cat",sg_sigma2_"$year"_"$cat","
+freeze_params="${freeze_params},sg_alphaR_"$year"_"$cat",sg_alphaL_"$year"_"$cat",sg_nR_"$year"_"$cat",sg_nL_"$year"_"$cat","
+#freeze_params="${freeze_params},pdf_index_MT${mass}_much_"$year"_"$cat",pdf_index_MT${mass}_ech_"$year"_"$cat","
+#freeze_params="${freeze_params},bg4pexp_p1much_"$year"_"$cat",bg4pexp_p1ech_"$year"_"$cat",bg4pexp_p0much_"$year"_"$cat",bg4pexp_p0ech_"$year"_"$cat",bg4pexp_p2much_"$year"_"$cat",bg4pexp_p2ech_"$year"_"$cat","
+#freeze_params="${freeze_params},bg4pexp_p0much_"$year"_"$cat",bg4pexp_p0ech_"$year"_"$cat","
+#freeze_params="${freeze_params},bg4pexp_p1much_"$year"_"$cat",bg4pexp_p1ech_"$year"_"$cat","
+#freeze_params="${freeze_params},bg4pexp_p3much_"$year"_"$cat",bg4pexp_p3ech_"$year"_"$cat","
 done
 done
 
@@ -29,7 +37,7 @@ signal=$2
 echo "================================ " + $signal + "     "+ $mass
 
 
-eval "combine $datacard -M FitDiagnostics  --setParameters ${set_params}   --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=2  --cminFallbackAlgo Minuit2,Simplex,0:0.1 -n initial_signal${signal}_${mass}_signal --saveWorkspace --autoMaxPOIs r --autoBoundsPOIs r --cminPreScan --cminPreFit 1" 
+eval "combine $datacard -M FitDiagnostics  --setParameters ${set_params}   --freezeParameters  ${freeze_params} --setRobustFitTolerance 1 --cminPreScan --cminPreFit 1 --cminDefaultMinimizerStrategy 0 --autoMaxPOIs r --autoBoundsPOIs r -n initial_signal${signal}_${mass}_signal --saveWorkspace --saveShapes" 
 
 eval "python create_snapshot.py -mass ${mass} -signal ${signal} -name signal"
 
@@ -37,7 +45,9 @@ eval "combine -M GenerateOnly -d initialFitWorkspace_${signal}_${mass}_signal.ro
 
 postfix=$4
 
-eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${signal}_${mass}_signal.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --cminDefaultMinimizerStrategy=2  --cminFallbackAlgo Minuit2,Simplex,0:0.1 -n ${postfix}_signal${signal}_${mass} --autoMaxPOIs r --autoBoundsPOIs r --cminPreScan --cminPreFit 1"
+eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${signal}_${mass}_signal.GenerateOnly.mH125.123456.root  -t 300 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --setRobustFitTolerance 1 --cminPreScan --cminPreFit 1 --cminDefaultMinimizerStrategy 0 --autoMaxPOIs r --autoBoundsPOIs r -n ${postfix}_signal${signal}_${mass} "
+
+eval "combine $datacard -M FitDiagnostics  --setParameters  ${set_params} --toysFile higgsCombine${signal}_${mass}_signal.GenerateOnly.mH125.123456.root  -t 1 --rMin -10 --rMax 10 --freezeParameters  ${freeze_params} --setRobustFitTolerance 1 --cminPreScan --cminPreFit 1 --cminDefaultMinimizerStrategy 0 --autoMaxPOIs r --autoBoundsPOIs r -n testToy_${postfix}_signal${signal}_${mass} --saveShapes"
 
 
 

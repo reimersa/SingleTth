@@ -77,7 +77,9 @@ def main():
             if args.gof_only:
                 submit_gofs(int(MA),1000)
             else:
+                print("creating datacards")
                 create_datacards_eachYearIndividual_categories(years,MA,indict["anaoutputfolder"], b_only125 = indict["bonly125"]=="True", limitvariable = limitvariable)
+                print("submit limits")
                 submit_limits(MA, blimit = indict["blimit"]=="True", bbias = indict["bbias"]=="True" ,bsigInj =indict["bsigInj"]=="True", postfix=indict["limit_postfix"], b_only125 = indict["bonly125"]=="True")
     else:
         if args.gof_only:
@@ -90,10 +92,12 @@ def main():
                 if MT == 600 or MT==800 or MT==1000: signalparams = ["float","fixed"]
                 pGOF.plot(MT, MA, signalparams, indict["year"],"l+jets")
         else:
-            plot_individual_fits(MA, indict["bonly125"]=="True", years)
-	    limit_postfix = indict["limit_postfix"]
-	    if indict["bonly125"]=="True" : limit_postfix += "_only125"
-	    read_limits(limit_postfix,indict["bonly125"]=="True")
+            limit_postfix = indict["limit_postfix"]
+            if indict["bonly125"]=="True" : limit_postfix += "_only125"
+
+            if indict["blimit"]=="True": 
+                plot_individual_fits(MA, indict["bonly125"]=="True", years)
+                read_limits(limit_postfix,indict["bonly125"]=="True")
 	    if indict["bbias"]=="True": 
 	        if int(MA)>200:
 	            plot_bias(MA,indict["limit_postfix"],MT="800")
@@ -103,10 +107,11 @@ def main():
 	        
 	    if indict["bsigInj"]=="True":
 	        plot_signIn(MA,indict["limit_postfix"])
-	
-	    plot_limit(MA,indict["limit_postfix"], indict)
-	    if indict["bonly125"]=="False":
-	        print "====== Please produce also bonly125=True"
+
+            if indict["blimit"]=="True": 
+                plot_limit(MA,indict["limit_postfix"], indict)
+                if indict["bonly125"]=="False":
+                    print "====== Please produce also bonly125=True"
 	
 def plot_limit(MA,postfix, indict):
     command = 'cd /nfs/dust/cms/user/reimersa/SingleTth/theta_SingleTth/utils2/Limits_MC/output/; '
@@ -143,6 +148,7 @@ def signalfits(indict, MA, years, channels, categories):
             for cat in categories:
                 file_to_check = folder + "SignalFitOutput_"+years[year]+"_"+cat+"_"+MA+"_"+ch+".txt"
                 file_to_check = file_to_check.replace("_comb","")
+                print("signalfits, file_to_check: ", file_to_check)
                 print file_to_check
                 if not path.exists(file_to_check):
                     command = 'root -l -q "/nfs/dust/cms/user/abenecke/CMSSW_10_2_17/CMSSW_10_2_17/src/UHH2/SingleTth/macros/sigfits/sig_fit.C(\\"'+MA+'\\",\\"'+years[year]+'\\",'+channels[ch]+')"'

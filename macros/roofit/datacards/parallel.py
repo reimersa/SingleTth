@@ -59,7 +59,7 @@ def run_bias(MA, MT, r, function, scriptfolder, postfix):
     workdir = os.path.join(scriptfolder,"workdir_bias_condor")
     ensureDirectory(workdir)
 
-    submissionsettings = derive_from_default_settings("run_biastest_condor.sh",'"%i %.1f %i %s %s"' % (MT,r,function, MA, postfix),"bias", scriptfolder, workdir, MA, MT)
+    submissionsettings = derive_from_default_settings("run_biastest_condor.sh",'"%i %.1f %i %s %s"' % (MT,r,function, MA, postfix),"bias", scriptfolder, workdir, MA, MT, memory = '4096')
     submissionscriptname = os.path.join(workdir, 'submit_combine_condor.sub')
     create_submitfile(settings=submissionsettings, outfilename=submissionscriptname)
     command = 'condor_submit %s' % (submissionscriptname)
@@ -78,7 +78,7 @@ def run_signal(MA, MT, r, scriptfolder, postfix):
     os.system(command)
 
 
-def derive_from_default_settings(executable,arguments,jobname_base, scriptfolder, workdir, MA, MT, runtime = "3600"):
+def derive_from_default_settings(executable,arguments,jobname_base, scriptfolder, workdir, MA, MT, runtime = "3600", memory = '1024'):
     submissionsettings = OrderedDict([
                 ('executable' ,  os.path.join(scriptfolder, executable)),
                 ('output'     ,  os.path.join(workdir, '%s_MA%s_MT%i_$(ClusterId).out'%(jobname_base,MA,MT))),
@@ -90,7 +90,7 @@ def derive_from_default_settings(executable,arguments,jobname_base, scriptfolder
                 ('stream_output', 'True'),
                 ('stream_error', 'True'),
                 ('+RequestRuntime', runtime),
-                ('RequestMemory', '1024'),
+                ('RequestMemory', memory),
                 ('RequestDisk', '1048576'),
                 ('initialdir', scriptfolder),
                 ('getenv', "True"),

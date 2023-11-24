@@ -56,6 +56,8 @@ def read_limits(postfix, b_only125 = False):
     for mass in masses:
         if "550" in mass or "575" in mass: continue
         if b_only125 and int(mass) > 700: continue 
+        if "ma75" in postfix and int(mass) > 1000: continue 
+        if int(mass)>=1200: continue
         print mass
         rootfile = TFile.Open("higgsCombineoutput_"+mass+postfix_only125+".AsymptoticLimits.mH120.root","r")
         tree = rootfile.limit 

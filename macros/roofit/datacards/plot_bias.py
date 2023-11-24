@@ -39,12 +39,19 @@ def plot_bias(MA,postfixarg,MT="800"):
     c2 = TCanvas()
     
     postfix = postfixarg+"_MT"+MT+"GeV"
+    formula = "(r-1)*2/(rLoErr+rHiErr)"
+    formula = "(r-1)*2/(rErr+rErr)"
+
+    formula2 = "(r)*2/(rLoErr+rHiErr)"
+    formula2 = "(r)/(rErr)"
+
+
     # exp vs exp
     infile = TFile("fitDiagnosticsexp2p_r1"+postfix+".root","r")
-    
+    print("fitDiagnosticsexp2p_r1"+postfix+".root")
     TH1.AddDirectory(0)
     tree_fit_sb_exp = infile.Get("tree_fit_sb")
-    tree_fit_sb_exp.Draw("(r-1)/rErr>>h(50,-4,6.5)")
+    tree_fit_sb_exp.Draw(formula+">>h(50,-4,6.5)")
     histo_exp = gROOT.FindObject("h")
     histo_exp.SetLineColor(kRed)
     histo_exp.SetLineWidth(2)
@@ -53,11 +60,11 @@ def plot_bias(MA,postfixarg,MT="800"):
     print sigma_exp
     
     # 3p vs exp
-    infile = TFile("fitDiagnosticsdijet3p_r1"+postfix+".root","r")
-    print "fitDiagnosticsdijet3p_r1"+postfix+".root"
+    infile = TFile("fitDiagnosticsexpX_r1"+postfix+".root","r")
+    print "fitDiagnosticsexpX_r1"+postfix+".root"
     TH1.AddDirectory(0)
     tree_fit_sb_dijet3p = infile.Get("tree_fit_sb")
-    tree_fit_sb_dijet3p.Draw("(r-1)/rErr>>h3p(50,-4,6.5)")
+    tree_fit_sb_dijet3p.Draw(formula+">>h3p(50,-4,6.5)")
     histo_dijet3p = gROOT.FindObject("h3p")
     histo_dijet3p.SetLineColor(kBlack)
     histo_dijet3p.SetLineWidth(2)
@@ -88,7 +95,7 @@ def plot_bias(MA,postfixarg,MT="800"):
     leg.SetTextFont(42);
     leg.SetHeader("Generation and fitting with")
     leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-    leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+    leg.AddEntry(histo_dijet3p,"expX (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
     leg.Draw()
     
     lumi = CMSPlotStyle.draw_lumi(True)
@@ -103,7 +110,7 @@ def plot_bias(MA,postfixarg,MT="800"):
     infile = TFile("fitDiagnosticsexp2p_r0"+postfix+".root","r")
     TH1.AddDirectory(0)
     tree_fit_sb_exp = infile.Get("tree_fit_sb")
-    tree_fit_sb_exp.Draw("(r)/rErr>>h(50,-4,7.5)")
+    tree_fit_sb_exp.Draw(formula2+">>h(50,-4,7.5)")
     histo_exp = gROOT.FindObject("h")
     histo_exp.SetLineColor(kRed)
     histo_exp.SetLineWidth(2)
@@ -113,10 +120,10 @@ def plot_bias(MA,postfixarg,MT="800"):
     
     
     # 3p vs exp
-    infile = TFile("fitDiagnosticsdijet3p_r0"+postfix+".root","r")
+    infile = TFile("fitDiagnosticsexpX_r0"+postfix+".root","r")
     TH1.AddDirectory(0)
     tree_fit_sb_dijet3p = infile.Get("tree_fit_sb")
-    tree_fit_sb_dijet3p.Draw("(r)/rErr>>h3p(50,-4,7.5)")
+    tree_fit_sb_dijet3p.Draw(formula2+">>h3p(50,-4,7.5)")
     histo_dijet3p = gROOT.FindObject("h3p")
     histo_dijet3p.SetLineColor(kBlack)
     histo_dijet3p.SetLineWidth(2)
@@ -147,7 +154,7 @@ def plot_bias(MA,postfixarg,MT="800"):
     leg.SetTextFont(42);
     leg.SetHeader("Generation and fitting with")
     leg.AddEntry(histo_exp,"exp. (<r/#sigma_{r}> = %.2f)"%(mean_exp),"l")
-    leg.AddEntry(histo_dijet3p,"dijet 3p (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
+    leg.AddEntry(histo_dijet3p,"expX (<r/#sigma_{r}> = %.2f)"%(mean_dijet3p),"l")
     leg.Draw()
     
     lumi = CMSPlotStyle.draw_lumi(True)

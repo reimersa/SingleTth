@@ -2,6 +2,7 @@
 
 #pragma link C++ class BkgPdf4p;
 #pragma link C++ class BkgPdf4pExp;
+#pragma link C++ class BkgPdfExpX;
 #pragma link C++ class BkgPdf3p;
 #pragma link C++ class BkgPdf2p;
 #pragma link C++ class BkgPdfExp2;
