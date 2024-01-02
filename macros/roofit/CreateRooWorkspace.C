@@ -349,10 +349,10 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
   }
 
   BkgPdfExp2* bgfunc_exp = new BkgPdfExp2("Bkgfunc_Exp2p_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_Exp2p_"+ch_name, *x, *bgexp2_p0, *bgexp2_p1);
-  // RooArgList* bgfunc_exp_args = new RooArgList("bgfunc_exp_args");
-  // bgfunc_exp_args->add(*bgexp2_p0);
-  // bgfunc_exp_args->add(*bgexp2_p1);
-  // RooParametricShapeBinPdf* shape_bgfunc_exp = new RooParametricShapeBinPdf("Shape_Bkgfunc_Exp2p_"+ch_name+"_"+year+"_"+cat, "Shape_Bkgfunc_Exp2p_"+ch_name, *bgfunc_exp, *x, *bgfunc_exp_args, *h_data );
+  RooArgList* bgfunc_exp_args = new RooArgList("bgfunc_exp_args");
+  bgfunc_exp_args->add(*bgexp2_p0);
+  bgfunc_exp_args->add(*bgexp2_p1);
+  RooParametricShapeBinPdf* shape_bgfunc_exp = new RooParametricShapeBinPdf("Shape_Bkgfunc_Exp2p_"+ch_name+"_"+year+"_"+cat, "Shape_Bkgfunc_Exp2p_"+ch_name, *bgfunc_exp, *x, *bgfunc_exp_args, *h_data );
 
   // 4 parameter function for nominal result
   RooRealVar* bg4p_p0 = new RooRealVar("bg4p_p0"+ch_name+"_"+year+"_"+cat, "bg4p_p0"+ch_name, -300, -1000,  1000);
@@ -401,10 +401,10 @@ void CreateRooWorkspace::SaveDataAndBkgFunc(defs::Eregion region, defs::Echannel
 
   BkgPdfExpX* bgfunc_expX = new BkgPdfExpX("Bkgfunc_ExpX_"+ch_name+"_"+year+"_"+cat,"Bkgfunc_ExpX_"+ch_name, *x, *bgexpX_p0, *bgexpX_p1, *bgexpX_p2);
   RooArgList* bgfunc_expX_args = new RooArgList("bgfunc_expX_args");
-  // bgfunc_expX_args->add(*bgexpX_p0);
-  // bgfunc_expX_args->add(*bgexpX_p1);
-  // bgfunc_expX_args->add(*bgexpX_p2);
-  // RooParametricShapeBinPdf* shape_bgfunc_expX = new RooParametricShapeBinPdf("Shape_Bkgfunc_ExpX_"+ch_name+"_"+year+"_"+cat, "Shape_Bkgfunc_ExpX_"+ch_name, *bgfunc_expX, *x, *bgfunc_expX_args, *h_data); 
+  bgfunc_expX_args->add(*bgexpX_p0);
+  bgfunc_expX_args->add(*bgexpX_p1);
+  bgfunc_expX_args->add(*bgexpX_p2);
+  RooParametricShapeBinPdf* shape_bgfunc_expX = new RooParametricShapeBinPdf("Shape_Bkgfunc_ExpX_"+ch_name+"_"+year+"_"+cat, "Shape_Bkgfunc_ExpX_"+ch_name, *bgfunc_expX, *x, *bgfunc_expX_args, *h_data); 
 
   float bkgfactor  = 1;
   RooFitResult *r_bg;

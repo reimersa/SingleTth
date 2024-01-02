@@ -10,6 +10,7 @@
 
 #include "RooCategory.h"
 #include "RooMultiPdf.h"
+#include "RooParametricShapeBinPdf.h"
 
 namespace defs
 {
