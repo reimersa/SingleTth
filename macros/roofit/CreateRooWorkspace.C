@@ -14,14 +14,13 @@
 #include "RooDataSet.h"
 #include "RooGaussian.h"
 #include "RooCBShape.h"
-#include "RooMultiPdf.h"
 #include "RooPolynomial.h"
 #include "RooHistPdf.h"
 #include "TCanvas.h"
 #include "TAxis.h"
 #include "RooPlot.h"
 #include "RooMinimizer.h"
-#include "RooParametricShapeBinPdf.h"
+// #include "RooParametricShapeBinPdf.h"
 
 #include <iostream>
 #include <fstream>

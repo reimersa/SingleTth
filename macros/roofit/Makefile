@@ -5,11 +5,11 @@ LD=g++
 
 ROOTCFLAGS=$(shell root-config --cflags)
 ROOTLIBS=$(shell root-config --libs)
-ROOTLIBS+= -lRooFit -lRooFitCore -lMinuit
+ROOTLIBS+= -lRooFit -lRooFitCore -lMinuit -lHiggsAnalysisCombinedLimit
 ROOTLDFLAGS=$(shell root-config --ldflags)
 
-CFLAGS = 
-LFLAGS =
+CFLAGS = -I${CMSSW_BASE}/src/HiggsAnalysis/CombinedLimit/interface
+LFLAGS = -L${CMSSW_BASE}/lib/slc7_amd64_gcc900
 
 RCXX=$(CFLAGS) $(ROOTCFLAGS)
 RLXX=$(LFLAGS) $(ROOTLIBS)
@@ -21,8 +21,8 @@ SRC7= CreateRooWorkspace.o create_roo_allyears.o
 SRC4= CreateRooWorkspace.o create_roo_CR.o
 SRC5= CreateRooWorkspace.o create_roo_2017_CR.o
 SRC6= CreateRooWorkspace.o create_roo_2018_CR.o
-SL_HEADERS= BkgPdfExp2.h BkgPdf3p.h BkgPdf4p.h BkgPdf4pExp.h BkgPdfExpX.h RooMultiPdf.h BkgPdf2p.h SignalDoubleGauss_M600.h SignalDoubleGauss_M1000.h SignalDoubleGauss.h SignalDoubleCB.h
-SL_SOURCES= BkgPdfExp2.C BkgPdf3p.C BkgPdf4p.C BkgPdf4pExp.C BkgPdfExpX.C RooMultiPdf.C BkgPdf2p.C SignalDoubleGauss_M600.C SignalDoubleGauss_M1000.C SignalDoubleGauss.C SignalDoubleCB.C
+SL_HEADERS= BkgPdfExp2.h BkgPdf3p.h BkgPdf4p.h BkgPdf4pExp.h BkgPdfExpX.h BkgPdf2p.h SignalDoubleGauss_M600.h SignalDoubleGauss_M1000.h SignalDoubleGauss.h SignalDoubleCB.h
+SL_SOURCES= BkgPdfExp2.C BkgPdf3p.C BkgPdf4p.C BkgPdf4pExp.C BkgPdfExpX.C BkgPdf2p.C SignalDoubleGauss_M600.C SignalDoubleGauss_M1000.C SignalDoubleGauss.C SignalDoubleCB.C
 
 default: all
 

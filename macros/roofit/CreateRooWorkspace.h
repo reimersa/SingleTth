@@ -7,6 +7,10 @@
 #include <fstream>
 #include <iostream>
 
+
+#include "RooCategory.h"
+#include "RooMultiPdf.h"
+
 namespace defs
 {
   enum Eregion {eCR, eSR};
